@@ -1,0 +1,32 @@
+import unittest
+
+from pipeline.build_snapshot import build, classify
+
+
+class SnapshotTests(unittest.TestCase):
+    def test_classification(self):
+        self.assertEqual(classify(0, 10), ("NEW", None))
+        self.assertEqual(classify(10, 0), ("SOLD", -100.0))
+        self.assertEqual(classify(10, 15), ("INCREASED", 50.0))
+        self.assertEqual(classify(10, 5), ("REDUCED", -50.0))
+        self.assertEqual(classify(10, 10), ("UNCHANGED", 0.0))
+
+    def test_builds_explainable_score_and_movements(self):
+        previous = {"investors": [{"id": "x", "holdings": [{"ticker": "AAA", "shares": 10}]}]}
+        current = {"quarter": "2026-Q1", "investors": [{
+            "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
+            "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
+            "holdings": [{"ticker": "AAA", "company": "A Co", "shares": 20}]
+        }]}
+        companies = [{"ticker": "AAA", "company": "A Co", "sector": "Tech", "yield": 3,
+                      "pe": 15, "payout": 50, "dividendGrowth5Y": 4, "debtToEBITDA": 1,
+                      "valuationScore": 80, "dividendScore": 80, "qualityScore": 80}]
+        result = build(current, previous, companies)
+        self.assertEqual(result["movements"][0]["action"], "INCREASED")
+        self.assertEqual(result["opportunities"][0]["smartMoneyScore"], 62)
+        self.assertEqual(result["opportunities"][0]["franScore"], 76)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
