@@ -66,7 +66,7 @@ private struct DashboardView: View {
                             Text("\(index + 1)").foregroundStyle(.secondary).frame(width: 18)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(holding.company).lineLimit(1)
-                                Text(holding.ticker == holding.cusip ? "CUSIP \(holding.cusip)" : holding.ticker)
+                                Text("Periodo \(snapshot.asOfQuarter)")
                                     .font(.caption).foregroundStyle(.secondary)
                             }
                             Spacer()
@@ -105,7 +105,7 @@ struct OpportunityCard: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text(item.company).font(.headline)
-                    Text(item.ticker).font(.caption).foregroundStyle(.secondary)
+                    Text(item.sector).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Text("\(item.franScore)").font(.title2.bold()).foregroundStyle(item.franScore >= 80 ? .green : .orange)

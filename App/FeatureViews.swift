@@ -70,13 +70,17 @@ struct CompaniesView: View {
                 if let opportunity = snapshot.opportunities.first(where: { $0.ticker == holding.ticker }) {
                     CompanyDetailView(item: opportunity)
                 } else {
-                    HoldingDetailView(item: holding, quarter: snapshot.asOfQuarter)
+                    HoldingDetailView(
+                        item: holding,
+                        quarter: snapshot.asOfQuarter,
+                        profile: snapshot.companyProfiles.first(where: { $0.cusip == holding.cusip })
+                    )
                 }
             } label: {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(holding.company).bold()
-                        Text(securityIdentifier(ticker: holding.ticker, cusip: holding.cusip))
+                        Text("Periodo \(snapshot.asOfQuarter)")
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
@@ -87,31 +91,56 @@ struct CompaniesView: View {
         }.navigationTitle("Empresas")
     }
 
-    private func securityIdentifier(ticker: String, cusip: String) -> String {
-        ticker == cusip ? "CUSIP \(cusip)" : ticker
-    }
 }
 
 private struct HoldingDetailView: View {
     let item: Holding
     let quarter: String
+    let profile: CompanyProfile?
 
     var body: some View {
         List {
             Section("Posición 13F · \(quarter)") {
+                LabeledContent("Periodo reportado", value: quarter)
                 LabeledContent("Gestor", value: item.investorName)
-                LabeledContent("CUSIP", value: item.cusip)
                 LabeledContent("Acciones", value: item.shares.formatted())
                 LabeledContent("Valor declarado", value: item.value.formatted(.currency(code: "USD")))
                 LabeledContent("Peso", value: item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
             }
-            Section {
-                Text("Las métricas de dividendo y valoración se añadirán cuando exista una correspondencia fiable de ticker y proveedor financiero.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+            if let profile, profile.status == "enriched" {
+                if let description = profile.description {
+                    Section("Actividad") { Text(description) }
+                }
+                Section("Empresa") {
+                    if let sector = profile.sector { LabeledContent("Sector", value: sector) }
+                    if let industry = profile.industry { LabeledContent("Industria", value: industry) }
+                    if let country = profile.country { LabeledContent("País", value: country) }
+                    if let marketCap = profile.marketCapitalization {
+                        LabeledContent("Capitalización", value: compactUSD(marketCap))
+                    }
+                    if let paysDividend = profile.paysDividend {
+                        LabeledContent("Reparte dividendos", value: paysDividend ? "Sí" : "No")
+                    }
+                    if let yield = profile.dividendYield, yield > 0 {
+                        LabeledContent("Dividend yield", value: yield.formatted(.percent.precision(.fractionLength(2))))
+                    }
+                    if let pe = profile.peRatio { LabeledContent("PER", value: pe.formatted()) }
+                }
+                Section { Text("Fuente: \(profile.source)").font(.caption).foregroundStyle(.secondary) }
+            } else {
+                Section {
+                    Text("Perfil empresarial pendiente de enriquecimiento en GitHub.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
             }
         }
         .navigationTitle(item.company)
+    }
+
+    private func compactUSD(_ value: Double) -> String {
+        if value >= 1_000_000_000 { return String(format: "$%.1fB", value / 1_000_000_000) }
+        if value >= 1_000_000 { return String(format: "$%.1fM", value / 1_000_000) }
+        return value.formatted(.currency(code: "USD"))
     }
 }
 
@@ -153,9 +182,7 @@ struct SmartMoneyView: View {
                                 Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
                                     .foregroundStyle(.mint)
                             }
-                            Text(item.ticker == item.cusip ? "CUSIP \(item.cusip)" : item.ticker)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                            Text("Periodo \(snapshot.asOfQuarter)").font(.caption).foregroundStyle(.secondary)
                             HStack {
                                 Text(item.shares.formatted(.number.notation(.compactName)) + " acciones")
                                 Spacer()
@@ -172,7 +199,6 @@ struct SmartMoneyView: View {
                     ForEach(snapshot.consensus) { item in
                         VStack(alignment: .leading) {
                             HStack { Text(item.company).bold(); Spacer(); Text("\(item.holders) gestores") }
-                            Text(displayIdentifier(item.ticker)).font(.caption).foregroundStyle(.secondary)
                             Text("\(item.buying) comprando · \(item.selling) reduciendo").font(.caption).foregroundStyle(.secondary)
                         }
                     }
@@ -184,7 +210,7 @@ struct SmartMoneyView: View {
                         Image(systemName: icon(item.action)).foregroundStyle(color(item.action))
                         VStack(alignment: .leading) {
                             Text(item.company)
-                            Text("\(displayIdentifier(item.ticker)) · \(item.investorName) · \(item.action.label)")
+                            Text("\(snapshot.asOfQuarter) · \(item.investorName) · \(item.action.label)")
                                 .font(.caption).foregroundStyle(.secondary)
                         }
                     }
@@ -198,14 +224,6 @@ struct SmartMoneyView: View {
     }
     private func color(_ action: MovementAction) -> Color {
         switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
-    }
-
-    private func displayIdentifier(_ value: String) -> String {
-        isCUSIP(value) ? "CUSIP \(value)" : value
-    }
-
-    private func isCUSIP(_ value: String) -> Bool {
-        value.count == 9 && value.allSatisfy { $0.isLetter || $0.isNumber }
     }
 
     private func compactUSD(_ value: Double) -> String {

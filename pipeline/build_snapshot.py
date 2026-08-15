@@ -55,7 +55,7 @@ def classify(previous: float, current: float) -> tuple[str, float | None]:
     return "UNCHANGED", 0.0
 
 
-def build(current: dict, previous: dict, companies: list[dict]) -> dict:
+def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
     holding_name_by_ticker = {
@@ -153,6 +153,7 @@ def build(current: dict, previous: dict, companies: list[dict]) -> dict:
         "movements": movements,
         "holdings": holdings,
         "filings": current.get("filings") or fallback_filing_history(current, previous),
+        "companyProfiles": company_profiles or [],
     }
 
 
@@ -161,12 +162,14 @@ def main() -> None:
     parser.add_argument("--current", type=Path, required=True)
     parser.add_argument("--previous", type=Path, required=True)
     parser.add_argument("--companies", type=Path, required=True)
+    parser.add_argument("--company-database", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     current = json.loads(args.current.read_text())
     previous = json.loads(args.previous.read_text())
     companies = json.loads(args.companies.read_text())
-    snapshot = build(current, previous, companies)
+    profiles = json.loads(args.company_database.read_text()) if args.company_database and args.company_database.exists() else []
+    snapshot = build(current, previous, companies, profiles)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n")
 

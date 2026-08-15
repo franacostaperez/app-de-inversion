@@ -66,15 +66,22 @@ El descargador:
 
 Para automatizarlo en GitHub, crea un secreto del repositorio llamado `SEC_USER_AGENT` con el mismo formato. La lista inicial de gestores está en `data/config/investors.json`.
 
+### Base de datos de empresas
+
+Los perfiles enriquecidos se guardan en `data/companies/index.json`. Cada actualización detecta empresas nuevas en los 13F y procesa hasta cinco por ejecución para respetar los límites del proveedor. Configura el secreto `ALPHA_VANTAGE_API_KEY` en GitHub; la clave nunca se incorpora a la app ni al repositorio.
+
+Los perfiles pueden incluir descripción, sector, industria, país, capitalización, dividendos, yield, PER y EPS. Si una búsqueda de símbolo no alcanza la confianza mínima, la empresa queda pendiente en lugar de asociarse automáticamente a una compañía incorrecta.
+
 ### Construir el snapshot de la app
 
 ```bash
 python3 -m unittest discover -s pipeline/tests
 python3 pipeline/build_snapshot.py \
   --current data/source/latest.json \
-  --previous data/source/previous.json \
-  --companies data/source/companies.json \
-  --output data/public/snapshot.json
+          --previous data/source/previous.json \
+          --companies data/source/companies.json \
+          --company-database data/companies/index.json \
+          --output data/public/snapshot.json
 ```
 
 Los archivos fuente normalizados usan CIK para el gestor y CUSIP/ticker para cada posición. Las métricas de empresas continúan siendo datos de demostración hasta conectar un proveedor financiero fiable; el snapshot mantiene `isDemo: true` para hacerlo visible en la app.
