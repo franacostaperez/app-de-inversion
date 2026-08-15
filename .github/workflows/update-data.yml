@@ -2,6 +2,12 @@ name: Update dividend data
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "data/config/investors.json"
+      - "pipeline/**"
   schedule:
     - cron: "17 7 * * *"
 
