@@ -10,6 +10,10 @@ public enum SnapshotError: Error {
 }
 
 public struct DataRepository: SnapshotLoading {
+    public static let defaultRemoteURL = URL(
+        string: "https://raw.githubusercontent.com/franacostaperez/app-de-inversion/main/data/public/snapshot.json"
+    )!
+
     private let remoteURL: URL?
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -41,8 +45,9 @@ public struct DataRepository: SnapshotLoading {
     }
 
     public static func configuredRemoteURL(bundle: Bundle = .main) -> URL? {
-        guard let value = bundle.object(forInfoDictionaryKey: "DIVIDEND_DATA_URL") as? String else { return nil }
-        return URL(string: value)
+        guard let value = bundle.object(forInfoDictionaryKey: "DIVIDEND_DATA_URL") as? String else {
+            return defaultRemoteURL
+        }
+        return URL(string: value) ?? defaultRemoteURL
     }
 }
-
