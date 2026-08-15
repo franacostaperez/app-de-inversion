@@ -27,12 +27,15 @@ struct UpdatesView: View {
     @State private var filter = "all"
 
     private var updates: [FilingUpdate] {
-        filter == "all" ? snapshot.filingUpdates : snapshot.filingUpdates.filter { $0.investorId == filter }
+        let recent = snapshot.filingUpdates.filter { $0.filingDate >= retentionCutoff }
+        return filter == "all" ? recent : recent.filter { $0.investorId == filter }
     }
+
+    private var retentionCutoff: Date { Calendar.current.date(byAdding: .year, value: -3, to: Date()) ?? .distantPast }
 
     var body: some View {
         Group {
-            if snapshot.filingUpdates.isEmpty {
+            if updates.isEmpty {
                 ContentUnavailableView(
                     "Sin novedades 13F",
                     systemImage: "sparkles",
@@ -141,7 +144,8 @@ struct FilingsView: View {
     @Binding var selectedInvestorID: String
 
     private var items: [FilingRecord] {
-        snapshot.filings.filter { $0.investorId == selectedInvestorID }
+        let cutoff = Calendar.current.date(byAdding: .year, value: -3, to: Date()) ?? .distantPast
+        return snapshot.filings.filter { $0.investorId == selectedInvestorID && $0.filingDate >= cutoff }
     }
 
     var body: some View {
@@ -227,7 +231,7 @@ private struct FundCard: View {
                     .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 11))
                 VStack(alignment: .leading, spacing: 3) {
                     Text(investor.name).font(.headline).foregroundStyle(.primary)
-                    Text("Periodo reportado · " + investor.quarterEnd.formatted(date: .abbreviated, time: .omitted))
+                    Text("Responsable · " + (investor.manager ?? "No informado"))
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()

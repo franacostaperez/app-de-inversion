@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 
@@ -63,9 +63,18 @@ def compact_usd(value: float) -> str:
     return f"${value:,.0f}"
 
 
+def retained_filing_date(value: str, today: date | None = None) -> bool:
+    today = today or date.today()
+    try:
+        cutoff = today.replace(year=today.year - 3)
+    except ValueError:
+        cutoff = today.replace(year=today.year - 3, day=28)
+    return date.fromisoformat(value[:10]) >= cutoff
+
+
 def build_filing_updates(current: dict, holdings: list[dict], movements: list[dict], prior_updates: list[dict]) -> list[dict]:
     by_accession = {item["accessionNumber"]: item for item in current.get("filings", [])}
-    updates = {item["accessionNumber"]: item for item in prior_updates}
+    updates = {item["accessionNumber"]: item for item in prior_updates if retained_filing_date(item["filingDate"])}
     for investor in current.get("investors", []):
         accession = investor.get("accessionNumber")
         filing = by_accession.get(accession)
@@ -189,10 +198,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     opportunities.sort(key=lambda item: item["franScore"], reverse=True)
     holdings.sort(key=lambda item: item["value"], reverse=True)
 
-    investors = [
-        {key: investor[key] for key in ("id", "name", "filingDate", "quarterEnd", "portfolioValue")}
-        for investor in current.get("investors", [])
-    ]
+    investors = [{
+        "id": investor["id"], "name": investor["name"], "manager": investor.get("manager"),
+        "quarter": investor.get("quarter", current["quarter"]), "filingDate": investor["filingDate"],
+        "quarterEnd": investor["quarterEnd"], "portfolioValue": investor["portfolioValue"],
+    } for investor in current.get("investors", [])]
     filing_updates = build_filing_updates(current, holdings, movements, prior_updates or [])
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -203,7 +213,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "consensus": consensus_items,
         "movements": movements,
         "holdings": holdings,
-        "filings": current.get("filings") or fallback_filing_history(current, previous),
+        "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
         "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
     }

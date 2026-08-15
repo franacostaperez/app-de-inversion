@@ -1,6 +1,6 @@
 import unittest
 
-from pipeline.build_snapshot import aggregate_holdings, build, classify
+from pipeline.build_snapshot import aggregate_holdings, build, classify, retained_filing_date
 
 
 class SnapshotTests(unittest.TestCase):
@@ -20,6 +20,11 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["shares"], 15)
         self.assertEqual(result[0]["value"], 28)
+
+    def test_filters_filing_dates_outside_three_year_window(self):
+        from datetime import date
+        self.assertTrue(retained_filing_date("2023-08-15T00:00:00Z", date(2026, 8, 15)))
+        self.assertFalse(retained_filing_date("2023-08-14T00:00:00Z", date(2026, 8, 15)))
 
     def test_builds_explainable_score_and_movements(self):
         previous = {"investors": [{"id": "x", "holdings": [{"ticker": "AAA", "cusip": "000000001", "shares": 10}]}]}

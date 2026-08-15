@@ -119,6 +119,8 @@ public struct Opportunity: Codable, Identifiable, Sendable {
 public struct Investor: Codable, Identifiable, Sendable {
     public let id: String
     public let name: String
+    public let manager: String?
+    public let quarter: String?
     public let filingDate: Date
     public let quarterEnd: Date
     public let portfolioValue: Double

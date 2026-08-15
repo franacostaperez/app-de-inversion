@@ -82,7 +82,7 @@ private struct DashboardView: View {
                 WhaleHeader(
                     eyebrow: "GESTOR INSTITUCIONAL",
                     title: investor?.name ?? "Gestor",
-                    subtitle: "Cartera 13F · periodo reportado \(snapshot.asOfQuarter)"
+                    subtitle: "Cartera 13F · periodo reportado \(investor?.quarter ?? snapshot.asOfQuarter)"
                 )
 
                 HStack(spacing: 8) {
@@ -102,12 +102,12 @@ private struct DashboardView: View {
                 .whalePanel()
 
                 if !movements.isEmpty {
-                    SectionTitle("Actividad del trimestre", detail: snapshot.asOfQuarter)
+                    SectionTitle("Actividad del trimestre", detail: investor?.quarter ?? snapshot.asOfQuarter)
                     HStack(spacing: 8) {
-                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: snapshot.asOfQuarter)
-                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: snapshot.asOfQuarter)
-                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: snapshot.asOfQuarter)
-                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: snapshot.asOfQuarter)
+                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
+                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
+                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
+                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
                     }
                 }
             }

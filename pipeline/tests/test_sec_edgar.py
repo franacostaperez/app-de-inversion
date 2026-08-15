@@ -1,9 +1,10 @@
 import unittest
 import json
 import tempfile
+from datetime import date
 from pathlib import Path
 
-from pipeline.sec_edgar import all_13f_rows, archive_filings, filing_page_url, filing_rows, parse_information_table, quarter_from_date
+from pipeline.sec_edgar import all_13f_rows, archive_filings, filing_page_url, filing_rows, parse_information_table, quarter_from_date, retained_rows, retention_cutoff
 
 
 XML = b"""<?xml version="1.0" encoding="UTF-8"?>
@@ -37,6 +38,11 @@ class EdgarTests(unittest.TestCase):
 
     def test_quarter(self):
         self.assertEqual(quarter_from_date("2026-03-31"), "2026-Q1")
+
+    def test_keeps_only_the_moving_three_year_window(self):
+        rows = [{"filingDate": "2023-08-15"}, {"filingDate": "2023-08-14"}, {"filingDate": "2026-05-15"}]
+        self.assertEqual(retention_cutoff(date(2026, 8, 15)), date(2023, 8, 15))
+        self.assertEqual(len(retained_rows(rows, date(2026, 8, 15))), 2)
 
     def test_archives_the_complete_filing(self):
         investor = {
