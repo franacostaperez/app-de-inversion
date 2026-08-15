@@ -9,19 +9,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if let snapshot = model.snapshot {
-                TabView {
-                    NavigationStack { DashboardView(snapshot: snapshot) }
-                        .tabItem { Label("Inicio", systemImage: "house.fill") }
-                    NavigationStack { FilingsView(items: snapshot.filings) }
-                        .tabItem { Label("13F", systemImage: "doc.text.magnifyingglass") }
-                    NavigationStack { SmartMoneyView(snapshot: snapshot) }
-                        .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
-                    NavigationStack { CompaniesView(snapshot: snapshot) }
-                        .tabItem { Label("Empresas", systemImage: "building.2") }
-                    NavigationStack { PortfolioPlaceholderView() }
-                        .tabItem { Label("Cartera", systemImage: "briefcase") }
-                }
-                .tint(WhaleTheme.accent)
+                FundTabs(snapshot: snapshot)
             } else if model.isLoading {
                 ProgressView("Cargando inteligencia…")
             } else {
@@ -38,41 +26,88 @@ struct RootView: View {
     }
 }
 
+private struct FundTabs: View {
+    let snapshot: AppSnapshot
+    @State private var selectedInvestorID = ""
+
+    private var selection: Binding<String> {
+        Binding(
+            get: {
+                snapshot.investors.contains(where: { $0.id == selectedInvestorID })
+                    ? selectedInvestorID
+                    : snapshot.investors.first?.id ?? ""
+            },
+            set: { selectedInvestorID = $0 }
+        )
+    }
+
+    var body: some View {
+        TabView {
+            NavigationStack { DashboardView(snapshot: snapshot, selectedInvestorID: selection) }
+                .tabItem { Label("Inicio", systemImage: "house.fill") }
+            NavigationStack { FilingsView(snapshot: snapshot, selectedInvestorID: selection) }
+                .tabItem { Label("13F", systemImage: "doc.text.magnifyingglass") }
+            NavigationStack { SmartMoneyView(snapshot: snapshot, selectedInvestorID: selection) }
+                .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
+            NavigationStack { CompaniesView(snapshot: snapshot, selectedInvestorID: selection) }
+                .tabItem { Label("Empresas", systemImage: "building.2") }
+            NavigationStack { PortfolioPlaceholderView() }
+                .tabItem { Label("Cartera", systemImage: "briefcase") }
+        }
+        .tint(WhaleTheme.accent)
+        .onAppear {
+            if selectedInvestorID.isEmpty { selectedInvestorID = snapshot.investors.first?.id ?? "" }
+        }
+    }
+}
+
 private struct DashboardView: View {
     let snapshot: AppSnapshot
+    @Binding var selectedInvestorID: String
+
+    private var investor: Investor? {
+        snapshot.investors.first(where: { $0.id == selectedInvestorID }) ?? snapshot.investors.first
+    }
+    private var holdings: [Holding] {
+        snapshot.holdings.filter { $0.investorId == investor?.id }.sorted { $0.value > $1.value }
+    }
+    private var movements: [Movement] {
+        snapshot.movements.filter { $0.investorId == investor?.id }
+    }
 
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
+                FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
                 WhaleHeader(
                     eyebrow: "GESTOR INSTITUCIONAL",
-                    title: snapshot.investors.first?.name ?? "Berkshire Hathaway",
+                    title: investor?.name ?? "Gestor",
                     subtitle: "Cartera 13F · periodo reportado \(snapshot.asOfQuarter)"
                 )
 
                 HStack(spacing: 8) {
-                    Metric(value: compactUSD(snapshot.investors.first?.portfolioValue ?? 0), label: "Valor cartera")
-                    Metric(value: "\(snapshot.holdings.count)", label: "Posiciones")
-                    Metric(value: "\(snapshot.movements.count)", label: "Movimientos")
+                    Metric(value: compactUSD(investor?.portfolioValue ?? 0), label: "Valor cartera")
+                    Metric(value: "\(holdings.count)", label: "Posiciones")
+                    Metric(value: "\(movements.count)", label: "Movimientos")
                 }
 
                 SectionTitle("Principales posiciones", detail: "Por peso en cartera")
                 VStack(spacing: 0) {
                     HoldingTableHeader()
-                    ForEach(Array(snapshot.holdings.prefix(10).enumerated()), id: \.element.id) { index, holding in
+                    ForEach(Array(holdings.prefix(10).enumerated()), id: \.element.id) { index, holding in
                         HoldingSummaryRow(rank: index + 1, holding: holding)
-                        if index < min(9, snapshot.holdings.count - 1) { Divider().padding(.leading, 42) }
+                        if index < min(9, holdings.count - 1) { Divider().padding(.leading, 42) }
                     }
                 }
                 .whalePanel()
 
-                if !snapshot.movements.isEmpty {
+                if !movements.isEmpty {
                     SectionTitle("Actividad del trimestre", detail: snapshot.asOfQuarter)
                     HStack(spacing: 8) {
-                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, snapshot: snapshot)
-                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, snapshot: snapshot)
-                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, snapshot: snapshot)
-                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, snapshot: snapshot)
+                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: snapshot.asOfQuarter)
+                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: snapshot.asOfQuarter)
+                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: snapshot.asOfQuarter)
+                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: snapshot.asOfQuarter)
                     }
                 }
             }
@@ -87,6 +122,36 @@ private struct DashboardView: View {
         if value >= 1_000_000_000 { return String(format: "$%.0fB", value / 1_000_000_000) }
         if value >= 1_000_000 { return String(format: "$%.0fM", value / 1_000_000) }
         return value.formatted(.currency(code: "USD"))
+    }
+}
+
+struct FundSelector: View {
+    let investors: [Investor]
+    @Binding var selection: String
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(investors) { investor in
+                    Button {
+                        withAnimation(.snappy) { selection = investor.id }
+                    } label: {
+                        HStack(spacing: 7) {
+                            Image(systemName: selection == investor.id ? "checkmark.circle.fill" : "building.columns")
+                            Text(investor.name).lineLimit(1)
+                        }
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(selection == investor.id ? .white : .primary)
+                        .padding(.horizontal, 13).padding(.vertical, 9)
+                        .background(selection == investor.id ? WhaleTheme.accent : WhaleTheme.panel, in: Capsule())
+                        .overlay(Capsule().stroke(selection == investor.id ? .clear : .primary.opacity(0.08)))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .contentMargins(.horizontal, 1, for: .scrollContent)
+        .accessibilityLabel("Seleccionar fondo")
     }
 }
 
@@ -199,14 +264,15 @@ private struct ActivityLink: View {
     let title: String
     let action: MovementAction
     let color: Color
-    let snapshot: AppSnapshot
+    let movements: [Movement]
+    let quarter: String
 
-    private var items: [Movement] { snapshot.movements.filter { $0.action == action } }
+    private var items: [Movement] { movements.filter { $0.action == action } }
     private var companies: [ActivityCompanySummary] { ActivityCompanySummary.group(items) }
 
     var body: some View {
         NavigationLink {
-            QuarterlyActivityView(title: title, action: action, items: companies, quarter: snapshot.asOfQuarter)
+            QuarterlyActivityView(title: title, action: action, items: companies, quarter: quarter)
         } label: {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {

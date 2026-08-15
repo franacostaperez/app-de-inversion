@@ -23,7 +23,12 @@ struct OpportunitiesView: View {
 }
 
 struct FilingsView: View {
-    let items: [FilingRecord]
+    let snapshot: AppSnapshot
+    @Binding var selectedInvestorID: String
+
+    private var items: [FilingRecord] {
+        snapshot.filings.filter { $0.investorId == selectedInvestorID }
+    }
 
     var body: some View {
         Group {
@@ -60,14 +65,23 @@ struct FilingsView: View {
             }
         }
         .navigationTitle("Presentaciones 13F")
+        .safeAreaInset(edge: .top) {
+            FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
+                .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
+        }
     }
 }
 
 struct CompaniesView: View {
     let snapshot: AppSnapshot
+    @Binding var selectedInvestorID: String
+
+    private var holdings: [Holding] {
+        snapshot.holdings.filter { $0.investorId == selectedInvestorID }.sorted { $0.value > $1.value }
+    }
 
     var body: some View {
-        List(snapshot.holdings) { holding in
+        List(holdings) { holding in
             NavigationLink {
                 if let opportunity = snapshot.opportunities.first(where: { $0.ticker == holding.ticker }) {
                     CompanyDetailView(item: opportunity)
@@ -98,6 +112,10 @@ struct CompaniesView: View {
         }
         .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(WhaleTheme.background)
         .navigationTitle("Empresas")
+        .safeAreaInset(edge: .top) {
+            FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
+                .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
+        }
     }
 
 }
@@ -176,14 +194,23 @@ private struct CompanyDetailView: View {
 
 struct SmartMoneyView: View {
     let snapshot: AppSnapshot
+    @Binding var selectedInvestorID: String
+
+    private var holdings: [Holding] {
+        snapshot.holdings.filter { $0.investorId == selectedInvestorID }.sorted { $0.value > $1.value }
+    }
+    private var movements: [Movement] {
+        snapshot.movements.filter { $0.investorId == selectedInvestorID }
+    }
+
     var body: some View {
         List {
             Section {
-                if snapshot.holdings.isEmpty {
+                if holdings.isEmpty {
                     Text("El snapshot todavía no contiene posiciones.")
                         .foregroundStyle(.secondary)
                 } else {
-                    ForEach(snapshot.holdings) { item in
+                    ForEach(holdings) { item in
                         VStack(alignment: .leading, spacing: 7) {
                             HStack {
                                 Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(1)
@@ -215,7 +242,7 @@ struct SmartMoneyView: View {
                 }
             }
             Section("Últimos movimientos") {
-                ForEach(snapshot.movements) { item in
+                ForEach(movements) { item in
                     HStack {
                         Image(systemName: icon(item.action)).foregroundStyle(color(item.action))
                         VStack(alignment: .leading) {
@@ -234,6 +261,10 @@ struct SmartMoneyView: View {
         }
         .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(WhaleTheme.background)
         .navigationTitle("Smart Money")
+        .safeAreaInset(edge: .top) {
+            FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
+                .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
+        }
     }
 
     private func icon(_ action: MovementAction) -> String {
