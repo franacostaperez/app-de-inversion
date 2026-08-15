@@ -52,7 +52,6 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Build snapshot
-        if: steps.changes.outputs.changed == 'true'
         run: >-
           python pipeline/build_snapshot.py
           --current data/source/latest.json
