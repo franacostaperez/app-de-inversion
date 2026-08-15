@@ -6,6 +6,7 @@ on:
     branches:
       - main
     paths:
+      - ".github/workflows/update-data.yml"
       - "data/config/investors.json"
       - "pipeline/**"
   schedule:
