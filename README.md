@@ -12,19 +12,28 @@ MVP de una app iPhone centrada en dividendos y movimientos 13F.
 
 > Los datos incluidos son de demostración y aparecen identificados como tales en la app. No son asesoramiento financiero.
 
-## Abrir la app
+## Abrir la app en iPhone
 
-El proyecto usa Swift Package Manager para que el código y los modelos sean verificables sin archivos generados. En Xcode:
+Abre [DividendIntelligence.xcodeproj](DividendIntelligence.xcodeproj) en Xcode. Después:
+
+1. Selecciona el target **Dividend Intelligence**.
+2. En **Signing & Capabilities**, elige tu Apple ID en **Team**.
+3. Conecta el iPhone por cable y desbloquéalo.
+4. Selecciona el iPhone como destino en la barra superior.
+5. Pulsa **Run** (`⌘R`).
+
+La primera vez, iOS puede pedir activar **Modo desarrollador** en Ajustes → Privacidad y seguridad. Con una cuenta Apple gratuita, la instalación de desarrollo puede tener que renovarse periódicamente.
+
+## Abrir como Swift Package
+
+El proyecto mantiene Swift Package Manager para verificar el código y los modelos de forma independiente. En Xcode:
 
 1. Abre `Package.swift`.
-2. Selecciona un simulador de iPhone.
-3. Ejecuta el producto `DividendIntelligenceApp`.
-
-Para una distribución normal en App Store, crea un proyecto iOS llamado `DividendIntelligence` y añade el target local `DividendIntelligenceKit`; la entrada de la app está en `App/DividendIntelligenceApp.swift`.
+2. Ejecuta las pruebas del paquete. Para instalar la aplicación utiliza siempre el `.xcodeproj`.
 
 ## Datos en GitHub
 
-La app consulta por defecto el snapshot de este repositorio en GitHub y, si no hay conexión, utiliza `Sources/DividendIntelligenceKit/Resources/snapshot.json`. Puedes sustituir la URL definiendo `DIVIDEND_DATA_URL` en el `Info.plist`, por ejemplo:
+La app utiliza exclusivamente el snapshot de este repositorio en GitHub. No contiene una copia offline, para evitar mostrar información antigua cuando una descarga falla. Puedes sustituir la URL definiendo `DIVIDEND_DATA_URL` en el `Info.plist`, por ejemplo:
 
 ```text
 https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/data/public/snapshot.json

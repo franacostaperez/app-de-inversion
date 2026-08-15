@@ -9,10 +9,7 @@ let package = Package(
         .executable(name: "DividendIntelligenceApp", targets: ["DividendIntelligenceApp"])
     ],
     targets: [
-        .target(
-            name: "DividendIntelligenceKit",
-            resources: [.process("Resources")]
-        ),
+        .target(name: "DividendIntelligenceKit"),
         .executableTarget(
             name: "DividendIntelligenceApp",
             dependencies: ["DividendIntelligenceKit"],
@@ -24,4 +21,3 @@ let package = Package(
         )
     ]
 )
-

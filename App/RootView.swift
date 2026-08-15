@@ -1,5 +1,7 @@
 import SwiftUI
+#if canImport(DividendIntelligenceKit)
 import DividendIntelligenceKit
+#endif
 
 struct RootView: View {
     @EnvironmentObject private var model: AppModel
@@ -14,7 +16,7 @@ struct RootView: View {
                         .tabItem { Label("Oportunidades", systemImage: "sparkles") }
                     NavigationStack { SmartMoneyView(snapshot: snapshot) }
                         .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
-                    NavigationStack { CompaniesView(items: snapshot.opportunities) }
+                    NavigationStack { CompaniesView(snapshot: snapshot) }
                         .tabItem { Label("Empresas", systemImage: "building.2") }
                     NavigationStack { PortfolioPlaceholderView() }
                         .tabItem { Label("Cartera", systemImage: "briefcase") }
@@ -23,7 +25,14 @@ struct RootView: View {
             } else if model.isLoading {
                 ProgressView("Cargando inteligencia…")
             } else {
-                ContentUnavailableView("Sin datos", systemImage: "externaldrive.badge.exclamationmark", description: Text(model.errorMessage ?? "Inténtalo de nuevo"))
+                ContentUnavailableView {
+                    Label("Sin datos", systemImage: "icloud.slash")
+                } description: {
+                    Text(model.errorMessage ?? "Inténtalo de nuevo")
+                } actions: {
+                    Button("Reintentar") { Task { await model.refresh() } }
+                        .buttonStyle(.borderedProminent)
+                }
             }
         }
     }
@@ -91,4 +100,3 @@ struct OpportunityCard: View {
         .padding().background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18))
     }
 }
-

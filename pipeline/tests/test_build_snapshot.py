@@ -16,7 +16,7 @@ class SnapshotTests(unittest.TestCase):
         current = {"quarter": "2026-Q1", "investors": [{
             "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
             "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
-            "holdings": [{"ticker": "AAA", "company": "A Co", "shares": 20}]
+            "holdings": [{"ticker": "AAA", "cusip": "000000001", "company": "A Co", "shares": 20, "value": 1}]
         }]}
         companies = [{"ticker": "AAA", "company": "A Co", "sector": "Tech", "yield": 3,
                       "pe": 15, "payout": 50, "dividendGrowth5Y": 4, "debtToEBITDA": 1,
@@ -25,8 +25,9 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["movements"][0]["action"], "INCREASED")
         self.assertEqual(result["opportunities"][0]["smartMoneyScore"], 62)
         self.assertEqual(result["opportunities"][0]["franScore"], 76)
+        self.assertEqual(result["holdings"][0]["ticker"], "AAA")
+        self.assertEqual(result["holdings"][0]["weight"], 100.0)
 
 
 if __name__ == "__main__":
     unittest.main()
-

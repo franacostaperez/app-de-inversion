@@ -19,8 +19,7 @@ public final class AppModel: ObservableObject {
             snapshot = try await loader.load()
             errorMessage = nil
         } catch {
-            errorMessage = "No se pudieron cargar los datos."
+            errorMessage = "No se pudieron cargar los datos desde GitHub. Comprueba la conexión y vuelve a intentarlo."
         }
     }
 }
-

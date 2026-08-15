@@ -1,5 +1,7 @@
 import SwiftUI
+#if canImport(DividendIntelligenceKit)
 import DividendIntelligenceKit
+#endif
 
 @main
 struct DividendIntelligenceApp: App {
@@ -13,4 +15,3 @@ struct DividendIntelligenceApp: App {
         }
     }
 }
-

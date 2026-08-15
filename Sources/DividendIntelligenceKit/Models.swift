@@ -8,6 +8,35 @@ public struct AppSnapshot: Codable, Sendable {
     public let investors: [Investor]
     public let consensus: [ConsensusItem]
     public let movements: [Movement]
+    public let holdings: [Holding]
+
+    enum CodingKeys: String, CodingKey {
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        generatedAt = try container.decode(Date.self, forKey: .generatedAt)
+        asOfQuarter = try container.decode(String.self, forKey: .asOfQuarter)
+        isDemo = try container.decode(Bool.self, forKey: .isDemo)
+        opportunities = try container.decode([Opportunity].self, forKey: .opportunities)
+        investors = try container.decode([Investor].self, forKey: .investors)
+        consensus = try container.decode([ConsensusItem].self, forKey: .consensus)
+        movements = try container.decode([Movement].self, forKey: .movements)
+        holdings = try container.decodeIfPresent([Holding].self, forKey: .holdings) ?? []
+    }
+}
+
+public struct Holding: Codable, Identifiable, Sendable {
+    public var id: String { "\(investorId)-\(cusip)" }
+    public let investorId: String
+    public let investorName: String
+    public let ticker: String
+    public let cusip: String
+    public let company: String
+    public let shares: Double
+    public let value: Double
+    public let weight: Double
 }
 
 public struct Opportunity: Codable, Identifiable, Sendable {
@@ -74,4 +103,3 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let selling: Int
     public let yield: Double?
 }
-

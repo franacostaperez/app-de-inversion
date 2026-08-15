@@ -5,7 +5,6 @@ public protocol SnapshotLoading: Sendable {
 }
 
 public enum SnapshotError: Error {
-    case missingBundledData
     case invalidResponse
 }
 
@@ -27,21 +26,14 @@ public struct DataRepository: SnapshotLoading {
     }
 
     public func load() async throws -> AppSnapshot {
-        if let remoteURL {
-            do {
-                let (data, response) = try await session.data(from: remoteURL)
-                guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
-                    throw SnapshotError.invalidResponse
-                }
-                return try decoder.decode(AppSnapshot.self, from: data)
-            } catch {
-                // Offline-first: the bundled snapshot keeps the app usable.
-            }
+        guard let remoteURL else {
+            throw SnapshotError.invalidResponse
         }
-        guard let url = Bundle.module.url(forResource: "snapshot", withExtension: "json") else {
-            throw SnapshotError.missingBundledData
+        let (data, response) = try await session.data(from: remoteURL)
+        guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
+            throw SnapshotError.invalidResponse
         }
-        return try decoder.decode(AppSnapshot.self, from: Data(contentsOf: url))
+        return try decoder.decode(AppSnapshot.self, from: data)
     }
 
     public static func configuredRemoteURL(bundle: Bundle = .main) -> URL? {

@@ -26,12 +26,26 @@ def build(current: dict, previous: dict, companies: list[dict]) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
     movements = []
+    holdings = []
     consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0})
 
     for investor in current.get("investors", []):
         old = old_investors.get(investor["id"], {})
         old_holdings = {item["ticker"]: item for item in old.get("holdings", [])}
         new_holdings = {item["ticker"]: item for item in investor.get("holdings", [])}
+        portfolio_value = investor.get("portfolioValue", 0)
+        for holding in investor.get("holdings", []):
+            value = holding.get("value", 0)
+            holdings.append({
+                "investorId": investor["id"],
+                "investorName": investor["name"],
+                "ticker": holding["ticker"],
+                "cusip": holding.get("cusip", holding["ticker"]),
+                "company": holding.get("company", holding["ticker"]),
+                "shares": holding.get("shares", 0),
+                "value": value,
+                "weight": round(value / portfolio_value * 100, 4) if portfolio_value else 0,
+            })
         for ticker in sorted(old_holdings.keys() | new_holdings.keys()):
             old_shares = old_holdings.get(ticker, {}).get("shares", 0)
             holding = new_holdings.get(ticker, old_holdings.get(ticker, {}))
@@ -82,6 +96,7 @@ def build(current: dict, previous: dict, companies: list[dict]) -> dict:
             "gurusBuying": signal["buying"],
         })
     opportunities.sort(key=lambda item: item["franScore"], reverse=True)
+    holdings.sort(key=lambda item: item["value"], reverse=True)
 
     investors = [
         {key: investor[key] for key in ("id", "name", "filingDate", "quarterEnd", "portfolioValue")}
@@ -95,6 +110,7 @@ def build(current: dict, previous: dict, companies: list[dict]) -> dict:
         "investors": investors,
         "consensus": consensus_items,
         "movements": movements,
+        "holdings": holdings,
     }
 
 
@@ -115,4 +131,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

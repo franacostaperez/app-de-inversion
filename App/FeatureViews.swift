@@ -1,5 +1,7 @@
 import SwiftUI
+#if canImport(DividendIntelligenceKit)
 import DividendIntelligenceKit
+#endif
 
 struct OpportunitiesView: View {
     let items: [Opportunity]
@@ -10,18 +12,51 @@ struct OpportunitiesView: View {
 }
 
 struct CompaniesView: View {
-    let items: [Opportunity]
+    let snapshot: AppSnapshot
+
     var body: some View {
-        List(items) { item in
+        List(snapshot.holdings) { holding in
             NavigationLink {
-                CompanyDetailView(item: item)
+                if let opportunity = snapshot.opportunities.first(where: { $0.ticker == holding.ticker }) {
+                    CompanyDetailView(item: opportunity)
+                } else {
+                    HoldingDetailView(item: holding, quarter: snapshot.asOfQuarter)
+                }
             } label: {
                 HStack {
-                    VStack(alignment: .leading) { Text(item.ticker).bold(); Text(item.company).font(.caption).foregroundStyle(.secondary) }
-                    Spacer(); Text("\(item.franScore)").foregroundStyle(.mint).bold()
+                    VStack(alignment: .leading) {
+                        Text(holding.ticker).bold()
+                        Text(holding.company).font(.caption).foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + "%")
+                        .foregroundStyle(.mint).bold()
                 }
             }
         }.navigationTitle("Empresas")
+    }
+}
+
+private struct HoldingDetailView: View {
+    let item: Holding
+    let quarter: String
+
+    var body: some View {
+        List {
+            Section("Posición 13F · \(quarter)") {
+                LabeledContent("Gestor", value: item.investorName)
+                LabeledContent("CUSIP", value: item.cusip)
+                LabeledContent("Acciones", value: item.shares.formatted())
+                LabeledContent("Valor declarado", value: item.value.formatted(.currency(code: "USD")))
+                LabeledContent("Peso", value: item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
+            }
+            Section {
+                Text("Las métricas de dividendo y valoración se añadirán cuando exista una correspondencia fiable de ticker y proveedor financiero.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .navigationTitle(item.ticker)
     }
 }
 
@@ -50,6 +85,33 @@ struct SmartMoneyView: View {
     let snapshot: AppSnapshot
     var body: some View {
         List {
+            Section("Portfolio 13F · \(snapshot.asOfQuarter)") {
+                if snapshot.holdings.isEmpty {
+                    Text("El snapshot todavía no contiene posiciones.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(snapshot.holdings) { item in
+                        VStack(alignment: .leading, spacing: 5) {
+                            HStack {
+                                Text(item.ticker).bold()
+                                Spacer()
+                                Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
+                                    .foregroundStyle(.mint)
+                            }
+                            Text(item.company)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            HStack {
+                                Text(item.shares.formatted(.number.notation(.compactName)) + " acciones")
+                                Spacer()
+                                Text(compactUSD(item.value))
+                            }
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
             Section("Consenso") {
                 ForEach(snapshot.consensus) { item in
                     VStack(alignment: .leading) {
@@ -75,6 +137,13 @@ struct SmartMoneyView: View {
     private func color(_ action: MovementAction) -> Color {
         switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
     }
+
+    private func compactUSD(_ value: Double) -> String {
+        if value >= 1_000_000_000 { return String(format: "$%.1fB", value / 1_000_000_000) }
+        if value >= 1_000_000 { return String(format: "$%.1fM", value / 1_000_000) }
+        if value >= 1_000 { return String(format: "$%.1fK", value / 1_000) }
+        return value.formatted(.currency(code: "USD"))
+    }
 }
 
 struct PortfolioPlaceholderView: View {
@@ -83,4 +152,3 @@ struct PortfolioPlaceholderView: View {
             .navigationTitle("Cartera")
     }
 }
-
