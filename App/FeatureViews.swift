@@ -36,25 +36,27 @@ struct FilingsView: View {
             } else {
                 List(items) { filing in
                     Link(destination: filing.secURL) {
-                        VStack(alignment: .leading, spacing: 5) {
+                        VStack(alignment: .leading, spacing: 9) {
                             HStack {
-                                Text(filing.investorName).font(.headline).foregroundStyle(.primary)
+                                Text(filing.form).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
                                 Spacer()
-                                Image(systemName: "arrow.up.right.square").foregroundStyle(.mint)
+                                Text(filing.quarter).font(.caption.bold()).foregroundStyle(.secondary)
                             }
-                            Text("\(filing.quarter) · \(filing.form)")
-                                .font(.subheadline).foregroundStyle(.secondary)
+                            Text(filing.investorName).font(.headline).foregroundStyle(.primary)
                             HStack {
-                                Text(filing.filingDate.formatted(date: .abbreviated, time: .omitted))
+                                Label("Reportado " + filing.reportDate.formatted(date: .abbreviated, time: .omitted), systemImage: "calendar")
                                 Spacer()
-                                Text(filing.accessionNumber)
+                                Image(systemName: "arrow.up.right.square")
                             }
-                            .font(.caption2).foregroundStyle(.tertiary)
+                            .font(.caption).foregroundStyle(.secondary)
                         }
-                        .padding(.vertical, 4)
+                        .padding(14).whalePanel()
                     }
+                    .listRowInsets(EdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 16))
+                    .listRowSeparator(.hidden).listRowBackground(Color.clear)
                 }
                 .listStyle(.plain)
+                .background(WhaleTheme.background)
             }
         }
         .navigationTitle("Presentaciones 13F")
@@ -77,18 +79,25 @@ struct CompaniesView: View {
                     )
                 }
             } label: {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(holding.company).bold()
-                        Text("Periodo \(snapshot.asOfQuarter)")
-                            .font(.caption).foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text(holding.company).font(.subheadline.weight(.semibold)).lineLimit(1)
+                        Spacer()
+                        Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + "%")
+                            .foregroundStyle(WhaleTheme.accent).bold().monospacedDigit()
                     }
-                    Spacer()
-                    Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + "%")
-                        .foregroundStyle(.mint).bold()
+                    HStack {
+                        Text(compactMoney(holding.value))
+                        Spacer()
+                        Text(holding.shares.formatted(.number.notation(.compactName)) + " acciones")
+                    }.font(.caption).foregroundStyle(.secondary)
                 }
+                .padding(.vertical, 4)
             }
-        }.navigationTitle("Empresas")
+            .listRowBackground(WhaleTheme.panel)
+        }
+        .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(WhaleTheme.background)
+        .navigationTitle("Empresas")
     }
 
 }
@@ -169,30 +178,31 @@ struct SmartMoneyView: View {
     let snapshot: AppSnapshot
     var body: some View {
         List {
-            Section("Portfolio 13F · \(snapshot.asOfQuarter)") {
+            Section {
                 if snapshot.holdings.isEmpty {
                     Text("El snapshot todavía no contiene posiciones.")
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(snapshot.holdings) { item in
-                        VStack(alignment: .leading, spacing: 5) {
+                        VStack(alignment: .leading, spacing: 7) {
                             HStack {
-                                Text(item.company).bold()
+                                Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(1)
                                 Spacer()
                                 Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
-                                    .foregroundStyle(.mint)
+                                    .foregroundStyle(WhaleTheme.accent).bold().monospacedDigit()
                             }
-                            Text("Periodo \(snapshot.asOfQuarter)").font(.caption).foregroundStyle(.secondary)
                             HStack {
                                 Text(item.shares.formatted(.number.notation(.compactName)) + " acciones")
                                 Spacer()
-                                Text(compactUSD(item.value))
+                                Text(compactMoney(item.value))
                             }
-                            .font(.caption2)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                         }
                     }
                 }
+            } header: {
+                Text("CARTERA 13F · \(snapshot.asOfQuarter)")
             }
             if snapshot.investors.count > 1 {
                 Section("Consenso") {
@@ -209,14 +219,21 @@ struct SmartMoneyView: View {
                     HStack {
                         Image(systemName: icon(item.action)).foregroundStyle(color(item.action))
                         VStack(alignment: .leading) {
-                            Text(item.company)
-                            Text("\(snapshot.asOfQuarter) · \(item.investorName) · \(item.action.label)")
+                            Text(item.company).font(.subheadline.weight(.semibold))
+                            Text("\(item.investorName) · \(item.action.label)")
                                 .font(.caption).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        if let change = item.changePercent {
+                            Text(change.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%")
+                                .font(.caption.bold().monospacedDigit()).foregroundStyle(color(item.action))
                         }
                     }
                 }
             }
-        }.navigationTitle("Smart Money")
+        }
+        .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(WhaleTheme.background)
+        .navigationTitle("Smart Money")
     }
 
     private func icon(_ action: MovementAction) -> String {
@@ -226,12 +243,6 @@ struct SmartMoneyView: View {
         switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
     }
 
-    private func compactUSD(_ value: Double) -> String {
-        if value >= 1_000_000_000 { return String(format: "$%.1fB", value / 1_000_000_000) }
-        if value >= 1_000_000 { return String(format: "$%.1fM", value / 1_000_000) }
-        if value >= 1_000 { return String(format: "$%.1fK", value / 1_000) }
-        return value.formatted(.currency(code: "USD"))
-    }
 }
 
 struct PortfolioPlaceholderView: View {
