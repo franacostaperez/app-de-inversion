@@ -55,7 +55,56 @@ def classify(previous: float, current: float) -> tuple[str, float | None]:
     return "UNCHANGED", 0.0
 
 
-def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None) -> dict:
+def compact_usd(value: float) -> str:
+    if value >= 1_000_000_000:
+        return f"${value / 1_000_000_000:.1f} mil M"
+    if value >= 1_000_000:
+        return f"${value / 1_000_000:.1f} M"
+    return f"${value:,.0f}"
+
+
+def build_filing_updates(current: dict, holdings: list[dict], movements: list[dict], prior_updates: list[dict]) -> list[dict]:
+    by_accession = {item["accessionNumber"]: item for item in current.get("filings", [])}
+    updates = {item["accessionNumber"]: item for item in prior_updates}
+    for investor in current.get("investors", []):
+        accession = investor.get("accessionNumber")
+        filing = by_accession.get(accession)
+        if not accession or not filing:
+            continue
+        investor_holdings = [item for item in holdings if item["investorId"] == investor["id"]]
+        investor_movements = [item for item in movements if item["investorId"] == investor["id"]]
+        counts = {action: sum(item["action"] == action for item in investor_movements) for action in ("NEW", "INCREASED", "REDUCED", "SOLD")}
+        top = max(investor_holdings, key=lambda item: item["value"], default=None)
+        top_text = (
+            f" La principal posición declarada es {top['company']} ({top['weight']:.1f}% de la cartera)."
+            if top else ""
+        )
+        summary = (
+            f"Declaró {len(investor_holdings)} posiciones por un valor aproximado de "
+            f"{compact_usd(investor.get('portfolioValue', 0))}. "
+            f"Añadió {counts['NEW']}, aumentó {counts['INCREASED']}, redujo {counts['REDUCED']} "
+            f"y vendió completamente {counts['SOLD']} posiciones.{top_text}"
+        )
+        updates[accession] = {
+            "investorId": investor["id"],
+            "investorName": investor["name"],
+            "accessionNumber": accession,
+            "filingDate": filing["filingDate"],
+            "reportDate": filing["reportDate"],
+            "quarter": filing["quarter"],
+            "secURL": filing["secURL"],
+            "positions": len(investor_holdings),
+            "newPositions": counts["NEW"],
+            "increasedPositions": counts["INCREASED"],
+            "reducedPositions": counts["REDUCED"],
+            "soldPositions": counts["SOLD"],
+            "portfolioValue": investor.get("portfolioValue", 0),
+            "summary": summary,
+        }
+    return sorted(updates.values(), key=lambda item: item["filingDate"], reverse=True)
+
+
+def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
     holding_name_by_ticker = {
@@ -144,6 +193,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         {key: investor[key] for key in ("id", "name", "filingDate", "quarterEnd", "portfolioValue")}
         for investor in current.get("investors", [])
     ]
+    filing_updates = build_filing_updates(current, holdings, movements, prior_updates or [])
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "asOfQuarter": current["quarter"],
@@ -154,6 +204,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "movements": movements,
         "holdings": holdings,
         "filings": current.get("filings") or fallback_filing_history(current, previous),
+        "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
     }
 
@@ -170,7 +221,8 @@ def main() -> None:
     previous = json.loads(args.previous.read_text())
     companies = json.loads(args.companies.read_text())
     profiles = json.loads(args.company_database.read_text()) if args.company_database and args.company_database.exists() else []
-    snapshot = build(current, previous, companies, profiles)
+    existing = json.loads(args.output.read_text()) if args.output.exists() else {}
+    snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n")
 

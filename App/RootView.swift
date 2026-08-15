@@ -51,8 +51,8 @@ private struct FundTabs: View {
                 .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
             NavigationStack { CompaniesView(snapshot: snapshot, selectedInvestorID: selection) }
                 .tabItem { Label("Empresas", systemImage: "building.2") }
-            NavigationStack { PortfolioPlaceholderView() }
-                .tabItem { Label("Cartera", systemImage: "briefcase") }
+            NavigationStack { UpdatesView(snapshot: snapshot) }
+                .tabItem { Label("Novedades", systemImage: "sparkles") }
         }
         .tint(WhaleTheme.accent)
         .onAppear {

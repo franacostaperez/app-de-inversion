@@ -40,6 +40,28 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["ticker"], "AAA")
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
 
+    def test_creates_a_filing_news_summary(self):
+        previous = {"investors": [{"id": "x", "holdings": []}]}
+        current = {
+            "quarter": "2026-Q1",
+            "filings": [{
+                "investorId": "x", "investorName": "Manager", "accessionNumber": "abc",
+                "filingDate": "2026-05-15T00:00:00Z", "reportDate": "2026-03-31T00:00:00Z",
+                "quarter": "2026-Q1", "secURL": "https://www.sec.gov/example",
+            }],
+            "investors": [{
+                "id": "x", "name": "Manager", "accessionNumber": "abc",
+                "filingDate": "2026-05-15T00:00:00Z", "quarterEnd": "2026-03-31T00:00:00Z",
+                "portfolioValue": 100, "holdings": [
+                    {"ticker": "AAA", "cusip": "1", "company": "A Co", "shares": 10, "value": 100}
+                ],
+            }],
+        }
+        result = build(current, previous, [])
+        update = result["filingUpdates"][0]
+        self.assertEqual(update["newPositions"], 1)
+        self.assertIn("A Co", update["summary"])
+
 
 if __name__ == "__main__":
     unittest.main()

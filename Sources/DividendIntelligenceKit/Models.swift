@@ -10,10 +10,11 @@ public struct AppSnapshot: Codable, Sendable {
     public let movements: [Movement]
     public let holdings: [Holding]
     public let filings: [FilingRecord]
+    public let filingUpdates: [FilingUpdate]
     public let companyProfiles: [CompanyProfile]
 
     enum CodingKeys: String, CodingKey {
-        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, companyProfiles
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles
     }
 
     public init(from decoder: Decoder) throws {
@@ -27,8 +28,27 @@ public struct AppSnapshot: Codable, Sendable {
         movements = try container.decode([Movement].self, forKey: .movements)
         holdings = try container.decodeIfPresent([Holding].self, forKey: .holdings) ?? []
         filings = try container.decodeIfPresent([FilingRecord].self, forKey: .filings) ?? []
+        filingUpdates = try container.decodeIfPresent([FilingUpdate].self, forKey: .filingUpdates) ?? []
         companyProfiles = try container.decodeIfPresent([CompanyProfile].self, forKey: .companyProfiles) ?? []
     }
+}
+
+public struct FilingUpdate: Codable, Identifiable, Sendable {
+    public var id: String { accessionNumber }
+    public let investorId: String
+    public let investorName: String
+    public let accessionNumber: String
+    public let filingDate: Date
+    public let reportDate: Date
+    public let quarter: String
+    public let secURL: URL
+    public let positions: Int
+    public let newPositions: Int
+    public let increasedPositions: Int
+    public let reducedPositions: Int
+    public let soldPositions: Int
+    public let portfolioValue: Double
+    public let summary: String
 }
 
 public struct CompanyProfile: Codable, Identifiable, Sendable {

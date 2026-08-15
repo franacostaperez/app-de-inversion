@@ -1,6 +1,9 @@
 import unittest
+import json
+import tempfile
+from pathlib import Path
 
-from pipeline.sec_edgar import all_13f_rows, filing_page_url, filing_rows, parse_information_table, quarter_from_date
+from pipeline.sec_edgar import all_13f_rows, archive_filings, filing_page_url, filing_rows, parse_information_table, quarter_from_date
 
 
 XML = b"""<?xml version="1.0" encoding="UTF-8"?>
@@ -34,6 +37,21 @@ class EdgarTests(unittest.TestCase):
 
     def test_quarter(self):
         self.assertEqual(quarter_from_date("2026-03-31"), "2026-Q1")
+
+    def test_archives_the_complete_filing(self):
+        investor = {
+            "id": "fund", "name": "Fund", "cik": "123", "accessionNumber": "abc",
+            "filingDate": "2026-05-15T00:00:00Z", "quarterEnd": "2026-03-31T00:00:00Z",
+            "portfolioValue": 10, "holdings": [{"company": "A Co", "shares": 2}],
+        }
+        current = {
+            "quarter": "2026-Q1", "investors": [investor],
+            "filings": [{"accessionNumber": "abc", "form": "13F-HR", "secURL": "https://www.sec.gov/a"}],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            archive_filings(current, {"quarter": "2025-Q4", "investors": []}, Path(directory))
+            payload = json.loads((Path(directory) / "fund" / "abc.json").read_text())
+        self.assertEqual(payload["holdings"][0]["company"], "A Co")
 
 
 if __name__ == "__main__":

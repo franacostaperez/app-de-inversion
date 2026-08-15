@@ -22,6 +22,120 @@ struct OpportunitiesView: View {
     }
 }
 
+struct UpdatesView: View {
+    let snapshot: AppSnapshot
+    @State private var filter = "all"
+
+    private var updates: [FilingUpdate] {
+        filter == "all" ? snapshot.filingUpdates : snapshot.filingUpdates.filter { $0.investorId == filter }
+    }
+
+    var body: some View {
+        Group {
+            if snapshot.filingUpdates.isEmpty {
+                ContentUnavailableView(
+                    "Sin novedades 13F",
+                    systemImage: "sparkles",
+                    description: Text("Las nuevas publicaciones detectadas por el agente aparecerán aquí.")
+                )
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        updateFilter
+                        ForEach(updates) { update in
+                            UpdateCard(update: update)
+                        }
+                    }
+                    .padding(16)
+                }
+                .background(WhaleTheme.background)
+            }
+        }
+        .navigationTitle("Novedades 13F")
+    }
+
+    private var updateFilter: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                FilterChip(title: "Todos", selected: filter == "all") { filter = "all" }
+                ForEach(snapshot.investors) { investor in
+                    FilterChip(title: investor.name, selected: filter == investor.id) { filter = investor.id }
+                }
+            }
+        }
+    }
+}
+
+private struct FilterChip: View {
+    let title: String
+    let selected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title).font(.subheadline.weight(.semibold)).lineLimit(1)
+                .foregroundStyle(selected ? .white : .primary)
+                .padding(.horizontal, 13).padding(.vertical, 8)
+                .background(selected ? WhaleTheme.accent : WhaleTheme.panel, in: Capsule())
+                .overlay(Capsule().stroke(selected ? .clear : .primary.opacity(0.08)))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct UpdateCard: View {
+    let update: FilingUpdate
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("NUEVO 13F").font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(WhaleTheme.accent)
+                    Text(update.investorName).font(.headline)
+                }
+                Spacer()
+                Text(update.quarter).font(.caption.bold()).padding(.horizontal, 9).padding(.vertical, 5)
+                    .background(WhaleTheme.navy.opacity(0.08), in: Capsule())
+            }
+
+            HStack(spacing: 14) {
+                Label(update.filingDate.formatted(date: .abbreviated, time: .omitted), systemImage: "arrow.up.doc")
+                Label(update.reportDate.formatted(date: .abbreviated, time: .omitted), systemImage: "calendar")
+            }
+            .font(.caption).foregroundStyle(.secondary)
+
+            Text(update.summary).font(.subheadline).fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: 6) {
+                UpdateStat(value: update.newPositions, label: "Nuevas", color: WhaleTheme.positive)
+                UpdateStat(value: update.increasedPositions, label: "Aumentadas", color: WhaleTheme.info)
+                UpdateStat(value: update.reducedPositions, label: "Reducidas", color: WhaleTheme.warning)
+                UpdateStat(value: update.soldPositions, label: "Vendidas", color: WhaleTheme.negative)
+            }
+
+            Link(destination: update.secURL) {
+                Label("Ver presentación en la SEC", systemImage: "arrow.up.right.square")
+                    .font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+            }
+        }
+        .padding(15).whalePanel()
+    }
+}
+
+private struct UpdateStat: View {
+    let value: Int
+    let label: String
+    let color: Color
+    var body: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text("\(value)").font(.subheadline.bold().monospacedDigit()).foregroundStyle(color)
+            Text(label).font(.system(size: 8, weight: .medium)).foregroundStyle(.secondary).lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading).padding(8)
+        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+    }
+}
+
 struct FilingsView: View {
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String

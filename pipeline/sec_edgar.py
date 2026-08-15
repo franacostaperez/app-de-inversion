@@ -165,12 +165,45 @@ def build_quarters(client: SecClient, investors: list[dict[str, str]], ticker_ma
     )
 
 
+def archive_filings(current: dict, previous: dict, output: Path) -> None:
+    """Persist every downloaded 13F with its complete information table."""
+    filings_by_accession = {
+        item["accessionNumber"]: item
+        for item in current.get("filings", [])
+        if item.get("accessionNumber")
+    }
+    for quarter in (current, previous):
+        for investor in quarter.get("investors", []):
+            accession = investor.get("accessionNumber")
+            if not accession:
+                continue
+            filing = filings_by_accession.get(accession, {})
+            payload = {
+                "source": "SEC EDGAR",
+                "investorId": investor["id"],
+                "investorName": investor["name"],
+                "cik": investor.get("cik"),
+                "accessionNumber": accession,
+                "form": filing.get("form", "13F-HR"),
+                "filingDate": investor.get("filingDate"),
+                "reportDate": investor.get("quarterEnd"),
+                "quarter": quarter["quarter"],
+                "portfolioValue": investor.get("portfolioValue", 0),
+                "secURL": filing.get("secURL") or filing_page_url(investor["cik"], accession),
+                "holdings": investor.get("holdings", []),
+            }
+            destination = output / investor["id"] / f"{accession}.json"
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--investors", type=Path, required=True)
     parser.add_argument("--companies", type=Path, required=True)
     parser.add_argument("--current-output", type=Path, required=True)
     parser.add_argument("--previous-output", type=Path, required=True)
+    parser.add_argument("--filings-output", type=Path)
     parser.add_argument("--user-agent", default=os.environ.get("SEC_USER_AGENT"))
     args = parser.parse_args()
     if not args.user_agent or "@" not in args.user_agent:
@@ -182,6 +215,8 @@ def main() -> None:
     for path, payload in ((args.current_output, current), (args.previous_output, previous)):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+    if args.filings_output:
+        archive_filings(current, previous, args.filings_output)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ name: Update dividend data
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 7 * * 1"
+    - cron: "17 7 * * *"
 
 permissions:
   contents: write
@@ -27,6 +27,7 @@ jobs:
           --companies data/source/companies.json
           --current-output data/source/latest.json
           --previous-output data/source/previous.json
+          --filings-output data/filings
       - name: Enrich newly reported companies
         env:
           ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
@@ -35,7 +36,16 @@ jobs:
           --holdings data/source/latest.json
           --database data/companies/index.json
           --max-new 5
+      - name: Detect new filings or company data
+        id: changes
+        run: |
+          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/filings; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Build snapshot
+        if: steps.changes.outputs.changed == 'true'
         run: >-
           python pipeline/build_snapshot.py
           --current data/source/latest.json
@@ -45,9 +55,9 @@ jobs:
           --output data/public/snapshot.json
       - name: Commit changed data
         run: |
-          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/public/snapshot.json; then exit 0; fi
+          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/filings data/public/snapshot.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source/latest.json data/source/previous.json data/companies/index.json data/public/snapshot.json
+          git add data/source/latest.json data/source/previous.json data/companies/index.json data/filings data/public/snapshot.json
           git commit -m "data: update dividend snapshot"
           git push
