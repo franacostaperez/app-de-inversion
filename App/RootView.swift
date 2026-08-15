@@ -12,8 +12,8 @@ struct RootView: View {
                 TabView {
                     NavigationStack { DashboardView(snapshot: snapshot) }
                         .tabItem { Label("Inicio", systemImage: "house.fill") }
-                    NavigationStack { OpportunitiesView(items: snapshot.opportunities) }
-                        .tabItem { Label("Oportunidades", systemImage: "sparkles") }
+                    NavigationStack { FilingsView(items: snapshot.filings) }
+                        .tabItem { Label("13F", systemImage: "doc.text.magnifyingglass") }
                     NavigationStack { SmartMoneyView(snapshot: snapshot) }
                         .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
                     NavigationStack { CompaniesView(snapshot: snapshot) }
@@ -44,27 +44,49 @@ private struct DashboardView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                if snapshot.isDemo {
-                    Label("Datos de demostración · \(snapshot.asOfQuarter)", systemImage: "info.circle")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-                Text("Las mejores señales de hoy")
+                Text("Berkshire Hathaway")
                     .font(.title.bold())
-                ForEach(snapshot.opportunities.prefix(3)) { item in
-                    OpportunityCard(item: item)
-                }
-                GroupBox("Pulso Smart Money") {
+                Text("13F · \(snapshot.asOfQuarter)")
+                    .font(.subheadline).foregroundStyle(.secondary)
+
+                GroupBox {
                     HStack {
-                        Metric(value: "\(snapshot.investors.count)", label: "Gestores")
+                        Metric(value: "\(snapshot.holdings.count)", label: "Posiciones")
                         Spacer()
-                        Metric(value: "\(snapshot.movements.filter { $0.action == .increased || $0.action == .new }.count)", label: "Compras")
+                        Metric(value: compactUSD(snapshot.investors.first?.portfolioValue ?? 0), label: "Valor 13F")
                         Spacer()
-                        Metric(value: "\(snapshot.consensus.count)", label: "Consensos")
+                        Metric(value: "\(snapshot.movements.count)", label: "Cambios")
                     }.padding(.vertical, 6)
                 }
+
+                Text("Principales posiciones").font(.headline)
+                VStack(spacing: 0) {
+                    ForEach(Array(snapshot.holdings.prefix(5).enumerated()), id: \.element.id) { index, holding in
+                        HStack(spacing: 12) {
+                            Text("\(index + 1)").foregroundStyle(.secondary).frame(width: 18)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(holding.company).lineLimit(1)
+                                Text(holding.ticker == holding.cusip ? "CUSIP \(holding.cusip)" : holding.ticker)
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Text(holding.weight.formatted(.number.precision(.fractionLength(1))) + "%").bold()
+                        }
+                        .padding(.vertical, 11)
+                        if index < min(4, snapshot.holdings.count - 1) { Divider() }
+                    }
+                }
+                .padding(.horizontal)
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16))
             }.padding()
         }
         .navigationTitle("Dividend Intelligence")
+    }
+
+    private func compactUSD(_ value: Double) -> String {
+        if value >= 1_000_000_000 { return String(format: "$%.0fB", value / 1_000_000_000) }
+        if value >= 1_000_000 { return String(format: "$%.0fM", value / 1_000_000) }
+        return value.formatted(.currency(code: "USD"))
     }
 }
 
@@ -82,8 +104,8 @@ struct OpportunityCard: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(item.ticker).font(.headline)
-                    Text(item.company).font(.caption).foregroundStyle(.secondary)
+                    Text(item.company).font(.headline)
+                    Text(item.ticker).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Text("\(item.franScore)").font(.title2.bold()).foregroundStyle(item.franScore >= 80 ? .green : .orange)

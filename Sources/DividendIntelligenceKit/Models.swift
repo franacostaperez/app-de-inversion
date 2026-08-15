@@ -9,9 +9,10 @@ public struct AppSnapshot: Codable, Sendable {
     public let consensus: [ConsensusItem]
     public let movements: [Movement]
     public let holdings: [Holding]
+    public let filings: [FilingRecord]
 
     enum CodingKeys: String, CodingKey {
-        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings
     }
 
     public init(from decoder: Decoder) throws {
@@ -24,7 +25,21 @@ public struct AppSnapshot: Codable, Sendable {
         consensus = try container.decode([ConsensusItem].self, forKey: .consensus)
         movements = try container.decode([Movement].self, forKey: .movements)
         holdings = try container.decodeIfPresent([Holding].self, forKey: .holdings) ?? []
+        filings = try container.decodeIfPresent([FilingRecord].self, forKey: .filings) ?? []
     }
+}
+
+public struct FilingRecord: Codable, Identifiable, Sendable {
+    public var id: String { accessionNumber }
+    public let investorId: String
+    public let investorName: String
+    public let cik: String
+    public let form: String
+    public let accessionNumber: String
+    public let filingDate: Date
+    public let reportDate: Date
+    public let quarter: String
+    public let secURL: URL
 }
 
 public struct Holding: Codable, Identifiable, Sendable {

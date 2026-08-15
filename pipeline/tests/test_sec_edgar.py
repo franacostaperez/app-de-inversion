@@ -1,6 +1,6 @@
 import unittest
 
-from pipeline.sec_edgar import filing_rows, parse_information_table, quarter_from_date
+from pipeline.sec_edgar import all_13f_rows, filing_page_url, filing_rows, parse_information_table, quarter_from_date
 
 
 XML = b"""<?xml version="1.0" encoding="UTF-8"?>
@@ -24,6 +24,13 @@ class EdgarTests(unittest.TestCase):
             "primaryDocument": ["a.xml", "b.xml", "c.htm"],
         }
         self.assertEqual([row["accessionNumber"] for row in filing_rows({"filings": {"recent": recent}})], ["a"])
+        self.assertEqual([row["accessionNumber"] for row in all_13f_rows({"filings": {"recent": recent}})], ["a", "b"])
+
+    def test_builds_official_filing_page_url(self):
+        self.assertEqual(
+            filing_page_url("1067983", "0001193125-26-352200"),
+            "https://www.sec.gov/Archives/edgar/data/1067983/000119312526352200/0001193125-26-352200-index.html",
+        )
 
     def test_quarter(self):
         self.assertEqual(quarter_from_date("2026-03-31"), "2026-Q1")
@@ -31,4 +38,3 @@ class EdgarTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

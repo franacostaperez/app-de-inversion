@@ -6,8 +6,58 @@ import DividendIntelligenceKit
 struct OpportunitiesView: View {
     let items: [Opportunity]
     var body: some View {
-        List(items) { item in OpportunityCard(item: item).listRowSeparator(.hidden) }
-            .listStyle(.plain).navigationTitle("Oportunidades")
+        Group {
+            if items.isEmpty {
+                ContentUnavailableView(
+                    "Sin oportunidades calculadas",
+                    systemImage: "checkmark.shield",
+                    description: Text("Se mostrarán cuando conectemos métricas financieras verificadas. No se utilizan datos de ejemplo.")
+                )
+            } else {
+                List(items) { item in OpportunityCard(item: item).listRowSeparator(.hidden) }
+                    .listStyle(.plain)
+            }
+        }
+        .navigationTitle("Oportunidades")
+    }
+}
+
+struct FilingsView: View {
+    let items: [FilingRecord]
+
+    var body: some View {
+        Group {
+            if items.isEmpty {
+                ContentUnavailableView(
+                    "Sin historial 13F",
+                    systemImage: "doc.text.magnifyingglass",
+                    description: Text("Ejecuta de nuevo la actualización de datos para importar el historial de EDGAR.")
+                )
+            } else {
+                List(items) { filing in
+                    Link(destination: filing.secURL) {
+                        VStack(alignment: .leading, spacing: 5) {
+                            HStack {
+                                Text(filing.investorName).font(.headline).foregroundStyle(.primary)
+                                Spacer()
+                                Image(systemName: "arrow.up.right.square").foregroundStyle(.mint)
+                            }
+                            Text("\(filing.quarter) · \(filing.form)")
+                                .font(.subheadline).foregroundStyle(.secondary)
+                            HStack {
+                                Text(filing.filingDate.formatted(date: .abbreviated, time: .omitted))
+                                Spacer()
+                                Text(filing.accessionNumber)
+                            }
+                            .font(.caption2).foregroundStyle(.tertiary)
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+                .listStyle(.plain)
+            }
+        }
+        .navigationTitle("Presentaciones 13F")
     }
 }
 
@@ -25,8 +75,9 @@ struct CompaniesView: View {
             } label: {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(holding.ticker).bold()
-                        Text(holding.company).font(.caption).foregroundStyle(.secondary)
+                        Text(holding.company).bold()
+                        Text(securityIdentifier(ticker: holding.ticker, cusip: holding.cusip))
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
                     Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + "%")
@@ -34,6 +85,10 @@ struct CompaniesView: View {
                 }
             }
         }.navigationTitle("Empresas")
+    }
+
+    private func securityIdentifier(ticker: String, cusip: String) -> String {
+        ticker == cusip ? "CUSIP \(cusip)" : ticker
     }
 }
 
@@ -56,7 +111,7 @@ private struct HoldingDetailView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .navigationTitle(item.ticker)
+        .navigationTitle(item.company)
     }
 }
 
@@ -77,7 +132,7 @@ private struct CompanyDetailView: View {
                 LabeledContent("Calidad", value: "\(item.qualityScore)")
                 LabeledContent("Smart Money", value: "\(item.smartMoneyScore)")
             }
-        }.navigationTitle(item.ticker)
+        }.navigationTitle(item.company)
     }
 }
 
@@ -93,12 +148,12 @@ struct SmartMoneyView: View {
                     ForEach(snapshot.holdings) { item in
                         VStack(alignment: .leading, spacing: 5) {
                             HStack {
-                                Text(item.ticker).bold()
+                                Text(item.company).bold()
                                 Spacer()
                                 Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
                                     .foregroundStyle(.mint)
                             }
-                            Text(item.company)
+                            Text(item.ticker == item.cusip ? "CUSIP \(item.cusip)" : item.ticker)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             HStack {
@@ -112,11 +167,14 @@ struct SmartMoneyView: View {
                     }
                 }
             }
-            Section("Consenso") {
-                ForEach(snapshot.consensus) { item in
-                    VStack(alignment: .leading) {
-                        HStack { Text(item.ticker).bold(); Spacer(); Text("\(item.holders) gestores") }
-                        Text("\(item.buying) comprando · \(item.selling) reduciendo").font(.caption).foregroundStyle(.secondary)
+            if snapshot.investors.count > 1 {
+                Section("Consenso") {
+                    ForEach(snapshot.consensus) { item in
+                        VStack(alignment: .leading) {
+                            HStack { Text(item.company).bold(); Spacer(); Text("\(item.holders) gestores") }
+                            Text(displayIdentifier(item.ticker)).font(.caption).foregroundStyle(.secondary)
+                            Text("\(item.buying) comprando · \(item.selling) reduciendo").font(.caption).foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
@@ -124,7 +182,11 @@ struct SmartMoneyView: View {
                 ForEach(snapshot.movements) { item in
                     HStack {
                         Image(systemName: icon(item.action)).foregroundStyle(color(item.action))
-                        VStack(alignment: .leading) { Text("\(item.investorName) · \(item.ticker)"); Text(item.action.label).font(.caption).foregroundStyle(.secondary) }
+                        VStack(alignment: .leading) {
+                            Text(item.company)
+                            Text("\(displayIdentifier(item.ticker)) · \(item.investorName) · \(item.action.label)")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
@@ -136,6 +198,14 @@ struct SmartMoneyView: View {
     }
     private func color(_ action: MovementAction) -> Color {
         switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
+    }
+
+    private func displayIdentifier(_ value: String) -> String {
+        isCUSIP(value) ? "CUSIP \(value)" : value
+    }
+
+    private func isCUSIP(_ value: String) -> Bool {
+        value.count == 9 && value.allSatisfy { $0.isLetter || $0.isNumber }
     }
 
     private func compactUSD(_ value: Double) -> String {

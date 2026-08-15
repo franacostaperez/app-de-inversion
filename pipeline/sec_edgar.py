@@ -57,6 +57,13 @@ def filing_rows(submissions: dict[str, Any]) -> list[dict[str, str]]:
     return [row for row in rows if row["form"] == "13F-HR"]
 
 
+def all_13f_rows(submissions: dict[str, Any]) -> list[dict[str, str]]:
+    recent = submissions["filings"]["recent"]
+    keys = ("accessionNumber", "filingDate", "reportDate", "form", "primaryDocument")
+    rows = [dict(zip(keys, values)) for values in zip(*(recent[key] for key in keys))]
+    return [row for row in rows if row["form"].startswith("13F-HR")]
+
+
 @dataclass
 class SecClient:
     user_agent: str
@@ -78,6 +85,10 @@ class SecClient:
 
 def archive_directory(cik: str, accession: str) -> str:
     return f"{ARCHIVE_BASE}/{int(cik)}/{accession.replace('-', '')}"
+
+
+def filing_page_url(cik: str, accession: str) -> str:
+    return f"{archive_directory(cik, accession)}/{accession}-index.html"
 
 
 def download_information_table(client: SecClient, cik: str, row: dict[str, str], ticker_map: dict[str, str]) -> list[dict[str, Any]]:
@@ -124,9 +135,22 @@ def normalize_investor(client: SecClient, investor: dict[str, str], rows: list[d
 
 def build_quarters(client: SecClient, investors: list[dict[str, str]], ticker_map: dict[str, str]) -> tuple[dict, dict]:
     by_investor: list[dict[str, dict]] = []
+    filing_history = []
     for investor in investors:
         cik = investor["cik"].zfill(10)
         submissions = client.json(f"{DATA_BASE}/submissions/CIK{cik}.json")
+        for row in all_13f_rows(submissions):
+            filing_history.append({
+                "investorId": investor["id"],
+                "investorName": investor["name"],
+                "cik": investor["cik"],
+                "form": row["form"],
+                "accessionNumber": row["accessionNumber"],
+                "filingDate": f"{row['filingDate']}T00:00:00Z",
+                "reportDate": f"{row['reportDate']}T00:00:00Z",
+                "quarter": quarter_from_date(row["reportDate"]),
+                "secURL": filing_page_url(investor["cik"], row["accessionNumber"]),
+            })
         normalized = normalize_investor(client, investor, filing_rows(submissions), ticker_map)
         if len(normalized) < 2:
             raise RuntimeError(f"Need two 13F-HR filings for {investor['name']}")
@@ -136,7 +160,7 @@ def build_quarters(client: SecClient, investors: list[dict[str, str]], ticker_ma
     if len(ordered) < 2:
         raise RuntimeError("Need two common reporting quarters")
     return (
-        {"quarter": ordered[0], "source": "SEC EDGAR", "investors": [items[ordered[0]] for items in by_investor]},
+        {"quarter": ordered[0], "source": "SEC EDGAR", "investors": [items[ordered[0]] for items in by_investor], "filings": sorted(filing_history, key=lambda item: item["filingDate"], reverse=True)},
         {"quarter": ordered[1], "source": "SEC EDGAR", "investors": [items[ordered[1]] for items in by_investor]},
     )
 
