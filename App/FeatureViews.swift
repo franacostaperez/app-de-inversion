@@ -186,6 +186,86 @@ struct FilingsView: View {
     }
 }
 
+struct FundsView: View {
+    let snapshot: AppSnapshot
+    @Binding var selectedInvestorID: String
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 12) {
+                ForEach(snapshot.investors) { investor in
+                    Button {
+                        withAnimation(.snappy) { selectedInvestorID = investor.id }
+                    } label: {
+                        FundCard(
+                            investor: investor,
+                            positions: snapshot.holdings.filter { $0.investorId == investor.id }.count,
+                            selected: selectedInvestorID == investor.id
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(16)
+        }
+        .background(WhaleTheme.background)
+        .navigationTitle("Fondos seguidos")
+    }
+}
+
+private struct FundCard: View {
+    let investor: Investor
+    let positions: Int
+    let selected: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 12) {
+                Image(systemName: "building.columns.fill")
+                    .font(.title3).foregroundStyle(.white)
+                    .frame(width: 42, height: 42)
+                    .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 11))
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(investor.name).font(.headline).foregroundStyle(.primary)
+                    Text("Periodo reportado · " + investor.quarterEnd.formatted(date: .abbreviated, time: .omitted))
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark.circle.fill").foregroundStyle(WhaleTheme.accent)
+                }
+            }
+
+            Divider()
+
+            HStack(spacing: 0) {
+                FundMetric(label: "VALOR DE LA CARTERA", value: compactMoney(investor.portfolioValue))
+                Divider().frame(height: 34).padding(.horizontal, 18)
+                FundMetric(label: "POSICIONES", value: "\(positions)")
+                Spacer()
+            }
+        }
+        .padding(16)
+        .whalePanel()
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(selected ? WhaleTheme.accent : .clear, lineWidth: 1.5)
+        }
+    }
+}
+
+private struct FundMetric: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label).font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+            Text(value).font(.title3.bold().monospacedDigit()).foregroundStyle(.primary)
+        }
+    }
+}
+
 struct CompaniesView: View {
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String

@@ -49,8 +49,8 @@ private struct FundTabs: View {
                 .tabItem { Label("13F", systemImage: "doc.text.magnifyingglass") }
             NavigationStack { SmartMoneyView(snapshot: snapshot, selectedInvestorID: selection) }
                 .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
-            NavigationStack { CompaniesView(snapshot: snapshot, selectedInvestorID: selection) }
-                .tabItem { Label("Empresas", systemImage: "building.2") }
+            NavigationStack { FundsView(snapshot: snapshot, selectedInvestorID: selection) }
+                .tabItem { Label("Fondos", systemImage: "building.columns.fill") }
             NavigationStack { UpdatesView(snapshot: snapshot) }
                 .tabItem { Label("Novedades", systemImage: "sparkles") }
         }
