@@ -31,6 +31,10 @@ struct UpdatesView: View {
         return filter == "all" ? recent : recent.filter { $0.investorId == filter }
     }
 
+    private var sortedInvestors: [Investor] {
+        snapshot.investors.sorted { $0.portfolioValue > $1.portfolioValue }
+    }
+
     private var retentionCutoff: Date { Calendar.current.date(byAdding: .year, value: -3, to: Date()) ?? .distantPast }
 
     var body: some View {
@@ -61,7 +65,7 @@ struct UpdatesView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 FilterChip(title: "Todos", selected: filter == "all") { filter = "all" }
-                ForEach(snapshot.investors) { investor in
+                ForEach(sortedInvestors) { investor in
                     FilterChip(title: investor.name, selected: filter == investor.id) { filter = investor.id }
                 }
             }
@@ -194,10 +198,14 @@ struct FundsView: View {
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String
 
+    private var sortedInvestors: [Investor] {
+        snapshot.investors.sorted { $0.portfolioValue > $1.portfolioValue }
+    }
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
-                ForEach(snapshot.investors) { investor in
+                ForEach(sortedInvestors) { investor in
                     Button {
                         withAnimation(.snappy) { selectedInvestorID = investor.id }
                     } label: {

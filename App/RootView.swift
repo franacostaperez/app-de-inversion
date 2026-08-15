@@ -30,12 +30,16 @@ private struct FundTabs: View {
     let snapshot: AppSnapshot
     @State private var selectedInvestorID = ""
 
+    private var sortedInvestors: [Investor] {
+        snapshot.investors.sorted { $0.portfolioValue > $1.portfolioValue }
+    }
+
     private var selection: Binding<String> {
         Binding(
             get: {
-                snapshot.investors.contains(where: { $0.id == selectedInvestorID })
+                sortedInvestors.contains(where: { $0.id == selectedInvestorID })
                     ? selectedInvestorID
-                    : snapshot.investors.first?.id ?? ""
+                    : sortedInvestors.first?.id ?? ""
             },
             set: { selectedInvestorID = $0 }
         )
@@ -56,7 +60,7 @@ private struct FundTabs: View {
         }
         .tint(WhaleTheme.accent)
         .onAppear {
-            if selectedInvestorID.isEmpty { selectedInvestorID = snapshot.investors.first?.id ?? "" }
+            if selectedInvestorID.isEmpty { selectedInvestorID = sortedInvestors.first?.id ?? "" }
         }
     }
 }
@@ -129,10 +133,14 @@ struct FundSelector: View {
     let investors: [Investor]
     @Binding var selection: String
 
+    private var sortedInvestors: [Investor] {
+        investors.sorted { $0.portfolioValue > $1.portfolioValue }
+    }
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(investors) { investor in
+                ForEach(sortedInvestors) { investor in
                     Button {
                         withAnimation(.snappy) { selection = investor.id }
                     } label: {

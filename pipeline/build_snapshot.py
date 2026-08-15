@@ -203,6 +203,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "quarter": investor.get("quarter", current["quarter"]), "filingDate": investor["filingDate"],
         "quarterEnd": investor["quarterEnd"], "portfolioValue": investor["portfolioValue"],
     } for investor in current.get("investors", [])]
+    investors.sort(key=lambda item: item["portfolioValue"], reverse=True)
     filing_updates = build_filing_updates(current, holdings, movements, prior_updates or [])
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),

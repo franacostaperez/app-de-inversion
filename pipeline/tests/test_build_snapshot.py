@@ -67,6 +67,14 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(update["newPositions"], 1)
         self.assertIn("A Co", update["summary"])
 
+    def test_sorts_funds_by_portfolio_value(self):
+        current = {"quarter": "2026-Q1", "investors": [
+            {"id": "small", "name": "Small", "filingDate": "2026-05-15T00:00:00Z", "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 10, "holdings": []},
+            {"id": "large", "name": "Large", "filingDate": "2026-05-15T00:00:00Z", "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 100, "holdings": []},
+        ]}
+        result = build(current, {"investors": []}, [])
+        self.assertEqual([item["id"] for item in result["investors"]], ["large", "small"])
+
 
 if __name__ == "__main__":
     unittest.main()
