@@ -96,6 +96,7 @@ public struct Holding: Codable, Identifiable, Sendable {
     public let shares: Double
     public let value: Double
     public let weight: Double
+    public let estimatedAveragePurchasePrice: Double?
 }
 
 public struct Opportunity: Codable, Identifiable, Sendable {

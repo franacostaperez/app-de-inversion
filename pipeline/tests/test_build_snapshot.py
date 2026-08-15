@@ -1,6 +1,6 @@
 import unittest
 
-from pipeline.build_snapshot import aggregate_holdings, build, classify, retained_filing_date
+from pipeline.build_snapshot import aggregate_holdings, build, classify, estimate_average_purchase_prices, retained_filing_date
 
 
 class SnapshotTests(unittest.TestCase):
@@ -20,6 +20,21 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["shares"], 15)
         self.assertEqual(result[0]["value"], 28)
+
+    def test_estimates_weighted_average_purchase_price(self):
+        filings = [
+            {"investorId": "x", "reportDate": "2025-03-31", "holdings": [
+                {"ticker": "AAA", "cusip": "1", "shares": 10, "value": 100}
+            ]},
+            {"investorId": "x", "reportDate": "2025-06-30", "holdings": [
+                {"ticker": "AAA", "cusip": "1", "shares": 20, "value": 300}
+            ]},
+            {"investorId": "x", "reportDate": "2025-09-30", "holdings": [
+                {"ticker": "AAA", "cusip": "1", "shares": 15, "value": 180}
+            ]},
+        ]
+        result = estimate_average_purchase_prices(filings)
+        self.assertEqual(result[("x", "1")], 12.5)
 
     def test_filters_filing_dates_outside_three_year_window(self):
         from datetime import date

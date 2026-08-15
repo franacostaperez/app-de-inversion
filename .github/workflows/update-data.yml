@@ -59,6 +59,7 @@ jobs:
           --previous data/source/previous.json
           --companies data/source/companies.json
           --company-database data/companies/index.json
+          --filings-directory data/filings
           --output data/public/snapshot.json
       - name: Commit changed data
         run: |

@@ -21,6 +21,39 @@ def aggregate_holdings(items: list[dict]) -> list[dict]:
     return list(aggregated.values())
 
 
+def estimate_average_purchase_prices(filings: list[dict]) -> dict[tuple[str, str], float]:
+    """Estimate cost basis from quarterly 13F snapshots.
+
+    13F does not disclose transaction prices. New shares are valued at the
+    reported quarter-end value per share; reductions retain the prior estimate.
+    """
+    state: dict[tuple[str, str], tuple[float, float]] = {}
+    for filing in sorted(filings, key=lambda item: (item.get("reportDate", ""), item.get("filingDate", ""))):
+        investor_id = filing.get("investorId")
+        if not investor_id:
+            continue
+        current = {
+            item.get("cusip") or item.get("ticker"): item
+            for item in aggregate_holdings(filing.get("holdings", []))
+        }
+        prior_keys = {key[1] for key in state if key[0] == investor_id}
+        for security_id in prior_keys - current.keys():
+            state.pop((investor_id, security_id), None)
+        for security_id, holding in current.items():
+            shares = holding.get("shares", 0)
+            if not security_id or shares <= 0:
+                continue
+            reported_price = holding.get("value", 0) / shares
+            previous_shares, previous_cost = state.get((investor_id, security_id), (0, reported_price))
+            if shares > previous_shares:
+                added = shares - previous_shares
+                average = ((previous_shares * previous_cost) + (added * reported_price)) / shares
+            else:
+                average = previous_cost
+            state[(investor_id, security_id)] = (shares, round(average, 4))
+    return {key: value[1] for key, value in state.items()}
+
+
 def fallback_filing_history(current: dict, previous: dict) -> list[dict]:
     records = []
     for quarter in (current, previous):
@@ -113,7 +146,7 @@ def build_filing_updates(current: dict, holdings: list[dict], movements: list[di
     return sorted(updates.values(), key=lambda item: item["filingDate"], reverse=True)
 
 
-def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None) -> dict:
+def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None, average_prices: dict[tuple[str, str], float] | None = None) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
     holding_name_by_ticker = {
@@ -134,6 +167,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         portfolio_value = investor.get("portfolioValue", 0)
         for holding in current_items:
             value = holding.get("value", 0)
+            security_id = holding.get("cusip", holding["ticker"])
             holdings.append({
                 "investorId": investor["id"],
                 "investorName": investor["name"],
@@ -143,6 +177,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                 "shares": holding.get("shares", 0),
                 "value": value,
                 "weight": round(value / portfolio_value * 100, 4) if portfolio_value else 0,
+                "estimatedAveragePurchasePrice": (average_prices or {}).get((investor["id"], security_id)),
             })
         for security_id in sorted(old_holdings.keys() | new_holdings.keys()):
             old_shares = old_holdings.get(security_id, {}).get("shares", 0)
@@ -226,6 +261,7 @@ def main() -> None:
     parser.add_argument("--previous", type=Path, required=True)
     parser.add_argument("--companies", type=Path, required=True)
     parser.add_argument("--company-database", type=Path)
+    parser.add_argument("--filings-directory", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     current = json.loads(args.current.read_text())
@@ -233,7 +269,11 @@ def main() -> None:
     companies = json.loads(args.companies.read_text())
     profiles = json.loads(args.company_database.read_text()) if args.company_database and args.company_database.exists() else []
     existing = json.loads(args.output.read_text()) if args.output.exists() else {}
-    snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []))
+    archived_filings = []
+    if args.filings_directory and args.filings_directory.exists():
+        archived_filings = [json.loads(path.read_text()) for path in args.filings_directory.glob("*/*.json")]
+    average_prices = estimate_average_purchase_prices(archived_filings)
+    snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []), average_prices)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n")
 

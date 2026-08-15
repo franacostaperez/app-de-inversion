@@ -338,7 +338,16 @@ private struct HoldingDetailView: View {
                 LabeledContent("Gestor", value: item.investorName)
                 LabeledContent("Acciones", value: item.shares.formatted())
                 LabeledContent("Valor declarado", value: item.value.formatted(.currency(code: "USD")))
+                LabeledContent(
+                    "Precio medio estimado",
+                    value: item.estimatedAveragePurchasePrice?.formatted(.currency(code: "USD")) ?? "—"
+                )
                 LabeledContent("Peso", value: item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
+            }
+            Section {
+                Text("Estimación construida con los cambios trimestrales de acciones y el valor declarado al cierre. El 13F no informa del precio real de compra.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
             if let profile, profile.status == "enriched" {
                 if let description = profile.description {
@@ -411,6 +420,24 @@ struct SmartMoneyView: View {
 
     var body: some View {
         List {
+            if snapshot.investors.count > 1 {
+                Section {
+                    NavigationLink {
+                        ConsensusRankingView(items: snapshot.consensus)
+                    } label: {
+                        Label {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("Clasificación de consenso").font(.headline)
+                                Text("Compara las acciones compartidas por los fondos")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        } icon: {
+                            Image(systemName: "person.3.sequence.fill")
+                                .font(.title2).foregroundStyle(WhaleTheme.accent)
+                        }
+                    }
+                }
+            }
             Section {
                 if holdings.isEmpty {
                     Text("El snapshot todavía no contiene posiciones.")
@@ -436,16 +463,6 @@ struct SmartMoneyView: View {
                 }
             } header: {
                 Text("CARTERA 13F · \(snapshot.asOfQuarter)")
-            }
-            if snapshot.investors.count > 1 {
-                Section("Consenso") {
-                    ForEach(snapshot.consensus) { item in
-                        VStack(alignment: .leading) {
-                            HStack { Text(item.company).bold(); Spacer(); Text("\(item.holders) gestores") }
-                            Text("\(item.buying) comprando · \(item.selling) reduciendo").font(.caption).foregroundStyle(.secondary)
-                        }
-                    }
-                }
             }
             Section("Últimos movimientos") {
                 ForEach(movements) { item in
@@ -480,6 +497,72 @@ struct SmartMoneyView: View {
         switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
     }
 
+}
+
+private struct ConsensusRankingView: View {
+    enum Ranking: String, CaseIterable, Identifiable {
+        case holders = "Más compartidas"
+        case buying = "Más compradas"
+        case trend = "Tendencia"
+        var id: Self { self }
+    }
+
+    let items: [ConsensusItem]
+    @State private var ranking: Ranking = .holders
+    @State private var search = ""
+
+    private var rankedItems: [ConsensusItem] {
+        let filtered = search.isEmpty ? items : items.filter { $0.company.localizedCaseInsensitiveContains(search) }
+        return filtered.sorted { lhs, rhs in
+            switch ranking {
+            case .holders: (lhs.holders, lhs.buying) > (rhs.holders, rhs.buying)
+            case .buying: (lhs.buying, lhs.holders) > (rhs.buying, rhs.holders)
+            case .trend: (lhs.buying - lhs.selling, lhs.holders) > (rhs.buying - rhs.selling, rhs.holders)
+            }
+        }
+    }
+
+    var body: some View {
+        List {
+            Section {
+                Picker("Clasificación", selection: $ranking) {
+                    ForEach(Ranking.allCases) { Text($0.rawValue).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
+            }
+            Section {
+                ForEach(Array(rankedItems.enumerated()), id: \.element.id) { index, item in
+                    HStack(spacing: 12) {
+                        Text("\(index + 1)")
+                            .font(.headline.monospacedDigit()).foregroundStyle(.secondary).frame(width: 28)
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(2)
+                            HStack(spacing: 10) {
+                                Label("\(item.holders)", systemImage: "building.columns")
+                                Label("\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
+                                Label("\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
+                            }
+                            .font(.caption)
+                        }
+                        Spacer()
+                        Text((item.buying - item.selling).formatted(.number.sign(strategy: .always())))
+                            .font(.headline.monospacedDigit())
+                            .foregroundStyle(item.buying >= item.selling ? WhaleTheme.positive : WhaleTheme.negative)
+                    }
+                    .padding(.vertical, 4)
+                }
+            } header: {
+                Text("Fondos · Compran · Reducen · Tendencia neta")
+            }
+        }
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .background(WhaleTheme.background)
+        .navigationTitle("Consenso")
+        .searchable(text: $search, prompt: "Buscar empresa")
+    }
 }
 
 struct PortfolioPlaceholderView: View {
