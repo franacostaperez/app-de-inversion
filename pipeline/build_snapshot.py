@@ -106,6 +106,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                     "company": holding.get("company", ticker),
                     "action": action,
                     "shares": new_shares,
+                    "previousShares": old_shares,
                     "changePercent": change,
                 })
 

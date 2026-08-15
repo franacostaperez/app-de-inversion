@@ -69,10 +69,10 @@ private struct DashboardView: View {
                 if !snapshot.movements.isEmpty {
                     SectionTitle("Actividad del trimestre", detail: snapshot.asOfQuarter)
                     HStack(spacing: 8) {
-                        ActivityMetric(title: "Nuevas", count: count(.new), color: WhaleTheme.positive)
-                        ActivityMetric(title: "Aumentadas", count: count(.increased), color: WhaleTheme.info)
-                        ActivityMetric(title: "Reducidas", count: count(.reduced), color: WhaleTheme.warning)
-                        ActivityMetric(title: "Vendidas", count: count(.sold), color: WhaleTheme.negative)
+                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, snapshot: snapshot)
+                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, snapshot: snapshot)
+                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, snapshot: snapshot)
+                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, snapshot: snapshot)
                     }
                 }
             }
@@ -81,10 +81,6 @@ private struct DashboardView: View {
         .background(WhaleTheme.background.ignoresSafeArea())
         .navigationTitle("Resumen 13F")
         .navigationBarTitleDisplayMode(.inline)
-    }
-
-    private func count(_ action: MovementAction) -> Int {
-        snapshot.movements.filter { $0.action == action }.count
     }
 
     private func compactUSD(_ value: Double) -> String {
@@ -199,17 +195,180 @@ private struct HoldingSummaryRow: View {
     }
 }
 
-private struct ActivityMetric: View {
+private struct ActivityLink: View {
     let title: String
-    let count: Int
+    let action: MovementAction
     let color: Color
+    let snapshot: AppSnapshot
+
+    private var items: [Movement] { snapshot.movements.filter { $0.action == action } }
+    private var companies: [ActivityCompanySummary] { ActivityCompanySummary.group(items) }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Circle().fill(color).frame(width: 7, height: 7)
-            Text("\(count)").font(.title3.bold().monospacedDigit())
-            Text(title).font(.system(size: 9, weight: .medium)).foregroundStyle(.secondary).lineLimit(1)
+        NavigationLink {
+            QuarterlyActivityView(title: title, action: action, items: companies, quarter: snapshot.asOfQuarter)
+        } label: {
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    Circle().fill(color).frame(width: 7, height: 7)
+                    Spacer()
+                    Image(systemName: "chevron.right").font(.system(size: 8, weight: .bold)).foregroundStyle(.tertiary)
+                }
+                Text("\(companies.count)").font(.title3.bold().monospacedDigit()).foregroundStyle(.primary)
+                Text(title).font(.system(size: 9, weight: .medium)).foregroundStyle(.secondary).lineLimit(1)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading).padding(10).whalePanel()
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(10).whalePanel()
+        .buttonStyle(.plain)
+    }
+}
+
+private struct QuarterlyActivityView: View {
+    let title: String
+    let action: MovementAction
+    let items: [ActivityCompanySummary]
+    let quarter: String
+
+    var body: some View {
+        Group {
+            if items.isEmpty {
+                ContentUnavailableView(
+                    "Sin posiciones \(title.lowercased())",
+                    systemImage: "tray",
+                    description: Text("No se registraron movimientos de este tipo en \(quarter).")
+                )
+            } else {
+                List(items) { item in
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(item.company).font(.headline).lineLimit(2)
+                            Spacer()
+                            if let change = item.changePercent {
+                                Text(change.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%")
+                                    .font(.subheadline.bold().monospacedDigit())
+                                    .foregroundStyle(actionColor)
+                            }
+                        }
+                        HStack {
+                            Text(item.investors)
+                            Spacer()
+                            Text("Actual " + item.shares.formatted(.number.notation(.compactName)))
+                        }
+                        .font(.caption).foregroundStyle(.secondary)
+                        HStack(spacing: 0) {
+                            ComparisonValue(label: "ANTERIOR", value: item.previousShares)
+                            Image(systemName: "arrow.right").font(.caption2).foregroundStyle(.tertiary).padding(.horizontal, 8)
+                            ComparisonValue(label: "ACTUAL", value: item.shares)
+                            Spacer()
+                            ComparisonValue(label: "DIFERENCIA", value: item.shareDifference, signed: true)
+                        }
+                        .padding(.top, 3)
+                    }
+                    .padding(.vertical, 5)
+                    .listRowBackground(WhaleTheme.panel)
+                }
+                .listStyle(.insetGrouped)
+                .scrollContentBackground(.hidden)
+                .background(WhaleTheme.background)
+            }
+        }
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Text("PERIODO REPORTADO").font(.system(size: 9, weight: .bold)).tracking(0.8)
+                Spacer()
+                Text(quarter).font(.caption.bold())
+            }
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 16).padding(.vertical, 9)
+            .background(.bar)
+        }
+    }
+
+    private var actionColor: Color {
+        switch action {
+        case .new: WhaleTheme.positive
+        case .increased: WhaleTheme.info
+        case .reduced: WhaleTheme.warning
+        case .sold: WhaleTheme.negative
+        case .unchanged: .secondary
+        }
+    }
+}
+
+private struct ActivityCompanySummary: Identifiable {
+    let id: String
+    let company: String
+    let investors: String
+    let shares: Double
+    let previousShares: Double
+    let changePercent: Double?
+
+    static func group(_ movements: [Movement]) -> [ActivityCompanySummary] {
+        let grouped = Dictionary(grouping: movements) { movement in
+            movement.company
+                .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .split(whereSeparator: { $0.isWhitespace })
+                .joined(separator: " ")
+                .uppercased()
+        }
+
+        return grouped.map { key, rows in
+            let totalShares = rows.reduce(0) { $0 + $1.shares }
+            let previousShares = rows.reduce(0) { $0 + ($1.previousShares ?? inferredPreviousShares(for: $1)) }
+            let managers = Array(Set(rows.map(\.investorName))).sorted().joined(separator: " · ")
+            let weightedChange: Double? = previousShares > 0
+                ? (totalShares / previousShares - 1) * 100
+                : nil
+            return ActivityCompanySummary(
+                id: key,
+                company: rows.first?.company ?? key,
+                investors: managers,
+                shares: totalShares,
+                previousShares: previousShares,
+                changePercent: weightedChange
+            )
+        }
+        .sorted { $0.shares > $1.shares }
+    }
+
+    var shareDifference: Double { shares - previousShares }
+
+    private static func inferredPreviousShares(for movement: Movement) -> Double {
+        guard let change = movement.changePercent else { return 0 }
+        if change == -100 { return movement.shares }
+        let ratio = 1 + change / 100
+        return ratio > 0 ? movement.shares / ratio : 0
+    }
+}
+
+private struct ComparisonValue: View {
+    let label: String
+    let value: Double
+    var signed = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label).font(.system(size: 8, weight: .bold)).foregroundStyle(.tertiary)
+            Text(formattedValue)
+                .font(.caption.bold().monospacedDigit())
+                .foregroundStyle(signed ? differenceColor : .primary)
+        }
+    }
+
+    private var formattedValue: String {
+        let base = abs(value).formatted(.number.notation(.compactName).precision(.fractionLength(0...1)))
+        guard signed else { return base }
+        if value > 0 { return "+" + base }
+        if value < 0 { return "−" + base }
+        return base
+    }
+
+    private var differenceColor: Color {
+        if value > 0 { return WhaleTheme.positive }
+        if value < 0 { return WhaleTheme.negative }
+        return .secondary
     }
 }
 

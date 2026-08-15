@@ -130,6 +130,7 @@ public struct Movement: Codable, Identifiable, Sendable {
     public let company: String
     public let action: MovementAction
     public let shares: Double
+    public let previousShares: Double?
     public let changePercent: Double?
 }
 

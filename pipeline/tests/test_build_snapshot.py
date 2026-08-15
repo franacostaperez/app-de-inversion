@@ -33,6 +33,8 @@ class SnapshotTests(unittest.TestCase):
                       "valuationScore": 80, "dividendScore": 80, "qualityScore": 80}]
         result = build(current, previous, companies)
         self.assertEqual(result["movements"][0]["action"], "INCREASED")
+        self.assertEqual(result["movements"][0]["previousShares"], 10)
+        self.assertEqual(result["movements"][0]["shares"], 20)
         self.assertEqual(result["opportunities"][0]["smartMoneyScore"], 62)
         self.assertEqual(result["opportunities"][0]["franScore"], 76)
         self.assertEqual(result["holdings"][0]["ticker"], "AAA")
