@@ -47,23 +47,23 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 40), (10, 40), (12, 36), (15, 30), (18, 24),
-        (22, 17), (28, 9), (35, 3), (45, 0),
+        (5, 52), (10, 52), (12, 47), (15, 39), (18, 31),
+        (22, 22), (28, 12), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
-        adjustment = 3
+        adjustment = 4
     elif relative <= 0.85:
-        adjustment = 2
+        adjustment = 3
     elif relative <= 1.00:
         adjustment = 1
     elif relative <= 1.15:
         adjustment = 0
     elif relative <= 1.35:
-        adjustment = -2
+        adjustment = -3
     else:
-        adjustment = -4
-    maximum = 40 if pe <= 10 else 39
+        adjustment = -5
+    maximum = 52 if pe <= 10 else 51
     return max(0, min(maximum, base + adjustment))
 
 
@@ -197,6 +197,7 @@ def compact_company_reports(reports: list[dict]) -> list[dict]:
     result = []
     for report in allowed:
         item = {**report}
+        item["summary"] = {key: value for key, value in (item.get("summary") or {}).items() if key != "payoutRatio"}
         form = str(item.get("form", "")).upper()
         if form.startswith("10-Q"):
             item["metrics"] = {}
@@ -333,7 +334,6 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
-        payout = (latest_reports.get(ticker, {}).get("summary") or {}).get("payoutRatio")
         operating_margin = (latest_reports.get(ticker, {}).get("summary") or {}).get("operatingMargin")
         roce = (latest_reports.get(ticker, {}).get("summary") or {}).get("roce")
         dividend_periods = ((latest_reports.get(ticker, {}).get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
@@ -348,31 +348,12 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         else:
             dividend_growth = company.get("dividendGrowth5Y")
             dividend_increases = dividend_growth is not None and dividend_growth >= 0
-        if payout is None:
-            payout = company.get("payout")
         sector = profile.get("sector", company.get("sector", "Unknown"))
         brand_strength = profile.get("brandStrength", "low")
         sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
         adjusted_pe_benchmark = round(12 * sector_multiplier * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
         net_buying = counts["buying"] - counts["selling"]
         yield_score = yield_investor_score(yield_percent)
-
-        if yield_score == 0:
-            payout_score = 0
-        elif payout is None:
-            payout_score = 5
-        elif payout <= 0:
-            payout_score = 0
-        elif payout < 20:
-            payout_score = 7
-        elif payout <= 70:
-            payout_score = 12
-        elif payout <= 85:
-            payout_score = 7
-        elif payout <= 100:
-            payout_score = 2
-        else:
-            payout_score = 0
 
         if yield_score == 0:
             growth_score = 0
@@ -388,7 +369,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             growth_score = 10
         else:
             growth_score = 13
-        dividend_score = yield_score + payout_score + growth_score
+        dividend_score = yield_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
 
@@ -436,12 +417,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             **counts,
             "yield": yield_percent,
             "pe": pe,
-            "payout": payout,
             "operatingMargin": operating_margin,
             "roce": roce,
             "dividendGrowth": dividend_growth,
             "yieldInvestorScore": yield_score,
-            "payoutInvestorScore": payout_score,
             "dividendGrowthInvestorScore": growth_score,
             "opportunityScore": min(100, score),
             "dividendInvestorScore": dividend_score,
@@ -465,8 +444,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             + company["qualityScore"] * 0.20
             + smart_score * 0.20
         )
+        public_company = {key: value for key, value in company.items() if key != "payout"}
         opportunities.append({
-            **company,
+            **public_company,
             "smartMoneyScore": smart_score,
             "franScore": fran_score,
             "gurusBuying": signal["buying"],

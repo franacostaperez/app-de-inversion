@@ -30,14 +30,14 @@ class CompanyReportTests(unittest.TestCase):
         self.assertEqual(summary["roce"], 16.67)
         self.assertIn("epsDiluted", summary)
 
-    def test_calculates_payout_from_dividends_paid_and_net_income(self):
+    def test_keeps_dividend_per_share_without_calculating_payout(self):
         metrics = {
             "netIncome": {"periods": [{"value": 200}]},
             "dividendsPaid": {"periods": [{"value": 80}]},
             "dividendPerShare": {"periods": [{"value": 2.5}]},
         }
         summary, _ = build_summary(metrics)
-        self.assertEqual(summary["payoutRatio"], 40)
+        self.assertNotIn("payoutRatio", summary)
         self.assertEqual(summary["dividendPerShare"], 2.5)
 
     def test_filters_company_reports_to_three_year_window(self):

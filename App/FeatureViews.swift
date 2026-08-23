@@ -649,7 +649,6 @@ private struct CompanyDetailView: View {
                     .foregroundStyle(item.yield > 0 ? WhaleTheme.positive : .secondary)
                 LabeledContent("Yield", value: item.yield.formatted(.number.precision(.fractionLength(2))) + "%")
                 if item.yield > 4 { HighYieldBadge(yield: item.yield) }
-                LabeledContent("Payout", value: item.payout.map { $0.formatted() + "%" } ?? "—")
                 LabeledContent("Crecimiento dividendo 5A", value: item.dividendGrowth5Y.map { $0.formatted() + "%" } ?? "—")
             }
             Section("Valoración") {
@@ -865,15 +864,6 @@ private struct OpportunityAnalysisView: View {
         } else if item.pe == nil {
             result.append("No hay PER disponible; la valoración requiere comprobación adicional.")
         }
-        if let payout = item.payout {
-            if payout <= 0 { result.append("El payout no es positivo y no aporta puntos de sostenibilidad al dividendo.") }
-            else if payout <= 70 { result.append("El payout del \(payout.formatted(.number.precision(.fractionLength(1)))) % deja un margen razonable para reinversión y protección del dividendo.") }
-            else if payout <= 85 { result.append("El payout es elevado, aunque todavía puede ser sostenible si el flujo de caja es estable.") }
-            else if payout <= 100 { result.append("El payout está muy cerca del beneficio total y limita el margen de seguridad del dividendo.") }
-            else { result.append("El payout supera el 100 % y recibe una penalización por riesgo de insostenibilidad.") }
-        } else if (item.yield ?? 0) > 0 {
-            result.append("El payout no está disponible todavía; el score aplica una valoración prudente hasta obtenerlo del informe anual.")
-        }
         if let margin = item.operatingMargin {
             if margin <= 0 { result.append("El margen operativo no es positivo y no aporta puntos de rentabilidad.") }
             else if margin < 5 { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % es reducido y ofrece poco colchón ante una caída de ingresos.") }
@@ -931,7 +921,6 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("Reduciendo", value: "\(item.selling)")
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
-                LabeledContent("Payout", value: item.payout.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("ROCE", value: item.roce.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("Crecimiento del dividendo", value: item.dividendGrowth.map { $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—")
@@ -947,9 +936,8 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 40, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 52, icon: "scalemass.fill")
                 ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 10, icon: "percent")
-                ScoreComponentRow(label: "Payout", value: item.payoutInvestorScore ?? 0, maximum: 12, icon: "chart.pie.fill")
                 ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 13, icon: "chart.line.uptrend.xyaxis")
                 ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 8, icon: "gauge.with.dots.needle.50percent")
                 ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 12, icon: "arrow.triangle.2.circlepath")
@@ -1048,7 +1036,6 @@ struct CompanyFinancialOverviewView: View {
                 if let profile {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
                         overviewMetric("YIELD", profile.dividendYield.map { $0.formatted(.percent.precision(.fractionLength(1))) } ?? "—", "leaf.fill")
-                        overviewMetric("PAYOUT", latest?.summary.payoutRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—", "chart.pie.fill")
                         overviewMetric("PER", profile.peRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—", "chart.line.uptrend.xyaxis")
                         overviewMetric("ANUALES", "\(annualReports.count)", "doc.text.fill")
                     }
@@ -1506,7 +1493,6 @@ struct CompanyReportDetailView: View {
                 if let dividend = report.summary.dividendPerShare {
                     LabeledContent("Dividendo por acción", value: dividend.formatted(.currency(code: "USD")))
                 }
-                percentageRow("Payout", report.summary.payoutRatio)
             }
 
             if !availableMetrics.isEmpty {

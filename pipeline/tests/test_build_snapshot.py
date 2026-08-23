@@ -12,9 +12,9 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(scores, [2, 5, 9, 10, 10, 9, 8, 6, 3])
 
     def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 40)
-        self.assertLess(valuation_investor_score(12, 18), 40)
-        self.assertLess(valuation_investor_score(17.3, 18), 30)
+        self.assertEqual(valuation_investor_score(10, 18), 52)
+        self.assertLess(valuation_investor_score(12, 18), 52)
+        self.assertLess(valuation_investor_score(17.3, 18), 40)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
 
@@ -27,7 +27,8 @@ class SnapshotTests(unittest.TestCase):
         profiles = [{"cusip": "1", "name": "Private Co", "paysDividend": False}]
         item = build(current, {"investors": []}, [], company_profiles=profiles)["consensus"][0]
         self.assertEqual(item["yieldInvestorScore"], 0)
-        self.assertEqual(item["payoutInvestorScore"], 0)
+        self.assertNotIn("payoutInvestorScore", item)
+        self.assertNotIn("payout", item)
         self.assertEqual(item["dividendGrowthInvestorScore"], 0)
         self.assertEqual(item["dividendInvestorScore"], 0)
 
@@ -92,7 +93,7 @@ class SnapshotTests(unittest.TestCase):
             "holdings": [{"ticker": "AAA", "cusip": "000000001", "company": "A Co", "shares": 20, "value": 1}]
         }]}
         companies = [{"ticker": "AAA", "cusip": "000000001", "company": "A Co", "sector": "Tech", "yield": 3, "metricsStatus": "verified",
-                      "pe": 15, "payout": 50, "dividendGrowth5Y": 4, "debtToEBITDA": 1,
+                      "pe": 15, "dividendGrowth5Y": 4, "debtToEBITDA": 1,
                       "valuationScore": 80, "dividendScore": 80, "qualityScore": 80}]
         result = build(current, previous, companies)
         self.assertEqual(result["movements"][0]["action"], "INCREASED")
@@ -104,8 +105,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 31)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 28)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 19)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 36)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 2)
 
     def test_creates_a_filing_news_summary(self):
@@ -136,10 +137,10 @@ class SnapshotTests(unittest.TestCase):
             "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
             "holdings": [{"ticker": "AAA", "cusip": "1", "company": "A Co", "shares": 1, "value": 1}],
         }]}
-        companies = [{"ticker": "AAA", "cusip": "1", "company": "A Co", "yield": 4, "pe": 15, "payout": 50}]
+        companies = [{"ticker": "AAA", "cusip": "1", "company": "A Co", "yield": 4, "pe": 15}]
         reports = [{
             "cusip": "1", "form": "10-K", "filingDate": "2026-02-01T00:00:00Z",
-            "summary": {"payoutRatio": 50, "operatingMargin": 20},
+            "summary": {"operatingMargin": 20},
             "metrics": {"dividendPerShare": {"periods": [
                 {"endDate": "2023-12-31", "fiscalPeriod": "FY", "value": 1.0},
                 {"endDate": "2024-12-31", "fiscalPeriod": "FY", "value": 1.1},

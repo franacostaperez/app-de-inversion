@@ -187,7 +187,6 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         "epsDiluted": eps_diluted,
         "expectedRevenue": None,
         "expectedEPS": None,
-        "payoutRatio": round(abs(dividends_paid) / net_income * 100, 2) if dividends_paid is not None and net_income and net_income > 0 else None,
     }
     highlights = []
     if revenue is not None:
@@ -206,8 +205,6 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         highlights.append("La deuda declarada queda incorporada para seguir su evolución.")
     if summary["cashFromOperations"] is not None:
         highlights.append("Incluye generación de caja operativa y, cuando está disponible, inversión de capital.")
-    if summary["payoutRatio"] is not None:
-        highlights.append(f"El payout sobre beneficio neto es {summary['payoutRatio']:.1f}%.")
     return summary, " ".join(highlights) or "Informe archivado; algunas métricas no están estandarizadas en XBRL."
 
 
@@ -257,15 +254,15 @@ def run(client: SecClient, profiles: list[dict], output: Path, refresh: bool = F
         missing = []
         for row in rows:
             destination = output / profile["cusip"] / f"{row['accessionNumber']}.json"
-            needs_dividend_metrics = False
+            needs_derived_metrics = False
             if destination.exists() and not refresh:
                 try:
                     stored = json.loads(destination.read_text())
                     summary = stored.get("summary", {})
-                    needs_dividend_metrics = "payoutRatio" not in summary or "roce" not in summary or "epsDiluted" not in summary
+                    needs_derived_metrics = "roce" not in summary or "epsDiluted" not in summary
                 except (OSError, json.JSONDecodeError):
-                    needs_dividend_metrics = True
-            if refresh or not destination.exists() or needs_dividend_metrics:
+                    needs_derived_metrics = True
+            if refresh or not destination.exists() or needs_derived_metrics:
                 missing.append(row)
         if not missing:
             continue
