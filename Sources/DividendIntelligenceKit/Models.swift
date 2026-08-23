@@ -60,6 +60,7 @@ public struct CompanyProfile: Codable, Identifiable, Sendable {
     public let businessModel: String?
     public let revenueModel: String?
     public let economicMoat: String?
+    public let brandStrength: String?
     public let exchange: String?
     public let currency: String?
     public let country: String?
@@ -71,6 +72,10 @@ public struct CompanyProfile: Codable, Identifiable, Sendable {
     public let dividendYield: Double?
     public let peRatio: Double?
     public let eps: Double?
+    public let latestQuarterlyReportURL: URL?
+    public let latestQuarterlyReportDate: String?
+    public let latestAnnualReportURL: URL?
+    public let latestAnnualReportDate: String?
     public let source: String
     public let status: String
     public let updatedAt: Date
@@ -174,4 +179,7 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?
     public let consensusInvestorScore: Int?
+    public let sector: String?
+    public let sectorPEBenchmark: Double?
+    public let brandPremiumApplied: Bool?
 }

@@ -10,6 +10,14 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 
+SECTOR_PE_BENCHMARKS = {
+    "Technology": 25, "Communication Services": 22, "Consumer Discretionary": 22,
+    "Consumer Staples": 22, "Financials": 14, "Energy": 14, "Healthcare": 20,
+    "Industrials": 20, "Materials": 16, "Real Estate": 18, "Utilities": 18,
+}
+BRAND_MULTIPLIERS = {"high": 1.25, "medium": 1.10, "low": 1.0}
+
+
 def aggregate_holdings(items: list[dict]) -> list[dict]:
     aggregated: dict[str, dict] = {}
     for item in items:
@@ -214,6 +222,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
+        sector = profile.get("sector", company.get("sector", "Unknown"))
+        brand_strength = profile.get("brandStrength", "low")
+        sector_pe = SECTOR_PE_BENCHMARKS.get(sector, 18)
+        adjusted_pe_benchmark = round(sector_pe * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
         net_buying = counts["buying"] - counts["selling"]
         if yield_percent is None or yield_percent <= 0:
             dividend_score = 0
@@ -236,14 +248,16 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             valuation_score = 7
         elif pe <= 0:
             valuation_score = 0
-        elif pe < 8:
+        elif pe / adjusted_pe_benchmark < 0.5:
             valuation_score = 12
-        elif pe <= 18:
+        elif pe / adjusted_pe_benchmark <= 0.85:
             valuation_score = 25
-        elif pe <= 25:
-            valuation_score = 18
-        elif pe <= 35:
-            valuation_score = 10
+        elif pe / adjusted_pe_benchmark <= 1.10:
+            valuation_score = 22
+        elif pe / adjusted_pe_benchmark <= 1.30:
+            valuation_score = 15
+        elif pe / adjusted_pe_benchmark <= 1.60:
+            valuation_score = 8
         else:
             valuation_score = 3
 
@@ -261,6 +275,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
             "consensusInvestorScore": consensus_score,
+            "sector": sector,
+            "sectorPEBenchmark": adjusted_pe_benchmark,
+            "brandPremiumApplied": brand_strength in ("high", "medium"),
         })
     consensus_items.sort(key=lambda item: (item["opportunityScore"], item["buying"], item["holders"]), reverse=True)
 
@@ -312,6 +329,7 @@ def main() -> None:
     parser.add_argument("--companies", type=Path, required=True)
     parser.add_argument("--company-database", type=Path)
     parser.add_argument("--qualitative-database", type=Path)
+    parser.add_argument("--valuation-database", type=Path)
     parser.add_argument("--filings-directory", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -320,9 +338,12 @@ def main() -> None:
     companies = json.loads(args.companies.read_text())
     profiles = json.loads(args.company_database.read_text()) if args.company_database and args.company_database.exists() else []
     qualitative = json.loads(args.qualitative_database.read_text()) if args.qualitative_database and args.qualitative_database.exists() else []
+    valuation = json.loads(args.valuation_database.read_text()) if args.valuation_database and args.valuation_database.exists() else []
     profiles_by_cusip = {item["cusip"]: item for item in profiles}
     for research in qualitative:
         profiles_by_cusip[research["cusip"]] = {**profiles_by_cusip.get(research["cusip"], {}), **research}
+    for settings in valuation:
+        profiles_by_cusip[settings["cusip"]] = {**profiles_by_cusip.get(settings["cusip"], {}), **settings}
     profiles = sorted(profiles_by_cusip.values(), key=lambda item: item.get("name", ""))
     existing = json.loads(args.output.read_text()) if args.output.exists() else {}
     archived_filings = []

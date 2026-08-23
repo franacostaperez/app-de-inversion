@@ -423,6 +423,16 @@ private struct HoldingDetailView: View {
                         LabeledContent("PER", value: pe.formatted(.number.precision(.fractionLength(1))) + "x")
                     }
                 }
+                if profile.latestQuarterlyReportURL != nil || profile.latestAnnualReportURL != nil {
+                    Section("Informes oficiales") {
+                        if let url = profile.latestQuarterlyReportURL {
+                            Link("Último informe trimestral" + reportDate(profile.latestQuarterlyReportDate), destination: url)
+                        }
+                        if let url = profile.latestAnnualReportURL {
+                            Link("Último informe anual" + reportDate(profile.latestAnnualReportDate), destination: url)
+                        }
+                    }
+                }
                 Section { Text("Fuente: \(profile.source)").font(.caption).foregroundStyle(.secondary) }
             } else {
                 Section {
@@ -438,6 +448,10 @@ private struct HoldingDetailView: View {
         if value >= 1_000_000_000 { return String(format: "$%.1fB", value / 1_000_000_000) }
         if value >= 1_000_000 { return String(format: "$%.1fM", value / 1_000_000) }
         return value.formatted(.currency(code: "USD"))
+    }
+
+    private func reportDate(_ value: String?) -> String {
+        value.map { " · " + $0 } ?? ""
     }
 }
 
@@ -602,11 +616,15 @@ private struct OpportunityAnalysisView: View {
             else if yield > 0 { result.append("El dividendo es inferior al 3 %; puede ser interesante si crece, pero aporta menos renta inicial.") }
             else { result.append("No reparte dividendo y, por tanto, obtiene cero puntos en el componente principal del score.") }
         }
-        if let pe = item.pe {
-            if pe <= 15 { result.append("El PER de \(pe.formatted(.number.precision(.fractionLength(1))))x sugiere una valoración contenida.") }
-            else if pe <= 20 { result.append("El PER de \(pe.formatted(.number.precision(.fractionLength(1))))x es razonable frente al umbral usado por el score.") }
-            else if pe > 30 { result.append("El PER es elevado y reduce el atractivo de valoración.") }
-        } else { result.append("No hay PER disponible; la valoración requiere comprobación adicional.") }
+        if let pe = item.pe, let benchmark = item.sectorPEBenchmark {
+            let ratio = pe / benchmark
+            if ratio <= 0.85 { result.append("El PER de \(pe.formatted(.number.precision(.fractionLength(1))))x cotiza por debajo de la referencia sectorial ajustada de \(benchmark.formatted(.number.precision(.fractionLength(1))))x.") }
+            else if ratio <= 1.10 { result.append("El PER está cerca de la referencia razonable para su sector.") }
+            else { result.append("El PER supera la referencia ajustada de su sector y reduce el atractivo de valoración.") }
+            if item.brandPremiumApplied == true { result.append("La referencia admite una prima moderada porque la empresa posee una marca o ecosistema especialmente fuerte.") }
+        } else if item.pe == nil {
+            result.append("No hay PER disponible; la valoración requiere comprobación adicional.")
+        }
         return result
     }
 
@@ -637,6 +655,14 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("Reduciendo", value: "\(item.selling)")
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
+                if let sector = item.sector { LabeledContent("Sector", value: sector) }
+                if let benchmark = item.sectorPEBenchmark {
+                    LabeledContent("PER de referencia", value: benchmark.formatted(.number.precision(.fractionLength(1))) + "x")
+                }
+                if item.brandPremiumApplied == true {
+                    Label("Referencia ajustada por poder de marca", systemImage: "star.circle.fill")
+                        .foregroundStyle(WhaleTheme.accent)
+                }
             }
             Section("Desglose del score") {
                 ScoreComponentRow(label: "Dividendo", value: item.dividendInvestorScore ?? 0, maximum: 55, icon: "dollarsign.circle.fill")
@@ -648,6 +674,20 @@ private struct OpportunityAnalysisView: View {
                 if let business = profile.businessModel { Section("Modelo de negocio") { Text(business) } }
                 if let revenue = profile.revenueModel { Section("Cómo gana dinero") { Text(revenue) } }
                 if let moat = profile.economicMoat { Section("Foso defensivo") { Text(moat) } }
+                if profile.latestQuarterlyReportURL != nil || profile.latestAnnualReportURL != nil {
+                    Section("Informes oficiales") {
+                        if let url = profile.latestQuarterlyReportURL {
+                            Link(destination: url) {
+                                Label("Último informe trimestral" + reportDate(profile.latestQuarterlyReportDate), systemImage: "doc.text.fill")
+                            }
+                        }
+                        if let url = profile.latestAnnualReportURL {
+                            Link(destination: url) {
+                                Label("Último informe anual" + reportDate(profile.latestAnnualReportDate), systemImage: "books.vertical.fill")
+                            }
+                        }
+                    }
+                }
                 Section { Text("Datos empresariales almacenados en GitHub · Fuente de métricas: \(profile.source)").font(.caption).foregroundStyle(.secondary) }
             } else {
                 Section("Empresa") {
@@ -658,6 +698,10 @@ private struct OpportunityAnalysisView: View {
         }
         .navigationTitle(item.company)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func reportDate(_ value: String?) -> String {
+        value.map { " · " + $0 } ?? ""
     }
 }
 

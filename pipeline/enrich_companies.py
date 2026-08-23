@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import re
 import time
 import urllib.parse
@@ -49,6 +50,9 @@ def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page:
 
 
 class MarketDataClient:
+    def __init__(self):
+        self._sec_tickers = None
+
     def request(self, url: str, payload: bytes | None = None) -> str:
         headers = {"User-Agent": USER_AGENT}
         if payload is not None:
@@ -76,6 +80,32 @@ class MarketDataClient:
                 return exchange, page
         return None, None
 
+    def sec_reports(self, ticker: str) -> dict:
+        headers = {"User-Agent": os.environ.get("SEC_USER_AGENT", "DividendIntelligence franacostaperez@gmail.com")}
+        if self._sec_tickers is None:
+            request = urllib.request.Request("https://www.sec.gov/files/company_tickers.json", headers=headers)
+            with urllib.request.urlopen(request, timeout=30) as response:
+                payload = json.load(response)
+            self._sec_tickers = {item["ticker"].upper(): item["cik_str"] for item in payload.values()}
+        cik = self._sec_tickers.get(ticker.upper())
+        if cik is None:
+            return {}
+        request = urllib.request.Request(f"https://data.sec.gov/submissions/CIK{cik:010d}.json", headers=headers)
+        with urllib.request.urlopen(request, timeout=30) as response:
+            recent = json.load(response).get("filings", {}).get("recent", {})
+        result = {}
+        for desired_form, prefix in (("10-Q", "latestQuarterlyReport"), ("10-K", "latestAnnualReport")):
+            for index, form in enumerate(recent.get("form", [])):
+                if form != desired_form:
+                    continue
+                accession = recent["accessionNumber"][index]
+                document = recent["primaryDocument"][index]
+                clean_accession = accession.replace("-", "")
+                result[prefix + "URL"] = f"https://www.sec.gov/Archives/edgar/data/{cik}/{clean_accession}/{document}"
+                result[prefix + "Date"] = recent["filingDate"][index]
+                break
+        return result
+
 
 def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, max_new: int) -> list[dict]:
     by_cusip = {item["cusip"]: item for item in catalog}
@@ -97,10 +127,16 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         exchange, page = client.google_quote(ticker, existing.get("exchange"))
         if page:
             refreshed = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
-            for key in ("description", "businessModel", "revenueModel", "economicMoat", "sector", "industry"):
+            for key in ("description", "businessModel", "revenueModel", "economicMoat", "sector", "industry", "latestQuarterlyReportURL", "latestQuarterlyReportDate", "latestAnnualReportURL", "latestAnnualReportDate"):
                 if existing.get(key):
                     refreshed[key] = existing[key]
             by_cusip[cusip] = refreshed
+        target = by_cusip.get(cusip)
+        if target and ticker:
+            try:
+                target.update(client.sec_reports(ticker))
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+                pass
         time.sleep(0.2)
     return sorted(by_cusip.values(), key=lambda item: item.get("name", ""))
 

@@ -23,6 +23,8 @@ class CompanyEnrichmentTests(unittest.TestCase):
         class Client:
             def google_quote(self, ticker, preferred_exchange=None):
                 return "NYSE", '<div class="SwQK7">Dividend</div><div class="dO6ijd">4.20%</div>'
+            def sec_reports(self, ticker):
+                return {}
 
         catalog = [{"cusip": "123", "ticker": "ABC", "exchange": "NYSE",
                     "businessModel": "Modelo", "revenueModel": "Ingresos", "economicMoat": "Foso"}]
