@@ -34,6 +34,8 @@ CONCEPTS = {
     "debtNoncurrent": ("LongTermDebtAndFinanceLeaseObligationsNoncurrent", "LongTermDebtNoncurrent"),
     "longTermDebtTotal": ("LongTermDebtAndFinanceLeaseObligations", "LongTermDebt"),
     "epsDiluted": ("EarningsPerShareDiluted",),
+    "dividendPerShare": ("CommonStockDividendsPerShareDeclared", "CommonStockDividendsPerShareCashPaid"),
+    "dividendsPaid": ("PaymentsOfDividendsCommonStock", "PaymentsOfDividends", "PaymentsOfOrdinaryDividends"),
 }
 
 
@@ -76,7 +78,9 @@ def fact_rows(companyfacts: dict[str, Any], accession: str, concepts: tuple[str,
         fact = us_gaap.get(concept)
         if not fact:
             continue
-        preferred_unit = "USD/shares" if concept == "EarningsPerShareDiluted" else "USD"
+        preferred_unit = "USD/shares" if concept in {
+            "EarningsPerShareDiluted", "CommonStockDividendsPerShareDeclared", "CommonStockDividendsPerShareCashPaid"
+        } else "USD"
         units = fact.get("units", {})
         values = units.get(preferred_unit) or next(iter(units.values()), [])
         matches = []
@@ -153,6 +157,8 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
     net_income = latest_value(metrics, "netIncome")
     expenses = latest_value(metrics, "operatingExpenses")
     debt = latest_value(metrics, "totalDebt")
+    dividends_paid = latest_value(metrics, "dividendsPaid")
+    dividend_per_share = latest_value(metrics, "dividendPerShare")
     if expenses is None and revenue is not None and operating_income is not None:
         expenses = revenue - operating_income
     summary = {
@@ -166,6 +172,9 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         "cash": latest_value(metrics, "cash"),
         "cashFromOperations": latest_value(metrics, "cashFromOperations"),
         "capitalExpenditure": latest_value(metrics, "capitalExpenditure"),
+        "dividendsPaid": dividends_paid,
+        "dividendPerShare": dividend_per_share,
+        "payoutRatio": round(abs(dividends_paid) / net_income * 100, 2) if dividends_paid is not None and net_income and net_income > 0 else None,
     }
     highlights = []
     if revenue is not None:
@@ -182,6 +191,8 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         highlights.append("La deuda declarada queda incorporada para seguir su evolución.")
     if summary["cashFromOperations"] is not None:
         highlights.append("Incluye generación de caja operativa y, cuando está disponible, inversión de capital.")
+    if summary["payoutRatio"] is not None:
+        highlights.append(f"El payout sobre beneficio neto es {summary['payoutRatio']:.1f}%.")
     return summary, " ".join(highlights) or "Informe archivado; algunas métricas no están estandarizadas en XBRL."
 
 
@@ -228,7 +239,18 @@ def run(client: SecClient, profiles: list[dict], output: Path, refresh: bool = F
             continue
         submissions = client.json(f"{DATA_BASE}/submissions/CIK{cik:010d}.json")
         rows = recent_rows(submissions)
-        missing = [row for row in rows if refresh or not (output / profile["cusip"] / f"{row['accessionNumber']}.json").exists()]
+        missing = []
+        for row in rows:
+            destination = output / profile["cusip"] / f"{row['accessionNumber']}.json"
+            needs_dividend_metrics = False
+            if destination.exists() and not refresh:
+                try:
+                    stored = json.loads(destination.read_text())
+                    needs_dividend_metrics = "payoutRatio" not in stored.get("summary", {})
+                except (OSError, json.JSONDecodeError):
+                    needs_dividend_metrics = True
+            if refresh or not destination.exists() or needs_dividend_metrics:
+                missing.append(row)
         if not missing:
             continue
         facts = client.json(f"{DATA_BASE}/api/xbrl/companyfacts/CIK{cik:010d}.json")

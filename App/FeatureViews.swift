@@ -771,6 +771,15 @@ private struct OpportunityAnalysisView: View {
         } else if item.pe == nil {
             result.append("No hay PER disponible; la valoración requiere comprobación adicional.")
         }
+        if let payout = item.payout {
+            if payout <= 0 { result.append("El payout no es positivo y no aporta puntos de sostenibilidad al dividendo.") }
+            else if payout <= 70 { result.append("El payout del \(payout.formatted(.number.precision(.fractionLength(1)))) % deja un margen razonable para reinversión y protección del dividendo.") }
+            else if payout <= 85 { result.append("El payout es elevado, aunque todavía puede ser sostenible si el flujo de caja es estable.") }
+            else if payout <= 100 { result.append("El payout está muy cerca del beneficio total y limita el margen de seguridad del dividendo.") }
+            else { result.append("El payout supera el 100 % y recibe una penalización por riesgo de insostenibilidad.") }
+        } else if (item.yield ?? 0) > 0 {
+            result.append("El payout no está disponible todavía; el score aplica una valoración prudente hasta obtenerlo del informe anual.")
+        }
         return result
     }
 
@@ -807,6 +816,7 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("Reduciendo", value: "\(item.selling)")
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
+                LabeledContent("Payout", value: item.payout.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 if let sector = item.sector { LabeledContent("Sector", value: sector) }
                 if let benchmark = item.sectorPEBenchmark {
                     LabeledContent("PER de referencia", value: benchmark.formatted(.number.precision(.fractionLength(1))) + "x")
@@ -904,8 +914,9 @@ struct CompanyFinancialOverviewView: View {
                 .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 15))
 
                 if let profile {
-                    HStack(spacing: 8) {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
                         overviewMetric("YIELD", profile.dividendYield.map { $0.formatted(.percent.precision(.fractionLength(1))) } ?? "—", "leaf.fill")
+                        overviewMetric("PAYOUT", latest?.summary.payoutRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—", "chart.pie.fill")
                         overviewMetric("PER", profile.peRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—", "chart.line.uptrend.xyaxis")
                         overviewMetric("ANUALES", "\(annualReports.count)", "doc.text.fill")
                     }
@@ -1011,6 +1022,7 @@ struct CompanyFinancialSeriesDashboard: View {
         VStack(spacing: 14) {
             groupedChart("Resultados anuales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints)
             marginChart
+            dividendChart
             groupedChart("Balance", subtitle: "Deuda y efectivo al cierre", points: instantPoints(keys: ["totalDebt", "cash"]))
             groupedChart("Generación de caja", subtitle: "Caja operativa e inversión", points: cashFlowPoints)
         }
@@ -1035,6 +1047,31 @@ struct CompanyFinancialSeriesDashboard: View {
 
     private var cashFlowPoints: [FinancialSeriesPoint] {
         points(keys: ["cashFromOperations", "capitalExpenditure"], include: isAnnual)
+    }
+
+    @ViewBuilder
+    private var dividendChart: some View {
+        let perShare = points(keys: ["dividendPerShare"], include: isAnnual)
+        let totals = points(keys: ["dividendsPaid"], include: isAnnual)
+        if !perShare.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Dividendo anual por acción").font(.headline)
+                Text("Importe declarado en cada ejercicio").font(.caption).foregroundStyle(.secondary)
+                Chart(perShare) { point in
+                    LineMark(x: .value("Ejercicio", point.date), y: .value("Dividendo", point.value))
+                        .foregroundStyle(WhaleTheme.positive).lineStyle(StrokeStyle(lineWidth: 3))
+                    PointMark(x: .value("Ejercicio", point.date), y: .value("Dividendo", point.value))
+                        .foregroundStyle(WhaleTheme.positive)
+                }
+                .chartYAxis { AxisMarks(position: .leading) { value in
+                    AxisGridLine(); AxisValueLabel { if let amount = value.as(Double.self) { Text(amount.formatted(.currency(code: "USD"))) } }
+                }}
+                .chartYScale(domain: .automatic(includesZero: true))
+                .frame(height: 210)
+            }.padding(15).whalePanel()
+        } else if !totals.isEmpty {
+            groupedChart("Dividendos pagados", subtitle: "Importe total anual", points: totals)
+        }
     }
 
     private func instantPoints(keys: [String]) -> [FinancialSeriesPoint] {
@@ -1131,6 +1168,12 @@ struct CompanyFinancialSeriesDashboard: View {
     }
 
     private func metricPeriods(_ key: String) -> [FinancialPeriod] {
+        if key == "dividendsPaid" {
+            return (merged[key] ?? []).map {
+                FinancialPeriod(startDate: $0.startDate, endDate: $0.endDate, value: abs($0.value), unit: $0.unit,
+                                fiscalYear: $0.fiscalYear, fiscalPeriod: $0.fiscalPeriod, frame: $0.frame)
+            }
+        }
         guard key == "operatingExpenses" else { return merged[key] ?? [] }
         let revenue = Dictionary(uniqueKeysWithValues: (merged["revenue"] ?? []).map { (periodKey($0), $0) })
         let operatingIncome = Dictionary(uniqueKeysWithValues: (merged["operatingIncome"] ?? []).map { (periodKey($0), $0) })
@@ -1159,10 +1202,11 @@ struct CompanyFinancialSeriesDashboard: View {
     private func metricColor(_ metric: String) -> Color {
         ["Ingresos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
          "Deuda": WhaleTheme.negative, "Efectivo": WhaleTheme.accent,
-         "Caja operativa": WhaleTheme.positive, "Inversión": WhaleTheme.info][metric] ?? WhaleTheme.accent
+         "Caja operativa": WhaleTheme.positive, "Inversión": WhaleTheme.info,
+         "Dividendos pagados": WhaleTheme.positive][metric] ?? WhaleTheme.accent
     }
     private func metricLabel(_ key: String) -> String {
-        ["revenue": "Ingresos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión"][key] ?? key
+        ["revenue": "Ingresos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión", "dividendPerShare": "Dividendo por acción", "dividendsPaid": "Dividendos pagados"][key] ?? key
     }
 }
 
@@ -1179,7 +1223,8 @@ struct CompanyReportDetailView: View {
 
     private let metricOrder = [
         "revenue", "operatingExpenses", "grossProfit", "operatingIncome", "netIncome",
-        "cashFromOperations", "capitalExpenditure", "totalDebt", "cash", "totalAssets", "totalLiabilities"
+        "dividendPerShare", "dividendsPaid", "cashFromOperations", "capitalExpenditure",
+        "totalDebt", "cash", "totalAssets", "totalLiabilities"
     ]
 
     private var availableMetrics: [String] {
@@ -1219,6 +1264,11 @@ struct CompanyReportDetailView: View {
                 financialRow("Efectivo", report.summary.cash)
                 financialRow("Flujo de caja operativo", report.summary.cashFromOperations)
                 financialRow("Inversión de capital", report.summary.capitalExpenditure)
+                financialRow("Dividendos pagados", report.summary.dividendsPaid)
+                if let dividend = report.summary.dividendPerShare {
+                    LabeledContent("Dividendo por acción", value: dividend.formatted(.currency(code: "USD")))
+                }
+                percentageRow("Payout", report.summary.payoutRatio)
             }
 
             if !availableMetrics.isEmpty {
@@ -1288,6 +1338,7 @@ struct CompanyReportDetailView: View {
         [
             "revenue": "Ingresos", "operatingExpenses": "Gastos operativos", "grossProfit": "Beneficio bruto",
             "operatingIncome": "Beneficio operativo", "netIncome": "Beneficio neto", "cashFromOperations": "Caja operativa",
+            "dividendPerShare": "Dividendo por acción", "dividendsPaid": "Dividendos pagados",
             "capitalExpenditure": "Inversión de capital", "totalDebt": "Deuda", "cash": "Efectivo",
             "totalAssets": "Activos", "totalLiabilities": "Pasivos"
         ][key] ?? key

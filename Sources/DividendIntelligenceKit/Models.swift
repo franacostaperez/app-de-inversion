@@ -63,6 +63,9 @@ public struct CompanyReportSummary: Codable, Sendable {
     public let cash: Double?
     public let cashFromOperations: Double?
     public let capitalExpenditure: Double?
+    public let dividendsPaid: Double?
+    public let dividendPerShare: Double?
+    public let payoutRatio: Double?
 }
 
 public struct FinancialMetric: Codable, Sendable {
@@ -225,6 +228,7 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let selling: Int
     public let yield: Double?
     public let pe: Double?
+    public let payout: Double?
     public let opportunityScore: Int?
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?

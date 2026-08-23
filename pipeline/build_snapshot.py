@@ -222,31 +222,58 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
 
     consensus_items = []
     profiles_by_cusip = {item["cusip"]: item for item in (company_profiles or [])}
+    latest_reports = {}
+    for report in company_reports or []:
+        cusip = report.get("cusip")
+        if cusip and str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
+            if cusip not in latest_reports or report.get("filingDate", "") > latest_reports[cusip].get("filingDate", ""):
+                latest_reports[cusip] = report
     for ticker, counts in consensus.items():
         company = company_by_cusip.get(ticker, company_by_ticker.get(ticker, {}))
         profile = profiles_by_cusip.get(ticker, {})
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
+        payout = (latest_reports.get(ticker, {}).get("summary") or {}).get("payoutRatio")
+        if payout is None:
+            payout = company.get("payout")
         sector = profile.get("sector", company.get("sector", "Unknown"))
         brand_strength = profile.get("brandStrength", "low")
         sector_pe = SECTOR_PE_BENCHMARKS.get(sector, 18)
         adjusted_pe_benchmark = round(sector_pe * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
         net_buying = counts["buying"] - counts["selling"]
         if yield_percent is None or yield_percent <= 0:
-            dividend_score = 0
+            yield_score = 0
         elif yield_percent < 1:
-            dividend_score = 8
+            yield_score = 6
         elif yield_percent < 2:
-            dividend_score = 20
+            yield_score = 14
         elif yield_percent < 3:
-            dividend_score = 35
+            yield_score = 25
         elif yield_percent <= 9:
-            dividend_score = 55
+            yield_score = 40
         elif yield_percent <= 12:
-            dividend_score = 22
+            yield_score = 16
         else:
-            dividend_score = 8
+            yield_score = 5
+
+        if yield_score == 0:
+            payout_score = 0
+        elif payout is None:
+            payout_score = 5
+        elif payout <= 0:
+            payout_score = 0
+        elif payout < 20:
+            payout_score = 8
+        elif payout <= 70:
+            payout_score = 15
+        elif payout <= 85:
+            payout_score = 10
+        elif payout <= 100:
+            payout_score = 4
+        else:
+            payout_score = 0
+        dividend_score = yield_score + payout_score
 
         if pe is None:
             valuation_score = 7
@@ -275,6 +302,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             **counts,
             "yield": yield_percent,
             "pe": pe,
+            "payout": payout,
             "opportunityScore": min(100, score),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,

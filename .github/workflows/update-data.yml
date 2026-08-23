@@ -43,7 +43,7 @@ jobs:
           --holdings data/source/latest.json
           --database data/companies/index.json
           --max-new 5
-      - name: Monitor company quarterly and annual reports
+      - name: Monitor company annual reports and dividends
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: >-
