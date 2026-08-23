@@ -19,9 +19,12 @@
     "totalDebt": null,
     "cash": 4990210000,
     "cashFromOperations": 2403379000,
-    "capitalExpenditure": 171503000
+    "capitalExpenditure": 171503000,
+    "dividendsPaid": 548823000,
+    "dividendPerShare": null,
+    "payoutRatio": 13.96
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.5% frente al periodo comparable. El beneficio neto varió un -0.1% frente al periodo comparable. El margen neto del periodo más reciente es 11.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.5% frente al periodo comparable. El beneficio neto varió un -0.1% frente al periodo comparable. El margen neto del periodo más reciente es 11.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 14.0%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -290,6 +293,38 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": "CY2024"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2021-12-01",
+          "endDate": "2022-11-30",
+          "value": 438038000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022"
+        },
+        {
+          "startDate": "2022-12-01",
+          "endDate": "2023-11-30",
+          "value": 430560000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-12-01",
+          "endDate": "2024-11-30",
+          "value": 548823000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
         }
       ]
     }

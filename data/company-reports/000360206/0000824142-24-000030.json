@@ -19,9 +19,12 @@
     "totalDebt": null,
     "cash": 287000,
     "cashFromOperations": 158895000,
-    "capitalExpenditure": null
+    "capitalExpenditure": null,
+    "dividendsPaid": 26400000,
+    "dividendPerShare": 0.32,
+    "payoutRatio": 14.86
   },
-  "highlights": "El beneficio neto varió un +77.0% frente al periodo comparable. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un +77.0% frente al periodo comparable. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 14.9%.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -296,6 +299,70 @@
           "endDate": "2023-12-31",
           "value": 2.13,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 0.25,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 0.29,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 0.32,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 19900000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 22900000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 26400000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null

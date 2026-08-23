@@ -19,7 +19,10 @@
     "totalDebt": 9484000000,
     "cash": 4680000000,
     "cashFromOperations": 3585000000,
-    "capitalExpenditure": 223000000
+    "capitalExpenditure": 223000000,
+    "dividendsPaid": null,
+    "dividendPerShare": 0,
+    "payoutRatio": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +16.9% frente al periodo comparable. El beneficio neto varió un -120.6% frente al periodo comparable. El margen neto del periodo más reciente es 5.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -437,6 +440,20 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 0,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
         }
       ]
     },

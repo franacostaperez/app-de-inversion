@@ -19,7 +19,10 @@
     "totalDebt": 9497000000,
     "cash": 5893000000,
     "cashFromOperations": 7137000000,
-    "capitalExpenditure": 242000000
+    "capitalExpenditure": 242000000,
+    "dividendsPaid": null,
+    "dividendPerShare": 0,
+    "payoutRatio": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +18.0% frente al periodo comparable. El beneficio neto varió un +422.3% frente al periodo comparable. El margen neto del periodo más reciente es 22.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -405,6 +408,20 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-12-31",
+          "value": 0,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
         }
       ]
     },

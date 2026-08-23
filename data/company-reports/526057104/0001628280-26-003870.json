@@ -19,9 +19,12 @@
     "totalDebt": 5874995000,
     "cash": 3756305000,
     "cashFromOperations": 216812000,
-    "capitalExpenditure": 188629000
+    "capitalExpenditure": 188629000,
+    "dividendsPaid": 520959000,
+    "dividendPerShare": null,
+    "payoutRatio": 25.07
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.5% frente al periodo comparable. El beneficio neto varió un -47.1% frente al periodo comparable. El margen neto del periodo más reciente es 6.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.5% frente al periodo comparable. El beneficio neto varió un -47.1% frente al periodo comparable. El margen neto del periodo más reciente es 6.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 25.1%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -295,6 +298,38 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
           "frame": "CY2025Q4I"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2022-12-01",
+          "endDate": "2023-11-30",
+          "value": 430560000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2023-12-01",
+          "endDate": "2024-11-30",
+          "value": 548823000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-12-01",
+          "endDate": "2025-11-30",
+          "value": 520959000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
         }
       ]
     },

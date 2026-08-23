@@ -19,9 +19,12 @@
     "totalDebt": null,
     "cash": 6570938000,
     "cashFromOperations": 5179738000,
-    "capitalExpenditure": 99799000
+    "capitalExpenditure": 99799000,
+    "dividendsPaid": 430560000,
+    "dividendPerShare": null,
+    "payoutRatio": 10.93
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +1.7% frente al periodo comparable. El beneficio neto varió un -14.6% frente al periodo comparable. El margen neto del periodo más reciente es 11.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +1.7% frente al periodo comparable. El beneficio neto varió un -14.6% frente al periodo comparable. El margen neto del periodo más reciente es 11.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 10.9%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -287,6 +290,38 @@
           "endDate": "2023-11-30",
           "value": 13.73,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2020-12-01",
+          "endDate": "2021-11-30",
+          "value": 309776000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2021-12-01",
+          "endDate": "2022-11-30",
+          "value": 438038000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2022-12-01",
+          "endDate": "2023-11-30",
+          "value": 430560000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null

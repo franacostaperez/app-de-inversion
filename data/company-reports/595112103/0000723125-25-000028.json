@@ -19,9 +19,12 @@
     "totalDebt": 11533000000,
     "cash": 9642000000,
     "cashFromOperations": 17525000000,
-    "capitalExpenditure": 15857000000
+    "capitalExpenditure": 15857000000,
+    "dividendsPaid": 522000000,
+    "dividendPerShare": 0.46,
+    "payoutRatio": 6.11
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +48.9% frente al periodo comparable. El beneficio neto varió un +997.6% frente al periodo comparable. El margen neto del periodo más reciente es 22.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +48.9% frente al periodo comparable. El beneficio neto varió un +997.6% frente al periodo comparable. El margen neto del periodo más reciente es 22.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 6.1%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -397,6 +400,70 @@
           "endDate": "2025-08-28",
           "value": 7.59,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2022-09-02",
+          "endDate": "2023-08-31",
+          "value": 0.46,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2023-09-01",
+          "endDate": "2024-08-29",
+          "value": 0.46,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-08-30",
+          "endDate": "2025-08-28",
+          "value": 0.46,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2022-09-02",
+          "endDate": "2023-08-31",
+          "value": 504000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2023-09-01",
+          "endDate": "2024-08-29",
+          "value": 513000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-08-30",
+          "endDate": "2025-08-28",
+          "value": 522000000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
           "frame": "CY2025"

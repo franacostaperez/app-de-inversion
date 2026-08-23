@@ -19,7 +19,10 @@
     "totalDebt": 50011000000,
     "cash": 8249000000,
     "cashFromOperations": 8288000000,
-    "capitalExpenditure": 23944000000
+    "capitalExpenditure": 23944000000,
+    "dividendsPaid": 1599000000,
+    "dividendPerShare": 0.38,
+    "payoutRatio": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -2.1% frente al periodo comparable. El beneficio neto varió un -1210.5% frente al periodo comparable. El margen neto del periodo más reciente es -35.3%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -461,6 +464,70 @@
           "endDate": "2024-12-28",
           "value": -4.38,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2021-12-26",
+          "endDate": "2022-12-31",
+          "value": 1.46,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022"
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-30",
+          "value": 0.74,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-12-31",
+          "endDate": "2024-12-28",
+          "value": 0.38,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2021-12-26",
+          "endDate": "2022-12-31",
+          "value": 5997000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022"
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-30",
+          "value": 3088000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-12-31",
+          "endDate": "2024-12-28",
+          "value": 1599000000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": null

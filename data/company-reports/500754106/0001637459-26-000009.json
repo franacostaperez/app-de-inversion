@@ -19,7 +19,10 @@
     "totalDebt": null,
     "cash": 2615000000,
     "cashFromOperations": 4462000000,
-    "capitalExpenditure": 801000000
+    "capitalExpenditure": 801000000,
+    "dividendsPaid": 1898000000,
+    "dividendPerShare": 1.6,
+    "payoutRatio": null
   },
   "highlights": "El beneficio neto varió un -313.1% frente al periodo comparable. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -365,6 +368,61 @@
           "endDate": "2025-12-27",
           "value": -4.93,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-30",
+          "value": 1.6,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2024-12-29",
+          "endDate": "2025-12-27",
+          "value": 1.6,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-30",
+          "value": 1965000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2023-12-31",
+          "endDate": "2024-12-28",
+          "value": 1931000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-12-29",
+          "endDate": "2025-12-27",
+          "value": 1898000000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
           "frame": "CY2025"

@@ -19,7 +19,10 @@
     "totalDebt": 13851000000,
     "cash": 3720000000,
     "cashFromOperations": 4989000000,
-    "capitalExpenditure": 2578000000
+    "capitalExpenditure": 2578000000,
+    "dividendsPaid": null,
+    "dividendPerShare": 1.4,
+    "payoutRatio": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +1.8% frente al periodo comparable. El beneficio neto varió un +9.9% frente al periodo comparable. El margen neto del periodo más reciente es 9.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -460,6 +463,38 @@
           "startDate": "2024-01-01",
           "endDate": "2024-12-31",
           "value": 5.02,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 1.27,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022"
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 1.33,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-12-31",
+          "value": 1.4,
           "unit": "USD/shares",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
