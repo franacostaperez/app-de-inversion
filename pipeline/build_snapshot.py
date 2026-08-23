@@ -324,7 +324,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
         "companyReports": sorted(
-            company_reports or [],
+            [item for item in (company_reports or []) if str(item.get("form", "")).upper().startswith(("10-K", "20-F", "40-F"))],
             key=lambda item: (item["filingDate"], item.get("accessionNumber", ""), item.get("cusip", "")),
             reverse=True,
         ),

@@ -28,11 +28,11 @@ class CompanyReportTests(unittest.TestCase):
 
     def test_filters_company_reports_to_three_year_window(self):
         submissions = {"filings": {"recent": {
-            "accessionNumber": ["new", "old", "ignored"],
-            "filingDate": ["2026-01-10", "2020-01-10", "2026-01-10"],
-            "reportDate": ["2025-12-31", "2019-12-31", "2025-12-31"],
-            "form": ["10-K", "10-K", "8-K"],
-            "primaryDocument": ["new.htm", "old.htm", "event.htm"],
+            "accessionNumber": ["new", "old", "quarterly", "ignored"],
+            "filingDate": ["2026-01-10", "2020-01-10", "2026-05-10", "2026-01-10"],
+            "reportDate": ["2025-12-31", "2019-12-31", "2026-03-31", "2025-12-31"],
+            "form": ["10-K", "10-K", "10-Q", "8-K"],
+            "primaryDocument": ["new.htm", "old.htm", "quarter.htm", "event.htm"],
         }}}
         self.assertEqual([item["accessionNumber"] for item in recent_rows(submissions)], ["new"])
 

@@ -94,7 +94,7 @@ class MarketDataClient:
         with urllib.request.urlopen(request, timeout=30) as response:
             recent = json.load(response).get("filings", {}).get("recent", {})
         result = {}
-        for desired_form, prefix in (("10-Q", "latestQuarterlyReport"), ("10-K", "latestAnnualReport")):
+        for desired_form, prefix in (("10-K", "latestAnnualReport"),):
             for index, form in enumerate(recent.get("form", [])):
                 if form != desired_form:
                     continue

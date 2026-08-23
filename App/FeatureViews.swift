@@ -4,6 +4,13 @@ import Charts
 import DividendIntelligenceKit
 #endif
 
+private extension CompanyReport {
+    var isAnnualReport: Bool {
+        let normalized = form.uppercased()
+        return normalized.hasPrefix("10-K") || normalized.hasPrefix("20-F") || normalized.hasPrefix("40-F")
+    }
+}
+
 struct OpportunitiesView: View {
     let items: [Opportunity]
     var body: some View {
@@ -35,7 +42,7 @@ struct UpdatesView: View {
 
     private var companyReports: [CompanyReport] {
         guard filter == "all" || filter == "companies" else { return [] }
-        return snapshot.companyReports.filter { $0.filingDate >= retentionCutoff }
+        return snapshot.companyReports.filter { $0.filingDate >= retentionCutoff && $0.isAnnualReport }
     }
 
     private var news: [NewsEntry] {
@@ -68,7 +75,7 @@ struct UpdatesView: View {
                                 CompanyReportUpdateCard(
                                     report: report,
                                     profile: snapshot.companyProfiles.first { $0.cusip == report.cusip },
-                                    reports: snapshot.companyReports.filter { $0.cusip == report.cusip },
+                                    reports: snapshot.companyReports.filter { $0.cusip == report.cusip && $0.isAnnualReport },
                                     holdings: snapshot.holdings.filter { $0.cusip == report.cusip }
                                 )
                             }
@@ -509,11 +516,8 @@ private struct HoldingDetailView: View {
                         LabeledContent("PER", value: pe.formatted(.number.precision(.fractionLength(1))) + "x")
                     }
                 }
-                if profile.latestQuarterlyReportURL != nil || profile.latestAnnualReportURL != nil {
+                if profile.latestAnnualReportURL != nil {
                     Section("Informes oficiales") {
-                        if let url = profile.latestQuarterlyReportURL {
-                            Link("Último informe trimestral" + reportDate(profile.latestQuarterlyReportDate), destination: url)
-                        }
                         if let url = profile.latestAnnualReportURL {
                             Link("Último informe anual" + reportDate(profile.latestAnnualReportDate), destination: url)
                         }
@@ -744,6 +748,8 @@ private struct OpportunityAnalysisView: View {
     let profile: CompanyProfile?
     let reports: [CompanyReport]
 
+    private var annualReports: [CompanyReport] { reports.filter(\.isAnnualReport) }
+
     private var reasons: [String] {
         var result: [String] = []
         let net = item.buying - item.selling
@@ -781,9 +787,9 @@ private struct OpportunityAnalysisView: View {
                         .font(.system(size: 42)).foregroundStyle(WhaleTheme.accent)
                 }
             }
-            if !reports.isEmpty {
-                Section("Serie financiera completa") {
-                    CompanyFinancialSeriesDashboard(reports: reports)
+            if !annualReports.isEmpty {
+                Section("Serie financiera anual") {
+                    CompanyFinancialSeriesDashboard(reports: annualReports)
                         .listRowInsets(EdgeInsets())
                 }
             }
@@ -815,9 +821,9 @@ private struct OpportunityAnalysisView: View {
                 ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 25, icon: "scalemass.fill")
                 ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 20, icon: "building.columns.fill")
             }
-            if !reports.isEmpty {
-                Section("Resultados publicados") {
-                    ForEach(reports.sorted { $0.filingDate > $1.filingDate }.prefix(8)) { report in
+            if !annualReports.isEmpty {
+                Section("Informes anuales publicados") {
+                    ForEach(annualReports.sorted { $0.filingDate > $1.filingDate }.prefix(8)) { report in
                         NavigationLink {
                             CompanyReportDetailView(report: report)
                         } label: {
@@ -846,13 +852,8 @@ private struct OpportunityAnalysisView: View {
                 if let business = profile.businessModel { Section("Modelo de negocio") { Text(business) } }
                 if let revenue = profile.revenueModel { Section("Cómo gana dinero") { Text(revenue) } }
                 if let moat = profile.economicMoat { Section("Foso defensivo") { Text(moat) } }
-                if profile.latestQuarterlyReportURL != nil || profile.latestAnnualReportURL != nil {
+                if profile.latestAnnualReportURL != nil {
                     Section("Informes oficiales") {
-                        if let url = profile.latestQuarterlyReportURL {
-                            Link(destination: url) {
-                                Label("Último informe trimestral" + reportDate(profile.latestQuarterlyReportDate), systemImage: "doc.text.fill")
-                            }
-                        }
                         if let url = profile.latestAnnualReportURL {
                             Link(destination: url) {
                                 Label("Último informe anual" + reportDate(profile.latestAnnualReportDate), systemImage: "books.vertical.fill")
@@ -883,7 +884,8 @@ struct CompanyFinancialOverviewView: View {
     let reports: [CompanyReport]
     var holdings: [Holding] = []
 
-    private var latest: CompanyReport? { reports.max { $0.reportDate < $1.reportDate } }
+    private var annualReports: [CompanyReport] { reports.filter(\.isAnnualReport) }
+    private var latest: CompanyReport? { annualReports.max { $0.reportDate < $1.reportDate } }
 
     var body: some View {
         ScrollView {
@@ -905,7 +907,7 @@ struct CompanyFinancialOverviewView: View {
                     HStack(spacing: 8) {
                         overviewMetric("YIELD", profile.dividendYield.map { $0.formatted(.percent.precision(.fractionLength(1))) } ?? "—", "leaf.fill")
                         overviewMetric("PER", profile.peRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—", "chart.line.uptrend.xyaxis")
-                        overviewMetric("INFORMES", "\(reports.count)", "doc.text.fill")
+                        overviewMetric("ANUALES", "\(annualReports.count)", "doc.text.fill")
                     }
                 }
 
@@ -927,9 +929,9 @@ struct CompanyFinancialOverviewView: View {
                     }.whalePanel()
                 }
 
-                if !reports.isEmpty {
-                    SectionTitle("Evolución financiera", detail: "Serie completa disponible")
-                    CompanyFinancialSeriesDashboard(reports: reports)
+                if !annualReports.isEmpty {
+                    SectionTitle("Evolución financiera", detail: "Solo ejercicios anuales")
+                    CompanyFinancialSeriesDashboard(reports: annualReports)
                 } else {
                     ContentUnavailableView("Sin resultados financieros", systemImage: "chart.xyaxis.line", description: Text("El agente añadirá las series cuando exista información estructurada en la SEC."))
                         .padding().whalePanel()
@@ -942,10 +944,10 @@ struct CompanyFinancialOverviewView: View {
                     if let moat = profile.economicMoat { textPanel("Foso defensivo", moat, "shield.lefthalf.filled") }
                 }
 
-                if !reports.isEmpty {
-                    SectionTitle("Informes oficiales", detail: "Más reciente primero")
+                if !annualReports.isEmpty {
+                    SectionTitle("Informes anuales", detail: "Más reciente primero")
                     VStack(spacing: 0) {
-                        ForEach(reports.sorted { $0.filingDate > $1.filingDate }) { report in
+                        ForEach(annualReports.sorted { $0.filingDate > $1.filingDate }) { report in
                             NavigationLink {
                                 CompanyReportDetailView(report: report)
                             } label: {
@@ -960,7 +962,7 @@ struct CompanyFinancialOverviewView: View {
                                     Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.tertiary)
                                 }.padding(12)
                             }.buttonStyle(.plain)
-                            if report.id != reports.sorted(by: { $0.filingDate > $1.filingDate }).last?.id { Divider() }
+                            if report.id != annualReports.sorted(by: { $0.filingDate > $1.filingDate }).last?.id { Divider() }
                         }
                     }.whalePanel()
                 }
@@ -999,9 +1001,7 @@ private struct MarginSeriesPoint: Identifiable {
     let metric: String
     let date: Date
     let value: Double
-    let annual: Bool
-    let quarter: Bool
-    var id: String { metric + "-" + date.ISO8601Format() + "-\(annual)-\(quarter)" }
+    var id: String { metric + "-" + date.ISO8601Format() }
 }
 
 struct CompanyFinancialSeriesDashboard: View {
@@ -1009,10 +1009,8 @@ struct CompanyFinancialSeriesDashboard: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            groupedChart("Resultados anuales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints(annual: true))
-            marginChart(title: "Márgenes anuales", annual: true)
-            groupedChart("Resultados trimestrales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints(annual: false))
-            marginChart(title: "Márgenes trimestrales", annual: false)
+            groupedChart("Resultados anuales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints)
+            marginChart
             groupedChart("Balance", subtitle: "Deuda y efectivo al cierre", points: instantPoints(keys: ["totalDebt", "cash"]))
             groupedChart("Generación de caja", subtitle: "Caja operativa e inversión", points: cashFlowPoints)
         }
@@ -1031,21 +1029,16 @@ struct CompanyFinancialSeriesDashboard: View {
         return values.mapValues { $0.values.sorted { $0.endDate < $1.endDate } }
     }
 
-    private func resultPoints(annual: Bool) -> [FinancialSeriesPoint] {
-        points(keys: ["revenue", "operatingExpenses", "netIncome"]) { period in
-            annual ? isAnnual(period) : isQuarter(period)
-        }
+    private var resultPoints: [FinancialSeriesPoint] {
+        points(keys: ["revenue", "operatingExpenses", "netIncome"], include: isAnnual)
     }
 
     private var cashFlowPoints: [FinancialSeriesPoint] {
-        let annual = points(keys: ["cashFromOperations", "capitalExpenditure"]) { isAnnual($0) }
-        return annual.isEmpty
-            ? points(keys: ["cashFromOperations", "capitalExpenditure"]) { isQuarter($0) }
-            : annual
+        points(keys: ["cashFromOperations", "capitalExpenditure"], include: isAnnual)
     }
 
     private func instantPoints(keys: [String]) -> [FinancialSeriesPoint] {
-        points(keys: keys) { $0.startDate == nil }
+        points(keys: keys) { $0.startDate == nil && $0.fiscalPeriod == "FY" }
     }
 
     private func points(keys: [String], include: (FinancialPeriod) -> Bool) -> [FinancialSeriesPoint] {
@@ -1060,6 +1053,7 @@ struct CompanyFinancialSeriesDashboard: View {
     @ViewBuilder
     private func groupedChart(_ title: String, subtitle: String, points: [FinancialSeriesPoint]) -> some View {
         if !points.isEmpty {
+            let metrics = Array(Set(points.map(\.metric))).sorted()
             VStack(alignment: .leading, spacing: 10) {
                 Text(title).font(.headline)
                 Text(subtitle).font(.caption).foregroundStyle(.secondary)
@@ -1070,11 +1064,7 @@ struct CompanyFinancialSeriesDashboard: View {
                     PointMark(x: .value("Periodo", point.date), y: .value("Valor", point.value))
                         .foregroundStyle(by: .value("Métrica", point.metric))
                 }
-                .chartForegroundStyleScale([
-                    "Ingresos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
-                    "Deuda": WhaleTheme.negative, "Efectivo": WhaleTheme.accent,
-                    "Caja operativa": WhaleTheme.positive, "Inversión": WhaleTheme.info
-                ])
+                .chartForegroundStyleScale(domain: metrics, range: metrics.map(metricColor))
                 .chartYAxis { AxisMarks(position: .leading, values: .automatic(desiredCount: 4)) { value in
                     AxisGridLine(); AxisValueLabel { if let amount = value.as(Double.self) { Text(compactMoney(amount)) } }
                 }}
@@ -1084,19 +1074,32 @@ struct CompanyFinancialSeriesDashboard: View {
         }
     }
 
-    private func marginChart(title: String, annual: Bool) -> some View {
-        let values = marginPoints.filter { annual ? $0.annual : $0.quarter }
+    private var marginChart: some View {
+        let values = marginPoints
         return Group {
             if !values.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(title).font(.headline)
+                    Text("Márgenes anuales").font(.headline)
                     Text("Margen operativo y neto comparables").font(.caption).foregroundStyle(.secondary)
+                    HStack(spacing: 14) {
+                        ForEach(latestMargins, id: \.metric) { point in
+                            HStack(spacing: 5) {
+                                Circle().fill(marginColor(point.metric)).frame(width: 7, height: 7)
+                                Text(point.metric + " " + point.value.formatted(.percent.precision(.fractionLength(1))))
+                                    .font(.caption.bold().monospacedDigit())
+                            }
+                        }
+                    }
                     Chart(values) { point in
                         LineMark(x: .value("Periodo", point.date), y: .value("Margen", point.value))
                             .foregroundStyle(by: .value("Métrica", point.metric)).interpolationMethod(.catmullRom)
                         PointMark(x: .value("Periodo", point.date), y: .value("Margen", point.value))
                             .foregroundStyle(by: .value("Métrica", point.metric))
                     }
+                    .chartForegroundStyleScale(
+                        domain: ["Margen neto", "Margen operativo"],
+                        range: [WhaleTheme.positive, WhaleTheme.info]
+                    )
                     .chartYAxis { AxisMarks(format: Decimal.FormatStyle.Percent.percent.scale(1)) }
                     .frame(height: 210)
                 }.padding(15).whalePanel()
@@ -1108,16 +1111,23 @@ struct CompanyFinancialSeriesDashboard: View {
         let revenue = Dictionary(uniqueKeysWithValues: (merged["revenue"] ?? []).map { (periodKey($0), $0) })
         return [("operatingIncome", "Margen operativo"), ("netIncome", "Margen neto")].flatMap { key, label in
             (merged[key] ?? []).compactMap { period in
-                guard let base = revenue[periodKey(period)], base.value != 0, let date = financialDate(period.endDate) else { return nil }
+                guard isAnnual(period), let base = revenue[periodKey(period)], base.value != 0, let date = financialDate(period.endDate) else { return nil }
                 return MarginSeriesPoint(
                     metric: label,
                     date: date,
-                    value: period.value / base.value,
-                    annual: isAnnual(period),
-                    quarter: isQuarter(period)
+                    value: period.value / base.value
                 )
             }
         }
+    }
+
+    private var latestMargins: [MarginSeriesPoint] {
+        Dictionary(grouping: marginPoints, by: \.metric).values.compactMap { $0.max { $0.date < $1.date } }
+            .sorted { $0.metric < $1.metric }
+    }
+
+    private func marginColor(_ metric: String) -> Color {
+        metric == "Margen neto" ? WhaleTheme.positive : WhaleTheme.info
     }
 
     private func metricPeriods(_ key: String) -> [FinancialPeriod] {
@@ -1146,9 +1156,10 @@ struct CompanyFinancialSeriesDashboard: View {
     private func isAnnual(_ period: FinancialPeriod) -> Bool {
         period.fiscalPeriod == "FY" && (duration(period) ?? 0) >= 300
     }
-    private func isQuarter(_ period: FinancialPeriod) -> Bool {
-        let days = duration(period) ?? 0
-        return period.fiscalPeriod != "FY" && days >= 70 && days <= 120
+    private func metricColor(_ metric: String) -> Color {
+        ["Ingresos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
+         "Deuda": WhaleTheme.negative, "Efectivo": WhaleTheme.accent,
+         "Caja operativa": WhaleTheme.positive, "Inversión": WhaleTheme.info][metric] ?? WhaleTheme.accent
     }
     private func metricLabel(_ key: String) -> String {
         ["revenue": "Ingresos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión"][key] ?? key
