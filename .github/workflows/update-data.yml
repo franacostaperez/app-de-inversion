@@ -15,6 +15,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: dividend-data-main
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
