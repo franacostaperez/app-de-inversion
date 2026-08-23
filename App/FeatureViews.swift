@@ -524,6 +524,11 @@ private struct HoldingDetailView: View {
                         }
                     }
                 }
+                if let url = profile.investorRelationsURL {
+                    Section("Accionistas") {
+                        Link(profile.investorRelationsVerified == true ? "Página oficial de inversores" : "Buscar relaciones con inversores", destination: url)
+                    }
+                }
                 Section { Text("Fuente: \(profile.source)").font(.caption).foregroundStyle(.secondary) }
             } else {
                 Section {
@@ -854,13 +859,13 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 20, icon: "percent")
-                ScoreComponentRow(label: "Payout", value: item.payoutInvestorScore ?? 0, maximum: 15, icon: "chart.pie.fill")
-                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 15, icon: "chart.line.uptrend.xyaxis")
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 12, icon: "scalemass.fill")
-                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 10, icon: "gauge.with.dots.needle.50percent")
-                ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 13, icon: "arrow.triangle.2.circlepath")
-                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 10, icon: "building.columns.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 40, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 10, icon: "percent")
+                ScoreComponentRow(label: "Payout", value: item.payoutInvestorScore ?? 0, maximum: 12, icon: "chart.pie.fill")
+                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 13, icon: "chart.line.uptrend.xyaxis")
+                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 8, icon: "gauge.with.dots.needle.50percent")
+                ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 12, icon: "arrow.triangle.2.circlepath")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 5, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
                 Section("Informes anuales publicados") {
@@ -899,6 +904,13 @@ private struct OpportunityAnalysisView: View {
                             Link(destination: url) {
                                 Label("Último informe anual" + reportDate(profile.latestAnnualReportDate), systemImage: "books.vertical.fill")
                             }
+                        }
+                    }
+                }
+                if let url = profile.investorRelationsURL {
+                    Section("Accionistas") {
+                        Link(destination: url) {
+                            Label(profile.investorRelationsVerified == true ? "Página oficial de inversores" : "Buscar relaciones con inversores", systemImage: "person.2.badge.gearshape")
                         }
                     }
                 }
@@ -1010,6 +1022,12 @@ struct CompanyFinancialOverviewView: View {
                     if let model = profile.businessModel { textPanel("Modelo de negocio", model, "gearshape.2") }
                     if let revenue = profile.revenueModel { textPanel("Cómo gana dinero", revenue, "banknote") }
                     if let moat = profile.economicMoat { textPanel("Foso defensivo", moat, "shield.lefthalf.filled") }
+                    if let url = profile.investorRelationsURL {
+                        Link(destination: url) {
+                            Label(profile.investorRelationsVerified == true ? "Página oficial de inversores" : "Buscar relaciones con inversores", systemImage: "arrow.up.right.square")
+                                .frame(maxWidth: .infinity, alignment: .leading).padding(15)
+                        }.whalePanel()
+                    }
                 }
 
                 if !annualReports.isEmpty {

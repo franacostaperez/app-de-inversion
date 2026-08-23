@@ -33,8 +33,8 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     if dividend_yield is None or dividend_yield <= 0:
         return 0
     return graduated_score(dividend_yield, [
-        (0, 0), (1, 4), (2, 11), (3, 18), (4, 20), (6, 20),
-        (7.5, 19), (9, 16), (10, 12), (12, 6), (15, 1), (20, 0),
+        (0, 0), (1, 2), (2, 5), (3, 9), (4, 10), (6, 10),
+        (7.5, 9), (9, 8), (10, 6), (12, 3), (15, 1), (20, 0),
     ])
 
 
@@ -44,8 +44,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     if pe <= 0:
         return 0
     return graduated_score(pe / ideal_pe, [
-        (0.35, 7), (0.50, 9), (0.75, 11), (1.00, 12), (1.15, 11),
-        (1.30, 9), (1.50, 6), (1.80, 3), (2.20, 1), (3.00, 0),
+        (0.35, 23), (0.50, 30), (0.75, 37), (1.00, 40), (1.15, 36),
+        (1.30, 29), (1.50, 20), (1.80, 10), (2.20, 3), (3.00, 0),
     ])
 
 
@@ -292,50 +292,50 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if yield_score == 0:
             payout_score = 0
         elif payout is None:
-            payout_score = 6
+            payout_score = 5
         elif payout <= 0:
             payout_score = 0
         elif payout < 20:
-            payout_score = 9
+            payout_score = 7
         elif payout <= 70:
-            payout_score = 15
+            payout_score = 12
         elif payout <= 85:
-            payout_score = 9
+            payout_score = 7
         elif payout <= 100:
-            payout_score = 3
+            payout_score = 2
         else:
             payout_score = 0
 
         if dividend_growth is None:
-            growth_score = 4
+            growth_score = 3
         elif dividend_growth < 0 or not dividend_increases:
             growth_score = 0
         elif dividend_growth < 1:
-            growth_score = 4
+            growth_score = 3
         elif dividend_growth < 3:
-            growth_score = 7
+            growth_score = 6
         elif dividend_growth < 7:
-            growth_score = 11
+            growth_score = 10
         else:
-            growth_score = 15
+            growth_score = 13
         dividend_score = yield_score + payout_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
 
         if operating_margin is None:
-            profitability_score = 3
+            profitability_score = 2
         elif operating_margin <= 0:
             profitability_score = 0
         elif operating_margin < 5:
             profitability_score = 2
         elif operating_margin < 10:
-            profitability_score = 5
+            profitability_score = 4
         elif operating_margin < 15:
-            profitability_score = 7
+            profitability_score = 6
         elif operating_margin < 25:
-            profitability_score = 9
+            profitability_score = 7
         else:
-            profitability_score = 10
+            profitability_score = 8
 
         if roce is None:
             roce_score = 3
@@ -346,16 +346,16 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         elif roce < 10:
             roce_score = 4
         elif roce < 15:
-            roce_score = 7
+            roce_score = 6
         elif roce < 20:
-            roce_score = 10
+            roce_score = 9
         elif roce < 30:
-            roce_score = 12
+            roce_score = 11
         else:
-            roce_score = 13
+            roce_score = 12
 
-        consensus_score = min(6, counts["holders"] * 2) + max(-4, min(4, net_buying * 2))
-        consensus_score = max(0, min(10, consensus_score))
+        consensus_score = min(3, counts["holders"]) + max(-2, min(2, net_buying))
+        consensus_score = max(0, min(5, consensus_score))
         score = dividend_score + valuation_score + profitability_score + roce_score + consensus_score
         consensus_items.append({
             "ticker": profile.get("ticker", ticker),

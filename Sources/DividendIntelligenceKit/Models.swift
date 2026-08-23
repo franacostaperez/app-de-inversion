@@ -131,6 +131,8 @@ public struct CompanyProfile: Codable, Identifiable, Sendable {
     public let latestQuarterlyReportDate: String?
     public let latestAnnualReportURL: URL?
     public let latestAnnualReportDate: String?
+    public let investorRelationsURL: URL?
+    public let investorRelationsVerified: Bool?
     public let source: String
     public let status: String
     public let updatedAt: Date

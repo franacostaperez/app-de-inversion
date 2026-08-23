@@ -9,10 +9,10 @@ from pipeline.build_snapshot import (
 class SnapshotTests(unittest.TestCase):
     def test_yield_score_changes_gradually(self):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 4, 6, 7.5, 9, 10, 12)]
-        self.assertEqual(scores, [4, 11, 18, 20, 20, 19, 16, 12, 6])
+        self.assertEqual(scores, [2, 5, 9, 10, 10, 9, 8, 6, 3])
 
     def test_pe_score_uses_twelve_as_ideal_and_changes_gradually(self):
-        self.assertEqual(valuation_investor_score(12, 12), 12)
+        self.assertEqual(valuation_investor_score(12, 12), 40)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
 
@@ -73,9 +73,9 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 44)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 10)
-        self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 3)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 31)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 31)
+        self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 2)
 
     def test_creates_a_filing_news_summary(self):
         previous = {"investors": [{"id": "x", "holdings": []}]}
@@ -117,7 +117,7 @@ class SnapshotTests(unittest.TestCase):
         }]
         item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
         self.assertEqual(item["dividendGrowth"], 10)
-        self.assertEqual(item["dividendGrowthInvestorScore"], 15)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 13)
 
     def test_sorts_funds_by_portfolio_value(self):
         current = {"quarter": "2026-Q1", "investors": [

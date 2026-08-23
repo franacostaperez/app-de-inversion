@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import html
 import json
 import os
@@ -12,6 +13,7 @@ import time
 import urllib.parse
 import urllib.request
 import urllib.error
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -55,6 +57,12 @@ TICKER_OVERRIDES = {
 }
 
 
+def normalized_name(value: str) -> str:
+    value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode().upper()
+    value = re.sub(r"\b(INCORPORATED|INC|CORPORATION|CORP|COMPANY|CO|PLC|LTD|LIMITED|NV|SA|GROUP|HOLDINGS?|COMMON|COM|SHARES?|SHS|ADR|ADS|CLASS|CL|NEW)\b", " ", value)
+    return re.sub(r"[^A-Z0-9]+", " ", value).strip()
+
+
 def number(value):
     if value in (None, "", "—", "-"):
         return None
@@ -88,6 +96,7 @@ def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page:
 class MarketDataClient:
     def __init__(self):
         self._sec_tickers = None
+        self._sec_by_name = None
 
     def request(self, url: str, payload: bytes | None = None) -> str:
         headers = {"User-Agent": USER_AGENT}
@@ -97,14 +106,61 @@ class MarketDataClient:
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.read().decode("utf-8")
 
-    def ticker_for_cusip(self, cusip: str) -> str | None:
+    def load_sec_tickers(self) -> None:
+        if self._sec_tickers is not None:
+            return
+        headers = {"User-Agent": os.environ.get("SEC_USER_AGENT", "DividendIntelligence franacostaperez@gmail.com")}
+        request = urllib.request.Request("https://www.sec.gov/files/company_tickers.json", headers=headers)
+        with urllib.request.urlopen(request, timeout=30) as response:
+            payload = json.load(response)
+        self._sec_tickers = {item["ticker"].upper(): item["cik_str"] for item in payload.values()}
+        self._sec_by_name = {normalized_name(item["title"]): item["ticker"].upper() for item in payload.values()}
+
+    def ticker_for_cusip(self, cusip: str, name: str = "") -> str | None:
         if cusip in TICKER_OVERRIDES:
             return TICKER_OVERRIDES[cusip]
+        try:
+            self.load_sec_tickers()
+            target = normalized_name(name)
+            if target in self._sec_by_name:
+                return self._sec_by_name[target]
+            match = difflib.get_close_matches(target, self._sec_by_name.keys(), n=1, cutoff=0.94)
+            if match:
+                return self._sec_by_name[match[0]]
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            pass
         payload = json.dumps([{"idType": "ID_CUSIP", "idValue": cusip}]).encode()
         result = json.loads(self.request("https://api.openfigi.com/v3/mapping", payload))
         rows = result[0].get("data", []) if result else []
         preferred = next((row for row in rows if row.get("exchCode") == "US" and row.get("marketSector") == "Equity"), None)
         return preferred.get("ticker") if preferred else None
+
+    def yahoo_profile(self, ticker: str) -> dict:
+        url = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/" + urllib.parse.quote(ticker)
+        url += "?modules=assetProfile,summaryDetail,defaultKeyStatistics,price"
+        try:
+            payload = json.loads(self.request(url))
+            result = payload.get("quoteSummary", {}).get("result") or []
+            if not result:
+                return {}
+            data = result[0]
+            asset = data.get("assetProfile", {})
+            summary = data.get("summaryDetail", {})
+            stats = data.get("defaultKeyStatistics", {})
+            price = data.get("price", {})
+            raw = lambda item: item.get("raw") if isinstance(item, dict) else item
+            return {
+                "description": asset.get("longBusinessSummary"),
+                "sector": asset.get("sector"), "industry": asset.get("industry"),
+                "country": asset.get("country"), "website": asset.get("website"),
+                "marketCapitalization": raw(price.get("marketCap")),
+                "peRatio": raw(summary.get("trailingPE")),
+                "dividendYield": raw(summary.get("dividendYield")),
+                "dividendPerShare": raw(summary.get("dividendRate")),
+                "eps": raw(stats.get("trailingEps")),
+            }
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            return {}
 
     def google_quote(self, ticker: str, preferred_exchange: str | None = None):
         exchanges = ([preferred_exchange] if preferred_exchange else []) + [item for item in EXCHANGES if item != preferred_exchange]
@@ -120,18 +176,19 @@ class MarketDataClient:
 
     def sec_reports(self, ticker: str) -> dict:
         headers = {"User-Agent": os.environ.get("SEC_USER_AGENT", "DividendIntelligence franacostaperez@gmail.com")}
-        if self._sec_tickers is None:
-            request = urllib.request.Request("https://www.sec.gov/files/company_tickers.json", headers=headers)
-            with urllib.request.urlopen(request, timeout=30) as response:
-                payload = json.load(response)
-            self._sec_tickers = {item["ticker"].upper(): item["cik_str"] for item in payload.values()}
+        self.load_sec_tickers()
         cik = self._sec_tickers.get(ticker.upper())
         if cik is None:
             return {}
         request = urllib.request.Request(f"https://data.sec.gov/submissions/CIK{cik:010d}.json", headers=headers)
         with urllib.request.urlopen(request, timeout=30) as response:
-            recent = json.load(response).get("filings", {}).get("recent", {})
+            submissions = json.load(response)
+        recent = submissions.get("filings", {}).get("recent", {})
         result = {}
+        investor_url = submissions.get("investorWebsite") or submissions.get("website")
+        if investor_url:
+            result["investorRelationsURL"] = investor_url
+            result["investorRelationsVerified"] = True
         for desired_form, prefix in (("10-K", "latestAnnualReport"),):
             for index, form in enumerate(recent.get("form", [])):
                 if form != desired_form:
@@ -160,7 +217,7 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
             if new_count >= max_new:
                 continue
             try:
-                ticker = client.ticker_for_cusip(cusip)
+                ticker = client.ticker_for_cusip(cusip, holding.get("company", ""))
             except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
                 ticker = None
             new_count += 1
@@ -169,7 +226,7 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         exchange, page = client.google_quote(ticker, existing.get("exchange"))
         if page:
             refreshed = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
-            for key in ("description", "businessModel", "revenueModel", "economicMoat", "sector", "industry", "latestQuarterlyReportURL", "latestQuarterlyReportDate", "latestAnnualReportURL", "latestAnnualReportDate"):
+            for key in ("description", "businessModel", "revenueModel", "economicMoat", "sector", "industry", "website", "investorRelationsURL", "latestQuarterlyReportURL", "latestQuarterlyReportDate", "latestAnnualReportURL", "latestAnnualReportDate"):
                 if existing.get(key):
                     refreshed[key] = existing[key]
             by_cusip[cusip] = refreshed
@@ -184,6 +241,15 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
             }
         target = by_cusip.get(cusip)
         if target and ticker:
+            yahoo = client.yahoo_profile(ticker) if hasattr(client, "yahoo_profile") else {}
+            for key, value in yahoo.items():
+                if value is not None and target.get(key) is None:
+                    target[key] = value
+            if not target.get("investorRelationsURL") and yahoo.get("website"):
+                target["investorRelationsURL"] = yahoo["website"]
+                target["investorRelationsVerified"] = False
+            if yahoo:
+                target["source"] = target.get("source", "Google Finance") + " · Yahoo Finance respaldo"
             try:
                 target.update(client.sec_reports(ticker))
             except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):

@@ -46,7 +46,13 @@ jobs:
           python pipeline/enrich_companies.py
           --holdings data/source/latest.json
           --database data/companies/index.json
-          --max-new 5
+          --max-new 1000
+      - name: Complete qualitative company profiles
+        run: >-
+          python pipeline/enrich_qualitative.py
+          --holdings data/source/latest.json
+          --company-database data/companies/index.json
+          --qualitative-database data/companies/qualitative.json
       - name: Monitor company annual reports and dividends
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
