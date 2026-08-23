@@ -29,6 +29,7 @@ CONCEPTS = {
     "cash": ("CashAndCashEquivalentsAtCarryingValue", "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"),
     "totalAssets": ("Assets",),
     "totalLiabilities": ("Liabilities",),
+    "currentLiabilities": ("LiabilitiesCurrent",),
     "shareholdersEquity": ("StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"),
     "debtCurrent": ("LongTermDebtAndFinanceLeaseObligationsCurrent", "LongTermDebtCurrent", "ShortTermBorrowings"),
     "debtNoncurrent": ("LongTermDebtAndFinanceLeaseObligationsNoncurrent", "LongTermDebtNoncurrent"),
@@ -157,6 +158,8 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
     net_income = latest_value(metrics, "netIncome")
     expenses = latest_value(metrics, "operatingExpenses")
     debt = latest_value(metrics, "totalDebt")
+    total_assets = latest_value(metrics, "totalAssets")
+    current_liabilities = latest_value(metrics, "currentLiabilities")
     dividends_paid = latest_value(metrics, "dividendsPaid")
     dividend_per_share = latest_value(metrics, "dividendPerShare")
     if expenses is None and revenue is not None and operating_income is not None:
@@ -167,6 +170,12 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         "operatingIncome": operating_income,
         "netIncome": net_income,
         "operatingMargin": safe_margin(operating_income, revenue),
+        "roce": safe_margin(
+            operating_income,
+            total_assets - current_liabilities
+            if total_assets is not None and current_liabilities is not None
+            else None,
+        ),
         "netMargin": safe_margin(net_income, revenue),
         "totalDebt": debt,
         "cash": latest_value(metrics, "cash"),
@@ -187,6 +196,8 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         highlights.append(f"El beneficio neto varió un {income_growth:+.1f}% frente al periodo comparable.")
     if summary["netMargin"] is not None:
         highlights.append(f"El margen neto del periodo más reciente es {summary['netMargin']:.1f}%.")
+    if summary["roce"] is not None:
+        highlights.append(f"El ROCE estimado del periodo más reciente es {summary['roce']:.1f}%.")
     if debt is not None:
         highlights.append("La deuda declarada queda incorporada para seguir su evolución.")
     if summary["cashFromOperations"] is not None:

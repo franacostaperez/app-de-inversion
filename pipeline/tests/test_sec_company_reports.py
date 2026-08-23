@@ -20,11 +20,14 @@ class CompanyReportTests(unittest.TestCase):
             "operatingIncome": {"periods": [{"value": 25}]},
             "netIncome": {"periods": [{"value": 15}]},
             "totalDebt": {"periods": [{"value": 40}]},
+            "totalAssets": {"periods": [{"value": 200}]},
+            "currentLiabilities": {"periods": [{"value": 50}]},
         }
         summary, _ = build_summary(metrics)
         self.assertEqual(summary["expenses"], 75)
         self.assertEqual(summary["operatingMargin"], 25)
         self.assertEqual(summary["netMargin"], 15)
+        self.assertEqual(summary["roce"], 16.67)
 
     def test_calculates_payout_from_dividends_paid_and_net_income(self):
         metrics = {

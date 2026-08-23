@@ -58,6 +58,7 @@ public struct CompanyReportSummary: Codable, Sendable {
     public let operatingIncome: Double?
     public let netIncome: Double?
     public let operatingMargin: Double?
+    public let roce: Double?
     public let netMargin: Double?
     public let totalDebt: Double?
     public let cash: Double?
@@ -231,12 +232,16 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let pe: Double?
     public let payout: Double?
     public let operatingMargin: Double?
+    public let roce: Double?
     public let dividendGrowth: Double?
+    public let yieldInvestorScore: Int?
+    public let payoutInvestorScore: Int?
     public let dividendGrowthInvestorScore: Int?
     public let opportunityScore: Int?
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?
     public let profitabilityInvestorScore: Int?
+    public let roceInvestorScore: Int?
     public let consensusInvestorScore: Int?
     public let sector: String?
     public let sectorPEBenchmark: Double?

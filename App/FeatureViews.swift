@@ -788,6 +788,14 @@ private struct OpportunityAnalysisView: View {
         } else {
             result.append("No hay margen operativo anual comparable; se aplica una puntuación prudente.")
         }
+        if let roce = item.roce {
+            if roce <= 0 { result.append("El ROCE no es positivo y no aporta puntos de eficiencia del capital.") }
+            else if roce < 10 { result.append("El ROCE del \(roce.formatted(.number.precision(.fractionLength(1)))) % es reducido y limita el score.") }
+            else if roce < 20 { result.append("El ROCE refleja una utilización razonable del capital empleado.") }
+            else { result.append("El ROCE del \(roce.formatted(.number.precision(.fractionLength(1)))) % indica una elevada eficiencia del capital y mejora el score.") }
+        } else {
+            result.append("No hay ROCE anual calculable; se aplica una puntuación prudente.")
+        }
         if let growth = item.dividendGrowth {
             if growth < 0 { result.append("El dividendo por acción ha disminuido y no obtiene puntos por crecimiento.") }
             else if growth < 3 { result.append("El dividendo por acción crece a un ritmo anualizado moderado del \(growth.formatted(.number.precision(.fractionLength(1)))) %.") }
@@ -831,6 +839,7 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
                 LabeledContent("Payout", value: item.payout.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
+                LabeledContent("ROCE", value: item.roce.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("Crecimiento del dividendo", value: item.dividendGrowth.map { $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—")
                 if let sector = item.sector { LabeledContent("Sector", value: sector) }
                 if let benchmark = item.sectorPEBenchmark {
@@ -842,9 +851,14 @@ private struct OpportunityAnalysisView: View {
                 }
             }
             Section("Desglose del score") {
-                ScoreComponentRow(label: "Dividendo", value: item.dividendInvestorScore ?? 0, maximum: 50, icon: "dollarsign.circle.fill")
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 20, icon: "scalemass.fill")
-                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 15, icon: "percent")
+                Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 25, icon: "percent")
+                ScoreComponentRow(label: "Payout", value: item.payoutInvestorScore ?? 0, maximum: 10, icon: "chart.pie.fill")
+                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 10, icon: "chart.line.uptrend.xyaxis")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 15, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 10, icon: "gauge.with.dots.needle.50percent")
+                ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 15, icon: "arrow.triangle.2.circlepath")
                 ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 15, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
@@ -1394,7 +1408,10 @@ private struct ScoreComponentRow: View {
                 HStack {
                     Text(label)
                     Spacer()
-                    Text("\(value) / \(maximum)").bold().monospacedDigit()
+                    VStack(alignment: .trailing, spacing: 1) {
+                        Text("\(value) / \(maximum)").bold().monospacedDigit()
+                        Text("Peso: \(maximum) %").font(.caption2).foregroundStyle(.secondary)
+                    }
                 }
                 ProgressView(value: Double(value), total: Double(maximum)).tint(WhaleTheme.accent)
             }
