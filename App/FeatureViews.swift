@@ -1244,7 +1244,7 @@ struct CompanyReportDetailView: View {
 
     private let metricOrder = [
         "revenue", "operatingExpenses", "grossProfit", "operatingIncome", "netIncome",
-        "dividendPerShare", "dividendsPaid", "cashFromOperations", "capitalExpenditure",
+        "dividendPerShare", "cashFromOperations", "capitalExpenditure",
         "totalDebt", "cash", "totalAssets", "totalLiabilities"
     ]
 
