@@ -226,8 +226,8 @@ public struct Movement: Codable, Identifiable, Sendable {
 }
 
 public struct ConsensusItem: Codable, Identifiable, Sendable {
-    public var id: String { cusip ?? ticker ?? company }
-    public let ticker: String?
+    public var id: String { cusip ?? ticker }
+    public let ticker: String
     public let cusip: String?
     public let company: String
     public let holders: Int
