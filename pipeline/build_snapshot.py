@@ -236,6 +236,18 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         pe = profile.get("peRatio", company.get("pe"))
         payout = (latest_reports.get(ticker, {}).get("summary") or {}).get("payoutRatio")
         operating_margin = (latest_reports.get(ticker, {}).get("summary") or {}).get("operatingMargin")
+        dividend_periods = ((latest_reports.get(ticker, {}).get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
+        annual_dividends = []
+        for period in sorted(dividend_periods, key=lambda item: item.get("endDate", "")):
+            value = period.get("value")
+            if period.get("fiscalPeriod") == "FY" and value is not None and value > 0:
+                annual_dividends.append(float(value))
+        if len(annual_dividends) >= 2 and annual_dividends[0] > 0:
+            dividend_growth = round(((annual_dividends[-1] / annual_dividends[0]) ** (1 / (len(annual_dividends) - 1)) - 1) * 100, 2)
+            dividend_increases = all(current >= previous for previous, current in zip(annual_dividends, annual_dividends[1:]))
+        else:
+            dividend_growth = company.get("dividendGrowth5Y")
+            dividend_increases = dividend_growth is not None and dividend_growth >= 0
         if payout is None:
             payout = company.get("payout")
         sector = profile.get("sector", company.get("sector", "Unknown"))
@@ -246,17 +258,17 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if yield_percent is None or yield_percent <= 0:
             yield_score = 0
         elif yield_percent < 1:
-            yield_score = 5
-        elif yield_percent < 2:
-            yield_score = 12
-        elif yield_percent < 3:
-            yield_score = 22
-        elif yield_percent <= 9:
-            yield_score = 35
-        elif yield_percent <= 12:
-            yield_score = 14
-        else:
             yield_score = 4
+        elif yield_percent < 2:
+            yield_score = 10
+        elif yield_percent < 3:
+            yield_score = 19
+        elif yield_percent <= 9:
+            yield_score = 30
+        elif yield_percent <= 12:
+            yield_score = 12
+        else:
+            yield_score = 3
 
         if yield_score == 0:
             payout_score = 0
@@ -265,16 +277,29 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         elif payout <= 0:
             payout_score = 0
         elif payout < 20:
-            payout_score = 8
+            payout_score = 7
         elif payout <= 70:
-            payout_score = 15
+            payout_score = 12
         elif payout <= 85:
-            payout_score = 10
+            payout_score = 8
         elif payout <= 100:
-            payout_score = 4
+            payout_score = 3
         else:
             payout_score = 0
-        dividend_score = yield_score + payout_score
+
+        if dividend_growth is None:
+            growth_score = 2
+        elif dividend_growth < 0 or not dividend_increases:
+            growth_score = 0
+        elif dividend_growth < 1:
+            growth_score = 2
+        elif dividend_growth < 3:
+            growth_score = 4
+        elif dividend_growth < 7:
+            growth_score = 6
+        else:
+            growth_score = 8
+        dividend_score = yield_score + payout_score + growth_score
 
         if pe is None:
             valuation_score = 5
@@ -320,6 +345,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "pe": pe,
             "payout": payout,
             "operatingMargin": operating_margin,
+            "dividendGrowth": dividend_growth,
+            "dividendGrowthInvestorScore": growth_score,
             "opportunityScore": min(100, score),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,

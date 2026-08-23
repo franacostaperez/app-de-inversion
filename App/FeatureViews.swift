@@ -788,6 +788,11 @@ private struct OpportunityAnalysisView: View {
         } else {
             result.append("No hay margen operativo anual comparable; se aplica una puntuación prudente.")
         }
+        if let growth = item.dividendGrowth {
+            if growth < 0 { result.append("El dividendo por acción ha disminuido y no obtiene puntos por crecimiento.") }
+            else if growth < 3 { result.append("El dividendo por acción crece a un ritmo anualizado moderado del \(growth.formatted(.number.precision(.fractionLength(1)))) %.") }
+            else { result.append("El dividendo por acción crece aproximadamente un \(growth.formatted(.number.precision(.fractionLength(1)))) % anualizado y mejora el score.") }
+        }
         return result
     }
 
@@ -826,6 +831,7 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
                 LabeledContent("Payout", value: item.payout.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
+                LabeledContent("Crecimiento del dividendo", value: item.dividendGrowth.map { $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—")
                 if let sector = item.sector { LabeledContent("Sector", value: sector) }
                 if let benchmark = item.sectorPEBenchmark {
                     LabeledContent("PER de referencia", value: benchmark.formatted(.number.precision(.fractionLength(1))) + "x")
@@ -1062,7 +1068,6 @@ struct CompanyFinancialSeriesDashboard: View {
     @ViewBuilder
     private var dividendChart: some View {
         let perShare = points(keys: ["dividendPerShare"], include: isAnnual)
-        let totals = points(keys: ["dividendsPaid"], include: isAnnual)
         if !perShare.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Dividendo anual por acción").font(.headline)
@@ -1079,8 +1084,6 @@ struct CompanyFinancialSeriesDashboard: View {
                 .chartYScale(domain: .automatic(includesZero: true))
                 .frame(height: 210)
             }.padding(15).whalePanel()
-        } else if !totals.isEmpty {
-            groupedChart("Dividendos pagados", subtitle: "Importe total anual", points: totals)
         }
     }
 
@@ -1282,7 +1285,6 @@ struct CompanyReportDetailView: View {
                 financialRow("Efectivo", report.summary.cash)
                 financialRow("Flujo de caja operativo", report.summary.cashFromOperations)
                 financialRow("Inversión de capital", report.summary.capitalExpenditure)
-                financialRow("Dividendos pagados", report.summary.dividendsPaid)
                 if let dividend = report.summary.dividendPerShare {
                     LabeledContent("Dividendo por acción", value: dividend.formatted(.currency(code: "USD")))
                 }

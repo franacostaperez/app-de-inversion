@@ -17,6 +17,16 @@ from pathlib import Path
 
 USER_AGENT = "Mozilla/5.0 DividendIntelligence/1.0"
 EXCHANGES = ("NASDAQ", "NYSE", "NYSEARCA")
+TICKER_OVERRIDES = {
+    "674599105": "OXY", "02079K107": "GOOG", "500754106": "KHC", "009158106": "APD",
+    "34959J108": "FTV", "44267T102": "HHH", "72703X106": "PL", "808513105": "SCHW",
+    "883556102": "TMO", "571903202": "MAR", "437076102": "HD", "863667101": "SYK",
+    "526107107": "LII", "N3167Y103": "RACE", "00217D100": "ASTS", "10806X102": "BBIO",
+    "880770102": "TER", "219948106": "CPAY", "097023105": "BA", "59522J103": "MAA",
+    "219350105": "GLW", "31428X106": "FDX", "55354G100": "MSCI", "00650F109": "ADPT",
+    "171340102": "CHD", "G51502105": "JCI", "742718109": "PG", "88080T104": "WULF",
+    "053015103": "ADP", "02005N100": "ALLY",
+}
 
 
 def number(value):
@@ -62,6 +72,8 @@ class MarketDataClient:
             return response.read().decode("utf-8")
 
     def ticker_for_cusip(self, cusip: str) -> str | None:
+        if cusip in TICKER_OVERRIDES:
+            return TICKER_OVERRIDES[cusip]
         payload = json.dumps([{"idType": "ID_CUSIP", "idValue": cusip}]).encode()
         result = json.loads(self.request("https://api.openfigi.com/v3/mapping", payload))
         rows = result[0].get("data", []) if result else []
@@ -109,9 +121,13 @@ class MarketDataClient:
 
 def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, max_new: int) -> list[dict]:
     by_cusip = {item["cusip"]: item for item in catalog}
-    unique = {item["cusip"]: item for item in holdings}
+    unique = {}
+    for item in holdings:
+        existing = unique.get(item["cusip"])
+        if existing is None or item.get("value", 0) > existing.get("value", 0):
+            unique[item["cusip"]] = item
     new_count = 0
-    for cusip, holding in unique.items():
+    for cusip, holding in sorted(unique.items(), key=lambda pair: pair[1].get("value", 0), reverse=True):
         existing = by_cusip.get(cusip, {})
         ticker = existing.get("ticker")
         if not ticker:
@@ -131,6 +147,15 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
                 if existing.get(key):
                     refreshed[key] = existing[key]
             by_cusip[cusip] = refreshed
+        elif not existing:
+            by_cusip[cusip] = {
+                "cusip": cusip, "name": holding.get("company", ticker), "ticker": ticker,
+                "exchange": None, "currency": "USD", "country": "United States",
+                "paysDividend": None, "dividendPerShare": None, "dividendYield": None, "peRatio": None,
+                "source": "Google Finance pendiente; informes SEC EDGAR",
+                "status": "identified",
+                "updatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            }
         target = by_cusip.get(cusip)
         if target and ticker:
             try:

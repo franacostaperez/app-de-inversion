@@ -61,7 +61,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 50)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 48)
         self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 20)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 4)
 
@@ -86,6 +86,26 @@ class SnapshotTests(unittest.TestCase):
         update = result["filingUpdates"][0]
         self.assertEqual(update["newPositions"], 1)
         self.assertIn("A Co", update["summary"])
+
+    def test_rewards_consistent_dividend_growth(self):
+        current = {"quarter": "2026-Q1", "investors": [{
+            "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
+            "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
+            "holdings": [{"ticker": "AAA", "cusip": "1", "company": "A Co", "shares": 1, "value": 1}],
+        }]}
+        companies = [{"ticker": "AAA", "cusip": "1", "company": "A Co", "yield": 4, "pe": 15, "payout": 50}]
+        reports = [{
+            "cusip": "1", "form": "10-K", "filingDate": "2026-02-01T00:00:00Z",
+            "summary": {"payoutRatio": 50, "operatingMargin": 20},
+            "metrics": {"dividendPerShare": {"periods": [
+                {"endDate": "2023-12-31", "fiscalPeriod": "FY", "value": 1.0},
+                {"endDate": "2024-12-31", "fiscalPeriod": "FY", "value": 1.1},
+                {"endDate": "2025-12-31", "fiscalPeriod": "FY", "value": 1.21},
+            ]}},
+        }]
+        item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
+        self.assertEqual(item["dividendGrowth"], 10)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 8)
 
     def test_sorts_funds_by_portfolio_value(self):
         current = {"quarter": "2026-Q1", "investors": [
