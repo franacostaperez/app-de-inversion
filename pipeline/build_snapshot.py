@@ -33,8 +33,9 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     if dividend_yield is None or dividend_yield <= 0:
         return 0
     return graduated_score(dividend_yield, [
-        (0, 0), (1, 2), (2, 5), (3, 9), (4, 10), (6, 10),
-        (7.5, 9), (9, 8), (10, 6), (12, 3), (15, 1), (20, 0),
+        (0, 0), (1, 0), (2, 1), (3, 3), (3.5, 4), (4, 6),
+        (5, 8), (5.5, 9), (6, 10), (6.5, 10), (7, 9),
+        (8, 8), (9, 6), (10, 4), (12, 2), (15, 0), (20, 0),
     ])
 
 
