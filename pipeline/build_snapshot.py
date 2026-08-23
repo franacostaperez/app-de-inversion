@@ -235,14 +235,12 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             dividend_score = 20
         elif yield_percent < 3:
             dividend_score = 35
-        elif yield_percent <= 5:
+        elif yield_percent <= 9:
             dividend_score = 55
-        elif yield_percent <= 7:
-            dividend_score = 45
-        elif yield_percent <= 10:
-            dividend_score = 28
+        elif yield_percent <= 12:
+            dividend_score = 22
         else:
-            dividend_score = 12
+            dividend_score = 8
 
         if pe is None:
             valuation_score = 7
