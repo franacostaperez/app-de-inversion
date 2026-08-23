@@ -1,4 +1,5 @@
 import unittest
+import urllib.error
 
 from pipeline.enrich_companies import enrich, metric, number, profile_from_google
 
@@ -28,6 +29,19 @@ class CompanyEnrichmentTests(unittest.TestCase):
         result = enrich([{"cusip": "123", "company": "ABC"}], catalog, Client(), 0)
         self.assertEqual(result[0]["businessModel"], "Modelo")
         self.assertEqual(result[0]["economicMoat"], "Foso")
+
+    def test_google_404_does_not_stop_other_exchanges(self):
+        from pipeline.enrich_companies import MarketDataClient
+
+        class Client(MarketDataClient):
+            def request(self, url, payload=None):
+                if "NASDAQ" in url:
+                    raise urllib.error.HTTPError(url, 404, "Not found", None, None)
+                return '<div class="SwQK7">P/E ratio</div><div class="dO6ijd">15.0</div>'
+
+        exchange, page = Client().google_quote("ABC")
+        self.assertEqual(exchange, "NYSE")
+        self.assertIn("P/E ratio", page)
 
 
 if __name__ == "__main__":

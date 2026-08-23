@@ -10,6 +10,7 @@ import re
 import time
 import urllib.parse
 import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -67,7 +68,10 @@ class MarketDataClient:
         exchanges = ([preferred_exchange] if preferred_exchange else []) + [item for item in EXCHANGES if item != preferred_exchange]
         for exchange in exchanges:
             url = "https://www.google.com/finance/quote/" + urllib.parse.quote(f"{ticker}:{exchange}") + "?hl=en"
-            page = self.request(url)
+            try:
+                page = self.request(url)
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
+                continue
             if "P/E ratio" in page or "Quarterly dividend" in page or "About" in page:
                 return exchange, page
         return None, None
@@ -83,7 +87,10 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         if not ticker:
             if new_count >= max_new:
                 continue
-            ticker = client.ticker_for_cusip(cusip)
+            try:
+                ticker = client.ticker_for_cusip(cusip)
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+                ticker = None
             new_count += 1
         if not ticker:
             continue
