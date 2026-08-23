@@ -1,7 +1,7 @@
 import unittest
 
 from pipeline.build_snapshot import (
-    aggregate_holdings, build, classify, estimate_average_purchase_prices,
+    aggregate_holdings, build, classify, compact_company_reports, estimate_average_purchase_prices,
     retained_filing_date, valuation_investor_score, yield_investor_score,
 )
 
@@ -30,6 +30,22 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(item["payoutInvestorScore"], 0)
         self.assertEqual(item["dividendGrowthInvestorScore"], 0)
         self.assertEqual(item["dividendInvestorScore"], 0)
+
+    def test_compacts_report_metrics_without_losing_annual_history(self):
+        annual_old = {
+            "cusip": "1", "accessionNumber": "old", "form": "10-K", "filingDate": "2025-02-01",
+            "metrics": {"revenue": {"concept": "Revenue", "periods": [{"startDate": "2023-01-01", "endDate": "2023-12-31", "value": 10}]}},
+        }
+        annual_new = {
+            "cusip": "1", "accessionNumber": "new", "form": "10-K", "filingDate": "2026-02-01",
+            "metrics": {"revenue": {"concept": "Revenue", "periods": [{"startDate": "2024-01-01", "endDate": "2024-12-31", "value": 12}]}},
+        }
+        quarter = {"cusip": "1", "accessionNumber": "q", "form": "10-Q", "filingDate": "2026-05-01", "metrics": annual_new["metrics"]}
+        result = compact_company_reports([annual_old, annual_new, quarter])
+        by_id = {item["accessionNumber"]: item for item in result}
+        self.assertEqual(by_id["old"]["metrics"], {})
+        self.assertEqual(by_id["q"]["metrics"], {})
+        self.assertEqual(len(by_id["new"]["metrics"]["revenue"]["periods"]), 2)
 
     def test_classification(self):
         self.assertEqual(classify(0, 10), ("NEW", None))

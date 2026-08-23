@@ -162,6 +162,56 @@ def retained_filing_date(value: str, today: date | None = None) -> bool:
     return date.fromisoformat(value[:10]) >= cutoff
 
 
+def compact_company_reports(reports: list[dict]) -> list[dict]:
+    """Store repeated XBRL history once while keeping every report summary."""
+    allowed = [
+        report for report in reports
+        if str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F", "10-Q"))
+    ]
+    annual_by_cusip: dict[str, list[dict]] = defaultdict(list)
+    for report in allowed:
+        if str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
+            annual_by_cusip[report.get("cusip", "")].append(report)
+
+    consolidated: dict[str, dict] = {}
+    for cusip, annual_reports in annual_by_cusip.items():
+        merged: dict[str, dict] = {}
+        for report in sorted(annual_reports, key=lambda item: item.get("filingDate", "")):
+            for metric, series in (report.get("metrics") or {}).items():
+                target = merged.setdefault(metric, {"concept": series.get("concept", metric), "periods": {}})
+                for period in series.get("periods", []):
+                    key = (period.get("startDate") or "instant") + "-" + period.get("endDate", "")
+                    target["periods"][key] = period
+        consolidated[cusip] = {
+            metric: {
+                "concept": series["concept"],
+                "periods": sorted(series["periods"].values(), key=lambda period: period.get("endDate", "")),
+            }
+            for metric, series in merged.items()
+        }
+
+    latest_annual = {
+        cusip: max(items, key=lambda item: item.get("filingDate", "")).get("accessionNumber")
+        for cusip, items in annual_by_cusip.items()
+    }
+    result = []
+    for report in allowed:
+        item = {**report}
+        form = str(item.get("form", "")).upper()
+        if form.startswith("10-Q"):
+            item["metrics"] = {}
+        elif item.get("accessionNumber") == latest_annual.get(item.get("cusip", "")):
+            item["metrics"] = consolidated.get(item.get("cusip", ""), {})
+        else:
+            item["metrics"] = {}
+        result.append(item)
+    return sorted(
+        result,
+        key=lambda item: (item["filingDate"], item.get("accessionNumber", ""), item.get("cusip", "")),
+        reverse=True,
+    )
+
+
 def build_filing_updates(current: dict, holdings: list[dict], movements: list[dict], prior_updates: list[dict]) -> list[dict]:
     by_accession = {item["accessionNumber"]: item for item in current.get("filings", [])}
     active_investors = {item["id"] for item in current.get("investors", [])}
@@ -441,11 +491,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
         "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
-        "companyReports": sorted(
-            [item for item in (company_reports or []) if str(item.get("form", "")).upper().startswith(("10-K", "20-F", "40-F", "10-Q"))],
-            key=lambda item: (item["filingDate"], item.get("accessionNumber", ""), item.get("cusip", "")),
-            reverse=True,
-        ),
+        "companyReports": compact_company_reports(company_reports or []),
     }
 
 
@@ -483,7 +529,7 @@ def main() -> None:
     average_prices = estimate_average_purchase_prices(archived_filings)
     snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []), average_prices, company_reports)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n")
+    args.output.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
 
 
 if __name__ == "__main__":
