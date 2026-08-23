@@ -157,6 +157,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     movements = []
     holdings = []
     consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0})
+    consensus_names = {}
 
     for investor in current.get("investors", []):
         old = old_investors.get(investor["id"], {})
@@ -185,12 +186,13 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             ticker = holding["ticker"]
             new_shares = new_holdings.get(security_id, {}).get("shares", 0)
             action, change = classify(old_shares, new_shares)
+            consensus_names[security_id] = holding.get("company", ticker)
             if new_shares > 0:
-                consensus[ticker]["holders"] += 1
+                consensus[security_id]["holders"] += 1
             if action in ("NEW", "INCREASED"):
-                consensus[ticker]["buying"] += 1
+                consensus[security_id]["buying"] += 1
             elif action in ("SOLD", "REDUCED"):
-                consensus[ticker]["selling"] += 1
+                consensus[security_id]["selling"] += 1
             if action != "UNCHANGED":
                 movements.append({
                     "investorId": investor["id"],
@@ -204,19 +206,33 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                 })
 
     consensus_items = []
+    profiles_by_cusip = {item["cusip"]: item for item in (company_profiles or [])}
     for ticker, counts in consensus.items():
         company = company_by_ticker.get(ticker, {})
+        profile = profiles_by_cusip.get(ticker, {})
+        dividend_yield = profile.get("dividendYield")
+        yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
+        pe = profile.get("peRatio", company.get("pe"))
+        net_buying = counts["buying"] - counts["selling"]
+        score = min(100, max(0, 35 + counts["holders"] * 4 + net_buying * 6))
+        if yield_percent is not None:
+            score += 12 if yield_percent >= 4 else (6 if yield_percent >= 2 else 0)
+        if pe is not None:
+            score += 12 if 0 < pe <= 18 else (6 if pe <= 25 else 0)
         consensus_items.append({
-            "ticker": ticker,
-            "company": company.get("company", holding_name_by_ticker.get(ticker, ticker)),
+            "ticker": profile.get("ticker", ticker),
+            "cusip": ticker,
+            "company": profile.get("name", company.get("company", consensus_names.get(ticker, holding_name_by_ticker.get(ticker, ticker)))),
             **counts,
-            "yield": company.get("yield"),
+            "yield": yield_percent,
+            "pe": pe,
+            "opportunityScore": min(100, score),
         })
-    consensus_items.sort(key=lambda item: (item["buying"], item["holders"]), reverse=True)
+    consensus_items.sort(key=lambda item: (item["opportunityScore"], item["buying"], item["holders"]), reverse=True)
 
     opportunities = []
     for company in (item for item in companies if item.get("metricsStatus") == "verified"):
-        signal = consensus[company["ticker"]]
+        signal = consensus[company.get("cusip", company["ticker"])]
         smart_score = min(100, 50 + signal["buying"] * 12 - signal["selling"] * 10)
         fran_score = round(
             company["valuationScore"] * 0.30

@@ -36,8 +36,6 @@ jobs:
           --previous-output data/source/previous.json
           --filings-output data/filings
       - name: Enrich newly reported companies
-        env:
-          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
         run: >-
           python pipeline/enrich_companies.py
           --holdings data/source/latest.json

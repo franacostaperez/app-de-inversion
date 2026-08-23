@@ -287,9 +287,12 @@ private struct FundMetric: View {
 struct CompaniesView: View {
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String
+    @State private var yieldFilter: DividendYieldFilter = .all
 
     private var holdings: [Holding] {
-        snapshot.holdings.filter { $0.investorId == selectedInvestorID }.sorted { $0.value > $1.value }
+        snapshot.holdings
+            .filter { $0.investorId == selectedInvestorID && yieldFilter.matches(dividendYield(for: $0)) }
+            .sorted { $0.value > $1.value }
     }
 
     var body: some View {
@@ -334,8 +337,11 @@ struct CompaniesView: View {
         .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(WhaleTheme.background)
         .navigationTitle("Empresas")
         .safeAreaInset(edge: .top) {
-            FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
-                .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
+            VStack(spacing: 8) {
+                FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
+                DividendYieldFilterPicker(selection: $yieldFilter)
+            }
+            .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
         }
     }
 
@@ -480,148 +486,32 @@ struct SmartMoneyView: View {
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String
 
-    private var holdings: [Holding] {
-        snapshot.holdings.filter { $0.investorId == selectedInvestorID }.sorted { $0.value > $1.value }
-    }
-    private var movements: [Movement] {
-        snapshot.movements.filter { $0.investorId == selectedInvestorID }
-    }
-
     var body: some View {
-        List {
-            if snapshot.investors.count > 1 {
-                Section {
-                    NavigationLink {
-                        ConsensusRankingView(items: snapshot.consensus)
-                    } label: {
-                        Label {
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text("Clasificación de consenso").font(.headline)
-                                Text("Compara las acciones compartidas por los fondos")
-                                    .font(.caption).foregroundStyle(.secondary)
-                            }
-                        } icon: {
-                            Image(systemName: "person.3.sequence.fill")
-                                .font(.title2).foregroundStyle(WhaleTheme.accent)
-                        }
-                    }
-                }
-            }
-            Section {
-                if holdings.isEmpty {
-                    Text("El snapshot todavía no contiene posiciones.")
-                        .foregroundStyle(.secondary)
-                } else {
-                    ForEach(holdings) { item in
-                        NavigationLink {
-                            if let opportunity = opportunity(for: item) {
-                                CompanyDetailView(item: opportunity)
-                            } else {
-                                HoldingDetailView(item: item, quarter: snapshot.asOfQuarter, profile: profile(for: item))
-                            }
-                        } label: {
-                            VStack(alignment: .leading, spacing: 7) {
-                                HStack {
-                                    Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(1)
-                                    if let yield = dividendYield(for: item), yield > 4 {
-                                        HighYieldBadge(yield: yield)
-                                    }
-                                    Spacer()
-                                    Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
-                                        .foregroundStyle(WhaleTheme.accent).bold().monospacedDigit()
-                                }
-                                HStack(spacing: 10) {
-                                    Text(compactMoney(item.value))
-                                    if let yield = dividendYield(for: item), yield > 0 {
-                                        Label("Yield " + yield.formatted(.number.precision(.fractionLength(1))) + "%",
-                                              systemImage: "dollarsign.circle.fill")
-                                            .foregroundStyle(yield > 4 ? WhaleTheme.positive : .secondary)
-                                    }
-                                    if let pe = peRatio(for: item) {
-                                        Text("PER " + pe.formatted(.number.precision(.fractionLength(1))) + "x")
-                                    }
-                                    Spacer()
-                                }
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                }
-            } header: {
-                Text("CARTERA 13F · \(snapshot.asOfQuarter)")
-            }
-            Section("Últimos movimientos") {
-                ForEach(movements) { item in
-                    HStack {
-                        Image(systemName: icon(item.action)).foregroundStyle(color(item.action))
-                        VStack(alignment: .leading) {
-                            Text(item.company).font(.subheadline.weight(.semibold))
-                            Text("\(item.investorName) · \(item.action.label)")
-                                .font(.caption).foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        if let change = item.changePercent {
-                            Text(change.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%")
-                                .font(.caption.bold().monospacedDigit()).foregroundStyle(color(item.action))
-                        }
-                    }
-                }
-            }
-        }
-        .listStyle(.insetGrouped).scrollContentBackground(.hidden).background(WhaleTheme.background)
-        .navigationTitle("Smart Money")
-        .safeAreaInset(edge: .top) {
-            FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
-                .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
-        }
+        ConsensusRankingView(items: snapshot.consensus)
     }
-
-    private func icon(_ action: MovementAction) -> String {
-        switch action { case .new: "plus.circle.fill"; case .increased: "arrow.up.circle.fill"; case .reduced: "arrow.down.circle.fill"; case .sold: "xmark.circle.fill"; case .unchanged: "equal.circle.fill" }
-    }
-    private func color(_ action: MovementAction) -> Color {
-        switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
-    }
-
-    private func profile(for holding: Holding) -> CompanyProfile? {
-        snapshot.companyProfiles.first { $0.cusip == holding.cusip }
-    }
-
-    private func opportunity(for holding: Holding) -> Opportunity? {
-        snapshot.opportunities.first { $0.ticker == holding.ticker }
-    }
-
-    private func dividendYield(for holding: Holding) -> Double? {
-        if let value = profile(for: holding)?.dividendYield { return value * 100 }
-        return opportunity(for: holding)?.yield
-    }
-
-    private func peRatio(for holding: Holding) -> Double? {
-        profile(for: holding)?.peRatio ?? opportunity(for: holding)?.pe
-    }
-
 }
 
 private struct ConsensusRankingView: View {
     enum Ranking: String, CaseIterable, Identifiable {
+        case opportunity = "Oportunidad"
         case holders = "Más compartidas"
         case buying = "Más compradas"
-        case trend = "Tendencia"
         var id: Self { self }
     }
 
     let items: [ConsensusItem]
-    @State private var ranking: Ranking = .holders
+    @State private var ranking: Ranking = .opportunity
     @State private var search = ""
+    @State private var yieldFilter: DividendYieldFilter = .all
 
     private var rankedItems: [ConsensusItem] {
-        let filtered = search.isEmpty ? items : items.filter { $0.company.localizedCaseInsensitiveContains(search) }
+        let searched = search.isEmpty ? items : items.filter { $0.company.localizedCaseInsensitiveContains(search) }
+        let filtered = searched.filter { yieldFilter.matches($0.yield) }
         return filtered.sorted { lhs, rhs in
             switch ranking {
+            case .opportunity: (lhs.opportunityScore ?? 0, lhs.buying, lhs.holders) > (rhs.opportunityScore ?? 0, rhs.buying, rhs.holders)
             case .holders: (lhs.holders, lhs.buying) > (rhs.holders, rhs.buying)
             case .buying: (lhs.buying, lhs.holders) > (rhs.buying, rhs.holders)
-            case .trend: (lhs.buying - lhs.selling, lhs.holders) > (rhs.buying - rhs.selling, rhs.holders)
             }
         }
     }
@@ -635,6 +525,10 @@ private struct ConsensusRankingView: View {
                 .pickerStyle(.segmented)
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
+                Picker("Filtro de dividendos", selection: $yieldFilter) {
+                    ForEach(DividendYieldFilter.allCases) { Text($0.rawValue).tag($0) }
+                }
+                .pickerStyle(.menu)
             }
             Section {
                 ForEach(Array(rankedItems.enumerated()), id: \.element.id) { index, item in
@@ -649,22 +543,34 @@ private struct ConsensusRankingView: View {
                                 Label("\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
                             }
                             .font(.caption)
+                            HStack(spacing: 8) {
+                                if let yield = item.yield {
+                                    Text("Yield " + yield.formatted(.number.precision(.fractionLength(1))) + "%")
+                                        .foregroundStyle(yield > 4 ? WhaleTheme.positive : .secondary)
+                                }
+                                if let pe = item.pe {
+                                    Text("PER " + pe.formatted(.number.precision(.fractionLength(1))) + "x")
+                                }
+                            }
+                            .font(.caption.bold().monospacedDigit())
                         }
                         Spacer()
-                        Text((item.buying - item.selling).formatted(.number.sign(strategy: .always())))
-                            .font(.headline.monospacedDigit())
-                            .foregroundStyle(item.buying >= item.selling ? WhaleTheme.positive : WhaleTheme.negative)
+                        VStack(alignment: .trailing, spacing: 3) {
+                            Text("\(item.opportunityScore ?? 0)")
+                                .font(.title3.bold().monospacedDigit()).foregroundStyle(WhaleTheme.accent)
+                            Text("SCORE").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+                        }
                     }
                     .padding(.vertical, 4)
                 }
             } header: {
-                Text("Fondos · Compran · Reducen · Tendencia neta")
+                Text("Fondos · Compran · Reducen · Yield · PER · Score")
             }
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(WhaleTheme.background)
-        .navigationTitle("Consenso")
+        .navigationTitle("Smart Money")
         .searchable(text: $search, prompt: "Buscar empresa")
     }
 }

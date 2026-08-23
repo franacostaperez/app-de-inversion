@@ -1,105 +1,96 @@
 #!/usr/bin/env python3
-"""Incrementally enrich new 13F issuers and persist profiles in GitHub."""
+"""Refresh company dividend and valuation metrics from Google Finance."""
 
 from __future__ import annotations
 
 import argparse
+import html
 import json
-import os
+import re
 import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+
+USER_AGENT = "Mozilla/5.0 DividendIntelligence/1.0"
+EXCHANGES = ("NASDAQ", "NYSE", "NYSEARCA")
 
 
-API_URL = "https://www.alphavantage.co/query"
-
-
-def number(value: Any) -> float | None:
-    if value in (None, "", "None", "-"):
+def number(value):
+    if value in (None, "", "—", "-"):
         return None
     try:
-        return float(value)
+        return float(str(value).replace("$", "").replace("%", "").replace(",", ""))
     except (TypeError, ValueError):
         return None
 
 
-def select_symbol(payload: dict, company_name: str) -> str | None:
-    matches = payload.get("bestMatches", [])
-    eligible = []
-    for match in matches:
-        score = number(match.get("9. matchScore")) or 0
-        region = match.get("4. region", "")
-        instrument = match.get("3. type", "")
-        if score >= 0.70 and region == "United States" and instrument == "Equity":
-            eligible.append((score, match.get("1. symbol")))
-    eligible.sort(reverse=True)
-    return eligible[0][1] if eligible else None
+def metric(page: str, label: str) -> float | None:
+    pattern = rf'<div class="SwQK7">{re.escape(label)}</div><div class="dO6ijd">([^<]+)'
+    match = re.search(pattern, page)
+    return number(html.unescape(match.group(1))) if match else None
 
 
-def profile_from_overview(cusip: str, fallback_name: str, symbol: str, overview: dict) -> dict:
-    dividend_per_share = number(overview.get("DividendPerShare"))
-    dividend_yield = number(overview.get("DividendYield"))
+def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page: str) -> dict:
+    yield_percent = metric(page, "Dividend")
+    quarterly_dividend = metric(page, "Quarterly dividend")
     return {
-        "cusip": cusip,
-        "name": overview.get("Name") or fallback_name,
-        "ticker": overview.get("Symbol") or symbol,
-        "description": overview.get("Description") or None,
-        "exchange": overview.get("Exchange") or None,
-        "currency": overview.get("Currency") or None,
-        "country": overview.get("Country") or None,
-        "sector": overview.get("Sector") or None,
-        "industry": overview.get("Industry") or None,
-        "marketCapitalization": number(overview.get("MarketCapitalization")),
-        "paysDividend": bool((dividend_per_share or 0) > 0 or (dividend_yield or 0) > 0),
-        "dividendPerShare": dividend_per_share,
-        "dividendYield": dividend_yield,
-        "peRatio": number(overview.get("PERatio")),
-        "eps": number(overview.get("EPS")),
-        "source": "Alpha Vantage",
-        "status": "enriched",
+        "cusip": cusip, "name": name, "ticker": ticker, "exchange": exchange,
+        "currency": "USD", "country": "United States",
+        "paysDividend": bool((yield_percent or 0) > 0),
+        "dividendPerShare": round(quarterly_dividend * 4, 4) if quarterly_dividend is not None else None,
+        "dividendYield": yield_percent / 100 if yield_percent is not None else None,
+        "peRatio": metric(page, "P/E ratio"),
+        "source": "Google Finance", "status": "enriched",
         "updatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 
 
-class AlphaVantageClient:
-    def __init__(self, api_key: str, delay_seconds: float = 1.0):
-        self.api_key = api_key
-        self.delay_seconds = delay_seconds
+class MarketDataClient:
+    def request(self, url: str, payload: bytes | None = None) -> str:
+        headers = {"User-Agent": USER_AGENT}
+        if payload is not None:
+            headers["Content-Type"] = "application/json"
+        request = urllib.request.Request(url, data=payload, headers=headers)
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return response.read().decode("utf-8")
 
-    def query(self, function: str, **parameters: str) -> dict:
-        query = urllib.parse.urlencode({"function": function, "apikey": self.api_key, **parameters})
-        with urllib.request.urlopen(f"{API_URL}?{query}", timeout=30) as response:
-            payload = json.load(response)
-        time.sleep(self.delay_seconds)
-        return payload
+    def ticker_for_cusip(self, cusip: str) -> str | None:
+        payload = json.dumps([{"idType": "ID_CUSIP", "idValue": cusip}]).encode()
+        result = json.loads(self.request("https://api.openfigi.com/v3/mapping", payload))
+        rows = result[0].get("data", []) if result else []
+        preferred = next((row for row in rows if row.get("exchCode") == "US" and row.get("marketSector") == "Equity"), None)
+        return preferred.get("ticker") if preferred else None
+
+    def google_quote(self, ticker: str, preferred_exchange: str | None = None):
+        exchanges = ([preferred_exchange] if preferred_exchange else []) + [item for item in EXCHANGES if item != preferred_exchange]
+        for exchange in exchanges:
+            url = "https://www.google.com/finance/quote/" + urllib.parse.quote(f"{ticker}:{exchange}") + "?hl=en"
+            page = self.request(url)
+            if "P/E ratio" in page or "Quarterly dividend" in page or "About" in page:
+                return exchange, page
+        return None, None
 
 
-def enrich(holdings: list[dict], catalog: list[dict], client: AlphaVantageClient, max_new: int) -> list[dict]:
+def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, max_new: int) -> list[dict]:
     by_cusip = {item["cusip"]: item for item in catalog}
-    unique_holdings = {item["cusip"]: item for item in holdings}
-    processed = 0
-    for cusip, holding in unique_holdings.items():
-        if cusip in by_cusip or processed >= max_new:
+    unique = {item["cusip"]: item for item in holdings}
+    new_count = 0
+    for cusip, holding in unique.items():
+        existing = by_cusip.get(cusip, {})
+        ticker = existing.get("ticker")
+        if not ticker:
+            if new_count >= max_new:
+                continue
+            ticker = client.ticker_for_cusip(cusip)
+            new_count += 1
+        if not ticker:
             continue
-        known_ticker = holding.get("ticker")
-        if not known_ticker or known_ticker == cusip:
-            search = client.query("SYMBOL_SEARCH", keywords=holding["company"])
-            known_ticker = select_symbol(search, holding["company"])
-        if not known_ticker:
-            by_cusip[cusip] = {
-                "cusip": cusip, "name": holding["company"], "status": "pending_symbol",
-                "source": "SEC 13F", "updatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            }
-            processed += 1
-            continue
-        overview = client.query("OVERVIEW", symbol=known_ticker)
-        if not overview.get("Symbol"):
-            break  # Usually rate limiting: preserve the remaining queue for the next run.
-        by_cusip[cusip] = profile_from_overview(cusip, holding["company"], known_ticker, overview)
-        processed += 1
+        exchange, page = client.google_quote(ticker, existing.get("exchange"))
+        if page:
+            by_cusip[cusip] = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
+        time.sleep(0.2)
     return sorted(by_cusip.values(), key=lambda item: item.get("name", ""))
 
 
@@ -108,19 +99,14 @@ def main() -> None:
     parser.add_argument("--holdings", type=Path, required=True)
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--max-new", type=int, default=5)
-    parser.add_argument("--api-key", default=os.environ.get("ALPHA_VANTAGE_API_KEY"))
     args = parser.parse_args()
-    if not args.api_key:
-        print("ALPHA_VANTAGE_API_KEY is not configured; skipping company enrichment")
-        return
     source = json.loads(args.holdings.read_text())
     holdings = [holding for investor in source.get("investors", []) for holding in investor.get("holdings", [])]
     catalog = json.loads(args.database.read_text()) if args.database.exists() else []
-    updated = enrich(holdings, catalog, AlphaVantageClient(args.api_key), args.max_new)
+    updated = enrich(holdings, catalog, MarketDataClient(), args.max_new)
     args.database.parent.mkdir(parents=True, exist_ok=True)
     args.database.write_text(json.dumps(updated, indent=2, ensure_ascii=False) + "\n")
 
 
 if __name__ == "__main__":
     main()
-

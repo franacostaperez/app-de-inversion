@@ -48,7 +48,7 @@ class SnapshotTests(unittest.TestCase):
             "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
             "holdings": [{"ticker": "AAA", "cusip": "000000001", "company": "A Co", "shares": 20, "value": 1}]
         }]}
-        companies = [{"ticker": "AAA", "company": "A Co", "sector": "Tech", "yield": 3, "metricsStatus": "verified",
+        companies = [{"ticker": "AAA", "cusip": "000000001", "company": "A Co", "sector": "Tech", "yield": 3, "metricsStatus": "verified",
                       "pe": 15, "payout": 50, "dividendGrowth5Y": 4, "debtToEBITDA": 1,
                       "valuationScore": 80, "dividendScore": 80, "qualityScore": 80}]
         result = build(current, previous, companies)
@@ -59,6 +59,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["opportunities"][0]["franScore"], 76)
         self.assertEqual(result["holdings"][0]["ticker"], "AAA")
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
+        self.assertEqual(result["consensus"][0]["cusip"], "000000001")
+        self.assertIn("opportunityScore", result["consensus"][0])
 
     def test_creates_a_filing_news_summary(self):
         previous = {"investors": [{"id": "x", "holdings": []}]}

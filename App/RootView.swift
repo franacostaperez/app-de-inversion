@@ -68,12 +68,15 @@ private struct FundTabs: View {
 private struct DashboardView: View {
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String
+    @State private var yieldFilter: DividendYieldFilter = .all
 
     private var investor: Investor? {
         snapshot.investors.first(where: { $0.id == selectedInvestorID }) ?? snapshot.investors.first
     }
     private var holdings: [Holding] {
-        snapshot.holdings.filter { $0.investorId == investor?.id }.sorted { $0.value > $1.value }
+        snapshot.holdings
+            .filter { $0.investorId == investor?.id && yieldFilter.matches(yieldPercent(for: $0)) }
+            .sorted { $0.value > $1.value }
     }
     private var movements: [Movement] {
         snapshot.movements.filter { $0.investorId == investor?.id }
@@ -83,6 +86,7 @@ private struct DashboardView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
                 FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
+                DividendYieldFilterPicker(selection: $yieldFilter)
                 WhaleHeader(
                     eyebrow: "GESTOR INSTITUCIONAL",
                     title: investor?.name ?? "Gestor",
@@ -99,7 +103,12 @@ private struct DashboardView: View {
                 VStack(spacing: 0) {
                     HoldingTableHeader()
                     ForEach(Array(holdings.prefix(10).enumerated()), id: \.element.id) { index, holding in
-                        HoldingSummaryRow(rank: index + 1, holding: holding)
+                        HoldingSummaryRow(
+                            rank: index + 1,
+                            holding: holding,
+                            dividendYield: yieldPercent(for: holding),
+                            peRatio: profile(for: holding)?.peRatio
+                        )
                         if index < min(9, holdings.count - 1) { Divider().padding(.leading, 42) }
                     }
                 }
@@ -126,6 +135,50 @@ private struct DashboardView: View {
         if value >= 1_000_000_000 { return String(format: "$%.0fB", value / 1_000_000_000) }
         if value >= 1_000_000 { return String(format: "$%.0fM", value / 1_000_000) }
         return value.formatted(.currency(code: "USD"))
+    }
+
+    private func profile(for holding: Holding) -> CompanyProfile? {
+        snapshot.companyProfiles.first { $0.cusip == holding.cusip }
+    }
+
+    private func yieldPercent(for holding: Holding) -> Double? {
+        profile(for: holding)?.dividendYield.map { $0 * 100 }
+    }
+}
+
+enum DividendYieldFilter: String, CaseIterable, Identifiable {
+    case all = "Todas"
+    case betweenThreeAndFive = "Yield 3–5 %"
+    case aboveFive = "Yield > 5 %"
+    case belowThreeOrNone = "Yield < 3 % o sin dividendo"
+
+    var id: Self { self }
+
+    func matches(_ yield: Double?) -> Bool {
+        switch self {
+        case .all: true
+        case .betweenThreeAndFive: yield.map { $0 >= 3 && $0 <= 5 } ?? false
+        case .aboveFive: yield.map { $0 > 5 } ?? false
+        case .belowThreeOrNone: yield.map { $0 < 3 } ?? true
+        }
+    }
+}
+
+struct DividendYieldFilterPicker: View {
+    @Binding var selection: DividendYieldFilter
+
+    var body: some View {
+        HStack {
+            Label("Filtro de dividendos", systemImage: "line.3.horizontal.decrease.circle")
+                .font(.subheadline.weight(.semibold))
+            Spacer()
+            Picker("Yield", selection: $selection) {
+                ForEach(DividendYieldFilter.allCases) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.menu)
+        }
+        .padding(.horizontal, 12).padding(.vertical, 9)
+        .whalePanel()
     }
 }
 
@@ -246,11 +299,23 @@ private struct HoldingTableHeader: View {
 private struct HoldingSummaryRow: View {
     let rank: Int
     let holding: Holding
+    let dividendYield: Double?
+    let peRatio: Double?
     var body: some View {
         HStack(spacing: 10) {
             Text("\(rank)").font(.caption.bold()).foregroundStyle(.secondary).frame(width: 20)
             VStack(alignment: .leading, spacing: 5) {
                 Text(holding.company).font(.subheadline.weight(.semibold)).lineLimit(1)
+                HStack(spacing: 7) {
+                    if let dividendYield {
+                        Label(dividendYield.formatted(.number.precision(.fractionLength(1))) + "%", systemImage: "dollarsign.circle.fill")
+                            .foregroundStyle(dividendYield > 4 ? WhaleTheme.positive : .secondary)
+                    }
+                    if let peRatio {
+                        Text("PER " + peRatio.formatted(.number.precision(.fractionLength(1))) + "x")
+                    }
+                }
+                .font(.caption2.bold().monospacedDigit())
                 GeometryReader { proxy in
                     Capsule().fill(WhaleTheme.accent.opacity(0.14))
                         .overlay(alignment: .leading) {
