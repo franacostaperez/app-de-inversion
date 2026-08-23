@@ -28,7 +28,13 @@ struct UpdatesView: View {
 
     private var updates: [FilingUpdate] {
         let recent = snapshot.filingUpdates.filter { $0.filingDate >= retentionCutoff }
-        return filter == "all" ? recent : recent.filter { $0.investorId == filter }
+        let filtered = filter == "all" ? recent : recent.filter { $0.investorId == filter }
+        return filtered.sorted {
+            if $0.filingDate != $1.filingDate {
+                return $0.filingDate > $1.filingDate
+            }
+            return $0.investorName.localizedCaseInsensitiveCompare($1.investorName) == .orderedAscending
+        }
     }
 
     private var sortedInvestors: [Investor] {
