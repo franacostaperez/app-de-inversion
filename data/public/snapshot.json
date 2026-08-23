@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-23T19:47:04.790450Z",
+  "generatedAt": "2026-08-23T19:48:17.047296Z",
   "asOfQuarter": "2026-Q2",
   "isDemo": false,
   "opportunities": [],
@@ -144,15 +144,15 @@
       "opportunityScore": 100
     },
     {
-      "ticker": "02079K305",
+      "ticker": "GOOGL",
       "cusip": "02079K305",
       "company": "Alphabet Inc",
       "holders": 10,
       "buying": 6,
       "selling": 5,
-      "yield": null,
-      "pe": null,
-      "opportunityScore": 81
+      "yield": 0.26,
+      "pe": 17.32,
+      "opportunityScore": 93
     },
     {
       "ticker": "023135106",
@@ -372,6 +372,17 @@
       "selling": 2,
       "yield": null,
       "pe": null,
+      "opportunityScore": 61
+    },
+    {
+      "ticker": "GOOG",
+      "cusip": "02079K107",
+      "company": "ALPHABET INC",
+      "holders": 5,
+      "buying": 2,
+      "selling": 3,
+      "yield": 0.26,
+      "pe": 17.17,
       "opportunityScore": 61
     },
     {
@@ -1046,6 +1057,17 @@
       "opportunityScore": 55
     },
     {
+      "ticker": "AXP",
+      "cusip": "025816109",
+      "company": "AMERICAN EXPRESS CO",
+      "holders": 2,
+      "buying": 1,
+      "selling": 0,
+      "yield": 1.13,
+      "pe": 20.4,
+      "opportunityScore": 55
+    },
+    {
       "ticker": "874039100",
       "cusip": "874039100",
       "company": "Taiwan Semiconductor Manufac",
@@ -1222,17 +1244,6 @@
       "opportunityScore": 51
     },
     {
-      "ticker": "02079K107",
-      "cusip": "02079K107",
-      "company": "ALPHABET INC",
-      "holders": 5,
-      "buying": 2,
-      "selling": 3,
-      "yield": null,
-      "pe": null,
-      "opportunityScore": 49
-    },
-    {
       "ticker": "77311W101",
       "cusip": "77311W101",
       "company": "Rocket Cos Inc",
@@ -1327,17 +1338,6 @@
       "holders": 5,
       "buying": 1,
       "selling": 2,
-      "yield": null,
-      "pe": null,
-      "opportunityScore": 49
-    },
-    {
-      "ticker": "025816109",
-      "cusip": "025816109",
-      "company": "AMERICAN EXPRESS CO",
-      "holders": 2,
-      "buying": 1,
-      "selling": 0,
       "yield": null,
       "pe": null,
       "opportunityScore": 49
@@ -1516,6 +1516,28 @@
       "selling": 0,
       "yield": null,
       "pe": null,
+      "opportunityScore": 49
+    },
+    {
+      "ticker": "ALLY",
+      "cusip": "02005N100",
+      "company": "ALLY FINL INC",
+      "holders": 2,
+      "buying": 0,
+      "selling": 2,
+      "yield": 2.8,
+      "pe": 10.11,
+      "opportunityScore": 49
+    },
+    {
+      "ticker": "BAC",
+      "cusip": "060505104",
+      "company": "BANK OF AMER CORP",
+      "holders": 2,
+      "buying": 0,
+      "selling": 2,
+      "yield": 2.07,
+      "pe": 14.32,
       "opportunityScore": 49
     },
     {
@@ -8576,7 +8598,7 @@
       "holders": 3,
       "buying": 1,
       "selling": 2,
-      "yield": 0.35000000000000003,
+      "yield": 0.35,
       "pe": 35.46,
       "opportunityScore": 41
     },
@@ -14068,28 +14090,6 @@
       "yield": null,
       "pe": null,
       "opportunityScore": 33
-    },
-    {
-      "ticker": "02005N100",
-      "cusip": "02005N100",
-      "company": "ALLY FINL INC",
-      "holders": 2,
-      "buying": 0,
-      "selling": 2,
-      "yield": null,
-      "pe": null,
-      "opportunityScore": 31
-    },
-    {
-      "ticker": "060505104",
-      "cusip": "060505104",
-      "company": "BANK OF AMER CORP",
-      "holders": 2,
-      "buying": 0,
-      "selling": 2,
-      "yield": null,
-      "pe": null,
-      "opportunityScore": 31
     },
     {
       "ticker": "23918K108",
@@ -59154,6 +59154,51 @@
   ],
   "companyProfiles": [
     {
+      "cusip": "02005N100",
+      "name": "ALLY FINL INC",
+      "ticker": "ALLY",
+      "exchange": "NYSE",
+      "currency": "USD",
+      "country": "United States",
+      "paysDividend": true,
+      "dividendPerShare": 1.2,
+      "dividendYield": 0.027999999999999997,
+      "peRatio": 10.11,
+      "source": "Google Finance",
+      "status": "enriched",
+      "updatedAt": "2026-08-23T19:48:06.914822Z"
+    },
+    {
+      "cusip": "02079K107",
+      "name": "ALPHABET INC",
+      "ticker": "GOOG",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "country": "United States",
+      "paysDividend": true,
+      "dividendPerShare": 0.88,
+      "dividendYield": 0.0026,
+      "peRatio": 17.17,
+      "source": "Google Finance",
+      "status": "enriched",
+      "updatedAt": "2026-08-23T19:48:08.133313Z"
+    },
+    {
+      "cusip": "025816109",
+      "name": "AMERICAN EXPRESS CO",
+      "ticker": "AXP",
+      "exchange": "NYSE",
+      "currency": "USD",
+      "country": "United States",
+      "paysDividend": true,
+      "dividendPerShare": 3.8,
+      "dividendYield": 0.0113,
+      "peRatio": 20.4,
+      "source": "Google Finance",
+      "status": "enriched",
+      "updatedAt": "2026-08-23T19:48:11.217604Z"
+    },
+    {
       "cusip": "037833100",
       "name": "APPLE INC",
       "ticker": "AAPL",
@@ -59161,11 +59206,42 @@
       "currency": "USD",
       "country": "United States",
       "paysDividend": true,
-      "dividendYield": 0.0035,
+      "dividendPerShare": 1.08,
+      "dividendYield": 0.0034999999999999996,
       "peRatio": 35.46,
       "source": "Google Finance",
       "status": "enriched",
-      "updatedAt": "2026-08-23T20:36:00Z"
+      "updatedAt": "2026-08-23T19:48:12.106503Z"
+    },
+    {
+      "cusip": "02079K305",
+      "name": "Alphabet Inc",
+      "ticker": "GOOGL",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "country": "United States",
+      "paysDividend": true,
+      "dividendPerShare": 0.88,
+      "dividendYield": 0.0026,
+      "peRatio": 17.32,
+      "source": "Google Finance",
+      "status": "enriched",
+      "updatedAt": "2026-08-23T19:48:09.520071Z"
+    },
+    {
+      "cusip": "060505104",
+      "name": "BANK OF AMER CORP",
+      "ticker": "BAC",
+      "exchange": "NYSE",
+      "currency": "USD",
+      "country": "United States",
+      "paysDividend": true,
+      "dividendPerShare": 1.28,
+      "dividendYield": 0.0207,
+      "peRatio": 14.32,
+      "source": "Google Finance",
+      "status": "enriched",
+      "updatedAt": "2026-08-23T19:48:13.858247Z"
     },
     {
       "cusip": "166764100",
@@ -59180,7 +59256,7 @@
       "peRatio": 19.68,
       "source": "Google Finance",
       "status": "enriched",
-      "updatedAt": "2026-08-23T20:36:00Z"
+      "updatedAt": "2026-08-23T19:48:14.753105Z"
     },
     {
       "cusip": "191216100",
@@ -59190,11 +59266,12 @@
       "currency": "USD",
       "country": "United States",
       "paysDividend": true,
+      "dividendPerShare": 2.12,
       "dividendYield": 0.0233,
       "peRatio": 27.44,
       "source": "Google Finance",
       "status": "enriched",
-      "updatedAt": "2026-08-23T20:36:00Z"
+      "updatedAt": "2026-08-23T19:48:15.819365Z"
     },
     {
       "cusip": "500754106",
@@ -59209,7 +59286,7 @@
       "peRatio": null,
       "source": "Google Finance",
       "status": "enriched",
-      "updatedAt": "2026-08-23T20:36:00Z"
+      "updatedAt": "2026-08-23T19:48:16.672363Z"
     }
   ]
 }
