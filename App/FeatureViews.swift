@@ -513,20 +513,38 @@ struct SmartMoneyView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(holdings) { item in
-                        VStack(alignment: .leading, spacing: 7) {
-                            HStack {
-                                Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(1)
-                                Spacer()
-                                Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
-                                    .foregroundStyle(WhaleTheme.accent).bold().monospacedDigit()
+                        NavigationLink {
+                            if let opportunity = opportunity(for: item) {
+                                CompanyDetailView(item: opportunity)
+                            } else {
+                                HoldingDetailView(item: item, quarter: snapshot.asOfQuarter, profile: profile(for: item))
                             }
-                            HStack {
-                                Text(item.shares.formatted(.number.notation(.compactName)) + " acciones")
-                                Spacer()
-                                Text(compactMoney(item.value))
+                        } label: {
+                            VStack(alignment: .leading, spacing: 7) {
+                                HStack {
+                                    Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(1)
+                                    if let yield = dividendYield(for: item), yield > 4 {
+                                        HighYieldBadge(yield: yield)
+                                    }
+                                    Spacer()
+                                    Text(item.weight.formatted(.number.precision(.fractionLength(2))) + "%")
+                                        .foregroundStyle(WhaleTheme.accent).bold().monospacedDigit()
+                                }
+                                HStack(spacing: 10) {
+                                    Text(compactMoney(item.value))
+                                    if let yield = dividendYield(for: item), yield > 0 {
+                                        Label("Yield " + yield.formatted(.number.precision(.fractionLength(1))) + "%",
+                                              systemImage: "dollarsign.circle.fill")
+                                            .foregroundStyle(yield > 4 ? WhaleTheme.positive : .secondary)
+                                    }
+                                    if let pe = peRatio(for: item) {
+                                        Text("PER " + pe.formatted(.number.precision(.fractionLength(1))) + "x")
+                                    }
+                                    Spacer()
+                                }
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                             }
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
                         }
                     }
                 }
@@ -564,6 +582,23 @@ struct SmartMoneyView: View {
     }
     private func color(_ action: MovementAction) -> Color {
         switch action { case .new, .increased: .green; case .reduced: .yellow; case .sold: .red; case .unchanged: .gray }
+    }
+
+    private func profile(for holding: Holding) -> CompanyProfile? {
+        snapshot.companyProfiles.first { $0.cusip == holding.cusip }
+    }
+
+    private func opportunity(for holding: Holding) -> Opportunity? {
+        snapshot.opportunities.first { $0.ticker == holding.ticker }
+    }
+
+    private func dividendYield(for holding: Holding) -> Double? {
+        if let value = profile(for: holding)?.dividendYield { return value * 100 }
+        return opportunity(for: holding)?.yield
+    }
+
+    private func peRatio(for holding: Holding) -> Double? {
+        profile(for: holding)?.peRatio ?? opportunity(for: holding)?.pe
     }
 
 }
