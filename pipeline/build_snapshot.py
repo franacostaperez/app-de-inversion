@@ -428,7 +428,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         consensus_score = max(0, min(5, consensus_score))
         score = dividend_score + valuation_score + profitability_score + roce_score + consensus_score
         consensus_items.append({
-            "ticker": profile.get("ticker", ticker),
+            # Older app builds decoded this field as a required String. Keep an
+            # empty compatibility value when no real ticker has been verified.
+            "ticker": profile.get("ticker") or company.get("ticker") or "",
             "cusip": ticker,
             "company": profile.get("name", company.get("company", consensus_names.get(ticker, holding_name_by_ticker.get(ticker, ticker)))),
             **counts,
