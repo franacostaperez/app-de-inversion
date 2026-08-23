@@ -9,11 +9,11 @@ from pipeline.build_snapshot import (
 class SnapshotTests(unittest.TestCase):
     def test_yield_score_changes_gradually(self):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 3.36, 4, 5, 6, 7.5, 9, 10, 12)]
-        self.assertEqual(scores, [0, 1, 3, 4, 6, 8, 10, 8, 6, 4, 2])
+        self.assertEqual(scores, [0, 2, 5, 6, 11, 14, 18, 15, 11, 7, 4])
 
     def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 52)
-        self.assertLess(valuation_investor_score(12, 18), 52)
+        self.assertEqual(valuation_investor_score(10, 18), 50)
+        self.assertLess(valuation_investor_score(12, 18), 50)
         self.assertLess(valuation_investor_score(17.3, 18), 40)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
@@ -105,8 +105,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 13)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 36)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 10)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 35)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 2)
 
     def test_creates_a_filing_news_summary(self):
@@ -149,7 +149,7 @@ class SnapshotTests(unittest.TestCase):
         }]
         item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
         self.assertEqual(item["dividendGrowth"], 10)
-        self.assertEqual(item["dividendGrowthInvestorScore"], 13)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 7)
 
     def test_sorts_funds_by_portfolio_value(self):
         current = {"quarter": "2026-Q1", "investors": [

@@ -33,9 +33,9 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     if dividend_yield is None or dividend_yield <= 0:
         return 0
     return graduated_score(dividend_yield, [
-        (0, 0), (1, 0), (2, 1), (3, 3), (3.5, 4), (4, 6),
-        (5, 8), (5.5, 9), (6, 10), (6.5, 10), (7, 9),
-        (8, 8), (9, 6), (10, 4), (12, 2), (15, 0), (20, 0),
+        (0, 0), (1, 0), (2, 2), (3, 5), (3.5, 7), (4, 11),
+        (5, 14), (5.5, 16), (6, 18), (6.5, 18), (7, 16),
+        (8, 14), (9, 11), (10, 7), (12, 4), (15, 0), (20, 0),
     ])
 
 
@@ -48,8 +48,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 52), (10, 52), (12, 47), (15, 39), (18, 31),
-        (22, 22), (28, 12), (35, 4), (45, 0),
+        (5, 50), (10, 50), (12, 45), (15, 38), (18, 30),
+        (22, 21), (28, 12), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
@@ -64,7 +64,7 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         adjustment = -3
     else:
         adjustment = -5
-    maximum = 52 if pe <= 10 else 51
+    maximum = 50 if pe <= 10 else 49
     return max(0, min(maximum, base + adjustment))
 
 
@@ -359,17 +359,17 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if yield_score == 0:
             growth_score = 0
         elif dividend_growth is None:
-            growth_score = 3
+            growth_score = 1
         elif dividend_growth < 0 or not dividend_increases:
             growth_score = 0
         elif dividend_growth < 1:
-            growth_score = 3
+            growth_score = 1
         elif dividend_growth < 3:
-            growth_score = 6
+            growth_score = 3
         elif dividend_growth < 7:
-            growth_score = 10
+            growth_score = 5
         else:
-            growth_score = 13
+            growth_score = 7
         dividend_score = yield_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
