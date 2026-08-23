@@ -277,6 +277,7 @@ def main() -> None:
     parser.add_argument("--previous", type=Path, required=True)
     parser.add_argument("--companies", type=Path, required=True)
     parser.add_argument("--company-database", type=Path)
+    parser.add_argument("--qualitative-database", type=Path)
     parser.add_argument("--filings-directory", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -284,6 +285,11 @@ def main() -> None:
     previous = json.loads(args.previous.read_text())
     companies = json.loads(args.companies.read_text())
     profiles = json.loads(args.company_database.read_text()) if args.company_database and args.company_database.exists() else []
+    qualitative = json.loads(args.qualitative_database.read_text()) if args.qualitative_database and args.qualitative_database.exists() else []
+    profiles_by_cusip = {item["cusip"]: item for item in profiles}
+    for research in qualitative:
+        profiles_by_cusip[research["cusip"]] = {**profiles_by_cusip.get(research["cusip"], {}), **research}
+    profiles = sorted(profiles_by_cusip.values(), key=lambda item: item.get("name", ""))
     existing = json.loads(args.output.read_text()) if args.output.exists() else {}
     archived_filings = []
     if args.filings_directory and args.filings_directory.exists():
