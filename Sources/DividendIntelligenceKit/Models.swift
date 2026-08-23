@@ -158,6 +158,7 @@ public struct Holding: Codable, Identifiable, Sendable {
 public struct Opportunity: Codable, Identifiable, Sendable {
     public var id: String { ticker }
     public let ticker: String
+    public let cusip: String?
     public let company: String
     public let sector: String
     public let yield: Double
@@ -206,6 +207,7 @@ public struct Movement: Codable, Identifiable, Sendable {
     public let investorId: String
     public let investorName: String
     public let ticker: String
+    public let cusip: String?
     public let company: String
     public let action: MovementAction
     public let shares: Double

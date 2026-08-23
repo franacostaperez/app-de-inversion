@@ -104,12 +104,21 @@ private struct DashboardView: View {
                 VStack(spacing: 0) {
                     HoldingTableHeader()
                     ForEach(Array(holdings.prefix(10).enumerated()), id: \.element.id) { index, holding in
-                        HoldingSummaryRow(
-                            rank: index + 1,
-                            holding: holding,
-                            dividendYield: yieldPercent(for: holding),
-                            peRatio: profile(for: holding)?.peRatio
-                        )
+                        NavigationLink {
+                            CompanyFinancialOverviewView(
+                                companyName: holding.company,
+                                profile: profile(for: holding),
+                                reports: snapshot.companyReports.filter { $0.cusip == holding.cusip },
+                                holdings: snapshot.holdings.filter { $0.cusip == holding.cusip }
+                            )
+                        } label: {
+                            HoldingSummaryRow(
+                                rank: index + 1,
+                                holding: holding,
+                                dividendYield: yieldPercent(for: holding),
+                                peRatio: profile(for: holding)?.peRatio
+                            )
+                        }.buttonStyle(.plain)
                         if index < min(9, holdings.count - 1) { Divider().padding(.leading, 42) }
                     }
                 }
@@ -118,10 +127,10 @@ private struct DashboardView: View {
                 if !movements.isEmpty {
                     SectionTitle("Actividad del trimestre", detail: investor?.quarter ?? snapshot.asOfQuarter)
                     HStack(spacing: 8) {
-                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
-                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
-                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
-                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
+                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
                     }
                 }
 
@@ -374,13 +383,14 @@ private struct ActivityLink: View {
     let color: Color
     let movements: [Movement]
     let quarter: String
+    let snapshot: AppSnapshot
 
     private var items: [Movement] { movements.filter { $0.action == action } }
     private var companies: [ActivityCompanySummary] { ActivityCompanySummary.group(items) }
 
     var body: some View {
         NavigationLink {
-            QuarterlyActivityView(title: title, action: action, items: companies, quarter: quarter)
+            QuarterlyActivityView(title: title, action: action, items: companies, quarter: quarter, snapshot: snapshot)
         } label: {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
@@ -402,6 +412,7 @@ private struct QuarterlyActivityView: View {
     let action: MovementAction
     let items: [ActivityCompanySummary]
     let quarter: String
+    let snapshot: AppSnapshot
 
     var body: some View {
         Group {
@@ -413,7 +424,14 @@ private struct QuarterlyActivityView: View {
                 )
             } else {
                 List(items) { item in
-                    VStack(alignment: .leading, spacing: 8) {
+                    NavigationLink {
+                        CompanyFinancialOverviewView(
+                            companyName: item.company,
+                            profile: snapshot.companyProfiles.first { $0.cusip == item.cusip },
+                            reports: snapshot.companyReports.filter { $0.cusip == item.cusip },
+                            holdings: snapshot.holdings.filter { $0.cusip == item.cusip }
+                        )
+                    } label: { VStack(alignment: .leading, spacing: 8) {
                         HStack(alignment: .firstTextBaseline) {
                             Text(item.company).font(.headline).lineLimit(2)
                             Spacer()
@@ -437,7 +455,7 @@ private struct QuarterlyActivityView: View {
                             ComparisonValue(label: "DIFERENCIA", value: item.shareDifference, signed: true)
                         }
                         .padding(.top, 3)
-                    }
+                    }}
                     .padding(.vertical, 5)
                     .listRowBackground(WhaleTheme.panel)
                 }
@@ -474,6 +492,7 @@ private struct QuarterlyActivityView: View {
 private struct ActivityCompanySummary: Identifiable {
     let id: String
     let company: String
+    let cusip: String?
     let investors: String
     let shares: Double
     let previousShares: Double
@@ -498,6 +517,7 @@ private struct ActivityCompanySummary: Identifiable {
             return ActivityCompanySummary(
                 id: key,
                 company: rows.first?.company ?? key,
+                cusip: rows.first?.cusip,
                 investors: managers,
                 shares: totalShares,
                 previousShares: previousShares,

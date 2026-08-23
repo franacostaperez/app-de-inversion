@@ -64,7 +64,13 @@ struct UpdatesView: View {
                         ForEach(news) { item in
                             switch item {
                             case .filing(let update): UpdateCard(update: update)
-                            case .companyReport(let report): CompanyReportUpdateCard(report: report)
+                            case .companyReport(let report):
+                                CompanyReportUpdateCard(
+                                    report: report,
+                                    profile: snapshot.companyProfiles.first { $0.cusip == report.cusip },
+                                    reports: snapshot.companyReports.filter { $0.cusip == report.cusip },
+                                    holdings: snapshot.holdings.filter { $0.cusip == report.cusip }
+                                )
                             }
                         }
                     }
@@ -111,10 +117,13 @@ private enum NewsEntry: Identifiable {
 
 private struct CompanyReportUpdateCard: View {
     let report: CompanyReport
+    let profile: CompanyProfile?
+    let reports: [CompanyReport]
+    let holdings: [Holding]
 
     var body: some View {
         NavigationLink {
-            CompanyReportDetailView(report: report)
+            CompanyFinancialOverviewView(companyName: report.companyName, profile: profile, reports: reports, holdings: holdings)
         } label: {
             VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .top) {
@@ -378,15 +387,12 @@ struct CompaniesView: View {
     var body: some View {
         List(holdings) { holding in
             NavigationLink {
-                if let opportunity = snapshot.opportunities.first(where: { $0.ticker == holding.ticker }) {
-                    CompanyDetailView(item: opportunity)
-                } else {
-                    HoldingDetailView(
-                        item: holding,
-                        quarter: snapshot.asOfQuarter,
-                        profile: snapshot.companyProfiles.first(where: { $0.cusip == holding.cusip })
-                    )
-                }
+                CompanyFinancialOverviewView(
+                    companyName: holding.company,
+                    profile: snapshot.companyProfiles.first(where: { $0.cusip == holding.cusip }),
+                    reports: snapshot.companyReports.filter { $0.cusip == holding.cusip },
+                    holdings: snapshot.holdings.filter { $0.cusip == holding.cusip }
+                )
             } label: {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
@@ -775,6 +781,12 @@ private struct OpportunityAnalysisView: View {
                         .font(.system(size: 42)).foregroundStyle(WhaleTheme.accent)
                 }
             }
+            if !reports.isEmpty {
+                Section("Serie financiera completa") {
+                    CompanyFinancialSeriesDashboard(reports: reports)
+                        .listRowInsets(EdgeInsets())
+                }
+            }
             Section("Por qué puede ser una oportunidad") {
                 ForEach(reasons, id: \.self) { reason in
                     Label(reason, systemImage: "checkmark.circle.fill")
@@ -863,6 +875,255 @@ private struct OpportunityAnalysisView: View {
     private func reportDate(_ value: String?) -> String {
         value.map { " · " + $0 } ?? ""
     }
+}
+
+struct CompanyFinancialOverviewView: View {
+    let companyName: String
+    let profile: CompanyProfile?
+    let reports: [CompanyReport]
+    var holdings: [Holding] = []
+
+    private var latest: CompanyReport? { reports.max { $0.reportDate < $1.reportDate } }
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("EMPRESA").font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(.white.opacity(0.65))
+                    Text(profile?.name ?? companyName).font(.title2.bold()).foregroundStyle(.white)
+                    HStack(spacing: 12) {
+                        if let sector = profile?.sector { Label(sector, systemImage: "square.grid.2x2") }
+                        if let date = latest?.reportDate { Label(date.formatted(date: .abbreviated, time: .omitted), systemImage: "calendar") }
+                    }
+                    .font(.caption).foregroundStyle(.white.opacity(0.72))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(18)
+                .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 15))
+
+                if let profile {
+                    HStack(spacing: 8) {
+                        overviewMetric("YIELD", profile.dividendYield.map { $0.formatted(.percent.precision(.fractionLength(1))) } ?? "—", "leaf.fill")
+                        overviewMetric("PER", profile.peRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—", "chart.line.uptrend.xyaxis")
+                        overviewMetric("INFORMES", "\(reports.count)", "doc.text.fill")
+                    }
+                }
+
+                if !holdings.isEmpty {
+                    SectionTitle("Fondos con posición", detail: "\(holdings.count)")
+                    VStack(spacing: 0) {
+                        ForEach(holdings.sorted { $0.value > $1.value }) { holding in
+                            HStack {
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(holding.investorName).font(.subheadline.weight(.semibold))
+                                    Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + "% de su cartera")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Text(compactMoney(holding.value)).font(.caption.bold().monospacedDigit())
+                            }.padding(12)
+                            if holding.id != holdings.sorted(by: { $0.value > $1.value }).last?.id { Divider() }
+                        }
+                    }.whalePanel()
+                }
+
+                if !reports.isEmpty {
+                    SectionTitle("Evolución financiera", detail: "Serie completa disponible")
+                    CompanyFinancialSeriesDashboard(reports: reports)
+                } else {
+                    ContentUnavailableView("Sin resultados financieros", systemImage: "chart.xyaxis.line", description: Text("El agente añadirá las series cuando exista información estructurada en la SEC."))
+                        .padding().whalePanel()
+                }
+
+                if let profile {
+                    if let description = profile.description { textPanel("A qué se dedica", description, "building.2") }
+                    if let model = profile.businessModel { textPanel("Modelo de negocio", model, "gearshape.2") }
+                    if let revenue = profile.revenueModel { textPanel("Cómo gana dinero", revenue, "banknote") }
+                    if let moat = profile.economicMoat { textPanel("Foso defensivo", moat, "shield.lefthalf.filled") }
+                }
+
+                if !reports.isEmpty {
+                    SectionTitle("Informes oficiales", detail: "Más reciente primero")
+                    VStack(spacing: 0) {
+                        ForEach(reports.sorted { $0.filingDate > $1.filingDate }) { report in
+                            NavigationLink {
+                                CompanyReportDetailView(report: report)
+                            } label: {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text(report.form).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+                                        Text("Periodo " + report.reportDate.formatted(date: .abbreviated, time: .omitted))
+                                            .font(.subheadline).foregroundStyle(.primary)
+                                    }
+                                    Spacer()
+                                    Text(report.filingDate.formatted(date: .numeric, time: .omitted)).font(.caption).foregroundStyle(.secondary)
+                                    Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.tertiary)
+                                }.padding(12)
+                            }.buttonStyle(.plain)
+                            if report.id != reports.sorted(by: { $0.filingDate > $1.filingDate }).last?.id { Divider() }
+                        }
+                    }.whalePanel()
+                }
+            }
+            .padding(16)
+        }
+        .background(WhaleTheme.background.ignoresSafeArea())
+        .navigationTitle(profile?.name ?? companyName)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func overviewMetric(_ label: String, _ value: String, _ icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Image(systemName: icon).font(.caption).foregroundStyle(WhaleTheme.accent)
+            Text(value).font(.headline.bold().monospacedDigit())
+            Text(label).font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+        }.frame(maxWidth: .infinity, alignment: .leading).padding(12).whalePanel()
+    }
+
+    private func textPanel(_ title: String, _ text: String, _ icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(title, systemImage: icon).font(.headline)
+            Text(text).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        }.frame(maxWidth: .infinity, alignment: .leading).padding(15).whalePanel()
+    }
+}
+
+private struct FinancialSeriesPoint: Identifiable {
+    let metric: String
+    let date: Date
+    let value: Double
+    var id: String { metric + "-" + date.ISO8601Format() }
+}
+
+private struct MarginSeriesPoint: Identifiable {
+    let metric: String
+    let date: Date
+    let value: Double
+    var id: String { metric + "-" + date.ISO8601Format() }
+}
+
+struct CompanyFinancialSeriesDashboard: View {
+    let reports: [CompanyReport]
+
+    var body: some View {
+        VStack(spacing: 14) {
+            groupedChart("Resultados anuales", subtitle: "Ingresos · gastos · beneficio neto", points: resultPoints(annual: true))
+            groupedChart("Resultados trimestrales", subtitle: "Periodos de hasta 120 días", points: resultPoints(annual: false))
+            marginChart
+            groupedChart("Balance", subtitle: "Deuda y efectivo al cierre", points: instantPoints(keys: ["totalDebt", "cash"]))
+            groupedChart("Generación de caja", subtitle: "Caja operativa e inversión", points: cashFlowPoints)
+        }
+    }
+
+    private var merged: [String: [FinancialPeriod]] {
+        var values: [String: [String: FinancialPeriod]] = [:]
+        for report in reports.sorted(by: { $0.filingDate < $1.filingDate }) {
+            for (metric, series) in report.metrics {
+                for period in series.periods {
+                    let key = (period.startDate ?? "instant") + "-" + period.endDate
+                    values[metric, default: [:]][key] = period
+                }
+            }
+        }
+        return values.mapValues { $0.values.sorted { $0.endDate < $1.endDate } }
+    }
+
+    private func resultPoints(annual: Bool) -> [FinancialSeriesPoint] {
+        points(keys: ["revenue", "operatingExpenses", "netIncome"]) { period in
+            guard let days = duration(period) else { return false }
+            return annual ? days >= 250 : days >= 45 && days <= 120
+        }
+    }
+
+    private var cashFlowPoints: [FinancialSeriesPoint] {
+        let annual = points(keys: ["cashFromOperations", "capitalExpenditure"]) { (duration($0) ?? 0) >= 250 }
+        return annual.isEmpty
+            ? points(keys: ["cashFromOperations", "capitalExpenditure"]) { let days = duration($0) ?? 0; return days >= 45 && days <= 120 }
+            : annual
+    }
+
+    private func instantPoints(keys: [String]) -> [FinancialSeriesPoint] {
+        points(keys: keys) { $0.startDate == nil }
+    }
+
+    private func points(keys: [String], include: (FinancialPeriod) -> Bool) -> [FinancialSeriesPoint] {
+        keys.flatMap { key in
+            (merged[key] ?? []).compactMap { period in
+                guard include(period), let date = financialDate(period.endDate) else { return nil }
+                return FinancialSeriesPoint(metric: metricLabel(key), date: date, value: period.value)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func groupedChart(_ title: String, subtitle: String, points: [FinancialSeriesPoint]) -> some View {
+        if !points.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(title).font(.headline)
+                Text(subtitle).font(.caption).foregroundStyle(.secondary)
+                Chart(points) { point in
+                    BarMark(x: .value("Periodo", point.date), y: .value("Valor", point.value))
+                        .foregroundStyle(by: .value("Métrica", point.metric))
+                        .position(by: .value("Métrica", point.metric))
+                }
+                .chartForegroundStyleScale([
+                    "Ingresos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
+                    "Deuda": WhaleTheme.negative, "Efectivo": WhaleTheme.accent,
+                    "Caja operativa": WhaleTheme.positive, "Inversión": WhaleTheme.info
+                ])
+                .chartYAxis { AxisMarks(position: .leading, values: .automatic(desiredCount: 4)) { value in
+                    AxisGridLine(); AxisValueLabel { if let amount = value.as(Double.self) { Text(compactMoney(amount)) } }
+                }}
+                .frame(height: 230)
+            }.padding(15).whalePanel()
+        }
+    }
+
+    private var marginChart: some View {
+        let values = marginPoints
+        return Group {
+            if !values.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Evolución de márgenes").font(.headline)
+                    Text("Margen operativo y neto comparables").font(.caption).foregroundStyle(.secondary)
+                    Chart(values) { point in
+                        LineMark(x: .value("Periodo", point.date), y: .value("Margen", point.value))
+                            .foregroundStyle(by: .value("Métrica", point.metric)).interpolationMethod(.catmullRom)
+                        PointMark(x: .value("Periodo", point.date), y: .value("Margen", point.value))
+                            .foregroundStyle(by: .value("Métrica", point.metric))
+                    }
+                    .chartYAxis { AxisMarks(format: Decimal.FormatStyle.Percent.percent.scale(1)) }
+                    .frame(height: 210)
+                }.padding(15).whalePanel()
+            }
+        }
+    }
+
+    private var marginPoints: [MarginSeriesPoint] {
+        let revenue = Dictionary(uniqueKeysWithValues: (merged["revenue"] ?? []).map { (periodKey($0), $0) })
+        return [("operatingIncome", "Margen operativo"), ("netIncome", "Margen neto")].flatMap { key, label in
+            (merged[key] ?? []).compactMap { period in
+                guard let base = revenue[periodKey(period)], base.value != 0, let date = financialDate(period.endDate) else { return nil }
+                return MarginSeriesPoint(metric: label, date: date, value: period.value / base.value)
+            }
+        }
+    }
+
+    private func periodKey(_ period: FinancialPeriod) -> String { (period.startDate ?? "instant") + "-" + period.endDate }
+    private func duration(_ period: FinancialPeriod) -> Int? {
+        guard let start = period.startDate.flatMap(financialDate), let end = financialDate(period.endDate) else { return nil }
+        return Calendar.current.dateComponents([.day], from: start, to: end).day
+    }
+    private func metricLabel(_ key: String) -> String {
+        ["revenue": "Ingresos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión"][key] ?? key
+    }
+}
+
+private func financialDate(_ value: String) -> Date? {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.dateFormat = "yyyy-MM-dd"
+    return formatter.date(from: value)
 }
 
 struct CompanyReportDetailView: View {

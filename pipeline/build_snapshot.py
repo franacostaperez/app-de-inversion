@@ -207,6 +207,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                     "investorId": investor["id"],
                     "investorName": investor["name"],
                     "ticker": ticker,
+                    "cusip": holding.get("cusip", security_id),
                     "company": holding.get("company", ticker),
                     "action": action,
                     "shares": new_shares,
@@ -317,7 +318,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
         "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
-        "companyReports": sorted(company_reports or [], key=lambda item: item["filingDate"], reverse=True),
+        "companyReports": sorted(
+            company_reports or [],
+            key=lambda item: (item["filingDate"], item.get("accessionNumber", ""), item.get("cusip", "")),
+            reverse=True,
+        ),
     }
 
 
