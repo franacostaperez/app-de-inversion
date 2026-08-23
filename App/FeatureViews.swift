@@ -999,7 +999,9 @@ private struct MarginSeriesPoint: Identifiable {
     let metric: String
     let date: Date
     let value: Double
-    var id: String { metric + "-" + date.ISO8601Format() }
+    let annual: Bool
+    let quarter: Bool
+    var id: String { metric + "-" + date.ISO8601Format() + "-\(annual)-\(quarter)" }
 }
 
 struct CompanyFinancialSeriesDashboard: View {
@@ -1007,9 +1009,10 @@ struct CompanyFinancialSeriesDashboard: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            groupedChart("Resultados anuales", subtitle: "Ingresos · gastos · beneficio neto", points: resultPoints(annual: true))
-            groupedChart("Resultados trimestrales", subtitle: "Periodos de hasta 120 días", points: resultPoints(annual: false))
-            marginChart
+            groupedChart("Resultados anuales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints(annual: true))
+            marginChart(title: "Márgenes anuales", annual: true)
+            groupedChart("Resultados trimestrales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints(annual: false))
+            marginChart(title: "Márgenes trimestrales", annual: false)
             groupedChart("Balance", subtitle: "Deuda y efectivo al cierre", points: instantPoints(keys: ["totalDebt", "cash"]))
             groupedChart("Generación de caja", subtitle: "Caja operativa e inversión", points: cashFlowPoints)
         }
@@ -1030,15 +1033,14 @@ struct CompanyFinancialSeriesDashboard: View {
 
     private func resultPoints(annual: Bool) -> [FinancialSeriesPoint] {
         points(keys: ["revenue", "operatingExpenses", "netIncome"]) { period in
-            guard let days = duration(period) else { return false }
-            return annual ? days >= 250 : days >= 45 && days <= 120
+            annual ? isAnnual(period) : isQuarter(period)
         }
     }
 
     private var cashFlowPoints: [FinancialSeriesPoint] {
-        let annual = points(keys: ["cashFromOperations", "capitalExpenditure"]) { (duration($0) ?? 0) >= 250 }
+        let annual = points(keys: ["cashFromOperations", "capitalExpenditure"]) { isAnnual($0) }
         return annual.isEmpty
-            ? points(keys: ["cashFromOperations", "capitalExpenditure"]) { let days = duration($0) ?? 0; return days >= 45 && days <= 120 }
+            ? points(keys: ["cashFromOperations", "capitalExpenditure"]) { isQuarter($0) }
             : annual
     }
 
@@ -1048,7 +1050,7 @@ struct CompanyFinancialSeriesDashboard: View {
 
     private func points(keys: [String], include: (FinancialPeriod) -> Bool) -> [FinancialSeriesPoint] {
         keys.flatMap { key in
-            (merged[key] ?? []).compactMap { period in
+            metricPeriods(key).compactMap { period in
                 guard include(period), let date = financialDate(period.endDate) else { return nil }
                 return FinancialSeriesPoint(metric: metricLabel(key), date: date, value: period.value)
             }
@@ -1062,9 +1064,11 @@ struct CompanyFinancialSeriesDashboard: View {
                 Text(title).font(.headline)
                 Text(subtitle).font(.caption).foregroundStyle(.secondary)
                 Chart(points) { point in
-                    BarMark(x: .value("Periodo", point.date), y: .value("Valor", point.value))
+                    LineMark(x: .value("Periodo", point.date), y: .value("Valor", point.value))
                         .foregroundStyle(by: .value("Métrica", point.metric))
-                        .position(by: .value("Métrica", point.metric))
+                        .lineStyle(StrokeStyle(lineWidth: point.metric == "Beneficio neto" ? 3 : 2))
+                    PointMark(x: .value("Periodo", point.date), y: .value("Valor", point.value))
+                        .foregroundStyle(by: .value("Métrica", point.metric))
                 }
                 .chartForegroundStyleScale([
                     "Ingresos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
@@ -1074,17 +1078,18 @@ struct CompanyFinancialSeriesDashboard: View {
                 .chartYAxis { AxisMarks(position: .leading, values: .automatic(desiredCount: 4)) { value in
                     AxisGridLine(); AxisValueLabel { if let amount = value.as(Double.self) { Text(compactMoney(amount)) } }
                 }}
+                .chartYScale(domain: .automatic(includesZero: true))
                 .frame(height: 230)
             }.padding(15).whalePanel()
         }
     }
 
-    private var marginChart: some View {
-        let values = marginPoints
+    private func marginChart(title: String, annual: Bool) -> some View {
+        let values = marginPoints.filter { annual ? $0.annual : $0.quarter }
         return Group {
             if !values.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Evolución de márgenes").font(.headline)
+                    Text(title).font(.headline)
                     Text("Margen operativo y neto comparables").font(.caption).foregroundStyle(.secondary)
                     Chart(values) { point in
                         LineMark(x: .value("Periodo", point.date), y: .value("Margen", point.value))
@@ -1104,15 +1109,46 @@ struct CompanyFinancialSeriesDashboard: View {
         return [("operatingIncome", "Margen operativo"), ("netIncome", "Margen neto")].flatMap { key, label in
             (merged[key] ?? []).compactMap { period in
                 guard let base = revenue[periodKey(period)], base.value != 0, let date = financialDate(period.endDate) else { return nil }
-                return MarginSeriesPoint(metric: label, date: date, value: period.value / base.value)
+                return MarginSeriesPoint(
+                    metric: label,
+                    date: date,
+                    value: period.value / base.value,
+                    annual: isAnnual(period),
+                    quarter: isQuarter(period)
+                )
             }
         }
+    }
+
+    private func metricPeriods(_ key: String) -> [FinancialPeriod] {
+        guard key == "operatingExpenses" else { return merged[key] ?? [] }
+        let revenue = Dictionary(uniqueKeysWithValues: (merged["revenue"] ?? []).map { (periodKey($0), $0) })
+        let operatingIncome = Dictionary(uniqueKeysWithValues: (merged["operatingIncome"] ?? []).map { (periodKey($0), $0) })
+        return revenue.compactMap { key, revenuePeriod in
+            guard let income = operatingIncome[key] else { return nil }
+            return FinancialPeriod(
+                startDate: revenuePeriod.startDate,
+                endDate: revenuePeriod.endDate,
+                value: revenuePeriod.value - income.value,
+                unit: revenuePeriod.unit,
+                fiscalYear: revenuePeriod.fiscalYear,
+                fiscalPeriod: revenuePeriod.fiscalPeriod,
+                frame: revenuePeriod.frame
+            )
+        }.sorted { $0.endDate < $1.endDate }
     }
 
     private func periodKey(_ period: FinancialPeriod) -> String { (period.startDate ?? "instant") + "-" + period.endDate }
     private func duration(_ period: FinancialPeriod) -> Int? {
         guard let start = period.startDate.flatMap(financialDate), let end = financialDate(period.endDate) else { return nil }
         return Calendar.current.dateComponents([.day], from: start, to: end).day
+    }
+    private func isAnnual(_ period: FinancialPeriod) -> Bool {
+        period.fiscalPeriod == "FY" && (duration(period) ?? 0) >= 300
+    }
+    private func isQuarter(_ period: FinancialPeriod) -> Bool {
+        let days = duration(period) ?? 0
+        return period.fiscalPeriod != "FY" && days >= 70 && days <= 120
     }
     private func metricLabel(_ key: String) -> String {
         ["revenue": "Ingresos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión"][key] ?? key
