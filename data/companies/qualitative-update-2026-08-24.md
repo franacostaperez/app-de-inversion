@@ -1,9 +1,15 @@
 # Fichas cualitativas añadidas el 24 de agosto de 2026
 
-Total: 404
+Total: 410
 
 - 10X GENOMICS INC (TXG)
+- 3M CO (MMM)
+- AAON INC (AAON)
+- AAR CORP (AIR)
+- ABBVIE INC (ABBV)
 - ABBOTT LABORATORIES (ABT)
+- ABERCROMBIE & FITCH CO (ANF)
+- ABM INDS INC (ABM)
 - ACADIA RLTY TR (ticker pendiente)
 - ACADIAN ASSET MANAGEMENT INC (ticker pendiente)
 - ACCELERANT HOLDINGS (ticker pendiente)

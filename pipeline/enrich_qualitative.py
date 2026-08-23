@@ -69,6 +69,13 @@ def main() -> None:
     for investor in source.get("investors", []):
         for holding in investor.get("holdings", []):
             holdings.setdefault(holding["cusip"], holding)
+    # Keep profiles complete for the entire known company catalogue, including
+    # companies that have moved out of the latest 13F reporting window.
+    for cusip, company in market.items():
+        holdings.setdefault(cusip, {
+            "cusip": cusip,
+            "company": company.get("name") or company.get("ticker") or "Empresa",
+        })
     for cusip, holding in holdings.items():
         generated = fallback_profile(holding, market.get(cusip, {}))
         if cusip not in by_cusip:
