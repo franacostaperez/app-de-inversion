@@ -15,13 +15,20 @@
     "operatingIncome": 145000000,
     "netIncome": 108000000,
     "operatingMargin": 20.03,
+    "roce": 6.49,
     "netMargin": 14.92,
     "totalDebt": null,
     "cash": 244000000,
     "cashFromOperations": 105000000,
-    "capitalExpenditure": 41000000
+    "capitalExpenditure": 41000000,
+    "dividendsPaid": 19000000,
+    "dividendPerShare": 0.26,
+    "epsDiluted": 1.48,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 17.59
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +24.0% frente al periodo comparable. El beneficio neto varió un +0.0% frente al periodo comparable. El margen neto del periodo más reciente es 14.9%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +24.0% frente al periodo comparable. El beneficio neto varió un +0.0% frente al periodo comparable. El margen neto del periodo más reciente es 14.9%. El ROCE estimado del periodo más reciente es 6.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 17.6%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -294,6 +301,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 259000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-03-31",
+          "value": 254000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -361,6 +391,52 @@
           "endDate": "2024-03-31",
           "value": 1.48,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareCashPaid",
+      "periods": [
+        {
+          "startDate": "2022-10-01",
+          "endDate": "2022-12-31",
+          "value": 0.24,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2022Q4"
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2023-12-31",
+          "value": 0.26,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2023Q4"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2022-07-01",
+          "endDate": "2022-09-30",
+          "value": 17000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2022Q3"
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-30",
+          "value": 19000000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",
           "frame": null

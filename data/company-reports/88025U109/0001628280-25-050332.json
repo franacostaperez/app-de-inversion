@@ -15,13 +15,20 @@
     "operatingIncome": -32242000,
     "netIncome": -27472000,
     "operatingMargin": -21.64,
+    "roce": -3.66,
     "netMargin": -18.44,
     "totalDebt": null,
     "cash": 432709000,
     "cashFromOperations": 95273000,
-    "capitalExpenditure": 4158000
+    "capitalExpenditure": 4158000,
+    "dividendsPaid": null,
+    "dividendPerShare": null,
+    "epsDiluted": -0.22,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -1.8% frente al periodo comparable. El beneficio neto varió un -179.5% frente al periodo comparable. El margen neto del periodo más reciente es -18.4%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -1.8% frente al periodo comparable. El beneficio neto varió un -179.5% frente al periodo comparable. El margen neto del periodo más reciente es -18.4%. El ROCE estimado del periodo más reciente es -3.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -431,6 +438,29 @@
           "startDate": null,
           "endDate": "2025-09-30",
           "value": 242241000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 117633000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-09-30",
+          "value": 147324000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",

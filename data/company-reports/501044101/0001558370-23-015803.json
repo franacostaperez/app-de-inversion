@@ -15,13 +15,20 @@
     "operatingIncome": -479000000,
     "netIncome": -180000000,
     "operatingMargin": -1.41,
+    "roce": -1.42,
     "netMargin": -0.53,
     "totalDebt": 10688000000,
     "cash": 2420000000,
     "cashFromOperations": 4364000000,
-    "capitalExpenditure": null
+    "capitalExpenditure": null,
+    "dividendsPaid": 376000000,
+    "dividendPerShare": 0.29,
+    "epsDiluted": -0.25,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -2.3% frente al periodo comparable. El beneficio neto varió un -124.6% frente al periodo comparable. El margen neto del periodo más reciente es -0.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -2.3% frente al periodo comparable. El beneficio neto varió un -124.6% frente al periodo comparable. El margen neto del periodo más reciente es -0.5%. El ROCE estimado del periodo más reciente es -1.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -279,6 +286,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-01-28",
+          "value": 17238000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-08-12",
+          "value": 16537000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -406,6 +436,88 @@
           "endDate": "2023-08-12",
           "value": -0.25,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2022-01-30",
+          "endDate": "2022-05-21",
+          "value": 0.21,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2022-05-22",
+          "endDate": "2022-08-13",
+          "value": 0.26,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2022-08-14",
+          "endDate": "2022-11-05",
+          "value": 0.26,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2022-11-06",
+          "endDate": "2023-01-28",
+          "value": 0.26,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-29",
+          "endDate": "2023-05-20",
+          "value": 0.26,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2023-05-21",
+          "endDate": "2023-08-12",
+          "value": 0.29,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2022-01-30",
+          "endDate": "2022-08-13",
+          "value": 307000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-29",
+          "endDate": "2023-08-12",
+          "value": 376000000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q2",
           "frame": null

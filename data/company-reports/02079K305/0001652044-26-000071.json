@@ -1,7 +1,7 @@
 {
   "cusip": "02079K305",
   "ticker": "GOOGL",
-  "companyName": "Alphabet Inc",
+  "companyName": "ALPHABET INC",
   "cik": "1652044",
   "accessionNumber": "0001652044-26-000071",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": 40770000000,
     "netIncome": 112193000000,
     "operatingMargin": 34.03,
+    "roce": 5.12,
     "netMargin": 93.65,
     "totalDebt": 100164000000,
     "cash": 55911000000,
     "cashFromOperations": 84859000000,
-    "capitalExpenditure": 80598000000
+    "capitalExpenditure": 80598000000,
+    "dividendsPaid": 5231000000,
+    "dividendPerShare": 0.22,
+    "epsDiluted": 9.11,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 4.66
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +24.2% frente al periodo comparable. El beneficio neto varió un +297.9% frente al periodo comparable. El margen neto del periodo más reciente es 93.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +24.2% frente al periodo comparable. El beneficio neto varió un +297.9% frente al periodo comparable. El margen neto del periodo más reciente es 93.7%. El ROCE estimado del periodo más reciente es 5.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 4.7%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -343,6 +350,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 102745000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2025Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 126111000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -486,6 +516,79 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 0.41,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-04-01",
+          "endDate": "2025-06-30",
+          "value": 0.21,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2025Q2"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-03-31",
+          "value": 0.21,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2026Q1"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 0.43,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2026-04-01",
+          "endDate": "2026-06-30",
+          "value": 0.22,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2026Q2"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfOrdinaryDividends",
+      "periods": [
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 4977000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 5231000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

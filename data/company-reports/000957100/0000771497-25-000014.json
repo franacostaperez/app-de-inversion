@@ -15,13 +15,20 @@
     "operatingIncome": 82300000,
     "netIncome": 42200000,
     "operatingMargin": 3.9,
+    "roce": 2.05,
     "netMargin": 2.0,
     "totalDebt": 1521800000,
     "cash": 58700000,
     "cashFromOperations": -73900000,
-    "capitalExpenditure": 33800000
+    "capitalExpenditure": 33800000,
+    "dividendsPaid": 32900000,
+    "dividendPerShare": 0.265,
+    "epsDiluted": 0.67,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 77.96
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +4.6% frente al periodo comparable. El beneficio neto varió un -3.6% frente al periodo comparable. El margen neto del periodo más reciente es 2.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +4.6% frente al periodo comparable. El beneficio neto varió un -3.6% frente al periodo comparable. El margen neto del periodo más reciente es 2.0%. El ROCE estimado del periodo más reciente es 2.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 78.0%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -302,6 +309,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-10-31",
+          "value": 1348400000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-04-30",
+          "value": 1299800000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2025Q1I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -392,6 +422,70 @@
           "endDate": "2025-04-30",
           "value": 0.67,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-11-01",
+          "endDate": "2024-04-30",
+          "value": 0.45,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2024-02-01",
+          "endDate": "2024-04-30",
+          "value": 0.225,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2024Q1"
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2025-04-30",
+          "value": 0.53,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-02-01",
+          "endDate": "2025-04-30",
+          "value": 0.265,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2023-11-01",
+          "endDate": "2024-04-30",
+          "value": 28300000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2025-04-30",
+          "value": 32900000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
           "frame": null

@@ -15,13 +15,20 @@
     "operatingIncome": 25352000000,
     "netIncome": 21448000000,
     "operatingMargin": 29.56,
+    "roce": 12.68,
     "netMargin": 25.0,
     "totalDebt": 98310000000,
     "cash": 25565000000,
     "cashFromOperations": 91443000000,
-    "capitalExpenditure": 6539000000
+    "capitalExpenditure": 6539000000,
+    "dividendsPaid": 11430000000,
+    "dividendPerShare": 0.25,
+    "epsDiluted": 1.4,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 53.29
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +4.9% frente al periodo comparable. El beneficio neto varió un +7.9% frente al periodo comparable. El margen neto del periodo más reciente es 25.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +4.9% frente al periodo comparable. El beneficio neto varió un +7.9% frente al periodo comparable. El margen neto del periodo más reciente es 25.0%. El ROCE estimado del periodo más reciente es 12.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 53.3%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -384,6 +391,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 145308000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-29",
+          "value": 131624000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -547,6 +577,70 @@
           "endDate": "2024-06-29",
           "value": 1.4,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2022-09-25",
+          "endDate": "2023-07-01",
+          "value": 0.7,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-02",
+          "endDate": "2023-07-01",
+          "value": 0.24,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2024-06-29",
+          "value": 0.73,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-03-31",
+          "endDate": "2024-06-29",
+          "value": 0.25,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2022-09-25",
+          "endDate": "2023-07-01",
+          "value": 11267000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2024-06-29",
+          "value": 11430000000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
           "frame": null

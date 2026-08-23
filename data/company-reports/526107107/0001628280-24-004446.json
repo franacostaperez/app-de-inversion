@@ -15,6 +15,7 @@
     "operatingIncome": 790100000,
     "netIncome": 590100000,
     "operatingMargin": 15.86,
+    "roce": 44.3,
     "netMargin": 11.84,
     "totalDebt": 12100000,
     "cash": 60700000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 250200000,
     "dividendsPaid": 153400000,
     "dividendPerShare": 4.36,
+    "epsDiluted": 16.54,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 26.0
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.6% frente al periodo comparable. El beneficio neto varió un +18.7% frente al periodo comparable. El margen neto del periodo más reciente es 11.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 26.0%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.6% frente al periodo comparable. El beneficio neto varió un +18.7% frente al periodo comparable. El margen neto del periodo más reciente es 11.8%. El ROCE estimado del periodo más reciente es 44.3%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 26.0%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -353,6 +357,29 @@
           "startDate": null,
           "endDate": "2023-12-31",
           "value": 2513000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 1595700000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 1014600000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

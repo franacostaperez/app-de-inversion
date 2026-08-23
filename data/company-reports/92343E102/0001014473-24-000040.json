@@ -15,13 +15,20 @@
     "operatingIncome": 269300000,
     "netIncome": 201300000,
     "operatingMargin": 68.95,
+    "roce": -419.47,
     "netMargin": 51.54,
     "totalDebt": null,
     "cash": 267300000,
     "cashFromOperations": 671100000,
-    "capitalExpenditure": 18600000
+    "capitalExpenditure": 18600000,
+    "dividendsPaid": null,
+    "dividendPerShare": null,
+    "epsDiluted": null,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.8% frente al periodo comparable. El beneficio neto varió un +6.8% frente al periodo comparable. El margen neto del periodo más reciente es 51.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.8% frente al periodo comparable. El beneficio neto varió un +6.8% frente al periodo comparable. El margen neto del periodo más reciente es 51.5%. El ROCE estimado del periodo más reciente es -419.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -377,6 +384,29 @@
           "startDate": null,
           "endDate": "2024-09-30",
           "value": 3362600000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 1188500000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-09-30",
+          "value": 1526200000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",

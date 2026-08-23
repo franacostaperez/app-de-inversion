@@ -1,7 +1,7 @@
 {
   "cusip": "166764100",
   "ticker": "CVX",
-  "companyName": "CHEVRON CORPORATION",
+  "companyName": "CHEVRON CORP",
   "cik": "93410",
   "accessionNumber": "0000093410-26-000113",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": null,
     "netIncome": 2210000000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 4.65,
     "totalDebt": 5828000000,
     "cash": 6316000000,
     "cashFromOperations": 2514000000,
-    "capitalExpenditure": null
+    "capitalExpenditure": null,
+    "dividendsPaid": 3526000000,
+    "dividendPerShare": 1.78,
+    "epsDiluted": 1.11,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 159.55
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.2% frente al periodo comparable. El beneficio neto varió un -36.9% frente al periodo comparable. El margen neto del periodo más reciente es 4.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.2% frente al periodo comparable. El beneficio neto varió un -36.9% frente al periodo comparable. El margen neto del periodo más reciente es 4.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 159.6%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -225,6 +232,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 33387000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-03-31",
+          "value": 42176000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -288,6 +318,52 @@
           "endDate": "2026-03-31",
           "value": 1.11,
           "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 1.71,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q1"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-03-31",
+          "value": 1.78,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 2984000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q1"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-03-31",
+          "value": 3526000000,
+          "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",
           "frame": "CY2026Q1"

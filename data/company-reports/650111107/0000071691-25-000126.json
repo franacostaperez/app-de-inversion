@@ -15,13 +15,20 @@
     "operatingIncome": 104788000,
     "netIncome": 81647000,
     "operatingMargin": 14.95,
+    "roce": 4.61,
     "netMargin": 11.65,
     "totalDebt": null,
     "cash": 249339000,
     "cashFromOperations": 420334000,
-    "capitalExpenditure": 27451000
+    "capitalExpenditure": 27451000,
+    "dividendsPaid": 81073000,
+    "dividendPerShare": 0.18,
+    "epsDiluted": 0.5,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 99.3
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +9.5% frente al periodo comparable. El beneficio neto varió un +27.3% frente al periodo comparable. El margen neto del periodo más reciente es 11.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +9.5% frente al periodo comparable. El beneficio neto varió un +27.3% frente al periodo comparable. El margen neto del periodo más reciente es 11.7%. El ROCE estimado del periodo más reciente es 4.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 99.3%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -288,6 +295,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 613529000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-09-30",
+          "value": 615489000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -349,6 +379,70 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": "CY2025Q3"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 0.39,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 0.13,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-09-30",
+          "value": 0.54,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": 0.18,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 61500000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-09-30",
+          "value": 81073000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
         }
       ]
     }

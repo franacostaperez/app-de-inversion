@@ -15,13 +15,20 @@
     "operatingIncome": 269000000,
     "netIncome": 265000000,
     "operatingMargin": 4.61,
+    "roce": 0.44,
     "netMargin": 4.54,
     "totalDebt": 1719000000,
     "cash": 4113000000,
     "cashFromOperations": 1114000000,
-    "capitalExpenditure": 296000000
+    "capitalExpenditure": 296000000,
+    "dividendsPaid": null,
+    "dividendPerShare": null,
+    "epsDiluted": 0.16,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.9% frente al periodo comparable. El beneficio neto varió un +881.5% frente al periodo comparable. El margen neto del periodo más reciente es 4.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.9% frente al periodo comparable. El beneficio neto varió un +881.5% frente al periodo comparable. El margen neto del periodo más reciente es 4.5%. El ROCE estimado del periodo más reciente es 0.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -354,6 +361,29 @@
           "startDate": null,
           "endDate": "2024-06-29",
           "value": 67886000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-30",
+          "value": 6689000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-29",
+          "value": 6195000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",

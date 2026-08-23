@@ -15,13 +15,20 @@
     "operatingIncome": 3733000000,
     "netIncome": 1286000000,
     "operatingMargin": 27.98,
+    "roce": 3.74,
     "netMargin": 9.64,
     "totalDebt": 1593000000,
     "cash": 5175000000,
     "cashFromOperations": 1635000000,
-    "capitalExpenditure": 235000000
+    "capitalExpenditure": 235000000,
+    "dividendsPaid": 2925000000,
+    "dividendPerShare": 1.64,
+    "epsDiluted": 0.72,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 227.45
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.4% frente al periodo comparable. El beneficio neto varió un -6.1% frente al periodo comparable. El margen neto del periodo más reciente es 9.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.4% frente al periodo comparable. El beneficio neto varió un -6.1% frente al periodo comparable. El margen neto del periodo más reciente es 9.6%. El ROCE estimado del periodo más reciente es 3.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 227.4%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -253,6 +260,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 38749000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-03-31",
+          "value": 36403000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q1I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -316,6 +346,79 @@
           "endDate": "2025-03-31",
           "value": 0.72,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 1.55,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 1.55,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 1.55,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": "2024-10-01",
+          "endDate": "2024-12-31",
+          "value": 1.64,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 1.64,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 2772000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 2925000000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",
           "frame": null

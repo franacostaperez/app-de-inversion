@@ -1,7 +1,7 @@
 {
   "cusip": "02005N100",
   "ticker": "ALLY",
-  "companyName": "ALLY FINL INC",
+  "companyName": "ALLY FINANCIAL INC",
   "cik": "40729",
   "accessionNumber": "0000040729-25-000011",
   "form": "10-Q",
@@ -15,11 +15,18 @@
     "operatingIncome": null,
     "netIncome": -225000000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": -69.66,
     "totalDebt": 16465000000,
     "cash": 10409000000,
     "cashFromOperations": 940000000,
-    "capitalExpenditure": null
+    "capitalExpenditure": null,
+    "dividendsPaid": 100000000,
+    "dividendPerShare": 0.3,
+    "epsDiluted": -0.82,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +32.4% frente al periodo comparable. El beneficio neto varió un -257.3% frente al periodo comparable. El margen neto del periodo más reciente es -69.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -306,6 +313,52 @@
           "endDate": "2025-03-31",
           "value": -0.82,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 0.3,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 0.3,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 97000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 100000000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",
           "frame": null

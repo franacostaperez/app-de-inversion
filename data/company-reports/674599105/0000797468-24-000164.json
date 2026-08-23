@@ -1,7 +1,7 @@
 {
   "cusip": "674599105",
   "ticker": "OXY",
-  "companyName": "OCCIDENTAL PETE CORP",
+  "companyName": "OCCIDENTAL PETROLEUM CORP",
   "cik": "797468",
   "accessionNumber": "0000797468-24-000164",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": null,
     "netIncome": 1140000000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 16.24,
     "totalDebt": 26456000000,
     "cash": 1759000000,
     "cashFromOperations": 8083000000,
-    "capitalExpenditure": 5237000000
+    "capitalExpenditure": 5237000000,
+    "dividendsPaid": 1069000000,
+    "dividendPerShare": 0.22,
+    "epsDiluted": 0.98,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 93.77
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.5% frente al periodo comparable. El beneficio neto varió un -17.1% frente al periodo comparable. El margen neto del periodo más reciente es 16.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.5% frente al periodo comparable. El beneficio neto varió un -17.1% frente al periodo comparable. El margen neto del periodo más reciente es 16.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 93.8%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -247,6 +254,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 9148000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-09-30",
+          "value": 9541000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -392,6 +422,70 @@
           "endDate": "2024-09-30",
           "value": 0.98,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-30",
+          "value": 0.54,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-30",
+          "value": 0.18,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q3"
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 0.66,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 0.22,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfOrdinaryDividends",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-30",
+          "value": 1035000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 1069000000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
           "frame": null

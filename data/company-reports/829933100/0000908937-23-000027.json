@@ -1,7 +1,7 @@
 {
   "cusip": "829933100",
   "ticker": "SIRI",
-  "companyName": "SIRIUSXM HOLDINGS INC",
+  "companyName": "SIRIUS XM HOLDINGS INC",
   "cik": "908937",
   "accessionNumber": "0000908937-23-000027",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": 564000000,
     "netIncome": 906000000,
     "operatingMargin": 24.83,
+    "roce": 8.09,
     "netMargin": 39.89,
     "totalDebt": null,
     "cash": 53000000,
     "cashFromOperations": 1279000000,
-    "capitalExpenditure": 520000000
+    "capitalExpenditure": 520000000,
+    "dividendsPaid": 281000000,
+    "dividendPerShare": 0.0242,
+    "epsDiluted": 0.09,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 31.02
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.4% frente al periodo comparable. El beneficio neto varió un +6.8% frente al periodo comparable. El margen neto del periodo más reciente es 39.9%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.4% frente al periodo comparable. El beneficio neto varió un +6.8% frente al periodo comparable. El margen neto del periodo más reciente es 39.9%. El ROCE estimado del periodo más reciente es 8.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 31.0%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -384,6 +391,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 2981000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 3158000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q3I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -478,6 +508,61 @@
           "endDate": "2023-09-30",
           "value": 0.09,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-01-25",
+          "value": 0.0242,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-04-19",
+          "value": 0.0242,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-07-26",
+          "value": 0.0242,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfOrdinaryDividends",
+      "periods": [
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-09-30",
+          "value": 1245000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-30",
+          "value": 281000000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null

@@ -15,6 +15,7 @@
     "operatingIncome": 501068000,
     "netIncome": 448752000,
     "operatingMargin": 18.72,
+    "roce": 17.73,
     "netMargin": 16.77,
     "totalDebt": null,
     "cash": 757571000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 159642000,
     "dividendsPaid": 67878000,
     "dividendPerShare": 0.44,
+    "epsDiluted": 2.73,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 15.13
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -15.2% frente al periodo comparable. El beneficio neto varió un -37.3% frente al periodo comparable. El margen neto del periodo más reciente es 16.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 15.1%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -15.2% frente al periodo comparable. El beneficio neto varió un -37.3% frente al periodo comparable. El margen neto del periodo más reciente es 16.8%. El ROCE estimado del periodo más reciente es 17.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 15.1%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -385,6 +389,29 @@
           "startDate": null,
           "endDate": "2023-12-31",
           "value": 960927000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 746263000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 659951000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

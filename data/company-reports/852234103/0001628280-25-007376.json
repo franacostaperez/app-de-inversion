@@ -15,6 +15,7 @@
     "operatingIncome": 892327000,
     "netIncome": 2897047000,
     "operatingMargin": 3.7,
+    "roce": 3.16,
     "netMargin": 12.01,
     "totalDebt": null,
     "cash": 8075247000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 153947000,
     "dividendsPaid": null,
     "dividendPerShare": null,
+    "epsDiluted": 4.56,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +10.1% frente al periodo comparable. El beneficio neto varió un +29546.4% frente al periodo comparable. El margen neto del periodo más reciente es 12.0%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +10.1% frente al periodo comparable. El beneficio neto varió un +29546.4% frente al periodo comparable. El margen neto del periodo más reciente es 12.0%. El ROCE estimado del periodo más reciente es 3.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -353,6 +357,29 @@
           "startDate": null,
           "endDate": "2024-12-31",
           "value": 15542633000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 8883044000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 8546798000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",

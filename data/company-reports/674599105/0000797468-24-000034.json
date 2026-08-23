@@ -1,7 +1,7 @@
 {
   "cusip": "674599105",
   "ticker": "OXY",
-  "companyName": "OCCIDENTAL PETE CORP",
+  "companyName": "OCCIDENTAL PETROLEUM CORP",
   "cik": "797468",
   "accessionNumber": "0000797468-24-000034",
   "form": "10-K",
@@ -15,6 +15,7 @@
     "operatingIncome": null,
     "netIncome": 4696000000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 16.58,
     "totalDebt": 19001000000,
     "cash": 1426000000,
@@ -22,6 +23,9 @@
     "capitalExpenditure": 6270000000,
     "dividendsPaid": 1365000000,
     "dividendPerShare": 0.72,
+    "epsDiluted": 3.9,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 29.07
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -21.8% frente al periodo comparable. El beneficio neto varió un -64.7% frente al periodo comparable. El margen neto del periodo más reciente es 16.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 29.1%.",
@@ -234,6 +238,29 @@
           "startDate": null,
           "endDate": "2023-12-31",
           "value": 74008000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 7757000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 9148000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

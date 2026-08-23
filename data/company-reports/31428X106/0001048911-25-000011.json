@@ -15,6 +15,7 @@
     "operatingIncome": 5217000000,
     "netIncome": 4092000000,
     "operatingMargin": 5.93,
+    "roce": 7.22,
     "netMargin": 4.65,
     "totalDebt": 19899000000,
     "cash": 5502000000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": null,
     "dividendsPaid": 1339000000,
     "dividendPerShare": 5.52,
+    "epsDiluted": 16.81,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 32.72
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +0.3% frente al periodo comparable. El beneficio neto varió un -5.5% frente al periodo comparable. El margen neto del periodo más reciente es 4.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 32.7%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +0.3% frente al periodo comparable. El beneficio neto varió un -5.5% frente al periodo comparable. El margen neto del periodo más reciente es 4.7%. El ROCE estimado del periodo más reciente es 7.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 32.7%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -234,6 +238,29 @@
           "startDate": null,
           "endDate": "2025-05-31",
           "value": 87627000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-05-31",
+          "value": 13355000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-05-31",
+          "value": 15411000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

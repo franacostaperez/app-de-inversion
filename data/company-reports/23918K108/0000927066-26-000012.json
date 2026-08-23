@@ -15,6 +15,7 @@
     "operatingIncome": 2043615000,
     "netIncome": 746803000,
     "operatingMargin": 14.98,
+    "roce": 14.25,
     "netMargin": 5.47,
     "totalDebt": null,
     "cash": 676438000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 575864000,
     "dividendsPaid": 0,
     "dividendPerShare": null,
+    "epsDiluted": 9.84,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 0.0
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.5% frente al periodo comparable. El beneficio neto varió un -20.2% frente al periodo comparable. El margen neto del periodo más reciente es 5.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 0.0%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.5% frente al periodo comparable. El beneficio neto varió un -20.2% frente al periodo comparable. El margen neto del periodo más reciente es 5.5%. El ROCE estimado del periodo más reciente es 14.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 0.0%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -280,6 +284,29 @@
           "startDate": null,
           "endDate": "2025-12-31",
           "value": 16321665000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 2973410000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 3141634000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

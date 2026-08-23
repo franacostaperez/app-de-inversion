@@ -1,7 +1,7 @@
 {
   "cusip": "829933100",
   "ticker": "SIRI",
-  "companyName": "SIRIUSXM HOLDINGS INC",
+  "companyName": "SIRIUS XM HOLDINGS INC",
   "cik": "908937",
   "accessionNumber": "0000908937-25-000023",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": 365000000,
     "netIncome": 205000000,
     "operatingMargin": 17.07,
+    "roce": 1.47,
     "netMargin": 9.59,
     "totalDebt": null,
     "cash": 92000000,
     "cashFromOperations": 788000000,
-    "capitalExpenditure": 334000000
+    "capitalExpenditure": 334000000,
+    "dividendsPaid": 183000000,
+    "dividendPerShare": 0.27,
+    "epsDiluted": 0.57,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 89.27
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -1.8% frente al periodo comparable. El beneficio neto varió un -32.6% frente al periodo comparable. El margen neto del periodo más reciente es 9.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -1.8% frente al periodo comparable. El beneficio neto varió un -32.6% frente al periodo comparable. El margen neto del periodo más reciente es 9.6%. El ROCE estimado del periodo más reciente es 1.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 89.3%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -352,6 +359,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 2731000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 2570000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2025Q2I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -410,6 +440,70 @@
           "endDate": "2025-06-30",
           "value": 0.57,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 0.266,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 0.266,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 0.27,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-04-01",
+          "endDate": "2025-06-30",
+          "value": 0.27,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfOrdinaryDividends",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-06-30",
+          "value": 34000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 183000000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
           "frame": null

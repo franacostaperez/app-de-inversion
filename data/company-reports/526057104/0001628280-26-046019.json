@@ -15,13 +15,20 @@
     "operatingIncome": null,
     "netIncome": 304772000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 3.84,
     "totalDebt": null,
     "cash": 2173778000,
     "cashFromOperations": -717885000,
-    "capitalExpenditure": 48848000
+    "capitalExpenditure": 48848000,
+    "dividendsPaid": 246537000,
+    "dividendPerShare": null,
+    "epsDiluted": 1.24,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 80.89
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -5.2% frente al periodo comparable. El beneficio neto varió un -36.2% frente al periodo comparable. El margen neto del periodo más reciente es 3.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -5.2% frente al periodo comparable. El beneficio neto varió un -36.2% frente al periodo comparable. El margen neto del periodo más reciente es 3.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 80.9%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -340,6 +347,29 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2024-12-01",
+          "endDate": "2025-05-31",
+          "value": 265235000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-12-01",
+          "endDate": "2026-05-31",
+          "value": 246537000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     }

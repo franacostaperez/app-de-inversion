@@ -15,13 +15,20 @@
     "operatingIncome": null,
     "netIncome": 947400000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 12.26,
     "totalDebt": null,
     "cash": 3323400000,
     "cashFromOperations": -153400000,
-    "capitalExpenditure": 47600000
+    "capitalExpenditure": 47600000,
+    "dividendsPaid": 99900000,
+    "dividendPerShare": 0.3,
+    "epsDiluted": 2.82,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 10.54
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.5% frente al periodo comparable. El beneficio neto varió un -1.2% frente al periodo comparable. El margen neto del periodo más reciente es 12.3%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.5% frente al periodo comparable. El beneficio neto varió un -1.2% frente al periodo comparable. El margen neto del periodo más reciente es 12.3%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 10.5%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -247,6 +254,43 @@
           "endDate": "2023-12-31",
           "value": 2.82,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2023-12-31",
+          "value": 0.3,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2022-10-01",
+          "endDate": "2022-12-31",
+          "value": 86100000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2022Q4"
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2023-12-31",
+          "value": 99900000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",
           "frame": null

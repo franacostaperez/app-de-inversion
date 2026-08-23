@@ -1,7 +1,7 @@
 {
   "cusip": "02079K305",
   "ticker": "GOOGL",
-  "companyName": "Alphabet Inc",
+  "companyName": "ALPHABET INC",
   "cik": "1652044",
   "accessionNumber": "0001652044-24-000118",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": 28521000000,
     "netIncome": 26301000000,
     "operatingMargin": 32.31,
+    "roce": 8.16,
     "netMargin": 29.8,
     "totalDebt": 999000000,
     "cash": 19959000000,
     "cashFromOperations": 86186000000,
-    "capitalExpenditure": 38259000000
+    "capitalExpenditure": 38259000000,
+    "dividendsPaid": 4921000000,
+    "dividendPerShare": 0.2,
+    "epsDiluted": 2.12,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 18.71
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +15.1% frente al periodo comparable. El beneficio neto varió un +33.6% frente al periodo comparable. El margen neto del periodo más reciente es 29.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +15.1% frente al periodo comparable. El beneficio neto varió un +33.6% frente al periodo comparable. El margen neto del periodo más reciente es 29.8%. El ROCE estimado del periodo más reciente es 8.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 18.7%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -343,6 +350,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 81814000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-09-30",
+          "value": 80803000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -460,6 +490,52 @@
           "endDate": "2024-09-30",
           "value": 2.12,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 0.4,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 0.2,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-30",
+          "value": 0,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 4921000000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
           "frame": null

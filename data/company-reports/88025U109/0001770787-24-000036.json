@@ -15,13 +15,20 @@
     "operatingIncome": -61498000,
     "netIncome": -59949000,
     "operatingMargin": -43.61,
+    "roce": -7.55,
     "netMargin": -42.52,
     "totalDebt": null,
     "cash": 355781000,
     "cashFromOperations": -15725000,
-    "capitalExpenditure": 2910000
+    "capitalExpenditure": 2910000,
+    "dividendsPaid": null,
+    "dividendPerShare": null,
+    "epsDiluted": -0.5,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.0% frente al periodo comparable. El beneficio neto varió un +18.1% frente al periodo comparable. El margen neto del periodo más reciente es -42.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.0% frente al periodo comparable. El beneficio neto varió un +18.1% frente al periodo comparable. El margen neto del periodo más reciente es -42.5%. El ROCE estimado del periodo más reciente es -7.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -310,6 +317,29 @@
           "startDate": null,
           "endDate": "2024-03-31",
           "value": 204079000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 127162000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-03-31",
+          "value": 108733000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",

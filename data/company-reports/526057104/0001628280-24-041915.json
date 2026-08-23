@@ -15,13 +15,20 @@
     "operatingIncome": null,
     "netIncome": 1162674000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 12.35,
     "totalDebt": null,
     "cash": 4311144000,
     "cashFromOperations": 1428874000,
-    "capitalExpenditure": 130138000
+    "capitalExpenditure": 130138000,
+    "dividendsPaid": 414168000,
+    "dividendPerShare": null,
+    "epsDiluted": 4.26,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 35.62
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +7.9% frente al periodo comparable. El beneficio neto varió un +4.8% frente al periodo comparable. El margen neto del periodo más reciente es 12.3%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +7.9% frente al periodo comparable. El beneficio neto varió un +4.8% frente al periodo comparable. El margen neto del periodo más reciente es 12.3%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 35.6%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -337,6 +344,29 @@
           "endDate": "2024-08-31",
           "value": 4.26,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2022-12-01",
+          "endDate": "2023-08-31",
+          "value": 325359000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-12-01",
+          "endDate": "2024-08-31",
+          "value": 414168000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
           "frame": null

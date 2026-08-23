@@ -1,7 +1,7 @@
 {
   "cusip": "829933100",
   "ticker": "SIRI",
-  "companyName": "SIRIUSXM HOLDINGS INC",
+  "companyName": "SIRIUS XM HOLDINGS INC",
   "cik": "908937",
   "accessionNumber": "0000908937-25-000030",
   "form": "10-Q",
@@ -15,13 +15,20 @@
     "operatingIncome": 493000000,
     "netIncome": 297000000,
     "operatingMargin": 22.83,
+    "roce": 2.06,
     "netMargin": 13.76,
     "totalDebt": null,
     "cash": 79000000,
     "cashFromOperations": 1218000000,
-    "capitalExpenditure": 509000000
+    "capitalExpenditure": 509000000,
+    "dividendsPaid": 274000000,
+    "dividendPerShare": 0.27,
+    "epsDiluted": 0.84,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 92.26
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.6% frente al periodo comparable. El beneficio neto varió un -112.1% frente al periodo comparable. El margen neto del periodo más reciente es 13.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.6% frente al periodo comparable. El beneficio neto varió un -112.1% frente al periodo comparable. El margen neto del periodo más reciente es 13.8%. El ROCE estimado del periodo más reciente es 2.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 92.3%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -352,6 +359,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 2731000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-09-30",
+          "value": 3461000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -413,6 +443,88 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": "CY2025Q3"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 0.266,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 0.266,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 0.266,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": 0.27,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-04-01",
+          "endDate": "2025-06-30",
+          "value": 0.27,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": 0.27,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfOrdinaryDividends",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 51000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-09-30",
+          "value": 274000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
         }
       ]
     }

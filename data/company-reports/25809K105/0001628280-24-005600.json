@@ -15,6 +15,7 @@
     "operatingIncome": -579000000,
     "netIncome": -558000000,
     "operatingMargin": -6.71,
+    "roce": -7.79,
     "netMargin": -6.46,
     "totalDebt": null,
     "cash": 2656000000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 123000000,
     "dividendsPaid": null,
     "dividendPerShare": null,
+    "epsDiluted": -1.42,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +31.2% frente al periodo comparable. El beneficio neto varió un -59.1% frente al periodo comparable. El margen neto del periodo más reciente es -6.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +31.2% frente al periodo comparable. El beneficio neto varió un -59.1% frente al periodo comparable. El margen neto del periodo más reciente es -6.5%. El ROCE estimado del periodo más reciente es -7.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -289,6 +293,29 @@
           "startDate": null,
           "endDate": "2023-12-31",
           "value": 4026000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 2544000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 3410000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

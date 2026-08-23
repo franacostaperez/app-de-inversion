@@ -15,13 +15,20 @@
     "operatingIncome": -9908000,
     "netIncome": -28954000,
     "operatingMargin": -0.18,
+    "roce": -0.04,
     "netMargin": -0.52,
     "totalDebt": null,
     "cash": 5112293000,
     "cashFromOperations": 898884000,
-    "capitalExpenditure": 99457000
+    "capitalExpenditure": 99457000,
+    "dividendsPaid": null,
+    "dividendPerShare": null,
+    "epsDiluted": -0.05,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +24.4% frente al periodo comparable. El beneficio neto varió un +96.8% frente al periodo comparable. El margen neto del periodo más reciente es -0.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +24.4% frente al periodo comparable. El beneficio neto varió un +96.8% frente al periodo comparable. El margen neto del periodo más reciente es -0.5%. El ROCE estimado del periodo más reciente es -0.0%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -386,6 +393,29 @@
           "startDate": null,
           "endDate": "2023-09-30",
           "value": 14724392000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q3I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 8434516000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 9192115000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",

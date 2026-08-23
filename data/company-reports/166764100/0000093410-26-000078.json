@@ -1,7 +1,7 @@
 {
   "cusip": "166764100",
   "ticker": "CVX",
-  "companyName": "CHEVRON CORPORATION",
+  "companyName": "CHEVRON CORP",
   "cik": "93410",
   "accessionNumber": "0000093410-26-000078",
   "form": "10-K",
@@ -15,6 +15,7 @@
     "operatingIncome": null,
     "netIncome": 12299000000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 6.67,
     "totalDebt": 2345000000,
     "cash": 7285000000,
@@ -22,6 +23,9 @@
     "capitalExpenditure": null,
     "dividendsPaid": 12751000000,
     "dividendPerShare": 6.84,
+    "epsDiluted": 6.63,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 103.68
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.6% frente al periodo comparable. El beneficio neto varió un -30.4% frente al periodo comparable. El margen neto del periodo más reciente es 6.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 103.7%.",
@@ -266,6 +270,29 @@
           "startDate": null,
           "endDate": "2025-12-31",
           "value": 131836000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 38558000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 33387000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

@@ -15,13 +15,20 @@
     "operatingIncome": -17046000,
     "netIncome": -13470000,
     "operatingMargin": -11.3,
+    "roce": -1.89,
     "netMargin": -8.93,
     "totalDebt": null,
     "cash": 490285000,
     "cashFromOperations": 26120000,
-    "capitalExpenditure": 1597000
+    "capitalExpenditure": 1597000,
+    "dividendsPaid": null,
+    "dividendPerShare": null,
+    "epsDiluted": -0.1,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -2.6% frente al periodo comparable. El beneficio neto varió un -60.8% frente al periodo comparable. El margen neto del periodo más reciente es -8.9%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -2.6% frente al periodo comparable. El beneficio neto varió un -60.8% frente al periodo comparable. El margen neto del periodo más reciente es -8.9%. El ROCE estimado del periodo más reciente es -1.9%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -287,6 +294,29 @@
           "startDate": null,
           "endDate": "2026-03-31",
           "value": 201435000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 153454000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-03-31",
+          "value": 113598000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",

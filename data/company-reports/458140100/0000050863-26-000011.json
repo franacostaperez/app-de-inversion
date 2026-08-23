@@ -15,6 +15,7 @@
     "operatingIncome": -2214000000,
     "netIncome": -267000000,
     "operatingMargin": -4.19,
+    "roce": -1.23,
     "netMargin": -0.51,
     "totalDebt": 46585000000,
     "cash": 14265000000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 14646000000,
     "dividendsPaid": 0,
     "dividendPerShare": 0.38,
+    "epsDiluted": -0.06,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.5% frente al periodo comparable. El beneficio neto varió un -98.6% frente al periodo comparable. El margen neto del periodo más reciente es -0.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.5% frente al periodo comparable. El beneficio neto varió un -98.6% frente al periodo comparable. El margen neto del periodo más reciente es -0.5%. El ROCE estimado del periodo más reciente es -1.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -321,6 +325,29 @@
           "startDate": null,
           "endDate": "2025-12-27",
           "value": 211429000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-28",
+          "value": 35666000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-27",
+          "value": 31575000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

@@ -15,13 +15,20 @@
     "operatingIncome": 53536000000,
     "netIncome": 58321000000,
     "operatingMargin": 65.6,
+    "roce": 24.83,
     "netMargin": 71.46,
     "totalDebt": 8470000000,
     "cash": 13237000000,
     "cashFromOperations": 50344000000,
-    "capitalExpenditure": null
+    "capitalExpenditure": null,
+    "dividendsPaid": 243000000,
+    "dividendPerShare": 0.01,
+    "epsDiluted": 2.39,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 0.42
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +85.2% frente al periodo comparable. El beneficio neto varió un +210.6% frente al periodo comparable. El margen neto del periodo más reciente es 71.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +85.2% frente al periodo comparable. El beneficio neto varió un +210.6% frente al periodo comparable. El margen neto del periodo más reciente es 71.5%. El ROCE estimado del periodo más reciente es 24.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 0.4%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -253,6 +260,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2026-01-25",
+          "value": 32163000000,
+          "unit": "USD",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-04-26",
+          "value": 43884000000,
+          "unit": "USD",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -380,6 +410,52 @@
           "endDate": "2026-04-26",
           "value": 2.39,
           "unit": "USD/shares",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2025-01-27",
+          "endDate": "2025-04-27",
+          "value": 0.01,
+          "unit": "USD/shares",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q1"
+        },
+        {
+          "startDate": "2026-01-26",
+          "endDate": "2026-04-26",
+          "value": 0.01,
+          "unit": "USD/shares",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2025-01-27",
+          "endDate": "2025-04-27",
+          "value": 244000000,
+          "unit": "USD",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q1"
+        },
+        {
+          "startDate": "2026-01-26",
+          "endDate": "2026-04-26",
+          "value": 243000000,
+          "unit": "USD",
           "fiscalYear": 2027,
           "fiscalPeriod": "Q1",
           "frame": "CY2026Q1"

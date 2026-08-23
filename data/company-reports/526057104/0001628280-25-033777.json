@@ -15,13 +15,20 @@
     "operatingIncome": null,
     "netIncome": 477449000,
     "operatingMargin": null,
+    "roce": null,
     "netMargin": 5.7,
     "totalDebt": null,
     "cash": 1479015000,
     "cashFromOperations": -1384064000,
-    "capitalExpenditure": 71259000
+    "capitalExpenditure": 71259000,
+    "dividendsPaid": 265235000,
+    "dividendPerShare": null,
+    "epsDiluted": 1.81,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 55.55
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.4% frente al periodo comparable. El beneficio neto varió un -50.0% frente al periodo comparable. El margen neto del periodo más reciente es 5.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.4% frente al periodo comparable. El beneficio neto varió un -50.0% frente al periodo comparable. El margen neto del periodo más reciente es 5.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 55.5%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -337,6 +344,29 @@
           "endDate": "2025-05-31",
           "value": 1.81,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2023-12-01",
+          "endDate": "2024-05-31",
+          "value": 278318000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2024-12-01",
+          "endDate": "2025-05-31",
+          "value": 265235000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
           "frame": null

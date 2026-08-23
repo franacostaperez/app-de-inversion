@@ -15,6 +15,7 @@
     "operatingIncome": 593788000,
     "netIncome": 542372000,
     "operatingMargin": 21.06,
+    "roce": 19.25,
     "netMargin": 19.23,
     "totalDebt": null,
     "cash": 553354000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 198095000,
     "dividendsPaid": 76423000,
     "dividendPerShare": 0.48,
+    "epsDiluted": 3.32,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 14.09
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.4% frente al periodo comparable. El beneficio neto varió un +20.9% frente al periodo comparable. El margen neto del periodo más reciente es 19.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 14.1%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.4% frente al periodo comparable. El beneficio neto varió un +20.9% frente al periodo comparable. El margen neto del periodo más reciente es 19.2%. El ROCE estimado del periodo más reciente es 19.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 14.1%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -385,6 +389,29 @@
           "startDate": null,
           "endDate": "2024-12-31",
           "value": 889420000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 659951000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 624579000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",

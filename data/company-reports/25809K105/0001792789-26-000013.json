@@ -15,6 +15,7 @@
     "operatingIncome": 723000000,
     "netIncome": 935000000,
     "operatingMargin": 5.27,
+    "roce": 5.35,
     "netMargin": 6.82,
     "totalDebt": null,
     "cash": 4378000000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 257000000,
     "dividendsPaid": null,
     "dividendPerShare": null,
+    "epsDiluted": 2.13,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +27.9% frente al periodo comparable. El beneficio neto varió un +660.2% frente al periodo comparable. El margen neto del periodo más reciente es 6.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +27.9% frente al periodo comparable. El beneficio neto varió un +660.2% frente al periodo comparable. El margen neto del periodo más reciente es 6.8%. El ROCE estimado del periodo más reciente es 5.3%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -289,6 +293,29 @@
           "startDate": null,
           "endDate": "2025-12-31",
           "value": 9613000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 4438000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 6147000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

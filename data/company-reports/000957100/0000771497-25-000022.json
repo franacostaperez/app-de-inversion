@@ -15,13 +15,20 @@
     "operatingIncome": 83400000,
     "netIncome": 41800000,
     "operatingMargin": 3.75,
+    "roce": 2.11,
     "netMargin": 1.88,
     "totalDebt": 1500400000,
     "cash": 69300000,
     "cashFromOperations": 101000000,
-    "capitalExpenditure": 58600000
+    "capitalExpenditure": 58600000,
+    "dividendsPaid": 49400000,
+    "dividendPerShare": 0.265,
+    "epsDiluted": 0.67,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 118.18
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.2% frente al periodo comparable. El beneficio neto varió un +789.4% frente al periodo comparable. El margen neto del periodo más reciente es 1.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.2% frente al periodo comparable. El beneficio neto varió un +789.4% frente al periodo comparable. El margen neto del periodo más reciente es 1.9%. El ROCE estimado del periodo más reciente es 2.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 118.2%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -302,6 +309,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-10-31",
+          "value": 1348400000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-07-31",
+          "value": 1313400000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q2I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -395,6 +425,70 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": "CY2025Q2"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-11-01",
+          "endDate": "2024-07-31",
+          "value": 0.675,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-05-01",
+          "endDate": "2024-07-31",
+          "value": 0.225,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2"
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2025-07-31",
+          "value": 0.795,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2025-05-01",
+          "endDate": "2025-07-31",
+          "value": 0.265,
+          "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q2"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2023-11-01",
+          "endDate": "2024-07-31",
+          "value": 42400000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2025-07-31",
+          "value": 49400000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
         }
       ]
     },

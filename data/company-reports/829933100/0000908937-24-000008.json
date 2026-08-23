@@ -1,7 +1,7 @@
 {
   "cusip": "829933100",
   "ticker": "SIRI",
-  "companyName": "SIRIUSXM HOLDINGS INC",
+  "companyName": "SIRIUS XM HOLDINGS INC",
   "cik": "908937",
   "accessionNumber": "0000908937-24-000008",
   "form": "10-K",
@@ -15,6 +15,7 @@
     "operatingIncome": 1946000000,
     "netIncome": 1258000000,
     "operatingMargin": 21.74,
+    "roce": 27.22,
     "netMargin": 14.05,
     "totalDebt": null,
     "cash": 216000000,
@@ -22,9 +23,12 @@
     "capitalExpenditure": 650000000,
     "dividendsPaid": 383000000,
     "dividendPerShare": 0.0266,
+    "epsDiluted": 0.32,
+    "expectedRevenue": null,
+    "expectedEPS": null,
     "payoutRatio": 30.45
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.6% frente al periodo comparable. El beneficio neto varió un +3.7% frente al periodo comparable. El margen neto del periodo más reciente es 14.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 30.4%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.6% frente al periodo comparable. El beneficio neto varió un +3.7% frente al periodo comparable. El margen neto del periodo más reciente es 14.1%. El ROCE estimado del periodo más reciente es 27.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 30.4%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -362,6 +366,29 @@
           "startDate": null,
           "endDate": "2023-12-31",
           "value": 12939000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 2981000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 3226000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

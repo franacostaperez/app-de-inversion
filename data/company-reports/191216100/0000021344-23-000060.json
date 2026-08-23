@@ -15,13 +15,20 @@
     "operatingIncome": 3270000000,
     "netIncome": 3087000000,
     "operatingMargin": 27.36,
+    "roce": 4.47,
     "netMargin": 25.83,
     "totalDebt": 36256000000,
     "cash": 11883000000,
     "cashFromOperations": 8929000000,
-    "capitalExpenditure": 1001000000
+    "capitalExpenditure": 1001000000,
+    "dividendsPaid": 4078000000,
+    "dividendPerShare": 0.46,
+    "epsDiluted": 0.71,
+    "expectedRevenue": null,
+    "expectedEPS": null,
+    "payoutRatio": 132.1
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.0% frente al periodo comparable. El beneficio neto varió un +9.3% frente al periodo comparable. El margen neto del periodo más reciente es 25.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.0% frente al periodo comparable. El beneficio neto varió un +9.3% frente al periodo comparable. El margen neto del periodo más reciente es 25.8%. El ROCE estimado del periodo más reciente es 4.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 132.1%.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -379,6 +386,29 @@
         }
       ]
     },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 19724000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-09-29",
+          "value": 24409000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q3I"
+        }
+      ]
+    },
     "shareholdersEquity": {
       "concept": "StockholdersEquity",
       "periods": [
@@ -506,6 +536,70 @@
           "endDate": "2023-09-29",
           "value": 0.71,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareCashPaid",
+      "periods": [
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-09-30",
+          "value": 1.32,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2022-07-02",
+          "endDate": "2022-09-30",
+          "value": 0.44,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2022Q3"
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-29",
+          "value": 1.38,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-29",
+          "value": 0.46,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-09-30",
+          "value": 3910000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-29",
+          "value": 4078000000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null
