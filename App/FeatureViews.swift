@@ -531,8 +531,25 @@ private struct ConsensusRankingView: View {
         }
     }
 
+    private var targetYieldCount: Int {
+        items.filter { ($0.yield ?? -1) >= 3 && ($0.yield ?? 10) <= 9 }.count
+    }
+
     var body: some View {
         List {
+            Section {
+                HStack(spacing: 0) {
+                    rankingMetric(value: "\(items.count)", label: "ANALIZADAS", icon: "chart.bar.doc.horizontal")
+                    Divider().frame(height: 38).padding(.horizontal, 14)
+                    rankingMetric(value: "\(targetYieldCount)", label: "YIELD 3–9 %", icon: "leaf.fill")
+                    Divider().frame(height: 38).padding(.horizontal, 14)
+                    rankingMetric(value: "\(rankedItems.count)", label: "RESULTADOS", icon: "line.3.horizontal.decrease")
+                }
+                .padding(14)
+                .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
             Section {
                 Picker("Clasificación", selection: $ranking) {
                     ForEach(Ranking.allCases) { Text($0.rawValue).tag($0) }
@@ -546,19 +563,32 @@ private struct ConsensusRankingView: View {
                 .pickerStyle(.menu)
             }
             Section {
+                if rankedItems.isEmpty {
+                    ContentUnavailableView(
+                        "Sin coincidencias",
+                        systemImage: "line.3.horizontal.decrease.circle",
+                        description: Text("Prueba otro rango de yield o elimina el texto de búsqueda.")
+                    )
+                    .listRowBackground(Color.clear)
+                }
                 ForEach(Array(rankedItems.enumerated()), id: \.element.id) { index, item in
                     NavigationLink {
                         OpportunityAnalysisView(item: item, profile: profile(for: item))
                     } label: {
                         HStack(spacing: 12) {
-                            Text("\(index + 1)")
-                                .font(.headline.monospacedDigit()).foregroundStyle(.secondary).frame(width: 28)
+                            ZStack {
+                                Circle().fill(index < 3 ? WhaleTheme.accent.opacity(0.14) : Color.primary.opacity(0.05))
+                                Text("\(index + 1)")
+                                    .font(.caption.bold().monospacedDigit())
+                                    .foregroundStyle(index < 3 ? WhaleTheme.accent : .secondary)
+                            }
+                            .frame(width: 32, height: 32)
                             VStack(alignment: .leading, spacing: 5) {
                                 Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(2)
                                 HStack(spacing: 10) {
-                                    Label("\(item.holders)", systemImage: "building.columns")
-                                    Label("\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
-                                    Label("\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
+                                    Label("\(item.holders) fondos", systemImage: "building.columns")
+                                    Label("+\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
+                                    Label("−\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
                                 }
                                 .font(.caption)
                                 HStack(spacing: 8) {
@@ -573,17 +603,20 @@ private struct ConsensusRankingView: View {
                                 .font(.caption.bold().monospacedDigit())
                             }
                             Spacer()
-                            VStack(alignment: .trailing, spacing: 3) {
+                            VStack(spacing: 2) {
                                 Text("\(item.opportunityScore ?? 0)")
-                                    .font(.title3.bold().monospacedDigit()).foregroundStyle(WhaleTheme.accent)
-                                Text("DIV SCORE").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+                                    .font(.title3.bold().monospacedDigit()).foregroundStyle(.white)
+                                Text("SCORE").font(.system(size: 7, weight: .bold)).foregroundStyle(.white.opacity(0.72))
                             }
+                            .frame(width: 48, height: 48)
+                            .background(scoreColor(item.opportunityScore ?? 0), in: RoundedRectangle(cornerRadius: 12))
                         }
                     }
-                    .padding(.vertical, 4)
+                    .padding(.vertical, 6)
+                    .listRowBackground(WhaleTheme.panel)
                 }
             } header: {
-                Text("Fondos · Compran · Reducen · Yield · PER · Score")
+                Text("Ranking de oportunidades para dividendos")
             }
         }
         .listStyle(.insetGrouped)
@@ -596,6 +629,22 @@ private struct ConsensusRankingView: View {
     private func profile(for item: ConsensusItem) -> CompanyProfile? {
         guard let cusip = item.cusip else { return nil }
         return profiles.first { $0.cusip == cusip }
+    }
+
+    private func rankingMetric(value: String, label: String, icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label(value, systemImage: icon)
+                .font(.headline.bold().monospacedDigit())
+                .foregroundStyle(.white)
+            Text(label).font(.system(size: 7, weight: .bold)).foregroundStyle(.white.opacity(0.62))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func scoreColor(_ score: Int) -> Color {
+        if score >= 75 { return WhaleTheme.positive }
+        if score >= 55 { return WhaleTheme.accent }
+        return WhaleTheme.warning
     }
 }
 

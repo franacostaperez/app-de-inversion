@@ -66,6 +66,7 @@ private struct FundTabs: View {
 }
 
 private struct DashboardView: View {
+    @EnvironmentObject private var model: AppModel
     let snapshot: AppSnapshot
     @Binding var selectedInvestorID: String
     @State private var yieldFilter: DividendYieldFilter = .all
@@ -123,12 +124,22 @@ private struct DashboardView: View {
                         ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter)
                     }
                 }
+
+                Label(
+                    "Datos actualizados " + snapshot.generatedAt.formatted(date: .abbreviated, time: .shortened),
+                    systemImage: "icloud.and.arrow.down"
+                )
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, 4)
             }
             .padding(16)
         }
         .background(WhaleTheme.background.ignoresSafeArea())
         .navigationTitle("Resumen 13F")
         .navigationBarTitleDisplayMode(.inline)
+        .refreshable { await model.refresh() }
     }
 
     private func compactUSD(_ value: Double) -> String {
@@ -190,29 +201,53 @@ struct FundSelector: View {
         investors.sorted { $0.portfolioValue > $1.portfolioValue }
     }
 
+    private var selectedInvestor: Investor? {
+        investors.first { $0.id == selection } ?? sortedInvestors.first
+    }
+
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(sortedInvestors) { investor in
-                    Button {
-                        withAnimation(.snappy) { selection = investor.id }
-                    } label: {
-                        HStack(spacing: 7) {
-                            Image(systemName: selection == investor.id ? "checkmark.circle.fill" : "building.columns")
-                            Text(investor.name).lineLimit(1)
-                        }
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(selection == investor.id ? .white : .primary)
-                        .padding(.horizontal, 13).padding(.vertical, 9)
-                        .background(selection == investor.id ? WhaleTheme.accent : WhaleTheme.panel, in: Capsule())
-                        .overlay(Capsule().stroke(selection == investor.id ? .clear : .primary.opacity(0.08)))
-                    }
-                    .buttonStyle(.plain)
+        Menu {
+            ForEach(sortedInvestors) { investor in
+                Button {
+                    withAnimation(.snappy) { selection = investor.id }
+                } label: {
+                    Label(investor.name, systemImage: selection == investor.id ? "checkmark" : "building.columns")
                 }
             }
+        } label: {
+            HStack(spacing: 11) {
+                Image(systemName: "building.columns.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(WhaleTheme.accent)
+                    .frame(width: 34, height: 34)
+                    .background(WhaleTheme.accent.opacity(0.11), in: RoundedRectangle(cornerRadius: 9))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("FONDO SELECCIONADO")
+                        .font(.system(size: 8, weight: .bold))
+                        .tracking(0.7)
+                        .foregroundStyle(.secondary)
+                    Text(selectedInvestor?.name ?? "Seleccionar fondo")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                    if let manager = selectedInvestor?.manager {
+                        Text(manager).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                    }
+                }
+                Spacer()
+                Text("\(investors.count)")
+                    .font(.caption.bold().monospacedDigit())
+                    .foregroundStyle(.secondary)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.caption2.bold())
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(10)
+            .whalePanel()
         }
-        .contentMargins(.horizontal, 1, for: .scrollContent)
+        .buttonStyle(.plain)
         .accessibilityLabel("Seleccionar fondo")
+        .accessibilityValue(selectedInvestor?.name ?? "Ninguno")
     }
 }
 
