@@ -154,7 +154,7 @@ def build_filing_updates(current: dict, holdings: list[dict], movements: list[di
     return sorted(updates.values(), key=lambda item: item["filingDate"], reverse=True)
 
 
-def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None, average_prices: dict[tuple[str, str], float] | None = None) -> dict:
+def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None, average_prices: dict[tuple[str, str], float] | None = None, company_reports: list[dict] | None = None) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
     company_by_cusip = {item["cusip"]: item for item in companies if item.get("cusip")}
@@ -317,6 +317,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
         "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
+        "companyReports": sorted(company_reports or [], key=lambda item: item["filingDate"], reverse=True),
     }
 
 
@@ -329,6 +330,7 @@ def main() -> None:
     parser.add_argument("--qualitative-database", type=Path)
     parser.add_argument("--valuation-database", type=Path)
     parser.add_argument("--filings-directory", type=Path)
+    parser.add_argument("--company-reports-directory", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     current = json.loads(args.current.read_text())
@@ -347,8 +349,11 @@ def main() -> None:
     archived_filings = []
     if args.filings_directory and args.filings_directory.exists():
         archived_filings = [json.loads(path.read_text()) for path in args.filings_directory.glob("*/*.json")]
+    company_reports = []
+    if args.company_reports_directory and args.company_reports_directory.exists():
+        company_reports = [json.loads(path.read_text()) for path in args.company_reports_directory.glob("*/*.json")]
     average_prices = estimate_average_purchase_prices(archived_filings)
-    snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []), average_prices)
+    snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []), average_prices, company_reports)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n")
 

@@ -43,10 +43,18 @@ jobs:
           --holdings data/source/latest.json
           --database data/companies/index.json
           --max-new 5
+      - name: Monitor company quarterly and annual reports
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: >-
+          python pipeline/sec_company_reports.py
+          --company-database data/companies/index.json
+          --qualitative-database data/companies/qualitative.json
+          --output data/company-reports
       - name: Detect new filings or company data
         id: changes
         run: |
-          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/filings; then
+          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/filings data/company-reports; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -61,12 +69,13 @@ jobs:
           --qualitative-database data/companies/qualitative.json
           --valuation-database data/config/company_valuation.json
           --filings-directory data/filings
+          --company-reports-directory data/company-reports
           --output data/public/snapshot.json
       - name: Commit changed data
         run: |
-          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/filings data/public/snapshot.json; then exit 0; fi
+          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/filings data/company-reports data/public/snapshot.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/filings data/public/snapshot.json
+          git add data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/filings data/company-reports data/public/snapshot.json
           git commit -m "data: update dividend snapshot"
           git push

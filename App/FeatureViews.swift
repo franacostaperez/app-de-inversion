@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 #if canImport(DividendIntelligenceKit)
 import DividendIntelligenceKit
 #endif
@@ -26,15 +27,20 @@ struct UpdatesView: View {
     let snapshot: AppSnapshot
     @State private var filter = "all"
 
-    private var updates: [FilingUpdate] {
+    private var filings: [FilingUpdate] {
         let recent = snapshot.filingUpdates.filter { $0.filingDate >= retentionCutoff }
-        let filtered = filter == "all" ? recent : recent.filter { $0.investorId == filter }
-        return filtered.sorted {
-            if $0.filingDate != $1.filingDate {
-                return $0.filingDate > $1.filingDate
-            }
-            return $0.investorName.localizedCaseInsensitiveCompare($1.investorName) == .orderedAscending
-        }
+        if filter == "companies" { return [] }
+        return filter == "all" || filter == "13f" ? recent : recent.filter { $0.investorId == filter }
+    }
+
+    private var companyReports: [CompanyReport] {
+        guard filter == "all" || filter == "companies" else { return [] }
+        return snapshot.companyReports.filter { $0.filingDate >= retentionCutoff }
+    }
+
+    private var news: [NewsEntry] {
+        (filings.map(NewsEntry.filing) + companyReports.map(NewsEntry.companyReport))
+            .sorted { $0.date > $1.date }
     }
 
     private var sortedInvestors: [Investor] {
@@ -45,7 +51,7 @@ struct UpdatesView: View {
 
     var body: some View {
         Group {
-            if updates.isEmpty {
+            if news.isEmpty {
                 ContentUnavailableView(
                     "Sin novedades 13F",
                     systemImage: "sparkles",
@@ -55,8 +61,11 @@ struct UpdatesView: View {
                 ScrollView {
                     LazyVStack(spacing: 12) {
                         updateFilter
-                        ForEach(updates) { update in
-                            UpdateCard(update: update)
+                        ForEach(news) { item in
+                            switch item {
+                            case .filing(let update): UpdateCard(update: update)
+                            case .companyReport(let report): CompanyReportUpdateCard(report: report)
+                            }
                         }
                     }
                     .padding(16)
@@ -71,11 +80,82 @@ struct UpdatesView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 FilterChip(title: "Todos", selected: filter == "all") { filter = "all" }
+                FilterChip(title: "Empresas", selected: filter == "companies") { filter = "companies" }
+                FilterChip(title: "13F", selected: filter == "13f") { filter = "13f" }
                 ForEach(sortedInvestors) { investor in
                     FilterChip(title: investor.name, selected: filter == investor.id) { filter = investor.id }
                 }
             }
         }
+    }
+}
+
+private enum NewsEntry: Identifiable {
+    case filing(FilingUpdate)
+    case companyReport(CompanyReport)
+
+    var id: String {
+        switch self {
+        case .filing(let item): "13f-" + item.id
+        case .companyReport(let item): "company-" + item.id
+        }
+    }
+
+    var date: Date {
+        switch self {
+        case .filing(let item): item.filingDate
+        case .companyReport(let item): item.filingDate
+        }
+    }
+}
+
+private struct CompanyReportUpdateCard: View {
+    let report: CompanyReport
+
+    var body: some View {
+        NavigationLink {
+            CompanyReportDetailView(report: report)
+        } label: {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("NUEVO INFORME DE EMPRESA")
+                            .font(.system(size: 9, weight: .bold)).tracking(0.8).foregroundStyle(WhaleTheme.info)
+                        Text(report.companyName).font(.headline).foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text(report.form).font(.caption.bold()).padding(.horizontal, 9).padding(.vertical, 5)
+                        .background(WhaleTheme.info.opacity(0.11), in: Capsule())
+                }
+                HStack(spacing: 14) {
+                    Label(report.filingDate.formatted(date: .abbreviated, time: .omitted), systemImage: "arrow.up.doc")
+                    Label("Periodo " + report.reportDate.formatted(date: .abbreviated, time: .omitted), systemImage: "calendar")
+                }
+                .font(.caption).foregroundStyle(.secondary)
+                Text(report.highlights).font(.subheadline).foregroundStyle(.primary).lineLimit(4)
+                HStack(spacing: 8) {
+                    reportMetric("Ingresos", report.summary.revenue)
+                    reportMetric("Beneficio", report.summary.netIncome)
+                    if let margin = report.summary.netMargin {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(margin.formatted(.number.precision(.fractionLength(1))) + "%").font(.caption.bold())
+                            Text("MARGEN").font(.system(size: 7, weight: .bold)).foregroundStyle(.secondary)
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                Label("Ver análisis y evolución", systemImage: "chart.xyaxis.line")
+                    .font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+            }
+            .padding(15).whalePanel()
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func reportMetric(_ label: String, _ value: Double?) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(value.map(compactMoney) ?? "—").font(.caption.bold().monospacedDigit())
+            Text(label.uppercased()).font(.system(size: 7, weight: .bold)).foregroundStyle(.secondary)
+        }.frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -501,7 +581,7 @@ struct SmartMoneyView: View {
     @Binding var selectedInvestorID: String
 
     var body: some View {
-        ConsensusRankingView(items: snapshot.consensus, profiles: snapshot.companyProfiles)
+        ConsensusRankingView(items: snapshot.consensus, profiles: snapshot.companyProfiles, reports: snapshot.companyReports)
     }
 }
 
@@ -515,6 +595,7 @@ private struct ConsensusRankingView: View {
 
     let items: [ConsensusItem]
     let profiles: [CompanyProfile]
+    let reports: [CompanyReport]
     @State private var ranking: Ranking = .opportunity
     @State private var search = ""
     @State private var yieldFilter: DividendYieldFilter = .all
@@ -573,7 +654,11 @@ private struct ConsensusRankingView: View {
                 }
                 ForEach(Array(rankedItems.enumerated()), id: \.element.id) { index, item in
                     NavigationLink {
-                        OpportunityAnalysisView(item: item, profile: profile(for: item))
+                        OpportunityAnalysisView(
+                            item: item,
+                            profile: profile(for: item),
+                            reports: reports.filter { $0.cusip == item.cusip }
+                        )
                     } label: {
                         HStack(spacing: 12) {
                             ZStack {
@@ -651,6 +736,7 @@ private struct ConsensusRankingView: View {
 private struct OpportunityAnalysisView: View {
     let item: ConsensusItem
     let profile: CompanyProfile?
+    let reports: [CompanyReport]
 
     private var reasons: [String] {
         var result: [String] = []
@@ -717,6 +803,32 @@ private struct OpportunityAnalysisView: View {
                 ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 25, icon: "scalemass.fill")
                 ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 20, icon: "building.columns.fill")
             }
+            if !reports.isEmpty {
+                Section("Resultados publicados") {
+                    ForEach(reports.sorted { $0.filingDate > $1.filingDate }.prefix(8)) { report in
+                        NavigationLink {
+                            CompanyReportDetailView(report: report)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(report.form).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+                                    Spacer()
+                                    Text(report.filingDate.formatted(date: .abbreviated, time: .omitted))
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }
+                                Text("Periodo terminado " + report.reportDate.formatted(date: .abbreviated, time: .omitted))
+                                    .font(.subheadline)
+                                HStack {
+                                    Text("Ingresos " + (report.summary.revenue.map(compactMoney) ?? "—"))
+                                    Spacer()
+                                    Text("Margen " + (report.summary.netMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—"))
+                                }
+                                .font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
             if let profile {
                 if let description = profile.description { Section("A qué se dedica") { Text(description) } }
                 if let business = profile.businessModel { Section("Modelo de negocio") { Text(business) } }
@@ -750,6 +862,143 @@ private struct OpportunityAnalysisView: View {
 
     private func reportDate(_ value: String?) -> String {
         value.map { " · " + $0 } ?? ""
+    }
+}
+
+struct CompanyReportDetailView: View {
+    let report: CompanyReport
+    @State private var selectedMetric = "revenue"
+
+    private let metricOrder = [
+        "revenue", "operatingExpenses", "grossProfit", "operatingIncome", "netIncome",
+        "cashFromOperations", "capitalExpenditure", "totalDebt", "cash", "totalAssets", "totalLiabilities"
+    ]
+
+    private var availableMetrics: [String] {
+        metricOrder.filter { !(report.metrics[$0]?.periods.isEmpty ?? true) }
+    }
+
+    private var selectedPeriods: [FinancialPeriod] {
+        report.metrics[selectedMetric]?.periods ?? []
+    }
+
+    var body: some View {
+        List {
+            Section {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text(report.form).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+                        Spacer()
+                        Text(report.filingDate.formatted(date: .abbreviated, time: .omitted))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Text(report.companyName).font(.title2.bold())
+                    Text("Periodo reportado: " + report.reportDate.formatted(date: .long, time: .omitted))
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    Text(report.highlights).font(.subheadline)
+                }
+                .padding(.vertical, 5)
+            }
+
+            Section("Resumen financiero") {
+                financialRow("Ingresos", report.summary.revenue)
+                financialRow("Gastos", report.summary.expenses)
+                financialRow("Beneficio operativo", report.summary.operatingIncome)
+                financialRow("Beneficio neto", report.summary.netIncome)
+                percentageRow("Margen operativo", report.summary.operatingMargin)
+                percentageRow("Margen neto", report.summary.netMargin)
+                financialRow("Deuda", report.summary.totalDebt)
+                financialRow("Efectivo", report.summary.cash)
+                financialRow("Flujo de caja operativo", report.summary.cashFromOperations)
+                financialRow("Inversión de capital", report.summary.capitalExpenditure)
+            }
+
+            if !availableMetrics.isEmpty {
+                Section("Evolución incluida en el informe") {
+                    Picker("Métrica", selection: $selectedMetric) {
+                        ForEach(availableMetrics, id: \.self) { Text(metricLabel($0)).tag($0) }
+                    }
+                    .pickerStyle(.menu)
+
+                    if !selectedPeriods.isEmpty {
+                        Chart(selectedPeriods) { period in
+                            BarMark(
+                                x: .value("Periodo", shortDate(period.endDate)),
+                                y: .value(metricLabel(selectedMetric), period.value)
+                            )
+                            .foregroundStyle(WhaleTheme.accent.gradient)
+                            .cornerRadius(4)
+                        }
+                        .chartYAxis {
+                            AxisMarks(position: .leading) { value in
+                                AxisGridLine()
+                                AxisValueLabel {
+                                    if let amount = value.as(Double.self) { Text(compactMoney(amount)) }
+                                }
+                            }
+                        }
+                        .frame(height: 220)
+
+                        ForEach(selectedPeriods) { period in
+                            HStack {
+                                Text(periodLabel(period))
+                                Spacer()
+                                Text(formatted(period.value, unit: period.unit)).bold().monospacedDigit()
+                            }
+                            .font(.caption)
+                        }
+                    }
+                    Text("Se muestran todos los periodos comparativos etiquetados en el XBRL de esta presentación.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+
+            Section("Fuente oficial") {
+                Link(destination: report.secURL) {
+                    Label("Abrir el informe completo en la SEC", systemImage: "arrow.up.right.square")
+                }
+                Text("Datos estructurados obtenidos de SEC EDGAR XBRL. Las etiquetas pueden variar entre compañías.")
+                    .font(.footnote).foregroundStyle(.secondary)
+            }
+        }
+        .navigationTitle("Resultados")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            if report.metrics[selectedMetric] == nil { selectedMetric = availableMetrics.first ?? "revenue" }
+        }
+    }
+
+    private func financialRow(_ label: String, _ value: Double?) -> some View {
+        LabeledContent(label, value: value.map(compactMoney) ?? "—")
+    }
+
+    private func percentageRow(_ label: String, _ value: Double?) -> some View {
+        LabeledContent(label, value: value.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
+    }
+
+    private func metricLabel(_ key: String) -> String {
+        [
+            "revenue": "Ingresos", "operatingExpenses": "Gastos operativos", "grossProfit": "Beneficio bruto",
+            "operatingIncome": "Beneficio operativo", "netIncome": "Beneficio neto", "cashFromOperations": "Caja operativa",
+            "capitalExpenditure": "Inversión de capital", "totalDebt": "Deuda", "cash": "Efectivo",
+            "totalAssets": "Activos", "totalLiabilities": "Pasivos"
+        ][key] ?? key
+    }
+
+    private func periodLabel(_ period: FinancialPeriod) -> String {
+        if let start = period.startDate { return shortDate(start) + " – " + shortDate(period.endDate) }
+        return shortDate(period.endDate)
+    }
+
+    private func shortDate(_ value: String) -> String {
+        let parts = value.split(separator: "-")
+        return parts.count >= 2 ? "\(parts[1])/\(parts[0])" : value
+    }
+
+    private func formatted(_ value: Double, unit: String) -> String {
+        unit == "USD/shares"
+            ? value.formatted(.currency(code: "USD"))
+            : compactMoney(value)
     }
 }
 

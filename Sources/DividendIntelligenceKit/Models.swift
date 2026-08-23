@@ -12,9 +12,10 @@ public struct AppSnapshot: Codable, Sendable {
     public let filings: [FilingRecord]
     public let filingUpdates: [FilingUpdate]
     public let companyProfiles: [CompanyProfile]
+    public let companyReports: [CompanyReport]
 
     enum CodingKeys: String, CodingKey {
-        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports
     }
 
     public init(from decoder: Decoder) throws {
@@ -30,7 +31,54 @@ public struct AppSnapshot: Codable, Sendable {
         filings = try container.decodeIfPresent([FilingRecord].self, forKey: .filings) ?? []
         filingUpdates = try container.decodeIfPresent([FilingUpdate].self, forKey: .filingUpdates) ?? []
         companyProfiles = try container.decodeIfPresent([CompanyProfile].self, forKey: .companyProfiles) ?? []
+        companyReports = try container.decodeIfPresent([CompanyReport].self, forKey: .companyReports) ?? []
     }
+}
+
+public struct CompanyReport: Codable, Identifiable, Sendable {
+    public var id: String { accessionNumber }
+    public let cusip: String
+    public let ticker: String?
+    public let companyName: String
+    public let cik: String
+    public let accessionNumber: String
+    public let form: String
+    public let filingDate: Date
+    public let reportDate: Date
+    public let secURL: URL
+    public let source: String
+    public let summary: CompanyReportSummary
+    public let highlights: String
+    public let metrics: [String: FinancialMetric]
+}
+
+public struct CompanyReportSummary: Codable, Sendable {
+    public let revenue: Double?
+    public let expenses: Double?
+    public let operatingIncome: Double?
+    public let netIncome: Double?
+    public let operatingMargin: Double?
+    public let netMargin: Double?
+    public let totalDebt: Double?
+    public let cash: Double?
+    public let cashFromOperations: Double?
+    public let capitalExpenditure: Double?
+}
+
+public struct FinancialMetric: Codable, Sendable {
+    public let concept: String
+    public let periods: [FinancialPeriod]
+}
+
+public struct FinancialPeriod: Codable, Identifiable, Sendable {
+    public var id: String { "\(startDate ?? "instant")-\(endDate)-\(value)" }
+    public let startDate: String?
+    public let endDate: String
+    public let value: Double
+    public let unit: String
+    public let fiscalYear: Int?
+    public let fiscalPeriod: String?
+    public let frame: String?
 }
 
 public struct FilingUpdate: Codable, Identifiable, Sendable {

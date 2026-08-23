@@ -1,0 +1,41 @@
+import unittest
+
+from pipeline.sec_company_reports import build_summary, fact_rows, recent_rows
+
+
+class CompanyReportTests(unittest.TestCase):
+    def test_extracts_every_comparative_period_from_same_filing(self):
+        facts = {"facts": {"us-gaap": {"Revenues": {"units": {"USD": [
+            {"accn": "a", "start": "2024-01-01", "end": "2024-12-31", "val": 90, "fy": 2025, "fp": "FY"},
+            {"accn": "a", "start": "2025-01-01", "end": "2025-12-31", "val": 100, "fy": 2025, "fp": "FY"},
+            {"accn": "other", "start": "2025-01-01", "end": "2025-12-31", "val": 999},
+        ]}}}}}
+        concept, periods = fact_rows(facts, "a", ("Revenues",))
+        self.assertEqual(concept, "Revenues")
+        self.assertEqual([item["value"] for item in periods], [90, 100])
+
+    def test_calculates_margins_and_derived_expenses(self):
+        metrics = {
+            "revenue": {"periods": [{"value": 100}]},
+            "operatingIncome": {"periods": [{"value": 25}]},
+            "netIncome": {"periods": [{"value": 15}]},
+            "totalDebt": {"periods": [{"value": 40}]},
+        }
+        summary, _ = build_summary(metrics)
+        self.assertEqual(summary["expenses"], 75)
+        self.assertEqual(summary["operatingMargin"], 25)
+        self.assertEqual(summary["netMargin"], 15)
+
+    def test_filters_company_reports_to_three_year_window(self):
+        submissions = {"filings": {"recent": {
+            "accessionNumber": ["new", "old", "ignored"],
+            "filingDate": ["2026-01-10", "2020-01-10", "2026-01-10"],
+            "reportDate": ["2025-12-31", "2019-12-31", "2025-12-31"],
+            "form": ["10-K", "10-K", "8-K"],
+            "primaryDocument": ["new.htm", "old.htm", "event.htm"],
+        }}}
+        self.assertEqual([item["accessionNumber"] for item in recent_rows(submissions)], ["new"])
+
+
+if __name__ == "__main__":
+    unittest.main()
