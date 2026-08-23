@@ -780,6 +780,14 @@ private struct OpportunityAnalysisView: View {
         } else if (item.yield ?? 0) > 0 {
             result.append("El payout no está disponible todavía; el score aplica una valoración prudente hasta obtenerlo del informe anual.")
         }
+        if let margin = item.operatingMargin {
+            if margin <= 0 { result.append("El margen operativo no es positivo y no aporta puntos de rentabilidad.") }
+            else if margin < 5 { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % es reducido y ofrece poco colchón ante una caída de ingresos.") }
+            else if margin < 15 { result.append("El margen operativo es moderado y aporta una puntuación intermedia de rentabilidad.") }
+            else { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % refleja una rentabilidad elevada y refuerza el score.") }
+        } else {
+            result.append("No hay margen operativo anual comparable; se aplica una puntuación prudente.")
+        }
         return result
     }
 
@@ -817,6 +825,7 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
                 LabeledContent("Payout", value: item.payout.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
+                LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 if let sector = item.sector { LabeledContent("Sector", value: sector) }
                 if let benchmark = item.sectorPEBenchmark {
                     LabeledContent("PER de referencia", value: benchmark.formatted(.number.precision(.fractionLength(1))) + "x")
@@ -827,9 +836,10 @@ private struct OpportunityAnalysisView: View {
                 }
             }
             Section("Desglose del score") {
-                ScoreComponentRow(label: "Dividendo", value: item.dividendInvestorScore ?? 0, maximum: 55, icon: "dollarsign.circle.fill")
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 25, icon: "scalemass.fill")
-                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 20, icon: "building.columns.fill")
+                ScoreComponentRow(label: "Dividendo", value: item.dividendInvestorScore ?? 0, maximum: 50, icon: "dollarsign.circle.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 20, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 15, icon: "percent")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 15, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
                 Section("Informes anuales publicados") {
@@ -1020,7 +1030,7 @@ struct CompanyFinancialSeriesDashboard: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            groupedChart("Resultados anuales", subtitle: "Ingresos · gastos totales · beneficio neto", points: resultPoints)
+            groupedChart("Cuenta de resultados anual", subtitle: "Ingresos netos · beneficio neto", points: resultPoints)
             marginChart
             dividendChart
             groupedChart("Balance", subtitle: "Deuda y efectivo al cierre", points: instantPoints(keys: ["totalDebt", "cash"]))
@@ -1042,7 +1052,7 @@ struct CompanyFinancialSeriesDashboard: View {
     }
 
     private var resultPoints: [FinancialSeriesPoint] {
-        points(keys: ["revenue", "operatingExpenses", "netIncome"], include: isAnnual)
+        points(keys: ["revenue", "netIncome"], include: isAnnual)
     }
 
     private var cashFlowPoints: [FinancialSeriesPoint] {
@@ -1137,7 +1147,15 @@ struct CompanyFinancialSeriesDashboard: View {
                         domain: ["Margen neto", "Margen operativo"],
                         range: [WhaleTheme.positive, WhaleTheme.info]
                     )
-                    .chartYAxis { AxisMarks(format: Decimal.FormatStyle.Percent.percent.scale(1)) }
+                    .chartYAxis { AxisMarks(position: .leading, values: .automatic(desiredCount: 5)) { value in
+                        AxisGridLine()
+                        AxisValueLabel {
+                            if let margin = value.as(Double.self) {
+                                Text(margin.formatted(.percent.precision(.fractionLength(0...1))))
+                            }
+                        }
+                    }}
+                    .chartYScale(domain: .automatic(includesZero: true))
                     .frame(height: 210)
                 }.padding(15).whalePanel()
             }
@@ -1200,13 +1218,13 @@ struct CompanyFinancialSeriesDashboard: View {
         period.fiscalPeriod == "FY" && (duration(period) ?? 0) >= 300
     }
     private func metricColor(_ metric: String) -> Color {
-        ["Ingresos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
+        ["Ingresos netos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,
          "Deuda": WhaleTheme.negative, "Efectivo": WhaleTheme.accent,
          "Caja operativa": WhaleTheme.positive, "Inversión": WhaleTheme.info,
          "Dividendos pagados": WhaleTheme.positive][metric] ?? WhaleTheme.accent
     }
     private func metricLabel(_ key: String) -> String {
-        ["revenue": "Ingresos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión", "dividendPerShare": "Dividendo por acción", "dividendsPaid": "Dividendos pagados"][key] ?? key
+        ["revenue": "Ingresos netos", "operatingExpenses": "Gastos", "netIncome": "Beneficio neto", "totalDebt": "Deuda", "cash": "Efectivo", "cashFromOperations": "Caja operativa", "capitalExpenditure": "Inversión", "dividendPerShare": "Dividendo por acción", "dividendsPaid": "Dividendos pagados"][key] ?? key
     }
 }
 

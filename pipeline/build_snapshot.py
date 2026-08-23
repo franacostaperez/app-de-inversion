@@ -235,6 +235,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
         payout = (latest_reports.get(ticker, {}).get("summary") or {}).get("payoutRatio")
+        operating_margin = (latest_reports.get(ticker, {}).get("summary") or {}).get("operatingMargin")
         if payout is None:
             payout = company.get("payout")
         sector = profile.get("sector", company.get("sector", "Unknown"))
@@ -245,17 +246,17 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if yield_percent is None or yield_percent <= 0:
             yield_score = 0
         elif yield_percent < 1:
-            yield_score = 6
-        elif yield_percent < 2:
-            yield_score = 14
-        elif yield_percent < 3:
-            yield_score = 25
-        elif yield_percent <= 9:
-            yield_score = 40
-        elif yield_percent <= 12:
-            yield_score = 16
-        else:
             yield_score = 5
+        elif yield_percent < 2:
+            yield_score = 12
+        elif yield_percent < 3:
+            yield_score = 22
+        elif yield_percent <= 9:
+            yield_score = 35
+        elif yield_percent <= 12:
+            yield_score = 14
+        else:
+            yield_score = 4
 
         if yield_score == 0:
             payout_score = 0
@@ -276,25 +277,40 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         dividend_score = yield_score + payout_score
 
         if pe is None:
-            valuation_score = 7
+            valuation_score = 5
         elif pe <= 0:
             valuation_score = 0
         elif pe / adjusted_pe_benchmark < 0.5:
-            valuation_score = 12
+            valuation_score = 10
         elif pe / adjusted_pe_benchmark <= 0.85:
-            valuation_score = 25
+            valuation_score = 20
         elif pe / adjusted_pe_benchmark <= 1.10:
-            valuation_score = 22
+            valuation_score = 18
         elif pe / adjusted_pe_benchmark <= 1.30:
-            valuation_score = 15
+            valuation_score = 12
         elif pe / adjusted_pe_benchmark <= 1.60:
-            valuation_score = 8
+            valuation_score = 7
         else:
             valuation_score = 3
 
-        consensus_score = min(12, counts["holders"] * 2) + max(-8, min(8, net_buying * 2))
-        consensus_score = max(0, min(20, consensus_score))
-        score = dividend_score + valuation_score + consensus_score
+        if operating_margin is None:
+            profitability_score = 4
+        elif operating_margin <= 0:
+            profitability_score = 0
+        elif operating_margin < 5:
+            profitability_score = 3
+        elif operating_margin < 10:
+            profitability_score = 7
+        elif operating_margin < 15:
+            profitability_score = 10
+        elif operating_margin < 25:
+            profitability_score = 13
+        else:
+            profitability_score = 15
+
+        consensus_score = min(9, counts["holders"] * 2) + max(-6, min(6, net_buying * 2))
+        consensus_score = max(0, min(15, consensus_score))
+        score = dividend_score + valuation_score + profitability_score + consensus_score
         consensus_items.append({
             "ticker": profile.get("ticker", ticker),
             "cusip": ticker,
@@ -303,9 +319,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "yield": yield_percent,
             "pe": pe,
             "payout": payout,
+            "operatingMargin": operating_margin,
             "opportunityScore": min(100, score),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
+            "profitabilityInvestorScore": profitability_score,
             "consensusInvestorScore": consensus_score,
             "sector": sector,
             "sectorPEBenchmark": adjusted_pe_benchmark,

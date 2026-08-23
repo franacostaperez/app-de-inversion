@@ -167,6 +167,7 @@ public struct Opportunity: Codable, Identifiable, Sendable {
     public let yield: Double
     public let pe: Double?
     public let payout: Double?
+    public let operatingMargin: Double?
     public let dividendGrowth5Y: Double?
     public let debtToEBITDA: Double?
     public let franScore: Int
@@ -229,9 +230,11 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let yield: Double?
     public let pe: Double?
     public let payout: Double?
+    public let operatingMargin: Double?
     public let opportunityScore: Int?
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?
+    public let profitabilityInvestorScore: Int?
     public let consensusInvestorScore: Int?
     public let sector: String?
     public let sectorPEBenchmark: Double?
