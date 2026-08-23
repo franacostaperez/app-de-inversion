@@ -57,6 +57,9 @@ public struct CompanyProfile: Codable, Identifiable, Sendable {
     public let name: String
     public let ticker: String?
     public let description: String?
+    public let businessModel: String?
+    public let revenueModel: String?
+    public let economicMoat: String?
     public let exchange: String?
     public let currency: String?
     public let country: String?

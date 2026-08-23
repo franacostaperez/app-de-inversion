@@ -1,6 +1,6 @@
 import unittest
 
-from pipeline.enrich_companies import metric, number, profile_from_google
+from pipeline.enrich_companies import enrich, metric, number, profile_from_google
 
 
 class CompanyEnrichmentTests(unittest.TestCase):
@@ -17,6 +17,17 @@ class CompanyEnrichmentTests(unittest.TestCase):
     def test_missing_metric_is_none(self):
         self.assertIsNone(metric("<html></html>", "Dividend"))
         self.assertIsNone(number("—"))
+
+    def test_daily_refresh_preserves_qualitative_research(self):
+        class Client:
+            def google_quote(self, ticker, preferred_exchange=None):
+                return "NYSE", '<div class="SwQK7">Dividend</div><div class="dO6ijd">4.20%</div>'
+
+        catalog = [{"cusip": "123", "ticker": "ABC", "exchange": "NYSE",
+                    "businessModel": "Modelo", "revenueModel": "Ingresos", "economicMoat": "Foso"}]
+        result = enrich([{"cusip": "123", "company": "ABC"}], catalog, Client(), 0)
+        self.assertEqual(result[0]["businessModel"], "Modelo")
+        self.assertEqual(result[0]["economicMoat"], "Foso")
 
 
 if __name__ == "__main__":

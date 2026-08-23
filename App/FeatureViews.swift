@@ -487,7 +487,7 @@ struct SmartMoneyView: View {
     @Binding var selectedInvestorID: String
 
     var body: some View {
-        ConsensusRankingView(items: snapshot.consensus)
+        ConsensusRankingView(items: snapshot.consensus, profiles: snapshot.companyProfiles)
     }
 }
 
@@ -500,6 +500,7 @@ private struct ConsensusRankingView: View {
     }
 
     let items: [ConsensusItem]
+    let profiles: [CompanyProfile]
     @State private var ranking: Ranking = .opportunity
     @State private var search = ""
     @State private var yieldFilter: DividendYieldFilter = .all
@@ -532,33 +533,37 @@ private struct ConsensusRankingView: View {
             }
             Section {
                 ForEach(Array(rankedItems.enumerated()), id: \.element.id) { index, item in
-                    HStack(spacing: 12) {
-                        Text("\(index + 1)")
-                            .font(.headline.monospacedDigit()).foregroundStyle(.secondary).frame(width: 28)
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(2)
-                            HStack(spacing: 10) {
-                                Label("\(item.holders)", systemImage: "building.columns")
-                                Label("\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
-                                Label("\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
-                            }
-                            .font(.caption)
-                            HStack(spacing: 8) {
-                                if let yield = item.yield {
-                                    Text("Yield " + yield.formatted(.number.precision(.fractionLength(1))) + "%")
-                                        .foregroundStyle(yield > 4 ? WhaleTheme.positive : .secondary)
+                    NavigationLink {
+                        OpportunityAnalysisView(item: item, profile: profile(for: item))
+                    } label: {
+                        HStack(spacing: 12) {
+                            Text("\(index + 1)")
+                                .font(.headline.monospacedDigit()).foregroundStyle(.secondary).frame(width: 28)
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(2)
+                                HStack(spacing: 10) {
+                                    Label("\(item.holders)", systemImage: "building.columns")
+                                    Label("\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
+                                    Label("\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
                                 }
-                                if let pe = item.pe {
-                                    Text("PER " + pe.formatted(.number.precision(.fractionLength(1))) + "x")
+                                .font(.caption)
+                                HStack(spacing: 8) {
+                                    if let yield = item.yield {
+                                        Text("Yield " + yield.formatted(.number.precision(.fractionLength(1))) + "%")
+                                            .foregroundStyle(yield > 4 ? WhaleTheme.positive : .secondary)
+                                    }
+                                    if let pe = item.pe {
+                                        Text("PER " + pe.formatted(.number.precision(.fractionLength(1))) + "x")
+                                    }
                                 }
+                                .font(.caption.bold().monospacedDigit())
                             }
-                            .font(.caption.bold().monospacedDigit())
-                        }
-                        Spacer()
-                        VStack(alignment: .trailing, spacing: 3) {
-                            Text("\(item.opportunityScore ?? 0)")
-                                .font(.title3.bold().monospacedDigit()).foregroundStyle(WhaleTheme.accent)
-                            Text("SCORE").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+                            Spacer()
+                            VStack(alignment: .trailing, spacing: 3) {
+                                Text("\(item.opportunityScore ?? 0)")
+                                    .font(.title3.bold().monospacedDigit()).foregroundStyle(WhaleTheme.accent)
+                                Text("SCORE").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+                            }
                         }
                     }
                     .padding(.vertical, 4)
@@ -572,6 +577,79 @@ private struct ConsensusRankingView: View {
         .background(WhaleTheme.background)
         .navigationTitle("Smart Money")
         .searchable(text: $search, prompt: "Buscar empresa")
+    }
+
+    private func profile(for item: ConsensusItem) -> CompanyProfile? {
+        guard let cusip = item.cusip else { return nil }
+        return profiles.first { $0.cusip == cusip }
+    }
+}
+
+private struct OpportunityAnalysisView: View {
+    let item: ConsensusItem
+    let profile: CompanyProfile?
+
+    private var reasons: [String] {
+        var result: [String] = []
+        let net = item.buying - item.selling
+        if item.holders >= 5 { result.append("Existe consenso: la mantienen \(item.holders) de los fondos seguidos.") }
+        if net > 0 { result.append("La tendencia institucional es positiva, con \(net) compradores netos en el trimestre.") }
+        if let yield = item.yield {
+            if yield >= 5 { result.append("Ofrece un yield elevado del \(yield.formatted(.number.precision(.fractionLength(1)))) %, atractivo para una estrategia de ingresos.") }
+            else if yield >= 3 { result.append("El yield del \(yield.formatted(.number.precision(.fractionLength(1)))) % está dentro del rango objetivo del 3–5 %.") }
+            else { result.append("El dividendo es modesto; el atractivo depende más del consenso y la valoración.") }
+        }
+        if let pe = item.pe {
+            if pe <= 15 { result.append("El PER de \(pe.formatted(.number.precision(.fractionLength(1))))x sugiere una valoración contenida.") }
+            else if pe <= 20 { result.append("El PER de \(pe.formatted(.number.precision(.fractionLength(1))))x es razonable frente al umbral usado por el score.") }
+            else if pe > 30 { result.append("El PER es elevado y reduce el atractivo de valoración.") }
+        } else { result.append("No hay PER disponible; la valoración requiere comprobación adicional.") }
+        return result
+    }
+
+    var body: some View {
+        List {
+            Section {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Score de oportunidad").font(.caption).foregroundStyle(.secondary)
+                        Text("\(item.opportunityScore ?? 0) / 100").font(.largeTitle.bold().monospacedDigit())
+                    }
+                    Spacer()
+                    Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
+                        .font(.system(size: 42)).foregroundStyle(WhaleTheme.accent)
+                }
+            }
+            Section("Por qué puede ser una oportunidad") {
+                ForEach(reasons, id: \.self) { reason in
+                    Label(reason, systemImage: "checkmark.circle.fill")
+                        .foregroundStyle(.primary)
+                }
+                Text("El score es una señal cuantitativa, no una recomendación de inversión.")
+                    .font(.footnote).foregroundStyle(.secondary)
+            }
+            Section("Indicadores") {
+                LabeledContent("Fondos con posición", value: "\(item.holders)")
+                LabeledContent("Comprando", value: "\(item.buying)")
+                LabeledContent("Reduciendo", value: "\(item.selling)")
+                LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
+                LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
+            }
+            if let profile {
+                if let description = profile.description { Section("A qué se dedica") { Text(description) } }
+                if let business = profile.businessModel { Section("Modelo de negocio") { Text(business) } }
+                if let revenue = profile.revenueModel { Section("Cómo gana dinero") { Text(revenue) } }
+                if let moat = profile.economicMoat { Section("Foso defensivo") { Text(moat) } }
+                Section { Text("Datos empresariales almacenados en GitHub · Fuente de métricas: \(profile.source)").font(.caption).foregroundStyle(.secondary) }
+            } else {
+                Section("Empresa") {
+                    Text("El perfil cualitativo todavía está pendiente de incorporación a GitHub.")
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .navigationTitle(item.company)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

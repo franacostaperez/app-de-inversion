@@ -89,7 +89,11 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
             continue
         exchange, page = client.google_quote(ticker, existing.get("exchange"))
         if page:
-            by_cusip[cusip] = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
+            refreshed = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
+            for key in ("description", "businessModel", "revenueModel", "economicMoat", "sector", "industry"):
+                if existing.get(key):
+                    refreshed[key] = existing[key]
+            by_cusip[cusip] = refreshed
         time.sleep(0.2)
     return sorted(by_cusip.values(), key=lambda item: item.get("name", ""))
 
