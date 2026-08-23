@@ -115,7 +115,12 @@ def retained_filing_date(value: str, today: date | None = None) -> bool:
 
 def build_filing_updates(current: dict, holdings: list[dict], movements: list[dict], prior_updates: list[dict]) -> list[dict]:
     by_accession = {item["accessionNumber"]: item for item in current.get("filings", [])}
-    updates = {item["accessionNumber"]: item for item in prior_updates if retained_filing_date(item["filingDate"])}
+    active_investors = {item["id"] for item in current.get("investors", [])}
+    updates = {
+        item["accessionNumber"]: item
+        for item in prior_updates
+        if retained_filing_date(item["filingDate"]) and item.get("investorId") in active_investors
+    }
     for investor in current.get("investors", []):
         accession = investor.get("accessionNumber")
         filing = by_accession.get(accession)

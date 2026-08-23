@@ -94,6 +94,14 @@ class SnapshotTests(unittest.TestCase):
         result = build(current, {"investors": []}, [])
         self.assertEqual([item["id"] for item in result["investors"]], ["large", "small"])
 
+    def test_removes_news_for_funds_no_longer_monitored(self):
+        current = {"quarter": "2026-Q1", "investors": []}
+        old_update = {
+            "investorId": "removed", "accessionNumber": "old", "filingDate": "2026-05-15T00:00:00Z"
+        }
+        result = build(current, {"investors": []}, [], prior_updates=[old_update])
+        self.assertEqual(result["filingUpdates"], [])
+
 
 if __name__ == "__main__":
     unittest.main()
