@@ -214,11 +214,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
         net_buying = counts["buying"] - counts["selling"]
-        score = min(100, max(0, 35 + counts["holders"] * 4 + net_buying * 6))
+        score = min(40, max(0, counts["holders"] * 2 + max(0, net_buying) * 5))
         if yield_percent is not None:
-            score += 12 if yield_percent >= 4 else (6 if yield_percent >= 2 else 0)
+            score += 35 if yield_percent >= 5 else (30 if yield_percent >= 3 else (15 if yield_percent >= 1 else (8 if yield_percent > 0 else 0)))
         if pe is not None:
-            score += 12 if 0 < pe <= 18 else (6 if pe <= 25 else 0)
+            score += 25 if 0 < pe <= 15 else (20 if pe <= 20 else (12 if pe <= 25 else (5 if pe <= 35 else 0)))
         consensus_items.append({
             "ticker": profile.get("ticker", ticker),
             "cusip": ticker,
