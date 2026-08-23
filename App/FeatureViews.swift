@@ -34,6 +34,7 @@ struct OpportunitiesView: View {
 struct UpdatesView: View {
     let snapshot: AppSnapshot
     @State private var filter = "all"
+    @State private var period: NewsPeriod = .week
 
     private var filings: [FilingUpdate] {
         let recent = snapshot.filingUpdates.filter { $0.filingDate >= retentionCutoff }
@@ -48,6 +49,13 @@ struct UpdatesView: View {
 
     private var news: [NewsEntry] {
         (filings.map(NewsEntry.filing) + companyReports.map(NewsEntry.companyReport))
+            .filter { $0.date >= period.cutoff }
+            .sorted { $0.date > $1.date }
+    }
+
+    private var sections: [NewsSection] {
+        Dictionary(grouping: news) { Calendar.current.startOfDay(for: $0.date) }
+            .map { NewsSection(date: $0.key, entries: $0.value.sorted { $0.date > $1.date }) }
             .sorted { $0.date > $1.date }
     }
 
@@ -57,19 +65,36 @@ struct UpdatesView: View {
 
     private var retentionCutoff: Date { Calendar.current.date(byAdding: .year, value: -3, to: Date()) ?? .distantPast }
 
+    private var nextPlannedUpdate: Date {
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = TimeZone(secondsFromGMT: 0)!
+        let now = Date()
+        let today = utc.startOfDay(for: now)
+        let scheduled = utc.date(bySettingHour: 7, minute: 17, second: 0, of: today)!
+        return scheduled > now ? scheduled : utc.date(byAdding: .day, value: 1, to: scheduled)!
+    }
+
     var body: some View {
-        Group {
-            if news.isEmpty {
-                ContentUnavailableView(
-                    "Sin novedades 13F",
-                    systemImage: "sparkles",
-                    description: Text("Las nuevas publicaciones detectadas por el agente aparecerán aquí.")
-                )
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        updateFilter
-                        ForEach(news) { item in
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 16) {
+                updateOverview
+                Picker("Periodo", selection: $period) {
+                    ForEach(NewsPeriod.allCases) { option in Text(option.title).tag(option) }
+                }
+                .pickerStyle(.segmented)
+                updateFilter
+
+                if news.isEmpty {
+                    ContentUnavailableView(
+                        "Sin novedades en este periodo",
+                        systemImage: "calendar.badge.checkmark",
+                        description: Text("Prueba otro intervalo o fuente. La revisión automática sigue activa.")
+                    )
+                    .frame(maxWidth: .infinity).padding(.top, 28)
+                } else {
+                    ForEach(sections) { section in
+                        Section {
+                            ForEach(section.entries) { item in
                             switch item {
                             case .filing(let update): UpdateCard(update: update)
                             case .companyReport(let report):
@@ -80,14 +105,51 @@ struct UpdatesView: View {
                                     holdings: snapshot.holdings.filter { $0.cusip == report.cusip }
                                 )
                             }
+                            }
+                        } header: {
+                            Text(section.title)
+                                .font(.caption.bold()).foregroundStyle(.secondary)
+                                .textCase(.uppercase).tracking(0.7)
                         }
                     }
-                    .padding(16)
                 }
-                .background(WhaleTheme.background)
             }
+            .padding(16)
         }
-        .navigationTitle("Novedades 13F")
+        .background(WhaleTheme.background)
+        .navigationTitle("Novedades")
+    }
+
+    private var updateOverview: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            HStack {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("CENTRO DE ACTUALIZACIONES").font(.system(size: 9, weight: .bold)).tracking(0.9)
+                        .foregroundStyle(WhaleTheme.accent)
+                    Text("\(news.count) novedades · \(period.title.lowercased())")
+                        .font(.title3.bold())
+                }
+                Spacer()
+                Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
+                    .font(.title2).foregroundStyle(WhaleTheme.accent)
+            }
+            Divider()
+            HStack(spacing: 10) {
+                scheduleMetric("Última carga", snapshot.generatedAt.formatted(date: .abbreviated, time: .shortened), "checkmark.circle.fill")
+                scheduleMetric("Siguiente", nextPlannedUpdate.formatted(date: .abbreviated, time: .shortened), "clock.badge")
+            }
+            Text("Revisión automática diaria a las 07:17 UTC")
+                .font(.caption2).foregroundStyle(.secondary)
+        }
+        .padding(15).whalePanel()
+    }
+
+    private func scheduleMetric(_ label: String, _ value: String, _ icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label(label.uppercased(), systemImage: icon).font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+            Text(value).font(.caption.bold().monospacedDigit()).lineLimit(1).minimumScaleFactor(0.8)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var updateFilter: some View {
@@ -101,6 +163,32 @@ struct UpdatesView: View {
                 }
             }
         }
+    }
+}
+
+private enum NewsPeriod: String, CaseIterable, Identifiable {
+    case day, week, all
+    var id: String { rawValue }
+    var title: String {
+        switch self { case .day: "Último día"; case .week: "Última semana"; case .all: "Todo" }
+    }
+    var cutoff: Date {
+        switch self {
+        case .day: Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? .distantPast
+        case .week: Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? .distantPast
+        case .all: .distantPast
+        }
+    }
+}
+
+private struct NewsSection: Identifiable {
+    let date: Date
+    let entries: [NewsEntry]
+    var id: Date { date }
+    var title: String {
+        if Calendar.current.isDateInToday(date) { return "Hoy" }
+        if Calendar.current.isDateInYesterday(date) { return "Ayer" }
+        return date.formatted(date: .long, time: .omitted)
     }
 }
 

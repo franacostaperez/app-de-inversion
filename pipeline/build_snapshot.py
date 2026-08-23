@@ -43,10 +43,28 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         return 3
     if pe <= 0:
         return 0
-    return graduated_score(pe / ideal_pe, [
-        (0.35, 23), (0.50, 30), (0.75, 37), (1.00, 40), (1.15, 36),
-        (1.30, 29), (1.50, 20), (1.80, 10), (2.20, 3), (3.00, 0),
+    # Absolute price discipline comes first: only a P/E of 10x or less can
+    # receive the maximum valuation score. Sector and brand context can make a
+    # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
+    base = graduated_score(pe, [
+        (5, 40), (10, 40), (12, 36), (15, 30), (18, 24),
+        (22, 17), (28, 9), (35, 3), (45, 0),
     ])
+    relative = pe / ideal_pe if ideal_pe > 0 else 1
+    if relative <= 0.70:
+        adjustment = 3
+    elif relative <= 0.85:
+        adjustment = 2
+    elif relative <= 1.00:
+        adjustment = 1
+    elif relative <= 1.15:
+        adjustment = 0
+    elif relative <= 1.35:
+        adjustment = -2
+    else:
+        adjustment = -4
+    maximum = 40 if pe <= 10 else 39
+    return max(0, min(maximum, base + adjustment))
 
 
 def aggregate_holdings(items: list[dict]) -> list[dict]:
@@ -306,7 +324,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         else:
             payout_score = 0
 
-        if dividend_growth is None:
+        if yield_score == 0:
+            growth_score = 0
+        elif dividend_growth is None:
             growth_score = 3
         elif dividend_growth < 0 or not dividend_increases:
             growth_score = 0

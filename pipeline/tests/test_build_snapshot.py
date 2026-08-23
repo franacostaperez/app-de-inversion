@@ -11,10 +11,25 @@ class SnapshotTests(unittest.TestCase):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 4, 6, 7.5, 9, 10, 12)]
         self.assertEqual(scores, [2, 5, 9, 10, 10, 9, 8, 6, 3])
 
-    def test_pe_score_uses_twelve_as_ideal_and_changes_gradually(self):
-        self.assertEqual(valuation_investor_score(12, 12), 40)
+    def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
+        self.assertEqual(valuation_investor_score(10, 18), 40)
+        self.assertLess(valuation_investor_score(12, 18), 40)
+        self.assertLess(valuation_investor_score(17.3, 18), 30)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
+
+    def test_non_dividend_company_gets_no_dividend_growth_points(self):
+        current = {"quarter": "2026-Q1", "investors": [{
+            "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
+            "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
+            "holdings": [{"ticker": "PRIVATE", "cusip": "1", "company": "Private Co", "shares": 1, "value": 1}],
+        }]}
+        profiles = [{"cusip": "1", "name": "Private Co", "paysDividend": False}]
+        item = build(current, {"investors": []}, [], company_profiles=profiles)["consensus"][0]
+        self.assertEqual(item["yieldInvestorScore"], 0)
+        self.assertEqual(item["payoutInvestorScore"], 0)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 0)
+        self.assertEqual(item["dividendInvestorScore"], 0)
 
     def test_classification(self):
         self.assertEqual(classify(0, 10), ("NEW", None))
@@ -74,7 +89,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
         self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 31)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 31)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 28)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 2)
 
     def test_creates_a_filing_news_summary(self):
