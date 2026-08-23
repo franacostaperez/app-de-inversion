@@ -259,65 +259,65 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if yield_percent is None or yield_percent <= 0:
             yield_score = 0
         elif yield_percent < 1:
-            yield_score = 3
-        elif yield_percent < 2:
-            yield_score = 8
-        elif yield_percent < 3:
-            yield_score = 16
-        elif yield_percent <= 9:
-            yield_score = 25
-        elif yield_percent <= 12:
-            yield_score = 10
-        else:
             yield_score = 2
+        elif yield_percent < 2:
+            yield_score = 6
+        elif yield_percent < 3:
+            yield_score = 13
+        elif yield_percent <= 9:
+            yield_score = 20
+        elif yield_percent <= 12:
+            yield_score = 8
+        else:
+            yield_score = 1
 
         if yield_score == 0:
             payout_score = 0
         elif payout is None:
-            payout_score = 4
+            payout_score = 6
         elif payout <= 0:
             payout_score = 0
         elif payout < 20:
-            payout_score = 6
+            payout_score = 9
         elif payout <= 70:
-            payout_score = 10
+            payout_score = 15
         elif payout <= 85:
-            payout_score = 6
+            payout_score = 9
         elif payout <= 100:
-            payout_score = 2
+            payout_score = 3
         else:
             payout_score = 0
 
         if dividend_growth is None:
-            growth_score = 3
+            growth_score = 4
         elif dividend_growth < 0 or not dividend_increases:
             growth_score = 0
         elif dividend_growth < 1:
-            growth_score = 3
+            growth_score = 4
         elif dividend_growth < 3:
-            growth_score = 5
+            growth_score = 7
         elif dividend_growth < 7:
-            growth_score = 8
+            growth_score = 11
         else:
-            growth_score = 10
+            growth_score = 15
         dividend_score = yield_score + payout_score + growth_score
 
         if pe is None:
-            valuation_score = 4
+            valuation_score = 3
         elif pe <= 0:
             valuation_score = 0
         elif pe / adjusted_pe_benchmark < 0.5:
-            valuation_score = 8
+            valuation_score = 6
         elif pe / adjusted_pe_benchmark <= 0.85:
-            valuation_score = 15
+            valuation_score = 12
         elif pe / adjusted_pe_benchmark <= 1.10:
-            valuation_score = 13
+            valuation_score = 11
         elif pe / adjusted_pe_benchmark <= 1.30:
-            valuation_score = 9
+            valuation_score = 7
         elif pe / adjusted_pe_benchmark <= 1.60:
-            valuation_score = 5
+            valuation_score = 4
         else:
-            valuation_score = 2
+            valuation_score = 1
 
         if operating_margin is None:
             profitability_score = 3
@@ -335,24 +335,24 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             profitability_score = 10
 
         if roce is None:
-            roce_score = 4
+            roce_score = 3
         elif roce <= 0:
             roce_score = 0
         elif roce < 5:
             roce_score = 2
         elif roce < 10:
-            roce_score = 5
+            roce_score = 4
         elif roce < 15:
-            roce_score = 8
+            roce_score = 7
         elif roce < 20:
-            roce_score = 11
+            roce_score = 10
         elif roce < 30:
-            roce_score = 13
+            roce_score = 12
         else:
-            roce_score = 15
+            roce_score = 13
 
-        consensus_score = min(9, counts["holders"] * 2) + max(-6, min(6, net_buying * 2))
-        consensus_score = max(0, min(15, consensus_score))
+        consensus_score = min(6, counts["holders"] * 2) + max(-4, min(4, net_buying * 2))
+        consensus_score = max(0, min(10, consensus_score))
         score = dividend_score + valuation_score + profitability_score + roce_score + consensus_score
         consensus_items.append({
             "ticker": profile.get("ticker", ticker),
@@ -419,7 +419,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "filingUpdates": filing_updates,
         "companyProfiles": company_profiles or [],
         "companyReports": sorted(
-            [item for item in (company_reports or []) if str(item.get("form", "")).upper().startswith(("10-K", "20-F", "40-F"))],
+            [item for item in (company_reports or []) if str(item.get("form", "")).upper().startswith(("10-K", "20-F", "40-F", "10-Q"))],
             key=lambda item: (item["filingDate"], item.get("accessionNumber", ""), item.get("cusip", "")),
             reverse=True,
         ),

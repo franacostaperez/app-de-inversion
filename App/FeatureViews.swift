@@ -9,6 +9,7 @@ private extension CompanyReport {
         let normalized = form.uppercased()
         return normalized.hasPrefix("10-K") || normalized.hasPrefix("20-F") || normalized.hasPrefix("40-F")
     }
+    var isQuarterlyReport: Bool { form.uppercased().hasPrefix("10-Q") }
 }
 
 struct OpportunitiesView: View {
@@ -853,13 +854,13 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 25, icon: "percent")
-                ScoreComponentRow(label: "Payout", value: item.payoutInvestorScore ?? 0, maximum: 10, icon: "chart.pie.fill")
-                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 10, icon: "chart.line.uptrend.xyaxis")
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 15, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 20, icon: "percent")
+                ScoreComponentRow(label: "Payout", value: item.payoutInvestorScore ?? 0, maximum: 15, icon: "chart.pie.fill")
+                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 15, icon: "chart.line.uptrend.xyaxis")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 12, icon: "scalemass.fill")
                 ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 10, icon: "gauge.with.dots.needle.50percent")
-                ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 15, icon: "arrow.triangle.2.circlepath")
-                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 15, icon: "building.columns.fill")
+                ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 13, icon: "arrow.triangle.2.circlepath")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 10, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
                 Section("Informes anuales publicados") {
@@ -925,6 +926,7 @@ struct CompanyFinancialOverviewView: View {
     var holdings: [Holding] = []
 
     private var annualReports: [CompanyReport] { reports.filter(\.isAnnualReport) }
+    private var quarterlyReports: [CompanyReport] { reports.filter(\.isQuarterlyReport).sorted { $0.reportDate > $1.reportDate } }
     private var latest: CompanyReport? { annualReports.max { $0.reportDate < $1.reportDate } }
 
     var body: some View {
@@ -978,6 +980,31 @@ struct CompanyFinancialOverviewView: View {
                         .padding().whalePanel()
                 }
 
+                if !quarterlyReports.isEmpty {
+                    SectionTitle("Resultados trimestrales", detail: "Resumen, sin incluirlos en las gráficas")
+                    VStack(spacing: 0) {
+                        ForEach(Array(quarterlyReports.prefix(8).enumerated()), id: \.element.id) { index, report in
+                            NavigationLink {
+                                CompanyQuarterSummaryView(
+                                    report: report,
+                                    previous: quarterlyReports.dropFirst(index + 1).first
+                                )
+                            } label: {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text(report.form).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+                                        Text("Periodo " + report.reportDate.formatted(date: .abbreviated, time: .omitted))
+                                            .font(.subheadline).foregroundStyle(.primary)
+                                    }
+                                    Spacer()
+                                    Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.tertiary)
+                                }.padding(12)
+                            }.buttonStyle(.plain)
+                            if index < min(quarterlyReports.count, 8) - 1 { Divider() }
+                        }
+                    }.whalePanel()
+                }
+
                 if let profile {
                     if let description = profile.description { textPanel("A qué se dedica", description, "building.2") }
                     if let model = profile.businessModel { textPanel("Modelo de negocio", model, "gearshape.2") }
@@ -1028,6 +1055,76 @@ struct CompanyFinancialOverviewView: View {
             Label(title, systemImage: icon).font(.headline)
             Text(text).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(15).whalePanel()
+    }
+}
+
+private struct CompanyQuarterSummaryView: View {
+    let report: CompanyReport
+    let previous: CompanyReport?
+
+    var body: some View {
+        List {
+            Section("Resumen del trimestre") {
+                comparison("Ingresos", current: report.summary.revenue, previous: previous?.summary.revenue, format: compactMoney)
+                comparison("Beneficio neto", current: report.summary.netIncome, previous: previous?.summary.netIncome, format: compactMoney)
+                comparison("Margen operativo", current: report.summary.operatingMargin, previous: previous?.summary.operatingMargin) { value in
+                    value.formatted(.number.precision(.fractionLength(1))) + "%"
+                }
+                comparison("Beneficio por acción", current: report.summary.epsDiluted, previous: previous?.summary.epsDiluted) { value in
+                    value.formatted(.currency(code: "USD"))
+                }
+            }
+            Section("Frente a expectativas") {
+                if let expected = report.summary.expectedRevenue, let actual = report.summary.revenue {
+                    expectation("Ingresos", actual: actual, expected: expected, format: compactMoney)
+                }
+                if let expected = report.summary.expectedEPS, let actual = report.summary.epsDiluted {
+                    expectation("BPA", actual: actual, expected: expected) { $0.formatted(.currency(code: "USD")) }
+                }
+                if report.summary.expectedRevenue == nil && report.summary.expectedEPS == nil {
+                    Label("No hay una estimación de consenso verificable en la fuente disponible.", systemImage: "exclamationmark.magnifyingglass")
+                        .foregroundStyle(.secondary)
+                    Text("La SEC publica resultados oficiales, pero no expectativas de analistas. La app no inventa ni aproxima esa comparación.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+            Section("Lectura del trimestre") {
+                Text(report.highlights)
+                if let previous {
+                    Text("Comparación realizada con el trimestre terminado el \(previous.reportDate.formatted(date: .abbreviated, time: .omitted)).")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+            Section {
+                Link(destination: report.secURL) { Label("Abrir informe oficial en la SEC", systemImage: "arrow.up.right.square") }
+            }
+        }
+        .navigationTitle(report.companyName)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    @ViewBuilder
+    private func comparison(_ label: String, current: Double?, previous: Double?, format: (Double) -> String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack { Text(label); Spacer(); Text(current.map(format) ?? "—").bold().monospacedDigit() }
+            if let current, let previous, previous != 0 {
+                let change = (current / previous - 1) * 100
+                Text("Frente al trimestre anterior: \(change.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1)))) %")
+                    .font(.caption).foregroundStyle(change >= 0 ? WhaleTheme.positive : WhaleTheme.negative)
+            } else {
+                Text("Sin trimestre anterior comparable").font(.caption).foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func expectation(_ label: String, actual: Double, expected: Double, format: (Double) -> String) -> some View {
+        let surprise = expected == 0 ? 0 : (actual / expected - 1) * 100
+        VStack(alignment: .leading, spacing: 4) {
+            HStack { Text(label); Spacer(); Text(format(actual)).bold().monospacedDigit() }
+            Text("Esperado \(format(expected)) · sorpresa \(surprise.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1)))) %")
+                .font(.caption).foregroundStyle(surprise >= 0 ? WhaleTheme.positive : WhaleTheme.negative)
+        }
     }
 }
 
@@ -1232,7 +1329,8 @@ struct CompanyFinancialSeriesDashboard: View {
         return Calendar.current.dateComponents([.day], from: start, to: end).day
     }
     private func isAnnual(_ period: FinancialPeriod) -> Bool {
-        period.fiscalPeriod == "FY" && (duration(period) ?? 0) >= 300
+        guard period.fiscalPeriod == "FY", let days = duration(period) else { return false }
+        return (330...400).contains(days)
     }
     private func metricColor(_ metric: String) -> Color {
         ["Ingresos netos": WhaleTheme.info, "Gastos": WhaleTheme.warning, "Beneficio neto": WhaleTheme.positive,

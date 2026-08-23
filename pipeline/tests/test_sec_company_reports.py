@@ -28,6 +28,7 @@ class CompanyReportTests(unittest.TestCase):
         self.assertEqual(summary["operatingMargin"], 25)
         self.assertEqual(summary["netMargin"], 15)
         self.assertEqual(summary["roce"], 16.67)
+        self.assertIn("epsDiluted", summary)
 
     def test_calculates_payout_from_dividends_paid_and_net_income(self):
         metrics = {
@@ -47,7 +48,7 @@ class CompanyReportTests(unittest.TestCase):
             "form": ["10-K", "10-K", "10-Q", "8-K"],
             "primaryDocument": ["new.htm", "old.htm", "quarter.htm", "event.htm"],
         }}}
-        self.assertEqual([item["accessionNumber"] for item in recent_rows(submissions)], ["new"])
+        self.assertEqual([item["accessionNumber"] for item in recent_rows(submissions)], ["new", "quarterly"])
 
 
 if __name__ == "__main__":

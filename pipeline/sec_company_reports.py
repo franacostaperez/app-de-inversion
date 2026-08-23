@@ -14,7 +14,7 @@ from typing import Any
 
 DATA_BASE = "https://data.sec.gov"
 ARCHIVE_BASE = "https://www.sec.gov/Archives/edgar/data"
-FORMS = {"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A"}
+FORMS = {"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A", "10-Q", "10-Q/A"}
 
 CONCEPTS = {
     "revenue": ("RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues", "SalesRevenueNet"),
@@ -162,6 +162,7 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
     current_liabilities = latest_value(metrics, "currentLiabilities")
     dividends_paid = latest_value(metrics, "dividendsPaid")
     dividend_per_share = latest_value(metrics, "dividendPerShare")
+    eps_diluted = latest_value(metrics, "epsDiluted")
     if expenses is None and revenue is not None and operating_income is not None:
         expenses = revenue - operating_income
     summary = {
@@ -183,6 +184,9 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         "capitalExpenditure": latest_value(metrics, "capitalExpenditure"),
         "dividendsPaid": dividends_paid,
         "dividendPerShare": dividend_per_share,
+        "epsDiluted": eps_diluted,
+        "expectedRevenue": None,
+        "expectedEPS": None,
         "payoutRatio": round(abs(dividends_paid) / net_income * 100, 2) if dividends_paid is not None and net_income and net_income > 0 else None,
     }
     highlights = []
@@ -257,7 +261,8 @@ def run(client: SecClient, profiles: list[dict], output: Path, refresh: bool = F
             if destination.exists() and not refresh:
                 try:
                     stored = json.loads(destination.read_text())
-                    needs_dividend_metrics = "payoutRatio" not in stored.get("summary", {})
+                    summary = stored.get("summary", {})
+                    needs_dividend_metrics = "payoutRatio" not in summary or "roce" not in summary or "epsDiluted" not in summary
                 except (OSError, json.JSONDecodeError):
                     needs_dividend_metrics = True
             if refresh or not destination.exists() or needs_dividend_metrics:

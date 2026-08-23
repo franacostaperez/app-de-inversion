@@ -67,6 +67,9 @@ public struct CompanyReportSummary: Codable, Sendable {
     public let dividendsPaid: Double?
     public let dividendPerShare: Double?
     public let payoutRatio: Double?
+    public let epsDiluted: Double?
+    public let expectedRevenue: Double?
+    public let expectedEPS: Double?
 }
 
 public struct FinancialMetric: Codable, Sendable {

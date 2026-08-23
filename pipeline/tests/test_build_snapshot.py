@@ -61,8 +61,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 43)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 15)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 46)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 12)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 3)
 
     def test_creates_a_filing_news_summary(self):
@@ -105,7 +105,7 @@ class SnapshotTests(unittest.TestCase):
         }]
         item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
         self.assertEqual(item["dividendGrowth"], 10)
-        self.assertEqual(item["dividendGrowthInvestorScore"], 10)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 15)
 
     def test_sorts_funds_by_portfolio_value(self):
         current = {"quarter": "2026-Q1", "investors": [
