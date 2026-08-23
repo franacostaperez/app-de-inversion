@@ -171,4 +171,7 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let yield: Double?
     public let pe: Double?
     public let opportunityScore: Int?
+    public let dividendInvestorScore: Int?
+    public let valuationInvestorScore: Int?
+    public let consensusInvestorScore: Int?
 }

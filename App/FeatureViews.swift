@@ -562,7 +562,7 @@ private struct ConsensusRankingView: View {
                             VStack(alignment: .trailing, spacing: 3) {
                                 Text("\(item.opportunityScore ?? 0)")
                                     .font(.title3.bold().monospacedDigit()).foregroundStyle(WhaleTheme.accent)
-                                Text("SCORE").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
+                                Text("DIV SCORE").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -595,9 +595,12 @@ private struct OpportunityAnalysisView: View {
         if item.holders >= 5 { result.append("Existe consenso: la mantienen \(item.holders) de los fondos seguidos.") }
         if net > 0 { result.append("La tendencia institucional es positiva, con \(net) compradores netos en el trimestre.") }
         if let yield = item.yield {
-            if yield >= 5 { result.append("Ofrece un yield elevado del \(yield.formatted(.number.precision(.fractionLength(1)))) %, atractivo para una estrategia de ingresos.") }
+            if yield > 10 { result.append("El yield supera el 10 %: puede reflejar riesgo de recorte y recibe una penalización importante.") }
+            else if yield > 7 { result.append("El yield es muy elevado; aumenta los ingresos potenciales, pero también el riesgo de que no sea sostenible.") }
+            else if yield > 5 { result.append("El yield supera el rango ideal y se valora con prudencia hasta confirmar su sostenibilidad.") }
             else if yield >= 3 { result.append("El yield del \(yield.formatted(.number.precision(.fractionLength(1)))) % está dentro del rango objetivo del 3–5 %.") }
-            else { result.append("El dividendo es modesto; el atractivo depende más del consenso y la valoración.") }
+            else if yield > 0 { result.append("El dividendo es inferior al 3 %; puede ser interesante si crece, pero aporta menos renta inicial.") }
+            else { result.append("No reparte dividendo y, por tanto, obtiene cero puntos en el componente principal del score.") }
         }
         if let pe = item.pe {
             if pe <= 15 { result.append("El PER de \(pe.formatted(.number.precision(.fractionLength(1))))x sugiere una valoración contenida.") }
@@ -612,7 +615,7 @@ private struct OpportunityAnalysisView: View {
             Section {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Score de oportunidad").font(.caption).foregroundStyle(.secondary)
+                        Text("Score para dividendos a largo plazo").font(.caption).foregroundStyle(.secondary)
                         Text("\(item.opportunityScore ?? 0) / 100").font(.largeTitle.bold().monospacedDigit())
                     }
                     Spacer()
@@ -635,6 +638,11 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
             }
+            Section("Desglose del score") {
+                ScoreComponentRow(label: "Dividendo", value: item.dividendInvestorScore ?? 0, maximum: 55, icon: "dollarsign.circle.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 25, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 20, icon: "building.columns.fill")
+            }
             if let profile {
                 if let description = profile.description { Section("A qué se dedica") { Text(description) } }
                 if let business = profile.businessModel { Section("Modelo de negocio") { Text(business) } }
@@ -650,6 +658,27 @@ private struct OpportunityAnalysisView: View {
         }
         .navigationTitle(item.company)
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct ScoreComponentRow: View {
+    let label: String
+    let value: Int
+    let maximum: Int
+    let icon: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon).foregroundStyle(WhaleTheme.accent).frame(width: 22)
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    Text(label)
+                    Spacer()
+                    Text("\(value) / \(maximum)").bold().monospacedDigit()
+                }
+                ProgressView(value: Double(value), total: Double(maximum)).tint(WhaleTheme.accent)
+            }
+        }
     }
 }
 

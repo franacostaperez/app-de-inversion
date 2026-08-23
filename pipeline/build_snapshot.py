@@ -149,6 +149,7 @@ def build_filing_updates(current: dict, holdings: list[dict], movements: list[di
 def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None, average_prices: dict[tuple[str, str], float] | None = None) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
+    company_by_cusip = {item["cusip"]: item for item in companies if item.get("cusip")}
     holding_name_by_ticker = {
         holding["ticker"]: holding.get("company", holding["ticker"])
         for investor in current.get("investors", [])
@@ -208,17 +209,47 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     consensus_items = []
     profiles_by_cusip = {item["cusip"]: item for item in (company_profiles or [])}
     for ticker, counts in consensus.items():
-        company = company_by_ticker.get(ticker, {})
+        company = company_by_cusip.get(ticker, company_by_ticker.get(ticker, {}))
         profile = profiles_by_cusip.get(ticker, {})
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
         net_buying = counts["buying"] - counts["selling"]
-        score = min(40, max(0, counts["holders"] * 2 + max(0, net_buying) * 5))
-        if yield_percent is not None:
-            score += 35 if yield_percent >= 5 else (30 if yield_percent >= 3 else (15 if yield_percent >= 1 else (8 if yield_percent > 0 else 0)))
-        if pe is not None:
-            score += 25 if 0 < pe <= 15 else (20 if pe <= 20 else (12 if pe <= 25 else (5 if pe <= 35 else 0)))
+        if yield_percent is None or yield_percent <= 0:
+            dividend_score = 0
+        elif yield_percent < 1:
+            dividend_score = 8
+        elif yield_percent < 2:
+            dividend_score = 20
+        elif yield_percent < 3:
+            dividend_score = 35
+        elif yield_percent <= 5:
+            dividend_score = 55
+        elif yield_percent <= 7:
+            dividend_score = 45
+        elif yield_percent <= 10:
+            dividend_score = 28
+        else:
+            dividend_score = 12
+
+        if pe is None:
+            valuation_score = 7
+        elif pe <= 0:
+            valuation_score = 0
+        elif pe < 8:
+            valuation_score = 12
+        elif pe <= 18:
+            valuation_score = 25
+        elif pe <= 25:
+            valuation_score = 18
+        elif pe <= 35:
+            valuation_score = 10
+        else:
+            valuation_score = 3
+
+        consensus_score = min(12, counts["holders"] * 2) + max(-8, min(8, net_buying * 2))
+        consensus_score = max(0, min(20, consensus_score))
+        score = dividend_score + valuation_score + consensus_score
         consensus_items.append({
             "ticker": profile.get("ticker", ticker),
             "cusip": ticker,
@@ -227,6 +258,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "yield": yield_percent,
             "pe": pe,
             "opportunityScore": min(100, score),
+            "dividendInvestorScore": dividend_score,
+            "valuationInvestorScore": valuation_score,
+            "consensusInvestorScore": consensus_score,
         })
     consensus_items.sort(key=lambda item: (item["opportunityScore"], item["buying"], item["holders"]), reverse=True)
 

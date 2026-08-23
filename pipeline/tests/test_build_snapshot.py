@@ -61,6 +61,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 55)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 25)
 
     def test_creates_a_filing_news_summary(self):
         previous = {"investors": [{"id": "x", "holdings": []}]}
