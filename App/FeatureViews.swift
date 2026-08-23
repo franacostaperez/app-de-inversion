@@ -308,6 +308,9 @@ struct CompaniesView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(holding.company).font(.subheadline.weight(.semibold)).lineLimit(1)
+                        if let yield = dividendYield(for: holding), yield > 4 {
+                            HighYieldBadge(yield: yield)
+                        }
                         Spacer()
                         Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + "%")
                             .foregroundStyle(WhaleTheme.accent).bold().monospacedDigit()
@@ -315,7 +318,13 @@ struct CompaniesView: View {
                     HStack {
                         Text(compactMoney(holding.value))
                         Spacer()
-                        Text(holding.shares.formatted(.number.notation(.compactName)) + " acciones")
+                        if let yield = dividendYield(for: holding), yield > 0 {
+                            Label("Yield " + percent(yield), systemImage: "dollarsign.circle.fill")
+                                .foregroundStyle(yield > 4 ? WhaleTheme.positive : .secondary)
+                        }
+                        if let pe = peRatio(for: holding) {
+                            Text("PER " + ratio(pe))
+                        }
                     }.font(.caption).foregroundStyle(.secondary)
                 }
                 .padding(.vertical, 4)
@@ -328,6 +337,28 @@ struct CompaniesView: View {
             FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
                 .padding(.horizontal, 16).padding(.vertical, 8).background(.bar)
         }
+    }
+
+    private func profile(for holding: Holding) -> CompanyProfile? {
+        snapshot.companyProfiles.first { $0.cusip == holding.cusip }
+    }
+
+    private func dividendYield(for holding: Holding) -> Double? {
+        if let value = profile(for: holding)?.dividendYield { return value * 100 }
+        return snapshot.opportunities.first { $0.ticker == holding.ticker }?.yield
+    }
+
+    private func peRatio(for holding: Holding) -> Double? {
+        profile(for: holding)?.peRatio
+            ?? snapshot.opportunities.first { $0.ticker == holding.ticker }?.pe
+    }
+
+    private func percent(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(1))) + "%"
+    }
+
+    private func ratio(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(1))) + "x"
     }
 
 }
@@ -366,13 +397,25 @@ private struct HoldingDetailView: View {
                     if let marketCap = profile.marketCapitalization {
                         LabeledContent("Capitalización", value: compactUSD(marketCap))
                     }
+                }
+                Section("Dividendos") {
                     if let paysDividend = profile.paysDividend {
-                        LabeledContent("Reparte dividendos", value: paysDividend ? "Sí" : "No")
+                        Label(paysDividend ? "Reparte dividendos" : "No reparte dividendos",
+                              systemImage: paysDividend ? "dollarsign.circle.fill" : "minus.circle")
+                            .foregroundStyle(paysDividend ? WhaleTheme.positive : .secondary)
                     }
                     if let yield = profile.dividendYield, yield > 0 {
-                        LabeledContent("Dividend yield", value: yield.formatted(.percent.precision(.fractionLength(2))))
+                        LabeledContent("Yield", value: yield.formatted(.percent.precision(.fractionLength(2))))
+                        if yield > 0.04 { HighYieldBadge(yield: yield * 100) }
                     }
-                    if let pe = profile.peRatio { LabeledContent("PER", value: pe.formatted()) }
+                    if let dividend = profile.dividendPerShare {
+                        LabeledContent("Dividendo por acción", value: dividend.formatted(.currency(code: profile.currency ?? "USD")))
+                    }
+                }
+                if let pe = profile.peRatio {
+                    Section("Valoración") {
+                        LabeledContent("PER", value: pe.formatted(.number.precision(.fractionLength(1))) + "x")
+                    }
                 }
                 Section { Text("Fuente: \(profile.source)").font(.caption).foregroundStyle(.secondary) }
             } else {
@@ -396,11 +439,17 @@ private struct CompanyDetailView: View {
     let item: Opportunity
     var body: some View {
         List {
-            Section("Métricas") {
-                LabeledContent("Yield", value: item.yield.formatted() + "%")
-                LabeledContent("PER", value: item.pe?.formatted() ?? "—")
+            Section("Dividendos") {
+                Label(item.yield > 0 ? "Reparte dividendos" : "No reparte dividendos",
+                      systemImage: item.yield > 0 ? "dollarsign.circle.fill" : "minus.circle")
+                    .foregroundStyle(item.yield > 0 ? WhaleTheme.positive : .secondary)
+                LabeledContent("Yield", value: item.yield.formatted(.number.precision(.fractionLength(2))) + "%")
+                if item.yield > 4 { HighYieldBadge(yield: item.yield) }
                 LabeledContent("Payout", value: item.payout.map { $0.formatted() + "%" } ?? "—")
                 LabeledContent("Crecimiento dividendo 5A", value: item.dividendGrowth5Y.map { $0.formatted() + "%" } ?? "—")
+            }
+            Section("Valoración") {
+                LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
                 LabeledContent("Deuda / EBITDA", value: item.debtToEBITDA?.formatted() ?? "—")
             }
             Section("Fran Score") {
@@ -410,6 +459,20 @@ private struct CompanyDetailView: View {
                 LabeledContent("Smart Money", value: "\(item.smartMoneyScore)")
             }
         }.navigationTitle(item.company)
+    }
+}
+
+private struct HighYieldBadge: View {
+    let yield: Double
+
+    var body: some View {
+        Label("Yield " + yield.formatted(.number.precision(.fractionLength(1))) + "%", systemImage: "leaf.fill")
+            .font(.caption2.bold())
+            .foregroundStyle(WhaleTheme.positive)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 4)
+            .background(WhaleTheme.positive.opacity(0.12), in: Capsule())
+            .accessibilityLabel("Rentabilidad por dividendo superior al cuatro por ciento")
     }
 }
 
