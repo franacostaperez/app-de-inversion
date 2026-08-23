@@ -10,12 +10,43 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 
-SECTOR_PE_BENCHMARKS = {
-    "Technology": 25, "Communication Services": 22, "Consumer Discretionary": 22,
-    "Consumer Staples": 22, "Financials": 14, "Energy": 14, "Healthcare": 20,
-    "Industrials": 20, "Materials": 16, "Real Estate": 18, "Utilities": 18,
+SECTOR_PE_MULTIPLIERS = {
+    "Technology": 1.35, "Communication Services": 1.25, "Consumer Discretionary": 1.15,
+    "Consumer Staples": 1.15, "Financials": 0.90, "Energy": 0.85, "Healthcare": 1.20,
+    "Industrials": 1.10, "Materials": 0.95, "Real Estate": 1.15, "Utilities": 1.05,
 }
-BRAND_MULTIPLIERS = {"high": 1.25, "medium": 1.10, "low": 1.0}
+BRAND_MULTIPLIERS = {"high": 1.20, "medium": 1.10, "low": 1.0}
+
+
+def graduated_score(value: float, points: list[tuple[float, float]]) -> int:
+    """Linearly interpolate a score so adjacent values do not create abrupt jumps."""
+    if value <= points[0][0]:
+        return round(points[0][1])
+    for (left_x, left_y), (right_x, right_y) in zip(points, points[1:]):
+        if value <= right_x:
+            progress = (value - left_x) / (right_x - left_x)
+            return round(left_y + progress * (right_y - left_y))
+    return round(points[-1][1])
+
+
+def yield_investor_score(dividend_yield: float | None) -> int:
+    if dividend_yield is None or dividend_yield <= 0:
+        return 0
+    return graduated_score(dividend_yield, [
+        (0, 0), (1, 4), (2, 11), (3, 18), (4, 20), (6, 20),
+        (7.5, 19), (9, 16), (10, 12), (12, 6), (15, 1), (20, 0),
+    ])
+
+
+def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
+    if pe is None:
+        return 3
+    if pe <= 0:
+        return 0
+    return graduated_score(pe / ideal_pe, [
+        (0.35, 7), (0.50, 9), (0.75, 11), (1.00, 12), (1.15, 11),
+        (1.30, 9), (1.50, 6), (1.80, 3), (2.20, 1), (3.00, 0),
+    ])
 
 
 def aggregate_holdings(items: list[dict]) -> list[dict]:
@@ -253,23 +284,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             payout = company.get("payout")
         sector = profile.get("sector", company.get("sector", "Unknown"))
         brand_strength = profile.get("brandStrength", "low")
-        sector_pe = SECTOR_PE_BENCHMARKS.get(sector, 18)
-        adjusted_pe_benchmark = round(sector_pe * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
+        sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
+        adjusted_pe_benchmark = round(12 * sector_multiplier * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
         net_buying = counts["buying"] - counts["selling"]
-        if yield_percent is None or yield_percent <= 0:
-            yield_score = 0
-        elif yield_percent < 1:
-            yield_score = 2
-        elif yield_percent < 2:
-            yield_score = 6
-        elif yield_percent < 3:
-            yield_score = 13
-        elif yield_percent <= 9:
-            yield_score = 20
-        elif yield_percent <= 12:
-            yield_score = 8
-        else:
-            yield_score = 1
+        yield_score = yield_investor_score(yield_percent)
 
         if yield_score == 0:
             payout_score = 0
@@ -302,22 +320,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             growth_score = 15
         dividend_score = yield_score + payout_score + growth_score
 
-        if pe is None:
-            valuation_score = 3
-        elif pe <= 0:
-            valuation_score = 0
-        elif pe / adjusted_pe_benchmark < 0.5:
-            valuation_score = 6
-        elif pe / adjusted_pe_benchmark <= 0.85:
-            valuation_score = 12
-        elif pe / adjusted_pe_benchmark <= 1.10:
-            valuation_score = 11
-        elif pe / adjusted_pe_benchmark <= 1.30:
-            valuation_score = 7
-        elif pe / adjusted_pe_benchmark <= 1.60:
-            valuation_score = 4
-        else:
-            valuation_score = 1
+        valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
 
         if operating_margin is None:
             profitability_score = 3

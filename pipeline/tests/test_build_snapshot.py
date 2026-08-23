@@ -1,9 +1,21 @@
 import unittest
 
-from pipeline.build_snapshot import aggregate_holdings, build, classify, estimate_average_purchase_prices, retained_filing_date
+from pipeline.build_snapshot import (
+    aggregate_holdings, build, classify, estimate_average_purchase_prices,
+    retained_filing_date, valuation_investor_score, yield_investor_score,
+)
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_yield_score_changes_gradually(self):
+        scores = [yield_investor_score(value) for value in (1, 2, 3, 4, 6, 7.5, 9, 10, 12)]
+        self.assertEqual(scores, [4, 11, 18, 20, 20, 19, 16, 12, 6])
+
+    def test_pe_score_uses_twelve_as_ideal_and_changes_gradually(self):
+        self.assertEqual(valuation_investor_score(12, 12), 12)
+        self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
+        self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
+
     def test_classification(self):
         self.assertEqual(classify(0, 10), ("NEW", None))
         self.assertEqual(classify(10, 0), ("SOLD", -100.0))
@@ -61,8 +73,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 46)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 12)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 44)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 10)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 3)
 
     def test_creates_a_filing_news_summary(self):
