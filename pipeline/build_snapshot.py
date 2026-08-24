@@ -35,6 +35,19 @@ def merge_known(base: dict, preferred: dict) -> dict:
     return result
 
 
+def app_safe_company_profiles(profiles: list[dict]) -> list[dict]:
+    """Supply the required compatibility fields expected by released app builds."""
+    now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    safe_profiles = []
+    for profile in profiles:
+        item = dict(profile)
+        item.setdefault("source", item.get("tickerResolutionSource") or "SEC Form 13F")
+        item.setdefault("status", "identified")
+        item.setdefault("updatedAt", now)
+        safe_profiles.append(item)
+    return safe_profiles
+
+
 def graduated_score(value: float, points: list[tuple[float, float]]) -> int:
     """Linearly interpolate a score so adjacent values do not create abrupt jumps."""
     if value <= points[0][0]:
@@ -571,7 +584,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "holdings": holdings,
         "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
         "filingUpdates": filing_updates,
-        "companyProfiles": company_profiles or [],
+        "companyProfiles": app_safe_company_profiles(company_profiles or []),
         "companyReports": compact_company_reports(company_reports or []),
     }
 

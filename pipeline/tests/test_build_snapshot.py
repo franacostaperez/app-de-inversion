@@ -1,13 +1,21 @@
 import unittest
 
 from pipeline.build_snapshot import (
-    aggregate_holdings, build, classify, compact_company_reports, estimate_average_purchase_prices,
+    aggregate_holdings, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
     merge_known, operating_margin_investor_score, retained_filing_date, valuation_investor_score,
     yield_investor_score,
 )
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_company_profiles_always_include_fields_required_by_released_apps(self):
+        profile = app_safe_company_profiles([{
+            "cusip": "1", "name": "A Co", "tickerResolutionSource": "Verified mapping",
+        }])[0]
+        self.assertEqual(profile["source"], "Verified mapping")
+        self.assertEqual(profile["status"], "identified")
+        self.assertTrue(profile["updatedAt"].endswith("Z"))
+
     def test_missing_qualitative_value_cannot_erase_verified_ticker(self):
         self.assertEqual(merge_known({"ticker": "CPRX"}, {"ticker": None})["ticker"], "CPRX")
 
