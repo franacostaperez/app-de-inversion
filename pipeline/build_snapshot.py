@@ -596,9 +596,9 @@ def main() -> None:
     valuation = json.loads(args.valuation_database.read_text()) if args.valuation_database and args.valuation_database.exists() else []
     profiles_by_cusip = {item["cusip"]: item for item in profiles}
     for research in qualitative:
-        profiles_by_cusip[research["cusip"]] = {**profiles_by_cusip.get(research["cusip"], {}), **research}
+        profiles_by_cusip[research["cusip"]] = merge_known(profiles_by_cusip.get(research["cusip"], {}), research)
     for settings in valuation:
-        profiles_by_cusip[settings["cusip"]] = {**profiles_by_cusip.get(settings["cusip"], {}), **settings}
+        profiles_by_cusip[settings["cusip"]] = merge_known(profiles_by_cusip.get(settings["cusip"], {}), settings)
     profiles = sorted(profiles_by_cusip.values(), key=lambda item: item.get("name", ""))
     existing = json.loads(args.output.read_text()) if args.output.exists() else {}
     archived_filings = []

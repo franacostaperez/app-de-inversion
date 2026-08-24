@@ -39,6 +39,9 @@ def parse_information_table(xml_data: bytes, ticker_by_cusip: dict[str, str]) ->
             continue
         cusip = (child_text(node, "cusip") or "").upper().replace(" ", "")
         issuer = child_text(node, "nameOfIssuer") or cusip
+        figi = child_text(node, "figi")
+        title_of_class = child_text(node, "titleOfClass")
+        put_call = child_text(node, "putCall")
         shares_text = child_text(node, "sshPrnamt") or "0"
         value_text = child_text(node, "value") or "0"
         ticker = ticker_by_cusip.get(cusip, cusip)
@@ -46,6 +49,9 @@ def parse_information_table(xml_data: bytes, ticker_by_cusip: dict[str, str]) ->
             "ticker": ticker,
             "cusip": cusip,
             "company": issuer,
+            "figi": figi,
+            "titleOfClass": title_of_class,
+            "putCall": put_call,
             "shares": float(shares_text.replace(",", "")),
             "value": float(value_text.replace(",", "")),
         })

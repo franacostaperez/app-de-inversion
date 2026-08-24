@@ -9,7 +9,7 @@ from pipeline.sec_edgar import all_13f_rows, archive_filings, filing_page_url, f
 
 XML = b"""<?xml version="1.0" encoding="UTF-8"?>
 <informationTable xmlns="http://www.sec.gov/edgar/document/thirteenf/informationtable">
-  <infoTable><nameOfIssuer>COCA COLA CO</nameOfIssuer><cusip>191216100</cusip><value>25000000</value>
+  <infoTable><nameOfIssuer>COCA COLA CO</nameOfIssuer><titleOfClass>COM</titleOfClass><cusip>191216100</cusip><figi>BBG000BMX289</figi><value>25000000</value>
   <shrsOrPrnAmt><sshPrnamt>400000000</sshPrnamt><sshPrnamtType>SH</sshPrnamtType></shrsOrPrnAmt></infoTable>
 </informationTable>"""
 
@@ -20,6 +20,8 @@ class EdgarTests(unittest.TestCase):
         self.assertEqual(result[0]["ticker"], "KO")
         self.assertEqual(result[0]["shares"], 400_000_000)
         self.assertEqual(result[0]["value"], 25_000_000)
+        self.assertEqual(result[0]["figi"], "BBG000BMX289")
+        self.assertEqual(result[0]["titleOfClass"], "COM")
 
     def test_filters_only_original_13f_holdings_reports(self):
         recent = {

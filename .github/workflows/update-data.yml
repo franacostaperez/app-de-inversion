@@ -35,10 +35,19 @@ jobs:
         run: >-
           python pipeline/sec_edgar.py
           --investors data/config/investors.json
-          --companies data/source/companies.json
+          --companies data/companies/index.json
           --current-output data/source/latest.json
           --previous-output data/source/previous.json
           --filings-output data/filings
+      - name: Resolve CUSIP and FIGI to verified tickers
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          OPENFIGI_API_KEY: ${{ secrets.OPENFIGI_API_KEY }}
+        run: >-
+          python pipeline/resolve_instruments.py
+          --holdings data/source/latest.json data/source/previous.json
+          --company-database data/companies/index.json
+          --mapping-database data/instruments/mappings.json
       - name: Enrich newly reported companies
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
@@ -64,7 +73,7 @@ jobs:
       - name: Detect new filings or company data
         id: changes
         run: |
-          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/filings data/company-reports; then
+          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/instruments/mappings.json data/filings data/company-reports; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -88,9 +97,9 @@ jobs:
           --output data/public/scoring-audit.json
       - name: Commit changed data
         run: |
-          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/filings data/company-reports data/public/snapshot.json data/public/scoring-audit.json; then exit 0; fi
+          if git diff --quiet -- data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/instruments/mappings.json data/filings data/company-reports data/public/snapshot.json data/public/scoring-audit.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/filings data/company-reports data/public/snapshot.json data/public/scoring-audit.json
+          git add data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/instruments/mappings.json data/filings data/company-reports data/public/snapshot.json data/public/scoring-audit.json
           git commit -m "data: update dividend snapshot"
           git push

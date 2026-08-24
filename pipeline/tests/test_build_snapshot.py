@@ -2,11 +2,15 @@ import unittest
 
 from pipeline.build_snapshot import (
     aggregate_holdings, build, classify, compact_company_reports, estimate_average_purchase_prices,
-    operating_margin_investor_score, retained_filing_date, valuation_investor_score, yield_investor_score,
+    merge_known, operating_margin_investor_score, retained_filing_date, valuation_investor_score,
+    yield_investor_score,
 )
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_missing_qualitative_value_cannot_erase_verified_ticker(self):
+        self.assertEqual(merge_known({"ticker": "CPRX"}, {"ticker": None})["ticker"], "CPRX")
+
     def test_yield_score_changes_gradually(self):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 3.36, 4, 5, 6, 7.5, 9, 10, 12)]
         self.assertEqual(scores, [0, 2, 6, 7, 13, 17, 21, 18, 13, 8, 5])

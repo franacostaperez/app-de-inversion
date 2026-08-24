@@ -45,6 +45,16 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertEqual(exchange, "NYSE")
         self.assertIn("P/E ratio", page)
 
+    def test_does_not_quote_delisted_or_debt_instruments(self):
+        class Client:
+            def google_quote(self, ticker, preferred_exchange=None):
+                raise AssertionError("An ineligible instrument must not request a quote")
+
+        catalog = [{"cusip": "123", "ticker": "OLD", "quoteEligible": False,
+                    "listingStatus": "DELISTED_ACQUIRED"}]
+        result = enrich([{"cusip": "123", "company": "Old Company"}], catalog, Client(), 0)
+        self.assertFalse(result[0]["quoteEligible"])
+
     def test_uses_yahoo_chart_as_market_price_fallback(self):
         from pipeline.enrich_companies import MarketDataClient
 

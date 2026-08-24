@@ -231,6 +231,10 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
     new_count = 0
     for cusip, holding in sorted(unique.items(), key=lambda pair: pair[1].get("value", 0), reverse=True):
         existing = by_cusip.get(cusip, {})
+        # Historical tickers and debt identities are retained for 13F traceability,
+        # but must never be enriched as though they were currently quoted shares.
+        if existing.get("quoteEligible") is False:
+            continue
         ticker = existing.get("ticker")
         if not ticker:
             if new_count >= max_new:
