@@ -72,7 +72,14 @@ def number(value):
     if value in (None, "", "—", "-"):
         return None
     try:
-        return float(str(value).replace("$", "").replace("%", "").replace(",", ""))
+        text = str(value).replace("\xa0", " ").replace("$", "").replace("€", "").replace("%", "").strip()
+        text = re.sub(r"[^0-9,.-]", "", text)
+        if "," in text and "." not in text:
+            text = text.replace(",", ".")
+        elif "," in text and "." in text:
+            # Google localizes both decimal and thousands separators.
+            text = text.replace(".", "").replace(",", ".") if text.rfind(",") > text.rfind(".") else text.replace(",", "")
+        return float(text)
     except (TypeError, ValueError):
         return None
 
@@ -91,11 +98,28 @@ def metric(page: str, label: str) -> float | None:
     return None
 
 
+def google_description(page: str) -> str | None:
+    """Extract Google's localized public company overview from the About card."""
+    match = re.search(r'class="RaUwRb".{0,1000}?<span[^>]*>(.*?)</span>', page, re.DOTALL)
+    if not match:
+        return None
+    value = html.unescape(re.sub(r"<[^>]+>", " ", match.group(1)))
+    value = re.sub(r"\s+", " ", value).strip()
+    return value if len(value) >= 40 else None
+
+
 def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page: str) -> dict:
     yield_percent = metric(page, "Dividend yield")
     if yield_percent is None:
         yield_percent = metric(page, "Dividend")
+    if yield_percent is None:
+        yield_percent = metric(page, "Dividendo")
     quarterly_dividend = metric(page, "Quarterly dividend")
+    if quarterly_dividend is None:
+        quarterly_dividend = metric(page, "Dividendo trimestral")
+    pe_ratio = metric(page, "P/E ratio")
+    if pe_ratio is None:
+        pe_ratio = metric(page, "Ratio PER")
     return {
         "cusip": cusip, "name": name, "ticker": ticker, "exchange": exchange,
         "currency": "USD", "country": "United States",
@@ -103,7 +127,8 @@ def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page:
         "dividendPerShare": round(quarterly_dividend * 4, 4) if quarterly_dividend is not None else None,
         "dividendYield": yield_percent / 100 if yield_percent is not None else None,
         "googleDividendYield": yield_percent / 100 if yield_percent is not None else None,
-        "peRatio": metric(page, "P/E ratio"), "googlePeRatio": metric(page, "P/E ratio"),
+        "peRatio": pe_ratio, "googlePeRatio": pe_ratio,
+        "description": google_description(page),
         "source": "Google Finance", "status": "enriched",
         "updatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
@@ -250,12 +275,14 @@ class MarketDataClient:
     def google_quote(self, ticker: str, preferred_exchange: str | None = None):
         exchanges = ([preferred_exchange] if preferred_exchange else []) + [item for item in EXCHANGES if item != preferred_exchange]
         for exchange in exchanges:
-            url = "https://www.google.com/finance/quote/" + urllib.parse.quote(f"{ticker}:{exchange}") + "?hl=en"
+            # Spanish localization provides a readable About description for
+            # the app; metric extraction supports both English and Spanish.
+            url = "https://www.google.com/finance/quote/" + urllib.parse.quote(f"{ticker}:{exchange}") + "?hl=es"
             try:
                 page = self.request(url)
             except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
                 continue
-            if "P/E ratio" in page or "Quarterly dividend" in page or "About" in page:
+            if any(marker in page for marker in ("P/E ratio", "Quarterly dividend", "About", "Ratio PER", "Dividendo trimestral", 'class="RaUwRb"')):
                 return exchange, page
         return None, None
 
@@ -270,6 +297,10 @@ class MarketDataClient:
             submissions = json.load(response)
         recent = submissions.get("filings", {}).get("recent", {})
         result = {}
+        if submissions.get("sicDescription"):
+            result["industry"] = submissions["sicDescription"]
+        if submissions.get("stateOfIncorporationDescription"):
+            result["incorporation"] = submissions["stateOfIncorporationDescription"]
         investor_url = submissions.get("investorWebsite") or submissions.get("website")
         if investor_url:
             result["investorRelationsURL"] = investor_url

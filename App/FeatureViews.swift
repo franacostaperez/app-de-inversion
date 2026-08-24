@@ -915,6 +915,13 @@ struct OpportunityAnalysisView: View {
 
     var body: some View {
         List {
+            if let profile {
+                Section {
+                    BusinessSummaryPanel(profile: profile)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
+                }
+            }
             Section {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
@@ -1020,10 +1027,6 @@ struct OpportunityAnalysisView: View {
                 }
             }
             if let profile {
-                if let description = profile.description { Section("A qué se dedica") { Text(description) } }
-                if let business = profile.businessModel { Section("Modelo de negocio") { Text(business) } }
-                if let revenue = profile.revenueModel { Section("Cómo gana dinero") { Text(revenue) } }
-                if let moat = profile.economicMoat { Section("Foso defensivo") { Text(moat) } }
                 if profile.latestAnnualReportURL != nil {
                     Section("Informes oficiales") {
                         if let url = profile.latestAnnualReportURL {
@@ -1282,13 +1285,13 @@ private struct BusinessSummaryPanel: View {
                     Label("Negocio en pocas palabras", systemImage: "building.2.crop.circle.fill")
                         .font(.headline)
                     Spacer()
-                    Button(expanded ? "Compactar" : "Ampliar") { withAnimation { expanded.toggle() } }
+                    Button(expanded ? "Ver menos" : "Ver más") { withAnimation { expanded.toggle() } }
                         .font(.caption.bold())
                 }
                 if let description = profile.description {
                     Text(description)
                         .font(.subheadline).foregroundStyle(.secondary)
-                        .lineLimit(expanded ? nil : 3)
+                        .lineLimit(expanded ? nil : 2)
                 }
                 compactBusinessItem("Cómo gana dinero", profile.revenueModel, "banknote")
                 compactBusinessItem("Foso defensivo", profile.economicMoat, "shield.lefthalf.filled")
@@ -1313,7 +1316,7 @@ private struct BusinessSummaryPanel: View {
             Divider()
             VStack(alignment: .leading, spacing: 4) {
                 Label(title, systemImage: icon).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
-                Text(text).font(.subheadline).foregroundStyle(.primary).lineLimit(expanded ? nil : 2)
+                Text(text).font(.subheadline).foregroundStyle(.primary).lineLimit(expanded ? nil : 1)
             }
         }
     }

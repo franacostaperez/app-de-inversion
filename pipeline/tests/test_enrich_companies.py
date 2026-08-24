@@ -1,7 +1,7 @@
 import unittest
 import urllib.error
 
-from pipeline.enrich_companies import enrich, metric, number, profile_from_google, validate_market_metrics
+from pipeline.enrich_companies import enrich, google_description, metric, number, profile_from_google, validate_market_metrics
 
 
 class CompanyEnrichmentTests(unittest.TestCase):
@@ -27,6 +27,18 @@ class CompanyEnrichmentTests(unittest.TestCase):
         profile = profile_from_google("123", "Example", "ABC", "NYSE", page)
         self.assertEqual(profile["peRatio"], 12.75)
         self.assertEqual(profile["dividendYield"], 0.0425)
+
+    def test_reads_spanish_metrics_and_company_description(self):
+        page = ('<div class="SwQK7">Dividendo</div><div class="dO6ijd">3,75 %</div>'
+                '<div class="SwQK7">Dividendo trimestral</div><div class="dO6ijd">0,50 $</div>'
+                '<div class="SwQK7">Ratio PER</div><div class="dO6ijd">14,25</div>'
+                '<div class="RaUwRb"><div><span>Example fabrica equipos industriales y presta servicios de mantenimiento recurrentes.</span></div>')
+        profile = profile_from_google("123", "Example", "ABC", "NYSE", page)
+        self.assertEqual(profile["dividendYield"], 0.0375)
+        self.assertEqual(profile["dividendPerShare"], 2.0)
+        self.assertEqual(profile["peRatio"], 14.25)
+        self.assertEqual(profile["description"], google_description(page))
+        self.assertIn("equipos industriales", profile["description"])
 
     def test_daily_refresh_preserves_qualitative_research(self):
         class Client:
