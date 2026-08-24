@@ -53,7 +53,7 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: >-
           python pipeline/enrich_companies.py
-          --holdings data/source/latest.json
+          --holdings data/source/latest.json data/source/previous.json
           --database data/companies/index.json
           --max-new 1000
       - name: Complete qualitative company profiles

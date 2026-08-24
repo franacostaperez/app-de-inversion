@@ -295,12 +295,17 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--holdings", type=Path, required=True)
+    parser.add_argument("--holdings", type=Path, nargs="+", required=True)
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--max-new", type=int, default=5)
     args = parser.parse_args()
-    source = json.loads(args.holdings.read_text())
-    holdings = [holding for investor in source.get("investors", []) for holding in investor.get("holdings", [])]
+    sources = [json.loads(path.read_text()) for path in args.holdings]
+    holdings = [
+        holding
+        for source in sources
+        for investor in source.get("investors", [])
+        for holding in investor.get("holdings", [])
+    ]
     catalog = json.loads(args.database.read_text()) if args.database.exists() else []
     updated = enrich(holdings, catalog, MarketDataClient(), args.max_new)
     args.database.parent.mkdir(parents=True, exist_ok=True)
