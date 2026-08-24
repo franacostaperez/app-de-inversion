@@ -956,10 +956,10 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 50, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 48, icon: "scalemass.fill")
                 ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 18, icon: "percent")
                 ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 7, icon: "chart.line.uptrend.xyaxis")
-                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 8, icon: "gauge.with.dots.needle.50percent")
+                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 10, icon: "gauge.with.dots.needle.50percent")
                 ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 12, icon: "arrow.triangle.2.circlepath")
                 ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 5, icon: "building.columns.fill")
             }

@@ -65,8 +65,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 50), (10, 50), (12, 45), (15, 38), (18, 30),
-        (22, 21), (28, 12), (35, 4), (45, 0),
+        (5, 48), (10, 48), (12, 43), (15, 36), (18, 29),
+        (22, 20), (28, 11), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
@@ -81,8 +81,33 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         adjustment = -3
     else:
         adjustment = -5
-    maximum = 50 if pe <= 10 else 49
+    maximum = 48 if pe <= 10 else 47
     return max(0, min(maximum, base + adjustment))
+
+
+def operating_margin_investor_score(operating_margin: float | None) -> int:
+    """Score annual operating margin on the user-defined 1–10 ladder."""
+    if operating_margin is None:
+        return 0
+    if operating_margin < 0:
+        return 1
+    if operating_margin < 3:
+        return 2
+    if operating_margin < 6:
+        return 3
+    if operating_margin < 9:
+        return 4
+    if operating_margin < 12:
+        return 5
+    if operating_margin < 15:
+        return 6
+    if operating_margin < 20:
+        return 7
+    if operating_margin < 25:
+        return 8
+    if operating_margin < 30:
+        return 9
+    return 10
 
 
 def aggregate_holdings(items: list[dict]) -> list[dict]:
@@ -449,20 +474,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
 
-        if operating_margin is None:
-            profitability_score = 0
-        elif operating_margin <= 0:
-            profitability_score = 0
-        elif operating_margin < 5:
-            profitability_score = 2
-        elif operating_margin < 10:
-            profitability_score = 4
-        elif operating_margin < 15:
-            profitability_score = 6
-        elif operating_margin < 25:
-            profitability_score = 7
-        else:
-            profitability_score = 8
+        profitability_score = operating_margin_investor_score(operating_margin)
 
         if roce is None:
             roce_score = 0

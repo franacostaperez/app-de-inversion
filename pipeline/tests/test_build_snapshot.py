@@ -2,7 +2,7 @@ import unittest
 
 from pipeline.build_snapshot import (
     aggregate_holdings, build, classify, compact_company_reports, estimate_average_purchase_prices,
-    retained_filing_date, valuation_investor_score, yield_investor_score,
+    operating_margin_investor_score, retained_filing_date, valuation_investor_score, yield_investor_score,
 )
 
 
@@ -12,11 +12,18 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(scores, [0, 2, 5, 6, 11, 14, 18, 15, 11, 7, 4])
 
     def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 50)
-        self.assertLess(valuation_investor_score(12, 18), 50)
+        self.assertEqual(valuation_investor_score(10, 18), 48)
+        self.assertLess(valuation_investor_score(12, 18), 48)
         self.assertLess(valuation_investor_score(17.3, 18), 40)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
+
+    def test_operating_margin_uses_exact_ten_point_ladder(self):
+        values = (-1, 0, 2.9, 3, 5.9, 6, 8.9, 9, 11.9, 12, 14.9, 15, 19.9, 20, 24.9, 25, 29.9, 30)
+        self.assertEqual(
+            [operating_margin_investor_score(value) for value in values],
+            [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10],
+        )
 
     def test_non_dividend_company_gets_no_dividend_growth_points(self):
         current = {"quarter": "2026-Q1", "investors": [{
@@ -106,7 +113,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
         self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 10)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 35)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 33)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
         self.assertIsNone(result["consensus"][0]["opportunityScore"])
         self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")
