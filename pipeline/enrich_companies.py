@@ -371,6 +371,16 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         existing = unique.get(item["cusip"])
         if existing is None or item.get("value", 0) > existing.get("value", 0):
             unique[item["cusip"]] = item
+    # Refresh the full GitHub catalogue, not only securities present in the
+    # latest two 13F quarters. Otherwise an older company can keep a generic
+    # profile forever even though its ticker is already known.
+    for company in catalog:
+        unique.setdefault(company["cusip"], {
+            "cusip": company["cusip"],
+            "ticker": company.get("ticker"),
+            "company": company.get("name") or company.get("ticker") or "Empresa",
+            "value": -1,
+        })
     new_count = 0
     for cusip, holding in sorted(unique.items(), key=lambda pair: pair[1].get("value", 0), reverse=True):
         existing = by_cusip.get(cusip, {})

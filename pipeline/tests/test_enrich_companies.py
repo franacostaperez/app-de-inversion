@@ -53,6 +53,18 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertEqual(result[0]["businessModel"], "Modelo")
         self.assertEqual(result[0]["economicMoat"], "Foso")
 
+    def test_refreshes_known_catalog_companies_even_without_current_holding(self):
+        class Client:
+            def google_quote(self, ticker, preferred_exchange=None):
+                return None, None
+            def yahoo_profile(self, ticker):
+                return {}
+            def sec_reports(self, ticker):
+                return {"industry": "INDUSTRIAL MACHINERY & EQUIPMENT"}
+
+        result = enrich([], [{"cusip": "123", "ticker": "ABC", "name": "Archived Company"}], Client(), 0)
+        self.assertEqual(result[0]["industry"], "INDUSTRIAL MACHINERY & EQUIPMENT")
+
     def test_google_404_does_not_stop_other_exchanges(self):
         from pipeline.enrich_companies import MarketDataClient
 

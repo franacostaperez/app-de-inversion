@@ -23,15 +23,46 @@ SECTOR_MODELS = {
     "Communication Services": ("Monetiza conectividad, contenido, publicidad o servicios de comunicación mediante suscripciones, consumo y venta de espacios publicitarios.", "La red, la audiencia, los derechos de contenido, el espectro y la escala pueden generar efectos de red y costes de cambio."),
 }
 
+INDUSTRY_SECTOR_HINTS = (
+    (("BANK", "LOAN", "FINANCE", "INVESTMENT ADVICE", "BROKER"), "Financials"),
+    (("INSURANCE",), "Financials"),
+    (("PHARMACEUTICAL", "BIOLOGICAL", "MEDICINAL", "MEDICAL", "HEALTH"), "Healthcare"),
+    (("SEMICONDUCTOR", "SOFTWARE", "COMPUTER", "ELECTRONIC", "DATA PROCESSING"), "Technology"),
+    (("OIL", "GAS", "PETROLEUM", "DRILLING", "COAL"), "Energy"),
+    (("ELECTRIC", "NATURAL GAS DISTRIBUTION", "WATER SUPPLY"), "Utilities"),
+    (("REAL ESTATE", "REIT"), "Real Estate"),
+    (("RETAIL", "APPAREL", "RESTAURANT", "HOTEL", "MOTOR VEHICLE"), "Consumer Discretionary"),
+    (("FOOD", "BEVERAGE", "TOBACCO", "SOAP", "GROCERY"), "Consumer Staples"),
+    (("TELEPHONE", "COMMUNICATION", "BROADCAST", "CABLE", "MOTION PICTURE"), "Communication Services"),
+    (("MACHINERY", "EQUIPMENT", "CONSTRUCTION", "TRANSPORTATION", "AIRCRAFT", "INDUSTRIAL"), "Industrials"),
+)
+
+
+def inferred_sector(sector: str | None, industry: str | None) -> str | None:
+    if sector:
+        return sector
+    normalized = (industry or "").upper()
+    return next((candidate for hints, candidate in INDUSTRY_SECTOR_HINTS if any(hint in normalized for hint in hints)), None)
+
 
 def fallback_profile(holding: dict, market: dict) -> dict:
     name = market.get("name") or holding.get("company") or "Empresa"
-    sector = market.get("sector") or "sector no clasificado"
     industry = market.get("industry")
-    description = market.get("description") or (
-        f"{name} desarrolla su actividad en {industry or sector}. "
-        "La información financiera y los informes oficiales se actualizan automáticamente en la ficha."
-    )
+    sector = inferred_sector(market.get("sector"), industry)
+    activity = industry or sector
+    description = market.get("description")
+    if not description and activity:
+        description = (
+            f"{name} opera principalmente en la industria de {activity.lower()}. "
+            "Su actividad se analiza a partir de la clasificación oficial del emisor en la SEC y se complementa "
+            "con sus informes financieros y la información pública de mercado disponible."
+        )
+    if not description:
+        description = (
+            f"{name} es un emisor o instrumento identificado en las carteras 13F monitorizadas. "
+            "Todavía no existe una descripción pública suficientemente verificable de su actividad; la ficha evita "
+            "atribuirle un negocio que no haya podido confirmarse."
+        )
     revenue, moat = SECTOR_MODELS.get(sector, (
         "Genera ingresos mediante la venta de sus productos, servicios o activos a clientes de su mercado.",
         "No existe información suficiente para confirmar un foso defensivo; debe verificarse su marca, escala, costes de cambio y retornos sobre el capital.",
@@ -48,7 +79,7 @@ def fallback_profile(holding: dict, market: dict) -> dict:
         "updatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "description": description,
         "businessModel": (
-            f"{name} opera en {industry or sector}. Su modelo combina los activos, el personal, la tecnología "
+            f"{name} opera en {activity or 'un mercado pendiente de clasificación detallada'}. Su modelo combina los activos, el personal, la tecnología "
             "y los canales de distribución necesarios para entregar su propuesta de valor, retener clientes y reinvertir en crecimiento."
         ),
         "revenueModel": f"{name}: {revenue} Conviene vigilar la recurrencia, la concentración de clientes y la capacidad de trasladar costes a precios.",
