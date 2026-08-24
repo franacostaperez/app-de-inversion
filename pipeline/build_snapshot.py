@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
+import unicodedata
 from collections import defaultdict
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -16,6 +18,21 @@ SECTOR_PE_MULTIPLIERS = {
     "Industrials": 1.10, "Materials": 0.95, "Real Estate": 1.15, "Utilities": 1.05,
 }
 BRAND_MULTIPLIERS = {"high": 1.20, "medium": 1.10, "low": 1.0}
+
+
+def issuer_key(name: str | None) -> str:
+    """Return a stable issuer key shared by security classes and ADR variants."""
+    text = unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().lower()
+    text = re.sub(r"\b(class|cl|common|stock|shares?|adr|ads|depositary|units?)\s*[a-z0-9]*\b", " ", text)
+    text = re.sub(r"\b(incorporated|inc|corporation|corp|company|co|limited|ltd|plc|sa|nv|llc|lp)\b", " ", text)
+    return re.sub(r"[^a-z0-9]+", "", text)
+
+
+def merge_known(base: dict, preferred: dict) -> dict:
+    """Merge records without allowing a missing value to erase known data."""
+    result = dict(base)
+    result.update({key: value for key, value in preferred.items() if value is not None})
+    return result
 
 
 def graduated_score(value: float, points: list[tuple[float, float]]) -> int:
@@ -41,7 +58,7 @@ def yield_investor_score(dividend_yield: float | None) -> int:
 
 def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     if pe is None:
-        return 3
+        return 0
     if pe <= 0:
         return 0
     # Absolute price discipline comes first: only a P/E of 10x or less can
@@ -323,21 +340,35 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
 
     consensus_items = []
     profiles_by_cusip = {item["cusip"]: item for item in (company_profiles or [])}
+    profiles_by_issuer = {}
+    for profile_item in company_profiles or []:
+        key = issuer_key(profile_item.get("name"))
+        if key:
+            profiles_by_issuer[key] = merge_known(profiles_by_issuer.get(key, {}), profile_item)
     latest_reports = {}
+    latest_reports_by_issuer = {}
     for report in company_reports or []:
         cusip = report.get("cusip")
         if cusip and str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
             if cusip not in latest_reports or report.get("filingDate", "") > latest_reports[cusip].get("filingDate", ""):
                 latest_reports[cusip] = report
+            key = issuer_key(report.get("companyName"))
+            if key and (key not in latest_reports_by_issuer or report.get("filingDate", "") > latest_reports_by_issuer[key].get("filingDate", "")):
+                latest_reports_by_issuer[key] = report
     for ticker, counts in consensus.items():
         company = company_by_cusip.get(ticker, company_by_ticker.get(ticker, {}))
-        profile = profiles_by_cusip.get(ticker, {})
+        display_name = company.get("company", consensus_names.get(ticker, holding_name_by_ticker.get(ticker, ticker)))
+        direct_profile = profiles_by_cusip.get(ticker, {})
+        profile = merge_known(profiles_by_issuer.get(issuer_key(direct_profile.get("name") or display_name), {}), direct_profile)
+        display_name = profile.get("name", display_name)
+        report = latest_reports.get(ticker) or latest_reports_by_issuer.get(issuer_key(display_name)) or {}
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
         pe = profile.get("peRatio", company.get("pe"))
-        operating_margin = (latest_reports.get(ticker, {}).get("summary") or {}).get("operatingMargin")
-        roce = (latest_reports.get(ticker, {}).get("summary") or {}).get("roce")
-        dividend_periods = ((latest_reports.get(ticker, {}).get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
+        report_summary = report.get("summary") or {}
+        operating_margin = report_summary.get("operatingMargin")
+        roce = report_summary.get("roce")
+        dividend_periods = ((report.get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
         annual_dividends = []
         for period in sorted(dividend_periods, key=lambda item: item.get("endDate", "")):
             value = period.get("value")
@@ -349,6 +380,32 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         else:
             dividend_growth = company.get("dividendGrowth5Y")
             dividend_increases = dividend_growth is not None and dividend_growth >= 0
+        pays_dividend = profile.get("paysDividend")
+        if pays_dividend is False:
+            yield_percent = 0
+            dividend_growth = 0
+            dividend_increases = False
+
+        market_price = profile.get("marketPrice")
+        eps = report_summary.get("epsDiluted") or report_summary.get("eps") or profile.get("eps")
+        latest_dividend = annual_dividends[-1] if annual_dividends else profile.get("dividendPerShare")
+        if pe is None and market_price is not None and eps is not None and eps > 0:
+            pe = round(market_price / eps, 2)
+        if yield_percent is None and market_price is not None and latest_dividend is not None and latest_dividend >= 0:
+            yield_percent = round(latest_dividend / market_price * 100, 2) if market_price > 0 else None
+
+        pe_not_meaningful = pe is None and eps is not None and eps <= 0
+        missing_metrics = []
+        if yield_percent is None:
+            missing_metrics.append("yield")
+        if pe is None and not pe_not_meaningful:
+            missing_metrics.append("pe")
+        if dividend_growth is None:
+            missing_metrics.append("dividendGrowth")
+        if operating_margin is None:
+            missing_metrics.append("operatingMargin")
+        if roce is None:
+            missing_metrics.append("roce")
         sector = profile.get("sector", company.get("sector", "Unknown"))
         brand_strength = profile.get("brandStrength", "low")
         sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
@@ -359,7 +416,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if yield_score == 0:
             growth_score = 0
         elif dividend_growth is None:
-            growth_score = 1
+            growth_score = 0
         elif dividend_growth < 0 or not dividend_increases:
             growth_score = 0
         elif dividend_growth < 1:
@@ -375,7 +432,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
 
         if operating_margin is None:
-            profitability_score = 2
+            profitability_score = 0
         elif operating_margin <= 0:
             profitability_score = 0
         elif operating_margin < 5:
@@ -390,7 +447,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             profitability_score = 8
 
         if roce is None:
-            roce_score = 3
+            roce_score = 0
         elif roce <= 0:
             roce_score = 0
         elif roce < 5:
@@ -414,16 +471,20 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             # empty compatibility value when no real ticker has been verified.
             "ticker": profile.get("ticker") or company.get("ticker") or "",
             "cusip": ticker,
-            "company": profile.get("name", company.get("company", consensus_names.get(ticker, holding_name_by_ticker.get(ticker, ticker)))),
+            "company": display_name,
             **counts,
             "yield": yield_percent,
             "pe": pe,
+            "peNotMeaningful": pe_not_meaningful,
             "operatingMargin": operating_margin,
             "roce": roce,
             "dividendGrowth": dividend_growth,
             "yieldInvestorScore": yield_score,
             "dividendGrowthInvestorScore": growth_score,
-            "opportunityScore": min(100, score),
+            "opportunityScore": min(100, score) if not missing_metrics else None,
+            "scoreStatus": "COMPLETE" if not missing_metrics else "INCOMPLETE",
+            "missingScoreMetrics": missing_metrics,
+            "scoreCoverage": round((5 - len(missing_metrics)) / 5 * 100),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
             "profitabilityInvestorScore": profitability_score,
@@ -433,7 +494,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "sectorPEBenchmark": adjusted_pe_benchmark,
             "brandPremiumApplied": brand_strength in ("high", "medium"),
         })
-    consensus_items.sort(key=lambda item: (item["opportunityScore"], item["buying"], item["holders"]), reverse=True)
+    consensus_items.sort(key=lambda item: (item["opportunityScore"] is not None, item["opportunityScore"] or -1, item["buying"], item["holders"]), reverse=True)
 
     opportunities = []
     for company in (item for item in companies if item.get("metricsStatus") == "verified"):

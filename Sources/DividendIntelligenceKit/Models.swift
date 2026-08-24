@@ -233,12 +233,16 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let selling: Int
     public let yield: Double?
     public let pe: Double?
+    public let peNotMeaningful: Bool?
     public let operatingMargin: Double?
     public let roce: Double?
     public let dividendGrowth: Double?
     public let yieldInvestorScore: Int?
     public let dividendGrowthInvestorScore: Int?
     public let opportunityScore: Int?
+    public let scoreStatus: String?
+    public let missingScoreMetrics: [String]?
+    public let scoreCoverage: Int?
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?
     public let profitabilityInvestorScore: Int?

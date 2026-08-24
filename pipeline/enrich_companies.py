@@ -137,30 +137,49 @@ class MarketDataClient:
 
     def yahoo_profile(self, ticker: str) -> dict:
         url = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/" + urllib.parse.quote(ticker)
-        url += "?modules=assetProfile,summaryDetail,defaultKeyStatistics,price"
+        url += "?modules=assetProfile,summaryDetail,defaultKeyStatistics,financialData,price"
+        result_profile = {}
         try:
             payload = json.loads(self.request(url))
             result = payload.get("quoteSummary", {}).get("result") or []
-            if not result:
-                return {}
-            data = result[0]
-            asset = data.get("assetProfile", {})
-            summary = data.get("summaryDetail", {})
-            stats = data.get("defaultKeyStatistics", {})
-            price = data.get("price", {})
-            raw = lambda item: item.get("raw") if isinstance(item, dict) else item
-            return {
-                "description": asset.get("longBusinessSummary"),
-                "sector": asset.get("sector"), "industry": asset.get("industry"),
-                "country": asset.get("country"), "website": asset.get("website"),
-                "marketCapitalization": raw(price.get("marketCap")),
-                "peRatio": raw(summary.get("trailingPE")),
-                "dividendYield": raw(summary.get("dividendYield")),
-                "dividendPerShare": raw(summary.get("dividendRate")),
-                "eps": raw(stats.get("trailingEps")),
-            }
+            if result:
+                data = result[0]
+                asset = data.get("assetProfile", {})
+                summary = data.get("summaryDetail", {})
+                stats = data.get("defaultKeyStatistics", {})
+                financial = data.get("financialData", {})
+                price = data.get("price", {})
+                raw = lambda item: item.get("raw") if isinstance(item, dict) else item
+                result_profile = {
+                    "description": asset.get("longBusinessSummary"),
+                    "sector": asset.get("sector"), "industry": asset.get("industry"),
+                    "country": asset.get("country"), "website": asset.get("website"),
+                    "marketCapitalization": raw(price.get("marketCap")),
+                    "marketPrice": raw(financial.get("currentPrice")) or raw(price.get("regularMarketPrice")),
+                    "peRatio": raw(summary.get("trailingPE")),
+                    "dividendYield": raw(summary.get("dividendYield")),
+                    "dividendPerShare": raw(summary.get("dividendRate")),
+                    "eps": raw(stats.get("trailingEps")),
+                }
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
-            return {}
+            pass
+        if result_profile.get("marketPrice") is None:
+            result_profile["marketPrice"] = self.yahoo_chart_price(ticker)
+        return result_profile
+
+    def yahoo_chart_price(self, ticker: str) -> float | None:
+        """Use Yahoo's lightweight chart response when quoteSummary is throttled."""
+        path = "/v8/finance/chart/" + urllib.parse.quote(ticker) + "?range=5d&interval=1d"
+        for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
+            try:
+                payload = json.loads(self.request("https://" + host + path))
+                result = payload.get("chart", {}).get("result") or []
+                price = (result[0].get("meta") or {}).get("regularMarketPrice") if result else None
+                if price is not None:
+                    return float(price)
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError, ValueError):
+                continue
+        return None
 
     def google_quote(self, ticker: str, preferred_exchange: str | None = None):
         exchanges = ([preferred_exchange] if preferred_exchange else []) + [item for item in EXCHANGES if item != preferred_exchange]

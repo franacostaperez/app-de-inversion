@@ -107,7 +107,11 @@ class SnapshotTests(unittest.TestCase):
         self.assertIn("opportunityScore", result["consensus"][0])
         self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 10)
         self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 35)
-        self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 2)
+        self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
+        self.assertIsNone(result["consensus"][0]["opportunityScore"])
+        self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")
+        self.assertIn("operatingMargin", result["consensus"][0]["missingScoreMetrics"])
+        self.assertIn("roce", result["consensus"][0]["missingScoreMetrics"])
 
     def test_creates_a_filing_news_summary(self):
         previous = {"investors": [{"id": "x", "holdings": []}]}
@@ -150,6 +154,28 @@ class SnapshotTests(unittest.TestCase):
         item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
         self.assertEqual(item["dividendGrowth"], 10)
         self.assertEqual(item["dividendGrowthInvestorScore"], 7)
+
+    def test_derives_market_metrics_and_publishes_score_only_when_complete(self):
+        current = {"quarter": "2026-Q1", "investors": [{
+            "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
+            "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
+            "holdings": [{"ticker": "AAA", "cusip": "1", "company": "Example Inc Class A", "shares": 1, "value": 1}],
+        }]}
+        profiles = [{"cusip": "2", "name": "Example Inc", "marketPrice": 20, "paysDividend": True}]
+        reports = [{
+            "cusip": "2", "companyName": "Example Inc", "form": "10-K", "filingDate": "2026-02-01T00:00:00Z",
+            "summary": {"operatingMargin": 18, "roce": 22, "epsDiluted": 2},
+            "metrics": {"dividendPerShare": {"periods": [
+                {"endDate": "2024-12-31", "fiscalPeriod": "FY", "value": 0.8},
+                {"endDate": "2025-12-31", "fiscalPeriod": "FY", "value": 1.0},
+            ]}},
+        }]
+        item = build(current, {"investors": []}, [], company_profiles=profiles, company_reports=reports)["consensus"][0]
+        self.assertEqual(item["pe"], 10)
+        self.assertEqual(item["yield"], 5)
+        self.assertEqual(item["scoreStatus"], "COMPLETE")
+        self.assertEqual(item["missingScoreMetrics"], [])
+        self.assertIsNotNone(item["opportunityScore"])
 
     def test_sorts_funds_by_portfolio_value(self):
         current = {"quarter": "2026-Q1", "investors": [

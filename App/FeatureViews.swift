@@ -719,11 +719,13 @@ private struct ConsensusRankingView: View {
         items.filter { ($0.yield ?? -1) >= 3 && ($0.yield ?? 10) <= 9 }.count
     }
 
+    private var scoredCount: Int { items.filter { $0.opportunityScore != nil }.count }
+
     var body: some View {
         List {
             Section {
                 HStack(spacing: 0) {
-                    rankingMetric(value: "\(items.count)", label: "ANALIZADAS", icon: "chart.bar.doc.horizontal")
+                    rankingMetric(value: "\(scoredCount)", label: "SCORE COMPLETO", icon: "checkmark.seal")
                     Divider().frame(height: 38).padding(.horizontal, 14)
                     rankingMetric(value: "\(targetYieldCount)", label: "YIELD 3–9 %", icon: "leaf.fill")
                     Divider().frame(height: 38).padding(.horizontal, 14)
@@ -789,15 +791,19 @@ private struct ConsensusRankingView: View {
                                     }
                                 }
                                 .font(.caption.bold().monospacedDigit())
+                                if item.opportunityScore == nil {
+                                    Text("Faltan " + scoreMetricNames(item.missingScoreMetrics).joined(separator: ", "))
+                                        .font(.caption2).foregroundStyle(WhaleTheme.warning).lineLimit(1)
+                                }
                             }
                             Spacer()
                             VStack(spacing: 2) {
-                                Text("\(item.opportunityScore ?? 0)")
+                                Text(item.opportunityScore.map(String.init) ?? "—")
                                     .font(.title3.bold().monospacedDigit()).foregroundStyle(.white)
-                                Text("SCORE").font(.system(size: 7, weight: .bold)).foregroundStyle(.white.opacity(0.72))
+                                Text(item.opportunityScore == nil ? "DATOS" : "SCORE").font(.system(size: 7, weight: .bold)).foregroundStyle(.white.opacity(0.72))
                             }
                             .frame(width: 48, height: 48)
-                            .background(scoreColor(item.opportunityScore ?? 0), in: RoundedRectangle(cornerRadius: 12))
+                            .background(item.opportunityScore.map(scoreColor) ?? WhaleTheme.warning, in: RoundedRectangle(cornerRadius: 12))
                         }
                     }
                     .padding(.vertical, 6)
@@ -842,6 +848,7 @@ private struct OpportunityAnalysisView: View {
     let reports: [CompanyReport]
 
     private var annualReports: [CompanyReport] { reports.filter(\.isAnnualReport) }
+    private var missingMetricLabels: [String] { scoreMetricNames(item.missingScoreMetrics) }
 
     private var reasons: [String] {
         var result: [String] = []
@@ -861,8 +868,10 @@ private struct OpportunityAnalysisView: View {
             else if ratio <= 1.10 { result.append("El PER está cerca de la referencia razonable para su sector.") }
             else { result.append("El PER supera la referencia ajustada de su sector y reduce el atractivo de valoración.") }
             if item.brandPremiumApplied == true { result.append("La referencia admite una prima moderada porque la empresa posee una marca o ecosistema especialmente fuerte.") }
+        } else if item.peNotMeaningful == true {
+            result.append("El beneficio por acción no es positivo, por lo que el PER no es significativo y la valoración obtiene cero puntos.")
         } else if item.pe == nil {
-            result.append("No hay PER disponible; la valoración requiere comprobación adicional.")
+            result.append("No hay PER verificable; el score no se publica hasta completar la valoración.")
         }
         if let margin = item.operatingMargin {
             if margin <= 0 { result.append("El margen operativo no es positivo y no aporta puntos de rentabilidad.") }
@@ -870,7 +879,7 @@ private struct OpportunityAnalysisView: View {
             else if margin < 15 { result.append("El margen operativo es moderado y aporta una puntuación intermedia de rentabilidad.") }
             else { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % refleja una rentabilidad elevada y refuerza el score.") }
         } else {
-            result.append("No hay margen operativo anual comparable; se aplica una puntuación prudente.")
+            result.append("No hay margen operativo anual comparable; el score queda pendiente hasta obtenerlo.")
         }
         if let roce = item.roce {
             if roce <= 0 { result.append("El ROCE no es positivo y no aporta puntos de eficiencia del capital.") }
@@ -878,7 +887,7 @@ private struct OpportunityAnalysisView: View {
             else if roce < 20 { result.append("El ROCE refleja una utilización razonable del capital empleado.") }
             else { result.append("El ROCE del \(roce.formatted(.number.precision(.fractionLength(1)))) % indica una elevada eficiencia del capital y mejora el score.") }
         } else {
-            result.append("No hay ROCE anual calculable; se aplica una puntuación prudente.")
+            result.append("No hay ROCE anual calculable; el score queda pendiente hasta obtenerlo.")
         }
         if let growth = item.dividendGrowth {
             if growth < 0 { result.append("El dividendo por acción ha disminuido y no obtiene puntos por crecimiento.") }
@@ -894,7 +903,13 @@ private struct OpportunityAnalysisView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Score para dividendos a largo plazo").font(.caption).foregroundStyle(.secondary)
-                        Text("\(item.opportunityScore ?? 0) / 100").font(.largeTitle.bold().monospacedDigit())
+                        if let score = item.opportunityScore {
+                            Text("\(score) / 100").font(.largeTitle.bold().monospacedDigit())
+                        } else {
+                            Text("Pendiente de datos").font(.title2.bold())
+                            Text("Cobertura \(item.scoreCoverage ?? 0)% · falta " + missingMetricLabels.joined(separator: ", "))
+                                .font(.caption).foregroundStyle(WhaleTheme.warning)
+                        }
                     }
                     Spacer()
                     Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
@@ -1004,6 +1019,19 @@ private struct OpportunityAnalysisView: View {
 
     private func reportDate(_ value: String?) -> String {
         value.map { " · " + $0 } ?? ""
+    }
+}
+
+private func scoreMetricNames(_ metrics: [String]?) -> [String] {
+    (metrics ?? []).map {
+        switch $0 {
+        case "yield": "yield"
+        case "pe": "PER"
+        case "dividendGrowth": "crecimiento del dividendo"
+        case "operatingMargin": "margen operativo"
+        case "roce": "ROCE"
+        default: $0
+        }
     }
 }
 

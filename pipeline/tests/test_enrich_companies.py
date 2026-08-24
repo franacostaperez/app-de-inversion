@@ -45,6 +45,18 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertEqual(exchange, "NYSE")
         self.assertIn("P/E ratio", page)
 
+    def test_uses_yahoo_chart_as_market_price_fallback(self):
+        from pipeline.enrich_companies import MarketDataClient
+
+        class Client(MarketDataClient):
+            def request(self, url, payload=None):
+                if "quoteSummary" in url:
+                    raise urllib.error.HTTPError(url, 429, "Throttled", None, None)
+                return '{"chart":{"result":[{"meta":{"regularMarketPrice":123.45}}]}}'
+
+        profile = Client().yahoo_profile("ABC")
+        self.assertEqual(profile["marketPrice"], 123.45)
+
 
 if __name__ == "__main__":
     unittest.main()
