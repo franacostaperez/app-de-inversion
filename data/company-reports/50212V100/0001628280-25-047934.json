@@ -9,13 +9,13 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1397911/000162828025047934/lpla-20250930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 4551977000,
     "expenses": 4586088000,
-    "operatingIncome": 751946000,
+    "operatingIncome": -34111000,
     "netIncome": -29517000,
-    "operatingMargin": 16.52,
+    "operatingMargin": -0.75,
     "roce": null,
     "netMargin": -0.65,
     "totalDebt": 7521468000,
@@ -468,15 +468,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-09-30",
-          "value": 1051611000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
           "startDate": "2024-07-01",
           "endDate": "2024-09-30",
           "value": 347348000,
@@ -486,13 +477,13 @@
           "frame": "CY2024Q3"
         },
         {
-          "startDate": "2025-07-01",
-          "endDate": "2025-09-30",
-          "value": -34111000,
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 1051611000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
-          "frame": "CY2025Q3"
+          "frame": null
         },
         {
           "startDate": "2025-01-01",
@@ -502,6 +493,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": -34111000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3"
         }
       ]
     },

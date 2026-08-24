@@ -9,13 +9,13 @@
   "reportDate": "2026-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1397911/000162828026051542/lpla-20260630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 5186623000,
     "expenses": 4671119000,
-    "operatingIncome": 515504000,
+    "operatingIncome": 1000088000,
     "netIncome": 379261000,
-    "operatingMargin": 9.94,
+    "operatingMargin": 19.28,
     "roce": null,
     "netMargin": 7.31,
     "totalDebt": 7460510000,
@@ -486,15 +486,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": 786057000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
           "value": 368804000,
@@ -504,9 +495,9 @@
           "frame": "CY2025Q2"
         },
         {
-          "startDate": "2026-01-01",
-          "endDate": "2026-06-30",
-          "value": 1000088000,
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 786057000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -520,6 +511,15 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 1000088000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

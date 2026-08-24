@@ -1,6 +1,6 @@
 {
   "cusip": "G3730V105",
-  "ticker": "FTAIM",
+  "ticker": "FTAI",
   "companyName": "Ftai Aviation Ltd",
   "cik": "1590364",
   "accessionNumber": "0001628280-26-051412",
@@ -9,14 +9,14 @@
   "reportDate": "2026-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1590364/000162828026051412/ftai-20260630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 953085000,
     "expenses": 758279000,
-    "operatingIncome": 194806000,
+    "operatingIncome": 365185000,
     "netIncome": 125094000,
-    "operatingMargin": 20.44,
-    "roce": 4.86,
+    "operatingMargin": 38.32,
+    "roce": 9.11,
     "netMargin": 13.13,
     "totalDebt": 3453320000,
     "cash": 337195000,
@@ -28,10 +28,10 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +40.9% frente al periodo comparable. El beneficio neto varió un -9.3% frente al periodo comparable. El margen neto del periodo más reciente es 13.1%. El ROCE estimado del periodo más reciente es 4.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +40.9% frente al periodo comparable. El beneficio neto varió un -9.3% frente al periodo comparable. El margen neto del periodo más reciente es 13.1%. El ROCE estimado del periodo más reciente es 9.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2025-01-01",
@@ -528,15 +528,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": 361442000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
           "value": 210484000,
@@ -546,9 +537,9 @@
           "frame": "CY2025Q2"
         },
         {
-          "startDate": "2026-01-01",
-          "endDate": "2026-06-30",
-          "value": 365185000,
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 361442000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -562,6 +553,15 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 365185000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

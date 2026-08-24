@@ -9,13 +9,13 @@
   "reportDate": "2025-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1287865/000095017025106022/mpw-20250630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 240359000,
     "expenses": 233486000,
-    "operatingIncome": 6873000,
+    "operatingIncome": 1353000,
     "netIncome": -98357000,
-    "operatingMargin": 2.86,
+    "operatingMargin": 0.56,
     "roce": null,
     "netMargin": -40.92,
     "totalDebt": 9649035000,
@@ -482,15 +482,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-06-30",
-          "value": 68779000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2024-04-01",
           "endDate": "2024-06-30",
           "value": 19900000,
@@ -500,9 +491,9 @@
           "frame": "CY2024Q2"
         },
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": 1353000,
+          "startDate": "2024-01-01",
+          "endDate": "2024-06-30",
+          "value": 68779000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
@@ -516,6 +507,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
           "frame": "CY2025Q2"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 1353000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

@@ -9,15 +9,15 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/715957/000095017024019110/d-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
-    "revenue": 13487000000,
+    "revenue": 3534000000,
     "expenses": 10979000000,
     "operatingIncome": 712000000,
     "netIncome": 273000000,
-    "operatingMargin": 5.28,
+    "operatingMargin": 20.15,
     "roce": 0.84,
-    "netMargin": 2.02,
+    "netMargin": 7.72,
     "totalDebt": 40206000000,
     "cash": 184000000,
     "cashFromOperations": 6572000000,
@@ -28,15 +28,15 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -7.3% frente al periodo comparable. El beneficio neto varió un +73.9% frente al periodo comparable. El margen neto del periodo más reciente es 2.0%. El ROCE estimado del periodo más reciente es 0.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -7.2% frente al periodo comparable. El beneficio neto varió un +73.9% frente al periodo comparable. El margen neto del periodo más reciente es 7.7%. El ROCE estimado del periodo más reciente es 0.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2021-01-01",
           "endDate": "2021-12-31",
-          "value": 11661000000,
+          "value": 11419000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
@@ -44,8 +44,71 @@
         },
         {
           "startDate": "2022-01-01",
+          "endDate": "2022-03-31",
+          "value": 3112000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q1"
+        },
+        {
+          "startDate": "2022-04-01",
+          "endDate": "2022-06-30",
+          "value": 3058000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q2"
+        },
+        {
+          "startDate": "2022-07-01",
+          "endDate": "2022-09-30",
+          "value": 3961000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q3"
+        },
+        {
+          "startDate": "2022-01-01",
           "endDate": "2022-12-31",
-          "value": 14552000000,
+          "value": 13938000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2022-10-01",
+          "endDate": "2022-12-31",
+          "value": 3807000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4"
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-03-31",
+          "value": 3883000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-01",
+          "endDate": "2023-06-30",
+          "value": 3166000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-30",
+          "value": 3810000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
@@ -54,7 +117,16 @@
         {
           "startDate": "2023-01-01",
           "endDate": "2023-12-31",
-          "value": 13487000000,
+          "value": 14393000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2023-12-31",
+          "value": 3534000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

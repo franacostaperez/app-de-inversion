@@ -1,6 +1,6 @@
 {
   "cusip": "14316J108",
-  "ticker": "CGABL",
+  "ticker": "CG",
   "companyName": "CARLYLE GROUP INC",
   "cik": "1527166",
   "accessionNumber": "0001527166-25-000125",
@@ -9,13 +9,13 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1527166/000152716625000125/cg-20250930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 332700000,
     "expenses": 370100000,
-    "operatingIncome": 521300000,
+    "operatingIncome": -37400000,
     "netIncome": 900000,
-    "operatingMargin": 156.69,
+    "operatingMargin": -11.24,
     "roce": null,
     "netMargin": 0.27,
     "totalDebt": null,
@@ -531,15 +531,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-09-30",
-          "value": 1137900000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
           "startDate": "2024-07-01",
           "endDate": "2024-09-30",
           "value": 786300000,
@@ -549,13 +540,13 @@
           "frame": "CY2024Q3"
         },
         {
-          "startDate": "2025-07-01",
-          "endDate": "2025-09-30",
-          "value": -37400000,
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 1137900000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
-          "frame": "CY2025Q3"
+          "frame": null
         },
         {
           "startDate": "2025-01-01",
@@ -565,6 +556,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": -37400000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3"
         }
       ]
     }

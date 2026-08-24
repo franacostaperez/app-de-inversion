@@ -9,7 +9,7 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/8670/000000867025000007/adp-20241231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 5048400000,
     "expenses": 3878200000,
@@ -550,15 +550,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2023-07-01",
-          "endDate": "2023-12-31",
-          "value": 2104100000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2023-10-01",
           "endDate": "2023-12-31",
           "value": 1079000000,
@@ -566,6 +557,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
           "frame": "CY2023Q4"
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-12-31",
+          "value": 2104100000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
         },
         {
           "startDate": "2024-07-01",

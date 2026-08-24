@@ -1,6 +1,6 @@
 {
   "cusip": "816851109",
-  "ticker": "SREA",
+  "ticker": "SRE",
   "companyName": "SEMPRA",
   "cik": "1032208",
   "accessionNumber": "0001032208-24-000015",
@@ -9,15 +9,15 @@
   "reportDate": "2024-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1032208/000103220824000015/sre-20240331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
-    "revenue": 3697000000,
+    "revenue": 3640000000,
     "expenses": null,
     "operatingIncome": null,
     "netIncome": 812000000,
     "operatingMargin": null,
     "roce": null,
-    "netMargin": 21.96,
+    "netMargin": 22.31,
     "totalDebt": 1659000000,
     "cash": 606000000,
     "cashFromOperations": 1851000000,
@@ -28,15 +28,15 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -37.2% frente al periodo comparable. El beneficio neto varió un -17.1% frente al periodo comparable. El margen neto del periodo más reciente es 22.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -44.5% frente al periodo comparable. El beneficio neto varió un -17.1% frente al periodo comparable. El margen neto del periodo más reciente es 22.3%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2023-01-01",
           "endDate": "2023-03-31",
-          "value": 5889000000,
+          "value": 6560000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",
@@ -45,11 +45,11 @@
         {
           "startDate": "2024-01-01",
           "endDate": "2024-03-31",
-          "value": 3697000000,
+          "value": 3640000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",
-          "frame": null
+          "frame": "CY2024Q1"
         }
       ]
     },

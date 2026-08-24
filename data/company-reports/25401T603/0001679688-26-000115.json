@@ -1,6 +1,6 @@
 {
   "cusip": "25401T603",
-  "ticker": "DBRG-PJ",
+  "ticker": "DBRG",
   "companyName": "DIGITALBRIDGE GROUP INC",
   "cik": "1679688",
   "accessionNumber": "0001679688-26-000115",
@@ -9,13 +9,13 @@
   "reportDate": "2026-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1679688/000167968826000115/dbrg-20260630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 508679000,
     "expenses": 274877000,
-    "operatingIncome": 233802000,
+    "operatingIncome": 237260000,
     "netIncome": 227340000,
-    "operatingMargin": 45.96,
+    "operatingMargin": 46.64,
     "roce": null,
     "netMargin": 44.69,
     "totalDebt": 291766000,
@@ -459,15 +459,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": -45490000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
           "value": -35640000,
@@ -477,9 +468,9 @@
           "frame": "CY2025Q2"
         },
         {
-          "startDate": "2026-01-01",
-          "endDate": "2026-06-30",
-          "value": 237260000,
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": -45490000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -493,6 +484,15 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 237260000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

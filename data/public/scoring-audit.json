@@ -1,30 +1,43 @@
 {
-  "generatedAt": "2026-08-24T08:21:22.019969Z",
+  "generatedAt": "2026-08-24T08:47:46.027518Z",
   "totalCompanies": 672,
-  "companiesWithCompleteScore": 408,
-  "companiesWithoutCompleteScore": 264,
+  "companiesWithCompleteScore": 362,
+  "companiesWithoutCompleteScore": 310,
   "missingByMetric": {
-    "operatingMargin": 235,
-    "pe": 112,
-    "dividendGrowth": 103,
-    "yield": 61
+    "operatingMargin": 273,
+    "pe": 119,
+    "dividendGrowth": 68,
+    "yield": 32
   },
   "blockingCategories": {
-    "VERIFIED_TICKER_MISSING_METRICS": 264
+    "VERIFIED_TICKER_MISSING_METRICS": 310
   },
   "mostFrequentMissingCombinations": [
     {
       "metrics": [
         "operatingMargin"
       ],
-      "companies": 105
+      "companies": 145
     },
     {
       "metrics": [
         "pe",
         "operatingMargin"
       ],
-      "companies": 53
+      "companies": 87
+    },
+    {
+      "metrics": [
+        "dividendGrowth",
+        "operatingMargin"
+      ],
+      "companies": 25
+    },
+    {
+      "metrics": [
+        "dividendGrowth"
+      ],
+      "companies": 15
     },
     {
       "metrics": [
@@ -33,45 +46,47 @@
         "dividendGrowth",
         "operatingMargin"
       ],
-      "companies": 52
-    },
-    {
-      "metrics": [
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "companies": 24
-    },
-    {
-      "metrics": [
-        "dividendGrowth"
-      ],
-      "companies": 17
+      "companies": 13
     },
     {
       "metrics": [
         "yield",
+        "pe",
         "dividendGrowth"
+      ],
+      "companies": 7
+    },
+    {
+      "metrics": [
+        "yield",
+        "pe"
       ],
       "companies": 6
     },
     {
       "metrics": [
+        "yield",
+        "dividendGrowth"
+      ],
+      "companies": 5
+    },
+    {
+      "metrics": [
         "pe"
       ],
-      "companies": 3
+      "companies": 4
+    },
+    {
+      "metrics": [
+        "pe",
+        "dividendGrowth",
+        "operatingMargin"
+      ],
+      "companies": 2
     },
     {
       "metrics": [
         "yield",
-        "pe",
-        "dividendGrowth"
-      ],
-      "companies": 3
-    },
-    {
-      "metrics": [
-        "pe",
         "dividendGrowth",
         "operatingMargin"
       ],
@@ -80,128 +95,8 @@
   ],
   "companies": [
     {
-      "company": "AMICUS THERAPEUTIC",
-      "cusip": "03152W109",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "APELLIS PHARMACEUTICALS INC",
-      "cusip": "03753U106",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "ARCELLX INC",
-      "cusip": "03940C100",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "ARES ACQUISITION CORP III",
-      "cusip": "G3303U112",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "BERKSHIRE HATHAWAY INC DEL",
-      "cusip": "084670702",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "CANTOR EQUITY PARTNERS II IN",
       "cusip": "G1827P106",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "CATALYST PHARMACEUTICALS INC",
-      "cusip": "14888U101",
       "scoreCoverage": 0,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -240,46 +135,6 @@
       }
     },
     {
-      "company": "CLEARWATER ANALYTICS HLDGS I",
-      "cusip": "185123106",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "DAY ONE BIOPHARMACEUTICALS I",
-      "cusip": "23954D109",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "ENHABIT INC",
       "cusip": "29332G102",
       "scoreCoverage": 0,
@@ -300,308 +155,8 @@
       }
     },
     {
-      "company": "ESPERION THERAPEUTICS INC NE",
-      "cusip": "29664W105",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "GOLDEN ENTMT INC",
-      "cusip": "381013101",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "Global X Fds",
-      "cusip": "37950E259",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "HOLOGIC INC",
-      "cusip": "436440101",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "INFLEQTION INC",
-      "cusip": "45676K103",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "ISHARES BITCOIN TRUST ETF",
-      "cusip": "46438F101",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "ISHARES GOLD TR",
-      "cusip": "464285204",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "ISHARES INC",
-      "cusip": "464286509",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "ISHARES TR",
-      "cusip": "464288414",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "Invesco Exchange Traded Fd T",
-      "cusip": "46137V357",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "JAZZ INVESTMENTS I LTD",
       "cusip": "472145AF8",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "KRANESHARES TRUST",
-      "cusip": "500767306",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "LIBERTY BROADBAND CORP",
-      "cusip": "530307305",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "MASIMO CORP",
-      "cusip": "574795100",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "MIDCAP FINANCIAL INVSTMNT CO",
-      "cusip": "03761U502",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "NATIONAL STORAGE AFFILIATES",
-      "cusip": "637870106",
       "scoreCoverage": 0,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -680,66 +235,6 @@
       }
     },
     {
-      "company": "ONESTREAM INC",
-      "cusip": "68278B107",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "PEAKSTONE REALTY TRUST",
-      "cusip": "39818P799",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "RARE EARTHS AMERICAS INC",
-      "cusip": "75381A108",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "SEALED AIR CORP NEW",
       "cusip": "81211K100",
       "scoreCoverage": 0,
@@ -762,86 +257,6 @@
     {
       "company": "SELECT MED HLDGS CORP",
       "cusip": "81619Q105",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "SELECT SECTOR SPDR TR",
-      "cusip": "81369Y506",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "SEMRUSH HLDGS INC",
-      "cusip": "81686C104",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "SILA REALTY TRUST INC",
-      "cusip": "146280508",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "SPDR SERIES TRUST",
-      "cusip": "78464A474",
       "scoreCoverage": 0,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -900,148 +315,8 @@
       }
     },
     {
-      "company": "TAYLOR MORRISON HOME CORP",
-      "cusip": "87724P106",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "TERNS PHARMACEUTICALS INC",
-      "cusip": "880881107",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "THERMON GROUP HLDGS INC",
-      "cusip": "88362T103",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "TOPBUILD COR",
-      "cusip": "89055F103",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "TRI POINTE HOMES INC",
-      "cusip": "87265H109",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "UBS GROUP AG",
-      "cusip": "H42097107",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "UDEMY INC",
       "cusip": "902685106",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "VANECK ETF TRUST",
-      "cusip": "92189F676",
       "scoreCoverage": 0,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -1080,48 +355,8 @@
       }
     },
     {
-      "company": "Vista Energy S.A.B. De C.V.",
-      "cusip": "92837L109",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "WEBSTER FINL CORP",
-      "cusip": "947890109",
-      "scoreCoverage": 0,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "pe",
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "Baidu Inc",
-      "cusip": "056752108",
+      "company": "BLACKLINE INC",
+      "cusip": "09239BAF6",
       "scoreCoverage": 25,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -1132,14 +367,90 @@
       "availableMetrics": {
         "yield": null,
         "pe": null,
-        "earningsPerShare": null,
+        "earningsPerShare": 0.39,
         "peNotMeaningful": false,
-        "operatingMargin": -4.51,
+        "operatingMargin": 3.65,
         "dividendGrowth": null
       }
     },
     {
-      "company": "EQUITABLE HOLDINGS INC",
+      "company": "DEXCOM INC",
+      "cusip": "252131AM9",
+      "scoreCoverage": 25,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 2.09,
+        "peNotMeaningful": false,
+        "operatingMargin": 19.56,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "DIGITALOCEAN HLDGS INC",
+      "cusip": "25402DAB8",
+      "scoreCoverage": 25,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 2.52,
+        "peNotMeaningful": false,
+        "operatingMargin": 17.42,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "DROPBOX INC",
+      "cusip": "26210CAD6",
+      "scoreCoverage": 25,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 1.86,
+        "peNotMeaningful": false,
+        "operatingMargin": 27.33,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "ELASTIC N V",
+      "cusip": "N14506104",
+      "scoreCoverage": 25,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 3.43,
+        "peNotMeaningful": false,
+        "operatingMargin": -1.92,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "EQUITABLE HLDGS INC",
       "cusip": "29452E101",
       "scoreCoverage": 25,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -1158,27 +469,46 @@
       }
     },
     {
-      "company": "FIGURE TECHNOLOGY SOLUTIO",
-      "cusip": "349381103",
+      "company": "LITHIUM ARGENTINA AG",
+      "cusip": "53680QAA6",
       "scoreCoverage": 25,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
         "yield",
-        "pe",
-        "dividendGrowth"
+        "dividendGrowth",
+        "operatingMargin"
       ],
       "availableMetrics": {
         "yield": null,
         "pe": null,
-        "earningsPerShare": 0.44,
-        "peNotMeaningful": false,
-        "operatingMargin": 23.19,
+        "earningsPerShare": -0.47,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
         "dividendGrowth": null
       }
     },
     {
-      "company": "Ishares S&P Gsci Commodity-",
-      "cusip": "46428R107",
+      "company": "MIDCAP FINANCIAL INVSTMNT CO",
+      "cusip": "03761U502",
+      "scoreCoverage": 25,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "dividendGrowth",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 12.7,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "OKTA INC",
+      "cusip": "679295AF2",
       "scoreCoverage": 25,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -1189,10 +519,47 @@
       "availableMetrics": {
         "yield": null,
         "pe": null,
-        "earningsPerShare": null,
+        "earningsPerShare": 1.31,
         "peNotMeaningful": false,
-        "operatingMargin": 80.51,
+        "operatingMargin": 5.1,
         "dividendGrowth": null
+      }
+    },
+    {
+      "company": "PG&E CORP",
+      "cusip": "69331CAL2",
+      "scoreCoverage": 25,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 1.18,
+        "peNotMeaningful": false,
+        "operatingMargin": 19.05,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "ADVANCED ENERGY INDS",
+      "cusip": "007973AE0",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 3.84,
+        "peNotMeaningful": false,
+        "operatingMargin": 9.34,
+        "dividendGrowth": 0.0
       }
     },
     {
@@ -1250,6 +617,42 @@
       }
     },
     {
+      "company": "AMICUS THERAPEUTIC",
+      "cusip": "03152W109",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "APELLIS PHARMACEUTICALS INC",
+      "cusip": "03753U106",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "APPLIED AEROSPACE & DEFENSE",
       "cusip": "03815J107",
       "scoreCoverage": 50,
@@ -1268,8 +671,8 @@
       }
     },
     {
-      "company": "ARES MANAGEMENT CORPORATION",
-      "cusip": "03990B101",
+      "company": "ARCELLX INC",
+      "cusip": "03940C100",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -1277,12 +680,30 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 2.49,
+        "yield": 0,
         "pe": null,
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
-        "dividendGrowth": 0.0
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "ARES ACQUISITION CORP III",
+      "cusip": "G3303U112",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -1376,6 +797,24 @@
       }
     },
     {
+      "company": "BERKSHIRE HATHAWAY INC DEL",
+      "cusip": "084670702",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "BGC GROUP INC",
       "cusip": "088929104",
       "scoreCoverage": 50,
@@ -1409,42 +848,6 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 0
-      }
-    },
-    {
-      "company": "BLOCK INC",
-      "cusip": "852234103",
-      "scoreCoverage": 50,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": 38.57,
-        "earningsPerShare": 2.1,
-        "peNotMeaningful": false,
-        "operatingMargin": 7.06,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "BLUE OWL CAPITAL INC",
-      "cusip": "09581B103",
-      "scoreCoverage": 50,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": 8.94,
-        "pe": 19.85,
-        "earningsPerShare": 1.24,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
       }
     },
     {
@@ -1502,6 +905,42 @@
       }
     },
     {
+      "company": "CADIZ INC",
+      "cusip": "127537207",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "CATALYST PHARMACEUTICALS INC",
+      "cusip": "14888U101",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "CEMEX SA EURO MTN BE 144A",
       "cusip": "151290889",
       "scoreCoverage": 50,
@@ -1538,8 +977,44 @@
       }
     },
     {
+      "company": "CHEESECAKE FACTORY INC",
+      "cusip": "163072AA9",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 3.06,
+        "peNotMeaningful": false,
+        "operatingMargin": 4.99,
+        "dividendGrowth": 0.0
+      }
+    },
+    {
       "company": "CLEAR CHANNEL OUTDOOR HLDGS",
       "cusip": "18453H106",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "CLEARWATER ANALYTICS HLDGS I",
+      "cusip": "185123106",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -1574,21 +1049,21 @@
       }
     },
     {
-      "company": "CLOUDFLARE INC",
-      "cusip": "18915M107",
+      "company": "CONSTELLATION BRANDS INC",
+      "cusip": "21036P108",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
-        "pe",
+        "dividendGrowth",
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 0,
-        "pe": null,
+        "yield": 3.04,
+        "pe": 12.94,
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
-        "dividendGrowth": 0
+        "dividendGrowth": null
       }
     },
     {
@@ -1625,6 +1100,42 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": null
+      }
+    },
+    {
+      "company": "Cloudflare Inc",
+      "cusip": "18915M107",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "DAY ONE BIOPHARMACEUTICALS I",
+      "cusip": "23954D109",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -1682,24 +1193,6 @@
       }
     },
     {
-      "company": "EINRIDE AB",
-      "cusip": "28256A109",
-      "scoreCoverage": 50,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "pe",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": 0,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": 0
-      }
-    },
-    {
       "company": "ELECTRONIC ARTS INC",
       "cusip": "285512109",
       "scoreCoverage": 50,
@@ -1720,6 +1213,24 @@
     {
       "company": "EROCK INC",
       "cusip": "296013105",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "ESPERION THERAPEUTICS INC NE",
+      "cusip": "29664W105",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -1790,24 +1301,6 @@
       }
     },
     {
-      "company": "FLYEXCLUSIVE INC",
-      "cusip": "343928107",
-      "scoreCoverage": 50,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": -1.01,
-        "peNotMeaningful": true,
-        "operatingMargin": -12.57,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "FULL TRUCK ALLIANCE CO LTD",
       "cusip": "35969L108",
       "scoreCoverage": 50,
@@ -1853,8 +1346,8 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 0.95,
-        "pe": 15.91,
+        "yield": 0.8500000000000001,
+        "pe": 17.86,
         "earningsPerShare": 3.84,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -1916,26 +1409,62 @@
       }
     },
     {
-      "company": "GINKGO BIOWORKS HOLDINGS INC",
-      "cusip": "37611X209",
+      "company": "GLOBAL PMTS INC",
+      "cusip": "37940XAU6",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
         "yield",
-        "dividendGrowth"
+        "pe"
       ],
       "availableMetrics": {
         "yield": null,
         "pe": null,
-        "earningsPerShare": -5.64,
-        "peNotMeaningful": true,
-        "operatingMargin": -185.29,
-        "dividendGrowth": null
+        "earningsPerShare": 5.78,
+        "peNotMeaningful": false,
+        "operatingMargin": 22.77,
+        "dividendGrowth": 0.0
+      }
+    },
+    {
+      "company": "GOLDEN ENTMT INC",
+      "cusip": "381013101",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
       "company": "GRUPO AEROMEXICO SAB DE CV",
       "cusip": "40054J109",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Global X Fds",
+      "cusip": "37950E259",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -2006,6 +1535,24 @@
       }
     },
     {
+      "company": "HOLOGIC INC",
+      "cusip": "436440101",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "Hyperliquid Strategies Inc",
       "cusip": "44916Y106",
       "scoreCoverage": 50,
@@ -2024,7 +1571,25 @@
       }
     },
     {
-      "company": "INTERACTIVE BROKERS GROUP INC",
+      "company": "INFLEQTION INC",
+      "cusip": "45676K103",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "INTERACTIVE BROKERS GROUP IN",
       "cusip": "45841N107",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2042,6 +1607,114 @@
       }
     },
     {
+      "company": "IRON MTN INC DEL",
+      "cusip": "46284V101",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 0.49,
+        "peNotMeaningful": false,
+        "operatingMargin": 16.86,
+        "dividendGrowth": 2.42
+      }
+    },
+    {
+      "company": "ISHARES BITCOIN TRUST ETF",
+      "cusip": "46438F101",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "ISHARES GOLD TR",
+      "cusip": "464285204",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "ISHARES INC",
+      "cusip": "464286509",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "ISHARES TR",
+      "cusip": "464288414",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Invesco Exchange Traded Fd T",
+      "cusip": "46137V357",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "JANUS LIVING INC",
       "cusip": "471024109",
       "scoreCoverage": 50,
@@ -2056,6 +1729,42 @@
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "JBT MAREL CORPORATION",
+      "cusip": "477839AB0",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": -0.98,
+        "peNotMeaningful": true,
+        "operatingMargin": 4.99,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "JETBLUE AIRWAYS CORP",
+      "cusip": "477143AR2",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": -1.66,
+        "peNotMeaningful": true,
+        "operatingMargin": -4.06,
         "dividendGrowth": null
       }
     },
@@ -2096,8 +1805,8 @@
       }
     },
     {
-      "company": "KKR & CO INC",
-      "cusip": "48251W104",
+      "company": "KRANESHARES TRUST",
+      "cusip": "500767306",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -2105,12 +1814,30 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 4.61,
+        "yield": 0,
         "pe": null,
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
-        "dividendGrowth": 4.42
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "LIBERTY BROADBAND CORP",
+      "cusip": "530307305",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -2168,6 +1895,24 @@
       }
     },
     {
+      "company": "MASIMO CORP",
+      "cusip": "574795100",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "MDA SPACE LTD",
       "cusip": "55293N109",
       "scoreCoverage": 50,
@@ -2204,7 +1949,7 @@
       }
     },
     {
-      "company": "Monte Rosa Therapeutics Inc",
+      "company": "MONTE ROSA THERAPEUTICS INC",
       "cusip": "61225M102",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2222,7 +1967,25 @@
       }
     },
     {
-      "company": "NEBIUS GROUP NV",
+      "company": "NATIONAL STORAGE AFFILIATES",
+      "cusip": "637870106",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "NEBIUS GROUP N.V.",
       "cusip": "N97284108",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2276,6 +2039,42 @@
       }
     },
     {
+      "company": "ONESTREAM INC",
+      "cusip": "68278B107",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "OPENDOOR TECHNOLOGIES INC",
+      "cusip": "683712129",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": -1.7,
+        "peNotMeaningful": true,
+        "operatingMargin": -6.57,
+        "dividendGrowth": null
+      }
+    },
+    {
       "company": "ORUKA THERAPEUTICS INC",
       "cusip": "687604108",
       "scoreCoverage": 50,
@@ -2296,6 +2095,24 @@
     {
       "company": "PARABILIS MEDICINES INC",
       "cusip": "698955101",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "PEAKSTONE REALTY TRUST",
+      "cusip": "39818P799",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -2366,21 +2183,21 @@
       }
     },
     {
-      "company": "PONY AI INC",
-      "cusip": "732908108",
+      "company": "PUBLIC SVC ENTERPRISE GROUP",
+      "cusip": "744573106",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
         "yield",
-        "dividendGrowth"
+        "pe"
       ],
       "availableMetrics": {
         "yield": null,
         "pe": null,
-        "earningsPerShare": -0.35,
-        "peNotMeaningful": true,
-        "operatingMargin": -289.84,
-        "dividendGrowth": null
+        "earningsPerShare": 4.22,
+        "peNotMeaningful": false,
+        "operatingMargin": 24.49,
+        "dividendGrowth": 5.13
       }
     },
     {
@@ -2402,24 +2219,6 @@
       }
     },
     {
-      "company": "QXO INC",
-      "cusip": "82846H405",
-      "scoreCoverage": 50,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "yield",
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": null,
-        "pe": null,
-        "earningsPerShare": -0.63,
-        "peNotMeaningful": true,
-        "operatingMargin": -3.58,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "Qnity Electronics Inc",
       "cusip": "74743L100",
       "scoreCoverage": 50,
@@ -2438,6 +2237,24 @@
       }
     },
     {
+      "company": "RARE EARTHS AMERICAS INC",
+      "cusip": "75381A108",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "RINGCENTRAL INC",
       "cusip": "76680R206",
       "scoreCoverage": 50,
@@ -2452,6 +2269,24 @@
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "RIVIAN AUTOMOTIVE INC",
+      "cusip": "76954A103",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": -3.07,
+        "peNotMeaningful": true,
+        "operatingMargin": -66.55,
         "dividendGrowth": null
       }
     },
@@ -2474,8 +2309,62 @@
       }
     },
     {
-      "company": "SHARONAI HOLDINGS INC",
-      "cusip": "778920306",
+      "company": "SELECT SECTOR SPDR TR",
+      "cusip": "81369Y506",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "SEMRUSH HLDGS INC",
+      "cusip": "81686C104",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "SILA REALTY TRUST INC",
+      "cusip": "146280508",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "SNAP INC",
+      "cusip": "83304AAH9",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -2485,15 +2374,69 @@
       "availableMetrics": {
         "yield": null,
         "pe": null,
-        "earningsPerShare": -4.04,
+        "earningsPerShare": -0.27,
         "peNotMeaningful": true,
-        "operatingMargin": -879.97,
+        "operatingMargin": -8.97,
         "dividendGrowth": null
       }
     },
     {
-      "company": "SPACE EXPLORATION TECHNOLOGIES CORP",
+      "company": "SOLSTICE ADVANCED MATLS INC",
+      "cusip": "83443Q103",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "dividendGrowth",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0.53,
+        "pe": 42.65,
+        "earningsPerShare": 1.49,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "SOUTHERN CO",
+      "cusip": "842587ED5",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "yield",
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": null,
+        "pe": null,
+        "earningsPerShare": 3.92,
+        "peNotMeaningful": false,
+        "operatingMargin": 24.65,
+        "dividendGrowth": 2.84
+      }
+    },
+    {
+      "company": "SPACE EXPLORATION TECHN CORP",
       "cusip": "84615Q103",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "SPDR SERIES TRUST",
+      "cusip": "78464A474",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -2528,24 +2471,6 @@
       }
     },
     {
-      "company": "Solstice Advanced Matls Inc",
-      "cusip": "83443Q103",
-      "scoreCoverage": 50,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": 0.53,
-        "pe": 42.65,
-        "earningsPerShare": 1.49,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "T1 ENERGY INC",
       "cusip": "35834F104",
       "scoreCoverage": 50,
@@ -2564,7 +2489,7 @@
       }
     },
     {
-      "company": "TAIWAN SEMICONDUCTOR MANUFACTURING CO",
+      "company": "TAIWAN SEMICONDUCTOR MANUFAC",
       "cusip": "874039100",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2600,8 +2525,134 @@
       }
     },
     {
+      "company": "TAYLOR MORRISON HOME CORP",
+      "cusip": "87724P106",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "TERNS PHARMACEUTICALS INC",
+      "cusip": "880881107",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "THERMON GROUP HLDGS INC",
+      "cusip": "88362T103",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "TIC SOLUTIONS INC",
       "cusip": "00510N102",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "TOPBUILD COR",
+      "cusip": "89055F103",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "TRI POINTE HOMES INC",
+      "cusip": "87265H109",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "UBS GROUP AG",
+      "cusip": "H42097107",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "dividendGrowth",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 2.05,
+        "pe": 19.09,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": null
+      }
+    },
+    {
+      "company": "VANECK ETF TRUST",
+      "cusip": "92189F676",
       "scoreCoverage": 50,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -2633,6 +2684,24 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": null
+      }
+    },
+    {
+      "company": "WEBSTER FINL CORP",
+      "cusip": "947890109",
+      "scoreCoverage": 50,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -2724,7 +2793,7 @@
       }
     },
     {
-      "company": "ALLY FINANCIAL INC",
+      "company": "ALLY FINL INC",
       "cusip": "02005N100",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2738,6 +2807,23 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 0.0
+      }
+    },
+    {
+      "company": "ALTIMMUNE INC",
+      "cusip": "02155H200",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -2826,7 +2912,7 @@
       }
     },
     {
-      "company": "APOLLO GLOBAL MANAGEMENT INC",
+      "company": "APOLLO GLOBAL MGMT INC",
       "cusip": "03769M106",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2851,8 +2937,8 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 1.34,
-        "pe": 39.89,
+        "yield": 18.11,
+        "pe": 88.64,
         "earningsPerShare": 0.56,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -2877,7 +2963,41 @@
       }
     },
     {
-      "company": "ASML HOLDING NV",
+      "company": "ARES MANAGEMENT CORPORATION",
+      "cusip": "03990B101",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 3.82,
+        "pe": 64.41,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0.0
+      }
+    },
+    {
+      "company": "ARS PHARMACEUTICALS INC",
+      "cusip": "82835W108",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.74,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "ASML HLDG NV",
       "cusip": "N07059210",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2894,6 +3014,40 @@
       }
     },
     {
+      "company": "AURORA INNOVATION INC",
+      "cusip": "051774107",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.44,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "AUTOLUS THERAPEUTICS PLC",
+      "cusip": "05280R100",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.08,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "AZUL S A",
       "cusip": "05501U601",
       "scoreCoverage": 75,
@@ -2907,6 +3061,23 @@
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": 19.97,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Aeva Technologies Inc",
+      "cusip": "00835Q202",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -2.55,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
         "dividendGrowth": 0
       }
     },
@@ -2928,7 +3099,24 @@
       }
     },
     {
-      "company": "BANK OF AMERICA CORP",
+      "company": "Almonty Inds Inc",
+      "cusip": "020398707",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": 85.37,
+        "earningsPerShare": -0.78,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "BANK OF AMER CORP",
       "cusip": "060505104",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -2979,6 +3167,40 @@
       }
     },
     {
+      "company": "BEAM THERAPEUTICS INC",
+      "cusip": "07373V105",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.81,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "BEYOND MEAT INC",
+      "cusip": "08862E109",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.83,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "BLACKSTONE SECD LENDING FD",
       "cusip": "09261X102",
       "scoreCoverage": 75,
@@ -2996,6 +3218,23 @@
       }
     },
     {
+      "company": "BLUE OWL CAPITAL INC",
+      "cusip": "09581B103",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 7.88,
+        "pe": 98.09,
+        "earningsPerShare": 0.1,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 24.68
+      }
+    },
+    {
       "company": "BRIDGEBIO ONCOLOGY THERAPEUT",
       "cusip": "107924102",
       "scoreCoverage": 75,
@@ -3007,6 +3246,23 @@
         "yield": 0,
         "pe": null,
         "earningsPerShare": -4.3,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "BRIDGEBIO PHARMA INC",
+      "cusip": "10806X102",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -3.78,
         "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
@@ -3047,6 +3303,23 @@
       }
     },
     {
+      "company": "BRUKER CORP",
+      "cusip": "116794108",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "dividendGrowth"
+      ],
+      "availableMetrics": {
+        "yield": 0.34,
+        "pe": null,
+        "earningsPerShare": -0.15,
+        "peNotMeaningful": true,
+        "operatingMargin": 1.98,
+        "dividendGrowth": null
+      }
+    },
+    {
       "company": "BULLISH",
       "cusip": "G16910120",
       "scoreCoverage": 75,
@@ -3081,6 +3354,23 @@
       }
     },
     {
+      "company": "Baidu Inc",
+      "cusip": "056752108",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": -4.51,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "Belite Bio Inc Sponsored",
       "cusip": "07782B104",
       "scoreCoverage": 75,
@@ -3098,24 +3388,7 @@
       }
     },
     {
-      "company": "CADIZ INC",
-      "cusip": "127537207",
-      "scoreCoverage": 75,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "pe"
-      ],
-      "availableMetrics": {
-        "yield": 0,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": -156.92,
-        "dividendGrowth": 0
-      }
-    },
-    {
-      "company": "CAMDEN PROPERTY TRUST",
+      "company": "CAMDEN PPTY TR",
       "cusip": "133131102",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3166,7 +3439,7 @@
       }
     },
     {
-      "company": "CARNIVAL CORP",
+      "company": "CARNIVAL CORP LTD",
       "cusip": "G2004J103",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3200,23 +3473,6 @@
       }
     },
     {
-      "company": "CHARLES SCHWAB CORP",
-      "cusip": "808513105",
-      "scoreCoverage": 75,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "operatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": 1.14,
-        "pe": 20.41,
-        "earningsPerShare": 4.65,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": 3.92
-      }
-    },
-    {
       "company": "CHUBB LIMITED",
       "cusip": "H1467J104",
       "scoreCoverage": 75,
@@ -3231,6 +3487,23 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 5.84
+      }
+    },
+    {
+      "company": "CIPHER DIGITAL INC",
+      "cusip": "17253J106",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -2.15,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -3268,24 +3541,7 @@
       }
     },
     {
-      "company": "CONSTELLATION BRANDS INC",
-      "cusip": "21036P108",
-      "scoreCoverage": 75,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.04,
-        "pe": 12.94,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 141.72,
-        "dividendGrowth": null
-      }
-    },
-    {
-      "company": "D R HORTON INC",
+      "company": "D R Horton Inc",
       "cusip": "23331A109",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3319,7 +3575,7 @@
       }
     },
     {
-      "company": "DANAHER CORP",
+      "company": "DANAHER CORP DEL",
       "cusip": "235851102",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3421,6 +3677,23 @@
       }
     },
     {
+      "company": "EINRIDE AB",
+      "cusip": "28256A109",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": 20.45,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "ELI LILLY & CO",
       "cusip": "532457108",
       "scoreCoverage": 75,
@@ -3463,12 +3736,12 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 4.15,
+        "yield": 0,
         "pe": 22.72,
         "earningsPerShare": 2.94,
         "peNotMeaningful": false,
         "operatingMargin": null,
-        "dividendGrowth": 2.24
+        "dividendGrowth": 0
       }
     },
     {
@@ -3489,7 +3762,24 @@
       }
     },
     {
-      "company": "FIRST CITIZENS BANCSHARES INC",
+      "company": "FIGMA INC",
+      "cusip": "316841105",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -3.71,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "FIRST CTZNS BANCSHARES INC D",
       "cusip": "31946M103",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3571,6 +3861,40 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 8.71
+      }
+    },
+    {
+      "company": "GEMINI SPACE STA INC",
+      "cusip": "36866J105",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -15.52,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "GINKGO BIOWORKS HOLDINGS INC",
+      "cusip": "37611X209",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -5.64,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -3659,7 +3983,41 @@
       }
     },
     {
-      "company": "HUMANA INC",
+      "company": "HUT 8 CORP",
+      "cusip": "44812J104",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -2.14,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "HYPERFINE INC",
+      "cusip": "44916K106",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.43,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Humana Inc",
       "cusip": "444859102",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3673,6 +4031,23 @@
         "peNotMeaningful": false,
         "operatingMargin": 2.09,
         "dividendGrowth": null
+      }
+    },
+    {
+      "company": "INHIBRX BIOSCIENCES INC",
+      "cusip": "45720N103",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -9.04,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -3693,7 +4068,41 @@
       }
     },
     {
-      "company": "JEFFERIES FINANCIAL GROUP INC",
+      "company": "Insmed Inc",
+      "cusip": "457669307",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -6.42,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Ishares S&P Gsci Commodity-",
+      "cusip": "46428R107",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": 80.51,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "JEFFERIES FINANCIAL GROUP IN",
       "cusip": "47233W109",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3727,7 +4136,7 @@
       }
     },
     {
-      "company": "JOHNSON CONTROLS INTERNATIONAL PLC",
+      "company": "JOHNSON CONTROLS INTERNATION",
       "cusip": "G51502105",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3778,6 +4187,23 @@
       }
     },
     {
+      "company": "KKR & CO INC",
+      "cusip": "48251W104",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0.72,
+        "pe": 34.58,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 4.42
+      }
+    },
+    {
       "company": "KLA CORP",
       "cusip": "482480100",
       "scoreCoverage": 75,
@@ -3795,20 +4221,20 @@
       }
     },
     {
-      "company": "LENNAR CORP",
-      "cusip": "526057104",
+      "company": "KODIAK AI INC.",
+      "cusip": "500081104",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
-        "dividendGrowth"
+        "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 2.3,
-        "pe": 13.61,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 7.8,
-        "dividendGrowth": null
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -6.42,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -3863,8 +4289,8 @@
       }
     },
     {
-      "company": "LITHIUM ARGENTINA AG",
-      "cusip": "53680QAA6",
+      "company": "LUCID GROUP INC",
+      "cusip": "549498202",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
@@ -3873,7 +4299,24 @@
       "availableMetrics": {
         "yield": 0,
         "pe": null,
-        "earningsPerShare": -0.47,
+        "earningsPerShare": -12.09,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "LYELL IMMUNOPHARMA INC",
+      "cusip": "55083R203",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -16.06,
         "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
@@ -3931,7 +4374,7 @@
       }
     },
     {
-      "company": "MID-AMERICA APARTMENT COMMUNITIES INC",
+      "company": "MID-AMER APT CMNTYS INC",
       "cusip": "59522J103",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -3956,12 +4399,29 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 15.12,
-        "pe": 2.49,
+        "yield": 2.15,
+        "pe": 17.31,
         "earningsPerShare": 10.21,
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 8.84
+      }
+    },
+    {
+      "company": "NEWAMSTERDAM PHARMA COMPANY",
+      "cusip": "N62509109",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.72,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -3999,7 +4459,7 @@
       }
     },
     {
-      "company": "NU HOLDINGS LTD",
+      "company": "NU HLDGS LTD",
       "cusip": "G6683N103",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -4033,6 +4493,23 @@
       }
     },
     {
+      "company": "NUSCALE PWR CORP",
+      "cusip": "67079K100",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -2.17,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "NVR INC",
       "cusip": "62944T105",
       "scoreCoverage": 75,
@@ -4050,7 +4527,24 @@
       }
     },
     {
-      "company": "OCCIDENTAL PETROLEUM CORP",
+      "company": "Nuvation Bio Inc",
+      "cusip": "67080N101",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.6,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "OCCIDENTAL PETE CORP",
       "cusip": "674599105",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -4152,23 +4646,6 @@
       }
     },
     {
-      "company": "PG&E CORP",
-      "cusip": "69331CAL2",
-      "scoreCoverage": 75,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.14,
-        "pe": 12.84,
-        "earningsPerShare": 1.18,
-        "peNotMeaningful": false,
-        "operatingMargin": 19.05,
-        "dividendGrowth": null
-      }
-    },
-    {
       "company": "PHARVARIS N V",
       "cusip": "N69605108",
       "scoreCoverage": 75,
@@ -4180,6 +4657,23 @@
         "yield": 0,
         "pe": null,
         "earningsPerShare": -2.97,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "PLUG PWR INC",
+      "cusip": "72919P202",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.42,
         "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
@@ -4200,6 +4694,40 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 4.02
+      }
+    },
+    {
+      "company": "PONY AI INC",
+      "cusip": "732908108",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.35,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "PRIME MEDICINE INC",
+      "cusip": "74168J101",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.35,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
       }
     },
     {
@@ -4232,6 +4760,23 @@
         "pe": 148.8,
         "earningsPerShare": -2.05,
         "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Purecycle Technologies Inc",
+      "cusip": "74623V103",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.21,
+        "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
       }
@@ -4271,6 +4816,23 @@
       }
     },
     {
+      "company": "RALLYBIO CORP",
+      "cusip": "75120L209",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": 2.13,
+        "earningsPerShare": -1.59,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "RAPID7 INC",
       "cusip": "753422104",
       "scoreCoverage": 75,
@@ -4283,6 +4845,23 @@
         "pe": 38.95,
         "earningsPerShare": null,
         "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "RELAY THERAPEUTICS INC",
+      "cusip": "75943R102",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.61,
+        "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
       }
@@ -4305,6 +4884,23 @@
       }
     },
     {
+      "company": "ROIVANT SCIENCES LTD",
+      "cusip": "G76279101",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.54,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "Repligen Corp",
       "cusip": "759916109",
       "scoreCoverage": 75,
@@ -4317,6 +4913,23 @@
         "pe": 246.9,
         "earningsPerShare": 0.86,
         "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "Rhythm Pharmaceuticals Inc",
+      "cusip": "76243J105",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -3.11,
+        "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
       }
@@ -4356,6 +4969,23 @@
       }
     },
     {
+      "company": "SCHWAB CHARLES CORP",
+      "cusip": "808513105",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 1.14,
+        "pe": 20.41,
+        "earningsPerShare": 4.65,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 3.92
+      }
+    },
+    {
       "company": "SEMPRA",
       "cusip": "816851109",
       "scoreCoverage": 75,
@@ -4364,8 +4994,8 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 12.59,
-        "pe": 7.45,
+        "yield": 3.17,
+        "pe": 24.02,
         "earningsPerShare": 2.75,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -4373,7 +5003,24 @@
       }
     },
     {
-      "company": "SHERWIN-WILLIAMS CO",
+      "company": "SHARONAI HOLDINGS INC",
+      "cusip": "778920306",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -4.04,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "SHERWIN WILLIAMS CO",
       "cusip": "824348106",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -4458,6 +5105,23 @@
       }
     },
     {
+      "company": "STANDARD BIOTOOLS INC",
+      "cusip": "34385P108",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -0.2,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "Skeena Res Ltd New",
       "cusip": "83056P715",
       "scoreCoverage": 75,
@@ -4492,6 +5156,23 @@
       }
     },
     {
+      "company": "TERAWULF INC",
+      "cusip": "88080T104",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -1.66,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "TESLA INC",
       "cusip": "88160R101",
       "scoreCoverage": 75,
@@ -4509,7 +5190,7 @@
       }
     },
     {
-      "company": "TJX COMPANIES INC",
+      "company": "TJX COS INC NEW",
       "cusip": "872540109",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -4568,8 +5249,8 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 8.76,
-        "pe": 50.22,
+        "yield": 4.5,
+        "pe": 62.68,
         "earningsPerShare": 0.45,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -4594,6 +5275,23 @@
       }
     },
     {
+      "company": "Teva Pharmaceutical Inds Ltd",
+      "cusip": "881624209",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": 62.22,
+        "earningsPerShare": 1.21,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "Twist Bioscience Corp",
       "cusip": "90184D100",
       "scoreCoverage": 75,
@@ -4605,6 +5303,23 @@
         "yield": 0,
         "pe": null,
         "earningsPerShare": -1.3,
+        "peNotMeaningful": true,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
+      "company": "USA RARE EARTH INC",
+      "cusip": "91733P107",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": -3.31,
         "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0
@@ -4679,6 +5394,23 @@
       }
     },
     {
+      "company": "Vista Energy S.A.B. De C.V.",
+      "cusip": "92837L109",
+      "scoreCoverage": 75,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "operatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": 9.12,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0
+      }
+    },
+    {
       "company": "WEALTHFRONT CORP",
       "cusip": "947002101",
       "scoreCoverage": 75,
@@ -4713,7 +5445,7 @@
       }
     },
     {
-      "company": "WOODWARD INC",
+      "company": "Woodward Inc",
       "cusip": "980745103",
       "scoreCoverage": 75,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
@@ -4755,8 +5487,8 @@
         "operatingMargin"
       ],
       "availableMetrics": {
-        "yield": 10.13,
-        "pe": 6.58,
+        "yield": 3.11,
+        "pe": 20.88,
         "earningsPerShare": 3.42,
         "peNotMeaningful": false,
         "operatingMargin": null,

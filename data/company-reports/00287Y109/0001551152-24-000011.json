@@ -9,15 +9,15 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1551152/000155115224000011/abbv-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
-    "revenue": 54318000000,
+    "revenue": 14301000000,
     "expenses": 41561000000,
     "operatingIncome": 12757000000,
     "netIncome": 822000000,
-    "operatingMargin": 23.49,
+    "operatingMargin": 89.2,
     "roce": 13.17,
-    "netMargin": 1.51,
+    "netMargin": 5.75,
     "totalDebt": 59245000000,
     "cash": 12814000000,
     "cashFromOperations": 22839000000,
@@ -28,10 +28,10 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -6.4% frente al periodo comparable. El margen neto del periodo más reciente es 1.5%. El ROCE estimado del periodo más reciente es 13.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. El margen neto del periodo más reciente es 5.8%. El ROCE estimado del periodo más reciente es 13.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2021-01-01",
@@ -59,6 +59,15 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2023-12-31",
+          "value": 14301000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4"
         }
       ]
     },

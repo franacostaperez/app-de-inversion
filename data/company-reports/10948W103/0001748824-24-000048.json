@@ -9,7 +9,7 @@
   "reportDate": "2024-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1748824/000174882424000048/bsig-20240930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 123100000,
     "expenses": 96100000,
@@ -31,7 +31,7 @@
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +14.7% frente al periodo comparable. El beneficio neto varió un -13.8% frente al periodo comparable. El margen neto del periodo más reciente es 13.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2023-01-01",
@@ -67,7 +67,7 @@
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
-          "frame": null
+          "frame": "CY2024Q3"
         }
       ]
     },

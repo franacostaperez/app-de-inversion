@@ -9,15 +9,15 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/66740/000006674025000006/mmm-20241231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
-    "revenue": 24575000000,
+    "revenue": 6010000000,
     "expenses": 19753000000,
     "operatingIncome": 4822000000,
     "netIncome": 728000000,
-    "operatingMargin": 19.62,
+    "operatingMargin": 80.23,
     "roce": 16.85,
-    "netMargin": 2.96,
+    "netMargin": 12.11,
     "totalDebt": 13044000000,
     "cash": 5600000000,
     "cashFromOperations": 1819000000,
@@ -28,10 +28,10 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.1% frente al periodo comparable. El beneficio neto varió un -46.9% frente al periodo comparable. El margen neto del periodo más reciente es 3.0%. El ROCE estimado del periodo más reciente es 16.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.5% frente al periodo comparable. El beneficio neto varió un -46.9% frente al periodo comparable. El margen neto del periodo más reciente es 12.1%. El ROCE estimado del periodo más reciente es 16.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2022-01-01",
@@ -44,8 +44,71 @@
         },
         {
           "startDate": "2023-01-01",
+          "endDate": "2023-03-31",
+          "value": 6055000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q1"
+        },
+        {
+          "startDate": "2023-04-01",
+          "endDate": "2023-06-30",
+          "value": 6283000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-30",
+          "value": 6270000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q3"
+        },
+        {
+          "startDate": "2023-01-01",
           "endDate": "2023-12-31",
           "value": 24610000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-10-01",
+          "endDate": "2023-12-31",
+          "value": 6002000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4"
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 6016000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 6255000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 6294000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
@@ -59,6 +122,15 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": null
+        },
+        {
+          "startDate": "2024-10-01",
+          "endDate": "2024-12-31",
+          "value": 6010000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4"
         }
       ]
     },

@@ -1,6 +1,6 @@
 {
   "cusip": "25401T603",
-  "ticker": "DBRG-PJ",
+  "ticker": "DBRG",
   "companyName": "DIGITALBRIDGE GROUP INC",
   "cik": "1679688",
   "accessionNumber": "0001679688-25-000100",
@@ -9,13 +9,13 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1679688/000167968825000100/dbrg-20250930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 3818000,
     "expenses": 23250000,
-    "operatingIncome": -64922000,
+    "operatingIncome": -19432000,
     "netIncome": 31414000,
-    "operatingMargin": -1700.42,
+    "operatingMargin": null,
     "roce": null,
     "netMargin": 822.79,
     "totalDebt": 327945000,
@@ -477,15 +477,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-09-30",
-          "value": 112180000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
           "startDate": "2024-07-01",
           "endDate": "2024-09-30",
           "value": -147000,
@@ -495,13 +486,13 @@
           "frame": "CY2024Q3"
         },
         {
-          "startDate": "2025-07-01",
-          "endDate": "2025-09-30",
-          "value": -19432000,
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 112180000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
-          "frame": "CY2025Q3"
+          "frame": null
         },
         {
           "startDate": "2025-01-01",
@@ -511,6 +502,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": -19432000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3"
         }
       ]
     },

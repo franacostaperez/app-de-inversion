@@ -9,14 +9,14 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/8670/000000867024000007/adp-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 4668000000,
     "expenses": 3589000000,
-    "operatingIncome": 1079000000,
+    "operatingIncome": 2104100000,
     "netIncome": 878400000,
-    "operatingMargin": 23.11,
-    "roce": 12.03,
+    "operatingMargin": 45.07,
+    "roce": 23.45,
     "netMargin": 18.82,
     "totalDebt": 2990200000,
     "cash": 1641300000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.3% frente al periodo comparable. El beneficio neto varió un +8.0% frente al periodo comparable. El margen neto del periodo más reciente es 18.8%. El ROCE estimado del periodo más reciente es 12.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.3% frente al periodo comparable. El beneficio neto varió un +8.0% frente al periodo comparable. El margen neto del periodo más reciente es 18.8%. El ROCE estimado del periodo más reciente es 23.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -550,15 +550,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2022-10-01",
-          "endDate": "2022-12-31",
-          "value": 1027600000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2022Q4"
-        },
-        {
           "startDate": "2022-07-01",
           "endDate": "2022-12-31",
           "value": 1998100000,
@@ -568,18 +559,27 @@
           "frame": null
         },
         {
-          "startDate": "2023-07-01",
+          "startDate": "2022-10-01",
+          "endDate": "2022-12-31",
+          "value": 1027600000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2022Q4"
+        },
+        {
+          "startDate": "2023-10-01",
           "endDate": "2023-12-31",
-          "value": 2104100000,
+          "value": 1079000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
           "frame": null
         },
         {
-          "startDate": "2023-10-01",
+          "startDate": "2023-07-01",
           "endDate": "2023-12-31",
-          "value": 1079000000,
+          "value": 2104100000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",

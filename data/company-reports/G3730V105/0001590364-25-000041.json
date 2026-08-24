@@ -1,6 +1,6 @@
 {
   "cusip": "G3730V105",
-  "ticker": "FTAIM",
+  "ticker": "FTAI",
   "companyName": "Ftai Aviation Ltd",
   "cik": "1590364",
   "accessionNumber": "0001590364-25-000041",
@@ -9,14 +9,14 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1590364/000159036425000041/ftai-20250930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 667064000,
     "expenses": 466187000,
-    "operatingIncome": 562319000,
+    "operatingIncome": 200877000,
     "netIncome": 117718000,
-    "operatingMargin": 84.3,
-    "roce": 14.45,
+    "operatingMargin": 30.11,
+    "roce": 5.16,
     "netMargin": 17.65,
     "totalDebt": 3446733000,
     "cash": 509945000,
@@ -28,10 +28,10 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +43.2% frente al periodo comparable. El beneficio neto varió un +36.1% frente al periodo comparable. El margen neto del periodo más reciente es 17.6%. El ROCE estimado del periodo más reciente es 14.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +43.2% frente al periodo comparable. El beneficio neto varió un +36.1% frente al periodo comparable. El margen neto del periodo más reciente es 17.6%. El ROCE estimado del periodo más reciente es 5.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2024-01-01",
@@ -528,15 +528,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-09-30",
-          "value": 79618000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
           "startDate": "2024-07-01",
           "endDate": "2024-09-30",
           "value": 149279000,
@@ -546,13 +537,13 @@
           "frame": "CY2024Q3"
         },
         {
-          "startDate": "2025-07-01",
-          "endDate": "2025-09-30",
-          "value": 200877000,
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": 79618000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
-          "frame": "CY2025Q3"
+          "frame": null
         },
         {
           "startDate": "2025-01-01",
@@ -562,6 +553,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": 200877000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3"
         }
       ]
     },

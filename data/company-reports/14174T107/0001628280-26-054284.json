@@ -9,15 +9,15 @@
   "reportDate": "2026-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1590717/000162828026054284/ctre-20260630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
-    "revenue": 4643000,
+    "revenue": 161348000,
     "expenses": 72377000,
-    "operatingIncome": -67734000,
+    "operatingIncome": 170683000,
     "netIncome": 88996000,
-    "operatingMargin": -1458.84,
+    "operatingMargin": null,
     "roce": null,
-    "netMargin": 1916.78,
+    "netMargin": 55.16,
     "totalDebt": 1205071000,
     "cash": 47591000,
     "cashFromOperations": 225114000,
@@ -28,15 +28,15 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. El beneficio neto varió un +29.8% frente al periodo comparable. El margen neto del periodo más reciente es 1916.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +43.5% frente al periodo comparable. El beneficio neto varió un +29.8% frente al periodo comparable. El margen neto del periodo más reciente es 55.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2025-01-01",
           "endDate": "2025-06-30",
-          "value": 0,
+          "value": 209090000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -45,7 +45,7 @@
         {
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
-          "value": 0,
+          "value": 112469000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -54,7 +54,7 @@
         {
           "startDate": "2026-01-01",
           "endDate": "2026-06-30",
-          "value": 8495000,
+          "value": 304131000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -63,7 +63,7 @@
         {
           "startDate": "2026-04-01",
           "endDate": "2026-06-30",
-          "value": 4643000,
+          "value": 161348000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -441,27 +441,18 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": -86509000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
-          "value": -49918000,
+          "value": 62551000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2025Q2"
         },
         {
-          "startDate": "2026-01-01",
-          "endDate": "2026-06-30",
-          "value": -124953000,
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 122581000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -470,11 +461,20 @@
         {
           "startDate": "2026-04-01",
           "endDate": "2026-06-30",
-          "value": -67734000,
+          "value": 88971000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 170683000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

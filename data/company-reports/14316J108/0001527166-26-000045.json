@@ -1,6 +1,6 @@
 {
   "cusip": "14316J108",
-  "ticker": "CGABL",
+  "ticker": "CG",
   "companyName": "CARLYLE GROUP INC",
   "cik": "1527166",
   "accessionNumber": "0001527166-26-000045",
@@ -9,13 +9,13 @@
   "reportDate": "2026-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1527166/000152716626000045/cg-20260630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 1123500000,
     "expenses": 875900000,
-    "operatingIncome": 247600000,
+    "operatingIncome": 133000000,
     "netIncome": 137100000,
-    "operatingMargin": 22.04,
+    "operatingMargin": 11.84,
     "roce": null,
     "netMargin": 12.2,
     "totalDebt": null,
@@ -522,15 +522,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": 558700000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
           "value": 393800000,
@@ -540,9 +531,9 @@
           "frame": "CY2025Q2"
         },
         {
-          "startDate": "2026-01-01",
-          "endDate": "2026-06-30",
-          "value": 133000000,
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 558700000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -556,6 +547,15 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2026Q2"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-06-30",
+          "value": 133000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     }

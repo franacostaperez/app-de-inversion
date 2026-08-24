@@ -9,13 +9,13 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1821159/000155837023018279/evgo-20230930x10q.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 35107000,
     "expenses": 36976000,
     "operatingIncome": -36372000,
     "netIncome": -9721000,
-    "operatingMargin": -103.6,
+    "operatingMargin": null,
     "roce": -5.02,
     "netMargin": -27.69,
     "totalDebt": null,
@@ -31,7 +31,7 @@
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +234.1% frente al periodo comparable. El beneficio neto varió un +38.4% frente al periodo comparable. El margen neto del periodo más reciente es -27.7%. El ROCE estimado del periodo más reciente es -5.0%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2022-01-01",
@@ -67,7 +67,7 @@
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
-          "frame": null
+          "frame": "CY2023Q3"
         }
       ]
     },

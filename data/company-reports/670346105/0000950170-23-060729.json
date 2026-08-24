@@ -9,7 +9,7 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/73309/000095017023060729/nue-20230930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 8775734000,
     "expenses": null,
@@ -31,7 +31,7 @@
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -16.4% frente al periodo comparable. El beneficio neto varió un -32.6% frente al periodo comparable. El margen neto del periodo más reciente es 13.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2022-01-01",
@@ -49,7 +49,7 @@
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
-          "frame": null
+          "frame": "CY2022Q3"
         },
         {
           "startDate": "2023-01-01",

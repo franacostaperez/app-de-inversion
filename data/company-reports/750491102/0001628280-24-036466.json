@@ -9,7 +9,7 @@
   "reportDate": "2024-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/790526/000162828024036466/rdnt-20240630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 459714000,
     "expenses": 424868000,
@@ -31,7 +31,7 @@
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +13.9% frente al periodo comparable. El beneficio neto varió un -135.6% frente al periodo comparable. El margen neto del periodo más reciente es -0.7%. El ROCE estimado del periodo más reciente es 1.3%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
         {
           "startDate": "2023-01-01",
@@ -67,7 +67,7 @@
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
-          "frame": null
+          "frame": "CY2024Q2"
         }
       ]
     },

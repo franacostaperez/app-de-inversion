@@ -9,15 +9,15 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1780312/000095017025030909/asts-20241231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
-    "revenue": 13825000,
+    "revenue": 4400000,
     "expenses": 247180000,
     "operatingIncome": null,
     "netIncome": -300083000,
     "operatingMargin": null,
     "roce": null,
-    "netMargin": -2170.58,
+    "netMargin": -6820.07,
     "totalDebt": 158492000,
     "cash": 564988000,
     "cashFromOperations": -126143000,
@@ -28,15 +28,24 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. El beneficio neto varió un +242.7% frente al periodo comparable. El margen neto del periodo más reciente es -2170.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. El beneficio neto varió un +242.7% frente al periodo comparable. El margen neto del periodo más reciente es -6820.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
-      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "concept": "Revenues",
       "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 0,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
         {
           "startDate": "2024-01-01",
           "endDate": "2024-12-31",
-          "value": 13825000,
+          "value": 4400000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",

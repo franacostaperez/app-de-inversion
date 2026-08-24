@@ -9,13 +9,13 @@
   "reportDate": "2025-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1590717/000162828025038321/ctre-20250630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 2,
+  "extractionVersion": 3,
   "summary": {
     "revenue": 112469000,
     "expenses": 49918000,
-    "operatingIncome": 62551000,
+    "operatingIncome": 122581000,
     "netIncome": 68545000,
-    "operatingMargin": 55.62,
+    "operatingMargin": null,
     "roce": null,
     "netMargin": 60.95,
     "totalDebt": 1155380000,
@@ -441,15 +441,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-06-30",
-          "value": 41625000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2024-04-01",
           "endDate": "2024-06-30",
           "value": 12274000,
@@ -459,9 +450,9 @@
           "frame": "CY2024Q2"
         },
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-06-30",
-          "value": 122581000,
+          "startDate": "2024-01-01",
+          "endDate": "2024-06-30",
+          "value": 41625000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
@@ -471,6 +462,15 @@
           "startDate": "2025-04-01",
           "endDate": "2025-06-30",
           "value": 62551000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-30",
+          "value": 122581000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
