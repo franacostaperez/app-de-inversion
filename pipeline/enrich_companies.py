@@ -58,6 +58,7 @@ TICKER_OVERRIDES = {
     "46120E602": "ISRG", "88160R101": "TSLA", "92537N108": "VRT", "833445109": "SNOW",
     "01741R102": "ATI", "G0260P102": "AS", "69331CAL2": "PCG", "142152107": "CAI",
     "55616P104": "M", "Y2573F102": "FLEX",
+    "29364G103": "ETR",
 }
 
 
@@ -215,6 +216,7 @@ class MarketDataClient:
                     current = closes[-1]
                 metrics = {"marketPrice": float(current)} if current is not None else {}
                 if len(closes) < 1000:
+                    metrics["_movingAverage1000Unavailable"] = True
                     return metrics
                 average = sum(closes[-1000:]) / 1000
                 timestamps = result.get("timestamp") or []
@@ -377,6 +379,9 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         target = by_cusip.get(cusip)
         if target and ticker:
             yahoo = client.yahoo_profile(ticker) if hasattr(client, "yahoo_profile") else {}
+            if yahoo.pop("_movingAverage1000Unavailable", False):
+                for key in LIVE_YAHOO_FIELDS - {"marketPrice"}:
+                    target.pop(key, None)
             for key, value in yahoo.items():
                 if value is not None and (key.startswith("yahoo") or key in LIVE_YAHOO_FIELDS or target.get(key) is None):
                     target[key] = value

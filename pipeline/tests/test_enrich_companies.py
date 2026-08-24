@@ -130,6 +130,28 @@ class CompanyEnrichmentTests(unittest.TestCase):
         metrics = Client().yahoo_history_metrics("NEW")
         self.assertEqual(metrics["marketPrice"], 42)
         self.assertNotIn("movingAverage1000", metrics)
+        self.assertTrue(metrics["_movingAverage1000Unavailable"])
+
+    def test_short_history_removes_a_stale_moving_average(self):
+        class Client:
+            def google_quote(self, ticker, preferred_exchange=None):
+                return None, None
+
+            def yahoo_profile(self, ticker):
+                return {"marketPrice": 200, "_movingAverage1000Unavailable": True}
+
+            def sec_reports(self, ticker):
+                return {}
+
+        result = enrich(
+            [{"cusip": "1", "company": "Recent IPO", "ticker": "IPO", "value": 1}],
+            [{"cusip": "1", "name": "Recent IPO", "ticker": "IPO", "marketPrice": 25,
+              "movingAverage1000": 20, "priceVsMovingAverage1000Percent": 25,
+              "movingAverage1000Sessions": 1000}],
+            Client(), 0,
+        )
+        self.assertEqual(result[0]["marketPrice"], 200)
+        self.assertNotIn("movingAverage1000", result[0])
 
     def test_normalizes_percent_yield_and_quarantines_provider_conflict(self):
         normalized = validate_market_metrics({"yahooDividendYield": 4.2, "marketPrice": 100})
