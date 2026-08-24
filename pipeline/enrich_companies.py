@@ -19,6 +19,10 @@ from pathlib import Path
 
 USER_AGENT = "Mozilla/5.0 DividendIntelligence/1.0"
 EXCHANGES = ("NASDAQ", "NYSE", "NYSEARCA")
+LIVE_YAHOO_FIELDS = {
+    "marketPrice", "movingAverage1000", "priceVsMovingAverage1000Percent",
+    "movingAverage1000Sessions", "movingAverage1000AsOf", "priceHistorySource",
+}
 TICKER_OVERRIDES = {
     "674599105": "OXY", "02079K107": "GOOG", "500754106": "KHC", "009158106": "APD",
     "34959J108": "FTV", "44267T102": "HHH", "72703X106": "PL", "808513105": "SCHW",
@@ -374,7 +378,7 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         if target and ticker:
             yahoo = client.yahoo_profile(ticker) if hasattr(client, "yahoo_profile") else {}
             for key, value in yahoo.items():
-                if value is not None and (key.startswith("yahoo") or target.get(key) is None):
+                if value is not None and (key.startswith("yahoo") or key in LIVE_YAHOO_FIELDS or target.get(key) is None):
                     target[key] = value
             if not target.get("investorRelationsURL") and yahoo.get("website"):
                 target["investorRelationsURL"] = yahoo["website"]

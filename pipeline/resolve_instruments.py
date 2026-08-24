@@ -17,6 +17,11 @@ import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
+try:
+    from pipeline.enrich_companies import TICKER_OVERRIDES
+except ModuleNotFoundError:  # Direct execution from the pipeline directory.
+    from enrich_companies import TICKER_OVERRIDES
+
 
 ABBREVIATIONS = {
     "MTR": "MOTOR", "RLTY": "REALTY", "TR": "TRUST", "HLDG": "HOLDINGS",
@@ -256,6 +261,16 @@ def resolve(holdings: list[dict], profiles: list[dict], prior: dict, client: Res
                 "listingStatus": "NON_EQUITY_INSTRUMENT", "quoteEligible": False,
                 "source": "SEC Form 13F security class", "confidence": 1.0,
             }
+            continue
+        if cusip in TICKER_OVERRIDES:
+            ticker = TICKER_OVERRIDES[cusip]
+            mappings[cusip] = {
+                "ticker": ticker, "company": holding.get("company"),
+                "securityType": holding.get("titleOfClass") or "Common Stock",
+                "listingStatus": "ACTIVE", "quoteEligible": True,
+                "source": "Verified CUSIP ticker override", "confidence": 1.0,
+            }
+            issuer_tickers.setdefault(canonical_name(holding.get("company")), ticker)
             continue
         ticker = existing.get("ticker") or prior_mapping.get("ticker")
         resolution_source = prior_mapping.get("source") or existing.get("tickerResolutionSource", "")

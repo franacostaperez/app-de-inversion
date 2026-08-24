@@ -76,6 +76,28 @@ class CompanyEnrichmentTests(unittest.TestCase):
         profile = Client().yahoo_profile("ABC")
         self.assertEqual(profile["marketPrice"], 123.45)
 
+    def test_live_yahoo_price_replaces_a_stale_price_from_a_previous_ticker(self):
+        class Client:
+            def google_quote(self, ticker, preferred_exchange=None):
+                return None, None
+
+            def yahoo_profile(self, ticker):
+                return {
+                    "marketPrice": 200, "movingAverage1000": 100,
+                    "priceVsMovingAverage1000Percent": 100,
+                }
+
+            def sec_reports(self, ticker):
+                return {}
+
+        result = enrich(
+            [{"cusip": "1", "company": "Company", "ticker": "NEW", "value": 1}],
+            [{"cusip": "1", "name": "Company", "ticker": "NEW", "marketPrice": 25}],
+            Client(), 0,
+        )
+        self.assertEqual(result[0]["marketPrice"], 200)
+        self.assertEqual(result[0]["priceVsMovingAverage1000Percent"], 100)
+
     def test_calculates_exact_one_thousand_session_average(self):
         import json
         from pipeline.enrich_companies import MarketDataClient
