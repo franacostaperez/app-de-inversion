@@ -776,7 +776,7 @@ private struct ConsensusRankingView: View {
                             }
                             .frame(width: 32, height: 32)
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(item.company).font(.subheadline.weight(.semibold)).lineLimit(2)
+                                Text(displayCompanyName(item.company)).font(.subheadline.weight(.semibold)).lineLimit(2)
                                 HStack(spacing: 10) {
                                     Label("\(item.holders) fondos", systemImage: "building.columns")
                                     Label("+\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
@@ -847,7 +847,7 @@ private struct ConsensusRankingView: View {
     }
 }
 
-private struct OpportunityAnalysisView: View {
+struct OpportunityAnalysisView: View {
     let item: ConsensusItem
     let profile: CompanyProfile?
     let reports: [CompanyReport]

@@ -11,15 +11,10 @@ struct RootView: View {
             if let snapshot = model.snapshot {
                 FundTabs(snapshot: snapshot)
             } else if model.isLoading {
-                ProgressView("Cargando inteligencia…")
+                DividendLoadingView()
             } else {
-                ContentUnavailableView {
-                    Label("Sin datos", systemImage: "icloud.slash")
-                } description: {
-                    Text(model.errorMessage ?? "Inténtalo de nuevo")
-                } actions: {
-                    Button("Reintentar") { Task { await model.refresh() } }
-                        .buttonStyle(.borderedProminent)
+                DividendDataErrorView(message: model.errorMessage) {
+                    Task { await model.refresh() }
                 }
             }
         }
@@ -32,6 +27,15 @@ private struct FundTabs: View {
 
     private var sortedInvestors: [Investor] {
         snapshot.investors.sorted { $0.portfolioValue > $1.portfolioValue }
+    }
+
+    private var recentUpdates: Int {
+        let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? .distantPast
+        let filings = snapshot.filingUpdates.filter { $0.filingDate >= cutoff }.count
+        let annualReports = snapshot.companyReports.filter {
+            $0.filingDate >= cutoff && ($0.form.uppercased().hasPrefix("10-K") || $0.form.uppercased().hasPrefix("20-F") || $0.form.uppercased().hasPrefix("40-F"))
+        }.count
+        return filings + annualReports
     }
 
     private var selection: Binding<String> {
@@ -48,20 +52,80 @@ private struct FundTabs: View {
     var body: some View {
         TabView {
             NavigationStack { DashboardView(snapshot: snapshot, selectedInvestorID: selection) }
-                .tabItem { Label("Inicio", systemImage: "house.fill") }
-            NavigationStack { FilingsView(snapshot: snapshot, selectedInvestorID: selection) }
-                .tabItem { Label("13F", systemImage: "doc.text.magnifyingglass") }
+                .tabItem { Label("Dividendos", systemImage: "leaf.fill") }
             NavigationStack { SmartMoneyView(snapshot: snapshot, selectedInvestorID: selection) }
                 .tabItem { Label("Smart Money", systemImage: "chart.line.uptrend.xyaxis") }
+            NavigationStack { FilingsView(snapshot: snapshot, selectedInvestorID: selection) }
+                .tabItem { Label("13F", systemImage: "doc.text.magnifyingglass") }
             NavigationStack { FundsView(snapshot: snapshot, selectedInvestorID: selection) }
                 .tabItem { Label("Fondos", systemImage: "building.columns.fill") }
             NavigationStack { UpdatesView(snapshot: snapshot) }
-                .tabItem { Label("Novedades", systemImage: "sparkles") }
+                .tabItem { Label("Eventos", systemImage: "calendar.badge.clock") }
+                .badge(recentUpdates)
         }
         .tint(WhaleTheme.accent)
         .onAppear {
             if selectedInvestorID.isEmpty { selectedInvestorID = sortedInvestors.first?.id ?? "" }
         }
+    }
+}
+
+private struct DividendLoadingView: View {
+    var body: some View {
+        VStack(spacing: 22) {
+            ZStack {
+                Circle().fill(WhaleTheme.accent.opacity(0.12)).frame(width: 82, height: 82)
+                Image(systemName: "leaf.fill")
+                    .font(.system(size: 34, weight: .semibold))
+                    .foregroundStyle(WhaleTheme.accent)
+            }
+            VStack(spacing: 7) {
+                Text("Dividend Intelligence")
+                    .font(.title2.bold())
+                Text("Actualizando oportunidades y movimientos 13F…")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            ProgressView().tint(WhaleTheme.accent)
+        }
+        .padding(30)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(WhaleTheme.background)
+    }
+}
+
+private struct DividendDataErrorView: View {
+    let message: String?
+    let retry: () -> Void
+
+    var body: some View {
+        VStack(spacing: 18) {
+            Image(systemName: "icloud.slash.fill")
+                .font(.system(size: 36))
+                .foregroundStyle(WhaleTheme.warning)
+                .frame(width: 78, height: 78)
+                .background(WhaleTheme.warning.opacity(0.12), in: Circle())
+            VStack(spacing: 8) {
+                Text("No podemos actualizar los datos")
+                    .font(.title2.bold())
+                Text(message ?? "Comprueba la conexión e inténtalo de nuevo.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            Button(action: retry) {
+                Label("Volver a intentar", systemImage: "arrow.clockwise")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 4)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(WhaleTheme.accent)
+        }
+        .padding(28)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(WhaleTheme.background)
     }
 }
 
@@ -83,56 +147,98 @@ private struct DashboardView: View {
         snapshot.movements.filter { $0.investorId == investor?.id }
     }
 
+    private var scoredCompanies: [ConsensusItem] {
+        snapshot.consensus
+            .filter { $0.opportunityScore != nil }
+            .sorted { ($0.opportunityScore ?? 0, $0.holders) > ($1.opportunityScore ?? 0, $1.holders) }
+    }
+
+    private var incomeIdeas: [ConsensusItem] {
+        scoredCompanies
+            .filter { $0.holders > 0 && ($0.yield ?? 0) >= 3 && ($0.yield ?? 0) <= 9 }
+            .sorted {
+                ($0.opportunityScore ?? 0, $0.yield ?? 0, $0.holders) >
+                ($1.opportunityScore ?? 0, $1.yield ?? 0, $1.holders)
+            }
+    }
+
+    private var growingDividendIdeas: [ConsensusItem] {
+        scoredCompanies
+            .filter { $0.holders > 0 && ($0.dividendGrowth ?? 0) > 0 && ($0.yield ?? 0) > 0 }
+            .sorted {
+                ($0.dividendGrowth ?? 0, $0.opportunityScore ?? 0) >
+                ($1.dividendGrowth ?? 0, $1.opportunityScore ?? 0)
+            }
+    }
+
+    private var discountedIdeas: [ConsensusItem] {
+        scoredCompanies
+            .filter { $0.holders > 0 && ($0.priceVsMovingAverage1000Percent ?? 1) < 0 }
+            .sorted {
+                ($0.opportunityScore ?? 0, -($0.priceVsMovingAverage1000Percent ?? 0)) >
+                ($1.opportunityScore ?? 0, -($1.priceVsMovingAverage1000Percent ?? 0))
+            }
+    }
+
+    private var highConvictionCount: Int {
+        snapshot.consensus.filter { $0.holders >= 4 && $0.buying > $0.selling }.count
+    }
+
+    private var targetYieldCount: Int {
+        snapshot.consensus.filter { ($0.yield ?? 0) >= 3 && ($0.yield ?? 0) <= 9 }.count
+    }
+
     var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 16) {
-                FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
-                DividendYieldFilterPicker(selection: $yieldFilter)
-                WhaleHeader(
-                    eyebrow: "GESTOR INSTITUCIONAL",
-                    title: investor?.name ?? "Gestor",
-                    subtitle: "Cartera 13F · periodo reportado \(investor?.quarter ?? snapshot.asOfQuarter)"
-                )
+            LazyVStack(alignment: .leading, spacing: 22) {
+                dividendHomeHeader
+                dividendPulse
 
-                HStack(spacing: 8) {
-                    Metric(value: compactUSD(investor?.portfolioValue ?? 0), label: "Valor cartera")
-                    Metric(value: "\(holdings.count)", label: "Posiciones")
-                    Metric(value: "\(movements.count)", label: "Movimientos")
-                }
-
-                SectionTitle("Principales posiciones", detail: "Por peso en cartera")
-                VStack(spacing: 0) {
-                    HoldingTableHeader()
-                    ForEach(Array(holdings.prefix(10).enumerated()), id: \.element.id) { index, holding in
-                        NavigationLink {
-                            CompanyFinancialOverviewView(
-                                companyName: holding.company,
-                                profile: profile(for: holding),
-                                reports: snapshot.companyReports.filter { $0.cusip == holding.cusip },
-                                holdings: snapshot.holdings.filter { $0.cusip == holding.cusip }
-                            )
-                        } label: {
-                            HoldingSummaryRow(
-                                rank: index + 1,
-                                holding: holding,
-                                dividendYield: yieldPercent(for: holding),
-                                peRatio: profile(for: holding)?.peRatio
-                            )
-                        }.buttonStyle(.plain)
-                        if index < min(9, holdings.count - 1) { Divider().padding(.leading, 42) }
+                if !incomeIdeas.isEmpty {
+                    SectionTitle("Oportunidades de renta", detail: "Yield 3–9 % · score completo")
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 12) {
+                            ForEach(incomeIdeas.prefix(8)) { item in
+                                NavigationLink {
+                                    opportunityDestination(item)
+                                } label: {
+                                    DividendIdeaCard(item: item)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
                     }
+                    .contentMargins(.horizontal, 16, for: .scrollContent)
+                    .padding(.horizontal, -16)
                 }
-                .whalePanel()
 
-                if !movements.isEmpty {
-                    SectionTitle("Actividad del trimestre", detail: investor?.quarter ?? snapshot.asOfQuarter)
-                    HStack(spacing: 8) {
-                        ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
-                        ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
-                        ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
-                        ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
-                    }
+                if !growingDividendIdeas.isEmpty {
+                    dividendCollection(
+                        title: "Dividendo creciente",
+                        detail: "Crecimiento anual positivo",
+                        icon: "chart.line.uptrend.xyaxis",
+                        tint: WhaleTheme.positive,
+                        items: Array(growingDividendIdeas.prefix(5)),
+                        value: { item in
+                            item.dividendGrowth.map { "+" + $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—"
+                        }
+                    )
                 }
+
+                if !discountedIdeas.isEmpty {
+                    dividendCollection(
+                        title: "Precio bajo su tendencia",
+                        detail: "Por debajo de la media de 1.000 sesiones",
+                        icon: "arrow.down.right.circle.fill",
+                        tint: WhaleTheme.info,
+                        items: Array(discountedIdeas.prefix(5)),
+                        value: { item in
+                            item.priceVsMovingAverage1000Percent.map { $0.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%" } ?? "—"
+                        }
+                    )
+                }
+
+                fundMonitor
 
                 Label(
                     "Datos actualizados " + snapshot.generatedAt.formatted(date: .abbreviated, time: .shortened),
@@ -146,9 +252,147 @@ private struct DashboardView: View {
             .padding(16)
         }
         .background(WhaleTheme.background.ignoresSafeArea())
-        .navigationTitle("Resumen 13F")
+        .navigationTitle("Dividend Intelligence")
         .navigationBarTitleDisplayMode(.inline)
         .refreshable { await model.refresh() }
+    }
+
+    private var dividendHomeHeader: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("RADAR DE DIVIDENDOS")
+                        .font(.system(size: 10, weight: .heavy))
+                        .tracking(1.2)
+                        .foregroundStyle(.white.opacity(0.68))
+                    Text("Invierte con renta\ny convicción")
+                        .font(.system(size: 29, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer()
+                Image(systemName: "leaf.circle.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(WhaleTheme.mint)
+            }
+
+            HStack(spacing: 8) {
+                Label(snapshot.asOfQuarter, systemImage: "calendar")
+                Label("GitHub", systemImage: "checkmark.icloud.fill")
+                Label("Diario", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .font(.caption.bold())
+            .foregroundStyle(.white.opacity(0.82))
+        }
+        .padding(20)
+        .background(
+            LinearGradient(
+                colors: [WhaleTheme.navy, Color(red: 0.035, green: 0.30, blue: 0.28)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            in: RoundedRectangle(cornerRadius: 24, style: .continuous)
+        )
+        .overlay(alignment: .bottomTrailing) {
+            Circle()
+                .fill(WhaleTheme.mint.opacity(0.12))
+                .frame(width: 150, height: 150)
+                .offset(x: 44, y: 60)
+        }
+        .clipped()
+        .shadow(color: WhaleTheme.navy.opacity(0.16), radius: 18, y: 9)
+    }
+
+    private var dividendPulse: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            SectionTitle("Pulso de oportunidades", detail: "Universo institucional")
+            HStack(spacing: 9) {
+                PulseMetric(value: "\(scoredCompanies.count)", label: "Analizadas", icon: "checkmark.seal.fill", tint: WhaleTheme.accent)
+                PulseMetric(value: "\(targetYieldCount)", label: "Yield objetivo", icon: "percent", tint: WhaleTheme.positive)
+                PulseMetric(value: "\(highConvictionCount)", label: "Convicción", icon: "building.columns.fill", tint: WhaleTheme.info)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func dividendCollection(
+        title: String,
+        detail: String,
+        icon: String,
+        tint: Color,
+        items: [ConsensusItem],
+        value: @escaping (ConsensusItem) -> String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 11) {
+            SectionTitle(title, detail: detail)
+            VStack(spacing: 0) {
+                ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                    NavigationLink {
+                        opportunityDestination(item)
+                    } label: {
+                        DividendSignalRow(item: item, icon: icon, tint: tint, signal: value(item))
+                    }
+                    .buttonStyle(.plain)
+                    if index < items.count - 1 { Divider().padding(.leading, 58) }
+                }
+            }
+            .whalePanel()
+        }
+    }
+
+    private var fundMonitor: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            SectionTitle("Monitor 13F", detail: investor?.quarter ?? snapshot.asOfQuarter)
+            FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
+
+            HStack(spacing: 9) {
+                Metric(value: compactUSD(investor?.portfolioValue ?? 0), label: "Cartera")
+                Metric(value: "\(holdings.count)", label: "Posiciones")
+                Metric(value: "\(movements.count)", label: "Cambios")
+            }
+
+            if !movements.isEmpty {
+                HStack(spacing: 8) {
+                    ActivityLink(title: "Nuevas", action: .new, color: WhaleTheme.positive, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                    ActivityLink(title: "Aumentadas", action: .increased, color: WhaleTheme.info, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                    ActivityLink(title: "Reducidas", action: .reduced, color: WhaleTheme.warning, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                    ActivityLink(title: "Vendidas", action: .sold, color: WhaleTheme.negative, movements: movements, quarter: investor?.quarter ?? snapshot.asOfQuarter, snapshot: snapshot)
+                }
+            }
+
+            DisclosureGroup("Principales posiciones") {
+                DividendYieldFilterPicker(selection: $yieldFilter)
+                    .padding(.top, 8)
+                VStack(spacing: 0) {
+                    ForEach(Array(holdings.prefix(8).enumerated()), id: \.element.id) { index, holding in
+                        NavigationLink {
+                            CompanyFinancialOverviewView(
+                                companyName: holding.company,
+                                profile: profile(for: holding),
+                                reports: snapshot.companyReports.filter { $0.cusip == holding.cusip },
+                                holdings: snapshot.holdings.filter { $0.cusip == holding.cusip }
+                            )
+                        } label: {
+                            HoldingSummaryRow(rank: index + 1, holding: holding, dividendYield: yieldPercent(for: holding), peRatio: profile(for: holding)?.peRatio)
+                        }
+                        .buttonStyle(.plain)
+                        if index < min(7, holdings.count - 1) { Divider().padding(.leading, 42) }
+                    }
+                }
+                .whalePanel()
+                .padding(.top, 8)
+            }
+            .font(.subheadline.weight(.semibold))
+        }
+    }
+
+    @ViewBuilder
+    private func opportunityDestination(_ item: ConsensusItem) -> some View {
+        OpportunityAnalysisView(
+            item: item,
+            profile: item.cusip.flatMap { cusip in snapshot.companyProfiles.first { $0.cusip == cusip } },
+            reports: snapshot.companyReports.filter { $0.cusip == item.cusip }
+        )
     }
 
     private func compactUSD(_ value: Double) -> String {
@@ -275,9 +519,170 @@ private struct Metric: View {
     }
 }
 
+private struct PulseMetric: View {
+    let value: String
+    let label: String
+    let icon: String
+    let tint: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            Image(systemName: icon)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(tint)
+                .frame(width: 30, height: 30)
+                .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+            Text(value)
+                .font(.system(size: 21, weight: .bold, design: .rounded))
+                .monospacedDigit()
+            Text(label)
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .whalePanel()
+    }
+}
+
+private struct DividendIdeaCard: View {
+    let item: ConsensusItem
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            HStack(alignment: .top) {
+                CompanyMonogram(name: item.company, tint: WhaleTheme.accent)
+                Spacer()
+                ScorePill(score: item.opportunityScore)
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text(displayCompanyName(item.company))
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                    .frame(height: 44, alignment: .topLeading)
+                Text(displaySector)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+            Divider()
+            HStack(spacing: 12) {
+                miniMetric("YIELD", item.yield.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—", WhaleTheme.positive)
+                miniMetric("PER", item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—", .primary)
+                miniMetric("FONDOS", "\(item.holders)", WhaleTheme.info)
+            }
+        }
+        .padding(15)
+        .frame(width: 250, alignment: .leading)
+        .background(WhaleTheme.panel, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(.primary.opacity(0.07)))
+        .shadow(color: Color.black.opacity(0.045), radius: 10, y: 4)
+    }
+
+    private var displaySector: String {
+        guard let sector = item.sector, sector.lowercased() != "unknown", !sector.isEmpty else {
+            return "Oportunidad con score completo"
+        }
+        return sector
+    }
+
+    private func miniMetric(_ label: String, _ value: String, _ color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(value).font(.subheadline.bold().monospacedDigit()).foregroundStyle(color)
+            Text(label).font(.system(size: 7, weight: .heavy)).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct DividendSignalRow: View {
+    let item: ConsensusItem
+    let icon: String
+    let tint: Color
+    let signal: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            CompanyMonogram(name: item.company, tint: tint)
+            VStack(alignment: .leading, spacing: 5) {
+                Text(displayCompanyName(item.company))
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                HStack(spacing: 7) {
+                    Label(signal, systemImage: icon)
+                        .foregroundStyle(tint)
+                    Text("·")
+                    Text("\(item.holders) fondos")
+                }
+                .font(.caption.bold())
+            }
+            Spacer()
+            ScorePill(score: item.opportunityScore)
+            Image(systemName: "chevron.right")
+                .font(.caption2.bold())
+                .foregroundStyle(.tertiary)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 11)
+        .contentShape(Rectangle())
+    }
+}
+
+func displayCompanyName(_ value: String) -> String {
+    guard value == value.uppercased() else { return value }
+    return value.lowercased().capitalized
+}
+
+private struct CompanyMonogram: View {
+    let name: String
+    let tint: Color
+
+    var body: some View {
+        Text(initials)
+            .font(.system(size: 12, weight: .heavy, design: .rounded))
+            .foregroundStyle(tint)
+            .frame(width: 38, height: 38)
+            .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+            .accessibilityHidden(true)
+    }
+
+    private var initials: String {
+        let words = name.split(separator: " ").prefix(2)
+        return words.compactMap(\.first).map(String.init).joined().uppercased()
+    }
+}
+
+private struct ScorePill: View {
+    let score: Int?
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "sparkles")
+            Text(score.map(String.init) ?? "—").monospacedDigit()
+        }
+        .font(.caption.bold())
+        .foregroundStyle(color)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 5)
+        .background(color.opacity(0.11), in: Capsule())
+        .accessibilityLabel(score.map { "Score \($0) sobre 100" } ?? "Score pendiente")
+    }
+
+    private var color: Color {
+        guard let score else { return .secondary }
+        if score >= 75 { return WhaleTheme.positive }
+        if score >= 55 { return WhaleTheme.accent }
+        return WhaleTheme.warning
+    }
+}
+
 enum WhaleTheme {
     static let navy = Color(red: 0.055, green: 0.105, blue: 0.17)
     static let accent = Color(red: 0.04, green: 0.58, blue: 0.52)
+    static let mint = Color(red: 0.45, green: 0.94, blue: 0.76)
     static let background = Color(uiColor: .systemGroupedBackground)
     static let panel = Color(uiColor: .secondarySystemGroupedBackground)
     static let positive = Color(red: 0.05, green: 0.62, blue: 0.38)
