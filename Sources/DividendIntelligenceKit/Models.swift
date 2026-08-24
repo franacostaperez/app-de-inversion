@@ -234,6 +234,8 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let yield: Double?
     public let pe: Double?
     public let peNotMeaningful: Bool?
+    public let earningsPerShare: Double?
+    public let peCalculation: String?
     public let operatingMargin: Double?
     public let roce: Double?
     public let dividendGrowth: Double?

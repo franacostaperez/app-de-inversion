@@ -936,6 +936,11 @@ private struct OpportunityAnalysisView: View {
                 LabeledContent("Reduciendo", value: "\(item.selling)")
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
+                LabeledContent("BPA diluido anual", value: item.earningsPerShare.map { $0.formatted(.currency(code: "USD")) } ?? "—")
+                if item.peCalculation == "PRICE_OVER_ANNUAL_DILUTED_EPS" {
+                    Text("PER calculado con cotización diaria ÷ BPA diluido del último ejercicio.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("ROCE", value: item.roce.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 LabeledContent("Crecimiento del dividendo", value: item.dividendGrowth.map { $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—")

@@ -173,9 +173,25 @@ class SnapshotTests(unittest.TestCase):
         item = build(current, {"investors": []}, [], company_profiles=profiles, company_reports=reports)["consensus"][0]
         self.assertEqual(item["pe"], 10)
         self.assertEqual(item["yield"], 5)
+        self.assertEqual(item["earningsPerShare"], 2)
+        self.assertEqual(item["peCalculation"], "PRICE_OVER_ANNUAL_DILUTED_EPS")
         self.assertEqual(item["scoreStatus"], "COMPLETE")
         self.assertEqual(item["missingScoreMetrics"], [])
         self.assertIsNotNone(item["opportunityScore"])
+
+    def test_consolidates_share_classes_without_counting_a_fund_twice(self):
+        current = {"quarter": "2026-Q1", "investors": [{
+            "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
+            "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 2,
+            "holdings": [
+                {"ticker": "AAA", "cusip": "1", "company": "Example Inc", "shares": 1, "value": 1},
+                {"ticker": "AAB", "cusip": "2", "company": "Example Inc", "shares": 1, "value": 1},
+            ],
+        }]}
+        items = build(current, {"investors": []}, [])["consensus"]
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["holders"], 1)
+        self.assertEqual(items[0]["buying"], 1)
 
     def test_sorts_funds_by_portfolio_value(self):
         current = {"quarter": "2026-Q1", "investors": [

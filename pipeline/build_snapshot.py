@@ -289,6 +289,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     movements = []
     holdings = []
     consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0})
+    issuer_consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0})
     consensus_names = {}
 
     for investor in current.get("investors", []):
@@ -297,6 +298,22 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         current_items = aggregate_holdings(investor.get("holdings", []))
         old_holdings = {item.get("cusip", item["ticker"]): item for item in old_items}
         new_holdings = {item.get("cusip", item["ticker"]): item for item in current_items}
+        old_by_issuer = defaultdict(float)
+        new_by_issuer = defaultdict(float)
+        for item in old_items:
+            old_by_issuer[issuer_key(item.get("company") or item.get("ticker"))] += item.get("shares", 0)
+        for item in current_items:
+            new_by_issuer[issuer_key(item.get("company") or item.get("ticker"))] += item.get("shares", 0)
+        for key in old_by_issuer.keys() | new_by_issuer.keys():
+            old_shares = old_by_issuer.get(key, 0)
+            new_shares = new_by_issuer.get(key, 0)
+            action, _ = classify(old_shares, new_shares)
+            if new_shares > 0:
+                issuer_consensus[key]["holders"] += 1
+            if action in ("NEW", "INCREASED"):
+                issuer_consensus[key]["buying"] += 1
+            elif action in ("SOLD", "REDUCED"):
+                issuer_consensus[key]["selling"] += 1
         portfolio_value = investor.get("portfolioValue", 0)
         for holding in current_items:
             value = holding.get("value", 0)
@@ -389,7 +406,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         market_price = profile.get("marketPrice")
         eps = report_summary.get("epsDiluted") or report_summary.get("eps") or profile.get("eps")
         latest_dividend = annual_dividends[-1] if annual_dividends else profile.get("dividendPerShare")
-        if pe is None and market_price is not None and eps is not None and eps > 0:
+        pe_was_derived = pe is None and market_price is not None and eps is not None and eps > 0
+        if pe_was_derived:
             pe = round(market_price / eps, 2)
         if yield_percent is None and market_price is not None and latest_dividend is not None and latest_dividend >= 0:
             yield_percent = round(latest_dividend / market_price * 100, 2) if market_price > 0 else None
@@ -476,6 +494,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "yield": yield_percent,
             "pe": pe,
             "peNotMeaningful": pe_not_meaningful,
+            "earningsPerShare": eps,
+            "peCalculation": "PRICE_OVER_ANNUAL_DILUTED_EPS" if pe_was_derived else "REPORTED",
             "operatingMargin": operating_margin,
             "roce": roce,
             "dividendGrowth": dividend_growth,
@@ -494,6 +514,29 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "sectorPEBenchmark": adjusted_pe_benchmark,
             "brandPremiumApplied": brand_strength in ("high", "medium"),
         })
+    consolidated_items = {}
+    for item in consensus_items:
+        key = issuer_key(item.get("company")) or item.get("cusip")
+        existing = consolidated_items.get(key)
+        rank = (item.get("scoreCoverage", 0), item.get("holders", 0))
+        existing_rank = (existing.get("scoreCoverage", 0), existing.get("holders", 0)) if existing else (-1, -1)
+        if existing is None or rank > existing_rank:
+            consolidated_items[key] = item
+    consensus_items = []
+    for key, item in consolidated_items.items():
+        counts = issuer_consensus.get(key, {"holders": item["holders"], "buying": item["buying"], "selling": item["selling"]})
+        consensus_score = min(3, counts["holders"]) + max(-2, min(2, counts["buying"] - counts["selling"]))
+        consensus_score = max(0, min(5, consensus_score))
+        score_without_consensus = (
+            item["dividendInvestorScore"] + item["valuationInvestorScore"]
+            + item["profitabilityInvestorScore"] + item["roceInvestorScore"]
+        )
+        item.update({
+            **counts,
+            "consensusInvestorScore": consensus_score,
+            "opportunityScore": min(100, score_without_consensus + consensus_score) if item["scoreStatus"] == "COMPLETE" else None,
+        })
+        consensus_items.append(item)
     consensus_items.sort(key=lambda item: (item["opportunityScore"] is not None, item["opportunityScore"] or -1, item["buying"], item["holders"]), reverse=True)
 
     opportunities = []
