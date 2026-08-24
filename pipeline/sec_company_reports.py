@@ -15,7 +15,7 @@ from typing import Any
 DATA_BASE = "https://data.sec.gov"
 ARCHIVE_BASE = "https://www.sec.gov/Archives/edgar/data"
 FORMS = {"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A", "10-Q", "10-Q/A"}
-EXTRACTION_VERSION = 3
+EXTRACTION_VERSION = 4
 
 CONCEPTS = {
     # `Revenues` must precede contract-only revenue. REITs and other issuers can
@@ -35,6 +35,11 @@ CONCEPTS = {
     "totalLiabilities": ("Liabilities",),
     "currentLiabilities": ("LiabilitiesCurrent",),
     "shareholdersEquity": ("StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"),
+    "reportedTotalDebt": (
+        "DebtLongtermAndShorttermCombinedAmount",
+        "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+        "LongTermDebtAndFinanceLeaseObligationsIncludingCurrentMaturities",
+    ),
     "debtCurrent": ("LongTermDebtAndFinanceLeaseObligationsCurrent", "LongTermDebtCurrent", "ShortTermBorrowings"),
     "debtNoncurrent": ("LongTermDebtAndFinanceLeaseObligationsNoncurrent", "LongTermDebtNoncurrent"),
     "longTermDebtTotal": ("LongTermDebtAndFinanceLeaseObligations", "LongTermDebt"),
@@ -205,12 +210,12 @@ def synthesize_total_debt(metrics: dict[str, dict]) -> None:
         for period in metrics.get(key, {}).get("periods", []):
             combined.setdefault(period["endDate"], {**period, "value": 0})
             combined[period["endDate"]]["value"] += period["value"]
-    if combined and "debtCurrent" in metrics and "debtNoncurrent" in metrics:
+    if "reportedTotalDebt" in metrics:
+        metrics["totalDebt"] = metrics["reportedTotalDebt"]
+    elif combined and "debtCurrent" in metrics and "debtNoncurrent" in metrics:
         metrics["totalDebt"] = {"concept": "DebtCurrentPlusNoncurrent", "periods": sorted(combined.values(), key=lambda item: item["endDate"])}
     elif "longTermDebtTotal" in metrics:
         metrics["totalDebt"] = metrics["longTermDebtTotal"]
-    elif combined:
-        metrics["totalDebt"] = {"concept": "AvailableDebtComponents", "periods": sorted(combined.values(), key=lambda item: item["endDate"])}
 
 
 def comparable_growth(metric: dict | None) -> float | None:

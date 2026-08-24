@@ -905,6 +905,19 @@ struct OpportunityAnalysisView: View {
         } else {
             result.append("No hay margen operativo anual comparable; el score queda pendiente hasta obtenerlo.")
         }
+        if item.leverageStatus == "NOT_COMPARABLE_FINANCIAL" {
+            result.append("En una entidad financiera la deuda forma parte de la actividad y no es comparable con la de una empresa industrial; recibe una puntuación neutral.")
+        } else if item.leverageStatus == "LOSS_MAKING_WITH_DEBT" {
+            result.append("La empresa tiene deuda y pérdidas en el último ejercicio; el componente de solvencia recibe cero puntos.")
+        } else if let ratio = item.debtToEarnings {
+            let basis = item.debtRatioBasis == "NET_DEBT_TO_NET_INCOME" ? "deuda neta" : "deuda total"
+            if ratio <= 1 { result.append("La \(basis) equivale a \(ratio.formatted(.number.precision(.fractionLength(1)))) años de beneficio, una posición financiera sólida.") }
+            else if ratio <= 3 { result.append("La \(basis) equivale a \(ratio.formatted(.number.precision(.fractionLength(1)))) veces el beneficio anual, un nivel manejable.") }
+            else if ratio <= 5 { result.append("La \(basis) equivale a \(ratio.formatted(.number.precision(.fractionLength(1)))) veces el beneficio anual y penaliza el score por apalancamiento elevado.") }
+            else { result.append("La \(basis) supera cinco veces el beneficio anual y recibe una penalización severa.") }
+        } else {
+            result.append("Falta deuda o beneficio anual comparable; el score queda pendiente hasta completar la solvencia.")
+        }
         if let growth = item.dividendGrowth {
             if growth < 0 { result.append("El dividendo por acción ha disminuido y no obtiene puntos por crecimiento.") }
             else if growth < 3 { result.append("El dividendo por acción crece a un ritmo anualizado moderado del \(growth.formatted(.number.precision(.fractionLength(1)))) %.") }
@@ -920,6 +933,13 @@ struct OpportunityAnalysisView: View {
                     BusinessSummaryPanel(profile: profile)
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.clear)
+                }
+                if profile.marketPrice != nil || profile.movingAverage1000 != nil {
+                    Section {
+                        PriceVsMovingAverageChart(profile: profile)
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
+                    }
                 }
             }
             Section {
@@ -981,6 +1001,11 @@ struct OpportunityAnalysisView: View {
                     LabeledContent("Nivel del margen", value: "\(rating) / 10")
                 }
                 LabeledContent("Crecimiento del dividendo", value: item.dividendGrowth.map { $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—")
+                LabeledContent("Deuda total", value: item.totalDebt.map(compactMoney) ?? "—")
+                LabeledContent("Efectivo", value: item.cash.map(compactMoney) ?? "—")
+                LabeledContent("Deuda neta", value: item.netDebt.map(compactMoney) ?? "—")
+                LabeledContent("Beneficio neto anual", value: item.netIncome.map(compactMoney) ?? "—")
+                LabeledContent("Deuda / beneficio", value: item.debtToEarnings.map { $0.formatted(.number.precision(.fractionLength(2))) + "x" } ?? (item.leverageStatus == "NOT_COMPARABLE_FINANCIAL" ? "No comparable" : "—"))
                 if let sector = item.sector { LabeledContent("Sector", value: sector) }
                 if let benchmark = item.sectorPEBenchmark {
                     LabeledContent("PER de referencia", value: benchmark.formatted(.number.precision(.fractionLength(1))) + "x")
@@ -993,12 +1018,13 @@ struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 39, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 35, icon: "scalemass.fill")
                 ScoreComponentRow(label: "Precio vs media 1.000", value: item.movingAverageInvestorScore ?? 0, maximum: 6, icon: "waveform.path.ecg")
-                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 24, icon: "percent")
-                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 9, icon: "chart.line.uptrend.xyaxis")
-                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 14, icon: "gauge.with.dots.needle.50percent")
-                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 8, icon: "building.columns.fill")
+                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 22, icon: "percent")
+                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 8, icon: "chart.line.uptrend.xyaxis")
+                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 12, icon: "gauge.with.dots.needle.50percent")
+                ScoreComponentRow(label: "Solvencia", value: item.leverageInvestorScore ?? 0, maximum: 10, icon: "shield.lefthalf.filled")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 7, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
                 Section("Informes anuales publicados") {
@@ -1105,6 +1131,7 @@ private func scoreMetricNames(_ metrics: [String]?) -> [String] {
         case "dividendGrowth": "crecimiento del dividendo"
         case "operatingMargin": "margen operativo"
         case "movingAverage1000": "media de 1.000 sesiones"
+        case "debtToEarnings": "deuda frente a beneficio"
         default: $0
         }
     }
@@ -1156,6 +1183,9 @@ struct CompanyFinancialOverviewView: View {
                     } else {
                         Text("La media de 1.000 sesiones aparecerá cuando exista historial suficiente y verificable.")
                             .font(.caption2).foregroundStyle(.secondary)
+                    }
+                    if profile.marketPrice != nil || profile.movingAverage1000 != nil {
+                        PriceVsMovingAverageChart(profile: profile)
                     }
                 }
 
@@ -1266,6 +1296,73 @@ struct CompanyFinancialOverviewView: View {
             Label(title, systemImage: icon).font(.headline)
             Text(text).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(15).whalePanel()
+    }
+}
+
+private struct PriceVsMovingAverageChart: View {
+    let profile: CompanyProfile
+
+    private struct Point: Identifiable {
+        let id: String
+        let label: String
+        let value: Double
+        let isCurrentPrice: Bool
+    }
+
+    private var points: [Point] {
+        var result: [Point] = []
+        if let price = profile.marketPrice {
+            result.append(Point(id: "price", label: "Cotización", value: price, isCurrentPrice: true))
+        }
+        if let average = profile.movingAverage1000 {
+            result.append(Point(id: "average", label: "Media 1.000", value: average, isCurrentPrice: false))
+        }
+        return result
+    }
+
+    private func relativePriceLabel(_ value: Double) -> String {
+        value.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%"
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Precio frente a su histórico").font(.headline)
+                    Text("Cotización de la última actualización y media de 1.000 cierres")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer()
+                if let difference = profile.priceVsMovingAverage1000Percent {
+                    Text(relativePriceLabel(difference))
+                        .font(.caption.bold().monospacedDigit())
+                        .foregroundStyle(difference <= 0 ? WhaleTheme.positive : WhaleTheme.warning)
+                }
+            }
+            Chart(points) { point in
+                BarMark(
+                    x: .value("Precio", point.value),
+                    y: .value("Referencia", point.label)
+                )
+                .foregroundStyle(point.isCurrentPrice ? WhaleTheme.accent : WhaleTheme.navy.opacity(0.72))
+                .cornerRadius(5)
+                .annotation(position: .trailing) {
+                    Text(point.value.formatted(.currency(code: profile.currency ?? "USD")))
+                        .font(.caption2.bold().monospacedDigit())
+                }
+            }
+            .chartLegend(.hidden)
+            .frame(height: 112)
+            HStack {
+                Text("Precio actualizado: " + profile.updatedAt.formatted(date: .abbreviated, time: .omitted))
+                Spacer()
+                if let date = profile.movingAverage1000AsOf { Text("Media hasta: \(date)") }
+            }
+            .font(.caption2).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(15)
+        .whalePanel()
     }
 }
 

@@ -248,6 +248,14 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let priceVsMovingAverage1000Percent: Double?
     public let operatingMargin: Double?
     public let roce: Double?
+    public let totalDebt: Double?
+    public let cash: Double?
+    public let netDebt: Double?
+    public let netIncome: Double?
+    public let debtToEarnings: Double?
+    public let debtRatioBasis: String?
+    public let leverageInvestorScore: Int?
+    public let leverageStatus: String?
     public let dividendGrowth: Double?
     public let yieldInvestorScore: Int?
     public let dividendGrowthInvestorScore: Int?

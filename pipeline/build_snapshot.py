@@ -94,9 +94,9 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     if dividend_yield is None or dividend_yield <= 0:
         return 0
     return graduated_score(dividend_yield, [
-        (0, 0), (1, 0), (2, 2), (3, 7), (3.5, 10), (4, 15),
-        (5, 20), (5.5, 22), (6, 24), (6.5, 24), (7, 22),
-        (8, 18), (9, 14), (10, 9), (12, 5), (15, 0), (20, 0),
+        (0, 0), (1, 0), (2, 2), (3, 6), (3.5, 9), (4, 14),
+        (5, 18), (5.5, 20), (6, 22), (6.5, 22), (7, 20),
+        (8, 17), (9, 13), (10, 8), (12, 4), (15, 0), (20, 0),
     ])
 
 
@@ -109,8 +109,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 39), (10, 39), (12, 36), (15, 30), (18, 24),
-        (22, 17), (28, 10), (35, 4), (45, 0),
+        (5, 35), (10, 35), (12, 32), (15, 27), (18, 22),
+        (22, 15), (28, 9), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
@@ -125,17 +125,28 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         adjustment = -3
     else:
         adjustment = -5
-    maximum = 39 if pe <= 10 else 38
+    maximum = 35 if pe <= 10 else 34
     return max(0, min(maximum, base + adjustment))
 
 
 def consensus_investor_score(counts: dict) -> int:
     """Reward broad ownership and recent conviction, especially new positions."""
-    holders_score = min(4, counts.get("holders", 0))
+    holders_score = min(3, counts.get("holders", 0))
     buying_score = min(2, counts.get("buying", 0))
     new_position_score = min(2, counts.get("newPositions", 0))
     selling_penalty = min(2, counts.get("selling", 0))
-    return max(0, min(8, holders_score + buying_score + new_position_score - selling_penalty))
+    return max(0, min(7, holders_score + buying_score + new_position_score - selling_penalty))
+
+
+def debt_to_earnings_investor_score(debt_to_earnings: float | None, *, loss_making: bool = False) -> int:
+    """Reward balance-sheet resilience using debt relative to annual earnings."""
+    if loss_making:
+        return 0
+    if debt_to_earnings is None:
+        return 0
+    return graduated_score(max(0, debt_to_earnings), [
+        (0, 10), (1, 9), (2, 8), (3, 6), (4, 4), (5, 2), (6, 0), (10, 0),
+    ])
 
 
 def moving_average_investor_score(price_vs_average_percent: float | None) -> int:
@@ -527,6 +538,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         report_summary = report.get("summary") or {}
         operating_margin = report_summary.get("operatingMargin")
         roce = report_summary.get("roce")
+        total_debt = report_summary.get("totalDebt")
+        cash = report_summary.get("cash")
+        net_income = report_summary.get("netIncome")
         dividend_periods = ((report.get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
         annual_dividends = []
         for period in sorted(dividend_periods, key=lambda item: item.get("endDate", "")):
@@ -571,6 +585,33 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         if price_vs_moving_average_1000 is None:
             missing_metrics.append("movingAverage1000")
         sector = profile.get("sector", company.get("sector", "Unknown"))
+        industry = str(profile.get("industry") or "").lower()
+        financial_business = "financial" in str(sector).lower() or any(keyword in industry for keyword in (
+            "bank", "insurance", "financial", "capital markets", "asset management",
+            "credit services", "mortgage", "brokerage",
+        ))
+        net_debt = max(0, total_debt - cash) if total_debt is not None and cash is not None else None
+        debt_basis = "NET_DEBT_TO_NET_INCOME" if net_debt is not None else "TOTAL_DEBT_TO_NET_INCOME"
+        debt_amount = net_debt if net_debt is not None else total_debt
+        debt_to_earnings = None
+        loss_making_with_debt = debt_amount is not None and debt_amount > 0 and net_income is not None and net_income <= 0
+        if debt_amount == 0:
+            debt_to_earnings = 0
+        elif debt_amount is not None and net_income is not None and net_income > 0:
+            debt_to_earnings = round(debt_amount / net_income, 2)
+        if financial_business:
+            leverage_score = 5
+            leverage_status = "NOT_COMPARABLE_FINANCIAL"
+        elif loss_making_with_debt:
+            leverage_score = 0
+            leverage_status = "LOSS_MAKING_WITH_DEBT"
+        elif debt_to_earnings is not None:
+            leverage_score = debt_to_earnings_investor_score(debt_to_earnings)
+            leverage_status = "CALCULATED"
+        else:
+            leverage_score = 0
+            leverage_status = "MISSING"
+            missing_metrics.append("debtToEarnings")
         brand_strength = profile.get("brandStrength", "low")
         sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
         adjusted_pe_benchmark = round(12 * sector_multiplier * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
@@ -589,17 +630,17 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         elif dividend_growth < 7:
             growth_score = 7
         else:
-            growth_score = 9
+            growth_score = 8
         dividend_score = yield_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
         moving_average_score = moving_average_investor_score(price_vs_moving_average_1000)
 
         operating_margin_rating = operating_margin_investor_score(operating_margin)
-        profitability_score = round(operating_margin_rating * 14 / 10)
+        profitability_score = round(operating_margin_rating * 12 / 10)
 
         consensus_score = consensus_investor_score(counts)
-        score = dividend_score + valuation_score + moving_average_score + profitability_score + consensus_score
+        score = dividend_score + valuation_score + moving_average_score + profitability_score + consensus_score + leverage_score
         consensus_items.append({
             # Older app builds decoded this field as a required String. Keep an
             # empty compatibility value when no real ticker has been verified.
@@ -617,13 +658,21 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "priceVsMovingAverage1000Percent": price_vs_moving_average_1000,
             "operatingMargin": operating_margin,
             "roce": roce,
+            "totalDebt": total_debt,
+            "cash": cash,
+            "netDebt": net_debt,
+            "netIncome": net_income,
+            "debtToEarnings": debt_to_earnings,
+            "debtRatioBasis": debt_basis if debt_to_earnings is not None else None,
+            "leverageInvestorScore": leverage_score,
+            "leverageStatus": leverage_status,
             "dividendGrowth": dividend_growth,
             "yieldInvestorScore": yield_score,
             "dividendGrowthInvestorScore": growth_score,
             "opportunityScore": min(100, score) if not missing_metrics else None,
             "scoreStatus": "COMPLETE" if not missing_metrics else "INCOMPLETE",
             "missingScoreMetrics": missing_metrics,
-            "scoreCoverage": round((5 - len(missing_metrics)) / 5 * 100),
+            "scoreCoverage": round((6 - len(missing_metrics)) / 6 * 100),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
             "movingAverageInvestorScore": moving_average_score,
@@ -652,6 +701,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         score_without_consensus = (
             item["dividendInvestorScore"] + item["valuationInvestorScore"]
             + item["movingAverageInvestorScore"] + item["profitabilityInvestorScore"]
+            + item["leverageInvestorScore"]
         )
         item.update({
             **counts,

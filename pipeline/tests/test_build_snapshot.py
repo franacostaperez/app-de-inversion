@@ -2,7 +2,7 @@ import unittest
 
 from pipeline.build_snapshot import (
     aggregate_holdings, annotate_opportunity_rank_changes, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
-    consensus_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
+    consensus_investor_score, debt_to_earnings_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
     retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
 )
@@ -58,11 +58,11 @@ class SnapshotTests(unittest.TestCase):
 
     def test_yield_score_changes_gradually(self):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 3.36, 4, 5, 6, 7.5, 9, 10, 12)]
-        self.assertEqual(scores, [0, 2, 7, 9, 15, 20, 24, 20, 14, 9, 5])
+        self.assertEqual(scores, [0, 2, 6, 8, 14, 18, 22, 18, 13, 8, 4])
 
     def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 39)
-        self.assertLess(valuation_investor_score(12, 18), 39)
+        self.assertEqual(valuation_investor_score(10, 18), 35)
+        self.assertLess(valuation_investor_score(12, 18), 35)
         self.assertLess(valuation_investor_score(17.3, 18), 32)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
@@ -71,7 +71,14 @@ class SnapshotTests(unittest.TestCase):
         established = consensus_investor_score({"holders": 4, "buying": 2, "selling": 0, "newPositions": 0})
         recently_added = consensus_investor_score({"holders": 4, "buying": 2, "selling": 0, "newPositions": 2})
         with_selling = consensus_investor_score({"holders": 4, "buying": 2, "selling": 2, "newPositions": 2})
-        self.assertEqual((established, recently_added, with_selling), (6, 8, 6))
+        self.assertEqual((established, recently_added, with_selling), (5, 7, 5))
+
+    def test_debt_to_earnings_penalizes_high_leverage_gradually(self):
+        self.assertEqual(debt_to_earnings_investor_score(0), 10)
+        self.assertEqual(debt_to_earnings_investor_score(2), 8)
+        self.assertEqual(debt_to_earnings_investor_score(4), 4)
+        self.assertEqual(debt_to_earnings_investor_score(6), 0)
+        self.assertEqual(debt_to_earnings_investor_score(None, loss_making=True), 0)
 
     def test_moving_average_score_rewards_prices_below_the_average(self):
         self.assertEqual(moving_average_investor_score(-30), 6)
@@ -173,8 +180,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 14)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 27)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 13)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 24)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
         self.assertIsNone(result["consensus"][0]["opportunityScore"])
         self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")
@@ -221,7 +228,7 @@ class SnapshotTests(unittest.TestCase):
         }]
         item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
         self.assertEqual(item["dividendGrowth"], 10)
-        self.assertEqual(item["dividendGrowthInvestorScore"], 9)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 8)
 
     def test_derives_market_metrics_and_publishes_score_only_when_complete(self):
         current = {"quarter": "2026-Q1", "investors": [{
@@ -235,7 +242,7 @@ class SnapshotTests(unittest.TestCase):
         }]
         reports = [{
             "cusip": "2", "companyName": "Example Inc", "form": "10-K", "filingDate": "2026-02-01T00:00:00Z",
-            "summary": {"operatingMargin": 18, "roce": 22, "epsDiluted": 2},
+            "summary": {"operatingMargin": 18, "roce": 22, "epsDiluted": 2, "totalDebt": 60, "cash": 20, "netIncome": 20},
             "metrics": {"dividendPerShare": {"periods": [
                 {"endDate": "2024-12-31", "fiscalPeriod": "FY", "value": 0.8},
                 {"endDate": "2025-12-31", "fiscalPeriod": "FY", "value": 1.0},
@@ -247,6 +254,9 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(item["earningsPerShare"], 2)
         self.assertEqual(item["peCalculation"], "PRICE_OVER_ANNUAL_DILUTED_EPS")
         self.assertEqual(item["movingAverageInvestorScore"], 6)
+        self.assertEqual(item["debtToEarnings"], 2)
+        self.assertEqual(item["debtRatioBasis"], "NET_DEBT_TO_NET_INCOME")
+        self.assertEqual(item["leverageInvestorScore"], 8)
         self.assertEqual(item["scoreStatus"], "COMPLETE")
         self.assertEqual(item["missingScoreMetrics"], [])
         self.assertIsNotNone(item["opportunityScore"])

@@ -49,6 +49,13 @@ def build_audit(snapshot: dict) -> dict:
                 "dividendGrowth": item.get("dividendGrowth"),
                 "movingAverage1000": item.get("movingAverage1000"),
                 "priceVsMovingAverage1000Percent": item.get("priceVsMovingAverage1000Percent"),
+                "totalDebt": item.get("totalDebt"),
+                "cash": item.get("cash"),
+                "netDebt": item.get("netDebt"),
+                "netIncome": item.get("netIncome"),
+                "debtToEarnings": item.get("debtToEarnings"),
+                "debtRatioBasis": item.get("debtRatioBasis"),
+                "leverageStatus": item.get("leverageStatus"),
             },
         } for item in sorted(incomplete, key=lambda value: (value.get("scoreCoverage", 0), value.get("company", "")))],
     }

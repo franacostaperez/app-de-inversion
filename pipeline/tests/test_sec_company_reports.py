@@ -6,6 +6,22 @@ from pipeline.sec_company_reports import (
 
 
 class CompanyReportTests(unittest.TestCase):
+    def test_prefers_reported_total_debt_over_partial_components(self):
+        from pipeline.sec_company_reports import synthesize_total_debt
+        period = {"startDate": None, "endDate": "2025-12-31", "unit": "USD"}
+        metrics = {
+            "reportedTotalDebt": {"concept": "DebtLongtermAndShorttermCombinedAmount", "periods": [{**period, "value": 158}]},
+            "debtCurrent": {"concept": "DebtCurrent", "periods": [{**period, "value": 18}]},
+        }
+        synthesize_total_debt(metrics)
+        self.assertEqual(metrics["totalDebt"]["periods"][-1]["value"], 158)
+
+    def test_does_not_publish_a_partial_debt_component_as_total_debt(self):
+        from pipeline.sec_company_reports import synthesize_total_debt
+        metrics = {"debtCurrent": {"concept": "DebtCurrent", "periods": [{"endDate": "2025-12-31", "value": 18}]}}
+        synthesize_total_debt(metrics)
+        self.assertNotIn("totalDebt", metrics)
+
     def test_qualitative_profile_cannot_erase_verified_ticker(self):
         self.assertEqual(merge_known({"ticker": "AAPL"}, {"ticker": None})["ticker"], "AAPL")
 
