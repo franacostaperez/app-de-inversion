@@ -1,44 +1,12 @@
 {
-  "generatedAt": "2026-08-24T09:10:51.544905Z",
+  "generatedAt": "2026-08-24T09:27:22.809217Z",
   "profilesAudited": 713,
   "scoresAudited": 672,
-  "issuesRemaining": 2,
-  "issuesBySeverity": {
-    "error": 1,
-    "warning": 1
-  },
-  "issuesByCode": {
-    "MOVING_AVERAGE_CALCULATION_CONFLICT": 1,
-    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
-  },
+  "issuesRemaining": 0,
+  "issuesBySeverity": {},
+  "issuesByCode": {},
   "adjustmentsAppliedByPipeline": {
-    "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
+    "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52
   },
-  "issues": [
-    {
-      "company": "ARM HOLDINGS PLC",
-      "cusip": "042068205",
-      "ticker": "ARM",
-      "code": "MOVING_AVERAGE_CALCULATION_CONFLICT",
-      "severity": "error",
-      "details": {
-        "reportedPercent": 2.38,
-        "calculatedPercent": 333.16
-      }
-    },
-    {
-      "company": "ENTERGY CORP NEW",
-      "cusip": "29364G103",
-      "ticker": "XE",
-      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
-      "severity": "warning",
-      "details": {
-        "reportedPercent": 2.45,
-        "calculatedPercent": 13.712,
-        "price": 18.67,
-        "dividendPerShare": 2.56
-      }
-    }
-  ]
+  "issues": []
 }
