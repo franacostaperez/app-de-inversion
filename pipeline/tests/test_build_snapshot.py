@@ -2,7 +2,7 @@ import unittest
 
 from pipeline.build_snapshot import (
     aggregate_holdings, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
-    merge_known, operating_margin_investor_score, retained_filing_date, valuation_investor_score,
+    consensus_investor_score, merge_known, operating_margin_investor_score, retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
 )
 
@@ -36,14 +36,20 @@ class SnapshotTests(unittest.TestCase):
 
     def test_yield_score_changes_gradually(self):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 3.36, 4, 5, 6, 7.5, 9, 10, 12)]
-        self.assertEqual(scores, [0, 2, 6, 7, 13, 17, 21, 18, 13, 8, 5])
+        self.assertEqual(scores, [0, 2, 7, 9, 15, 20, 24, 20, 14, 9, 5])
 
     def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 50)
-        self.assertLess(valuation_investor_score(12, 18), 50)
-        self.assertLess(valuation_investor_score(17.3, 18), 40)
+        self.assertEqual(valuation_investor_score(10, 18), 45)
+        self.assertLess(valuation_investor_score(12, 18), 45)
+        self.assertLess(valuation_investor_score(17.3, 18), 36)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
+
+    def test_consensus_rewards_new_positions_and_penalizes_selling(self):
+        established = consensus_investor_score({"holders": 4, "buying": 2, "selling": 0, "newPositions": 0})
+        recently_added = consensus_investor_score({"holders": 4, "buying": 2, "selling": 0, "newPositions": 2})
+        with_selling = consensus_investor_score({"holders": 4, "buying": 2, "selling": 2, "newPositions": 2})
+        self.assertEqual((established, recently_added, with_selling), (6, 8, 6))
 
     def test_operating_margin_uses_exact_ten_point_ladder(self):
         values = (-1, 0, 2.9, 3, 5.9, 6, 8.9, 9, 11.9, 12, 14.9, 15, 19.9, 20, 24.9, 25, 29.9, 30)
@@ -139,8 +145,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 13)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 35)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 14)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 31)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
         self.assertIsNone(result["consensus"][0]["opportunityScore"])
         self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")

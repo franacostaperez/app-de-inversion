@@ -237,6 +237,7 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let holders: Int
     public let buying: Int
     public let selling: Int
+    public let newPositions: Int?
     public let yield: Double?
     public let pe: Double?
     public let peNotMeaningful: Bool?

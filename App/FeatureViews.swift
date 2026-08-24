@@ -708,9 +708,9 @@ private struct ConsensusRankingView: View {
         let filtered = searched.filter { yieldFilter.matches($0.yield) }
         return filtered.sorted { lhs, rhs in
             switch ranking {
-            case .opportunity: (lhs.opportunityScore ?? 0, lhs.buying, lhs.holders) > (rhs.opportunityScore ?? 0, rhs.buying, rhs.holders)
-            case .holders: (lhs.holders, lhs.buying) > (rhs.holders, rhs.buying)
-            case .buying: (lhs.buying, lhs.holders) > (rhs.buying, rhs.holders)
+            case .opportunity: (lhs.opportunityScore ?? 0, lhs.newPositions ?? 0, lhs.buying, lhs.holders) > (rhs.opportunityScore ?? 0, rhs.newPositions ?? 0, rhs.buying, rhs.holders)
+            case .holders: (lhs.holders, lhs.newPositions ?? 0, lhs.buying) > (rhs.holders, rhs.newPositions ?? 0, rhs.buying)
+            case .buying: (lhs.newPositions ?? 0, lhs.buying, lhs.holders) > (rhs.newPositions ?? 0, rhs.buying, rhs.holders)
             }
         }
     }
@@ -779,6 +779,9 @@ private struct ConsensusRankingView: View {
                                 HStack(spacing: 10) {
                                     Label("\(item.holders) fondos", systemImage: "building.columns")
                                     Label("+\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
+                                    if let newPositions = item.newPositions, newPositions > 0 {
+                                        Label("\(newPositions) nuevas", systemImage: "sparkles").foregroundStyle(WhaleTheme.accent)
+                                    }
                                     Label("−\(item.selling)", systemImage: "arrow.down.circle.fill").foregroundStyle(WhaleTheme.negative)
                                 }
                                 .font(.caption)
@@ -855,6 +858,9 @@ private struct OpportunityAnalysisView: View {
         var result: [String] = []
         let net = item.buying - item.selling
         if item.holders >= 5 { result.append("Existe consenso: la mantienen \(item.holders) de los fondos seguidos.") }
+        if let newPositions = item.newPositions, newPositions > 0 {
+            result.append("\(newPositions) fondos la han incorporado como nueva posición en su último 13F.")
+        }
         if net > 0 { result.append("La tendencia institucional es positiva, con \(net) compradores netos en el trimestre.") }
         if let yield = item.yield {
             if yield > 12 { result.append("El yield supera ampliamente el 9 % objetivo y recibe una penalización fuerte por posible riesgo de recorte.") }
@@ -926,6 +932,7 @@ private struct OpportunityAnalysisView: View {
             Section("Indicadores") {
                 LabeledContent("Fondos con posición", value: "\(item.holders)")
                 LabeledContent("Comprando", value: "\(item.buying)")
+                LabeledContent("Nuevas posiciones", value: "\(item.newPositions ?? 0)")
                 LabeledContent("Reduciendo", value: "\(item.selling)")
                 LabeledContent("Yield", value: item.yield.map { $0.formatted(.number.precision(.fractionLength(2))) + "%" } ?? "—")
                 LabeledContent("PER", value: item.pe.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—")
@@ -951,11 +958,11 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 50, icon: "scalemass.fill")
-                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 21, icon: "percent")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 45, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 24, icon: "percent")
                 ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 9, icon: "chart.line.uptrend.xyaxis")
                 ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 14, icon: "gauge.with.dots.needle.50percent")
-                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 6, icon: "building.columns.fill")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 8, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
                 Section("Informes anuales publicados") {

@@ -94,9 +94,9 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     if dividend_yield is None or dividend_yield <= 0:
         return 0
     return graduated_score(dividend_yield, [
-        (0, 0), (1, 0), (2, 2), (3, 6), (3.5, 8), (4, 13),
-        (5, 17), (5.5, 19), (6, 21), (6.5, 21), (7, 19),
-        (8, 16), (9, 13), (10, 8), (12, 5), (15, 0), (20, 0),
+        (0, 0), (1, 0), (2, 2), (3, 7), (3.5, 10), (4, 15),
+        (5, 20), (5.5, 22), (6, 24), (6.5, 24), (7, 22),
+        (8, 18), (9, 14), (10, 9), (12, 5), (15, 0), (20, 0),
     ])
 
 
@@ -109,8 +109,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 50), (10, 50), (12, 45), (15, 38), (18, 30),
-        (22, 21), (28, 12), (35, 4), (45, 0),
+        (5, 45), (10, 45), (12, 41), (15, 34), (18, 27),
+        (22, 19), (28, 11), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
@@ -125,8 +125,17 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         adjustment = -3
     else:
         adjustment = -5
-    maximum = 50 if pe <= 10 else 49
+    maximum = 45 if pe <= 10 else 44
     return max(0, min(maximum, base + adjustment))
+
+
+def consensus_investor_score(counts: dict) -> int:
+    """Reward broad ownership and recent conviction, especially new positions."""
+    holders_score = min(4, counts.get("holders", 0))
+    buying_score = min(2, counts.get("buying", 0))
+    new_position_score = min(2, counts.get("newPositions", 0))
+    selling_penalty = min(2, counts.get("selling", 0))
+    return max(0, min(8, holders_score + buying_score + new_position_score - selling_penalty))
 
 
 def operating_margin_investor_score(operating_margin: float | None) -> int:
@@ -357,8 +366,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     }
     movements = []
     holdings = []
-    consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0})
-    issuer_consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0})
+    consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0, "newPositions": 0})
+    issuer_consensus = defaultdict(lambda: {"holders": 0, "buying": 0, "selling": 0, "newPositions": 0})
     consensus_names = {}
 
     for investor in current.get("investors", []):
@@ -381,6 +390,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                 issuer_consensus[key]["holders"] += 1
             if action in ("NEW", "INCREASED"):
                 issuer_consensus[key]["buying"] += 1
+                if action == "NEW":
+                    issuer_consensus[key]["newPositions"] += 1
             elif action in ("SOLD", "REDUCED"):
                 issuer_consensus[key]["selling"] += 1
         portfolio_value = investor.get("portfolioValue", 0)
@@ -409,6 +420,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                 consensus[security_id]["holders"] += 1
             if action in ("NEW", "INCREASED"):
                 consensus[security_id]["buying"] += 1
+                if action == "NEW":
+                    consensus[security_id]["newPositions"] += 1
             elif action in ("SOLD", "REDUCED"):
                 consensus[security_id]["selling"] += 1
             if action != "UNCHANGED":
@@ -495,7 +508,6 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         brand_strength = profile.get("brandStrength", "low")
         sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
         adjusted_pe_benchmark = round(12 * sector_multiplier * BRAND_MULTIPLIERS.get(brand_strength, 1.0), 1)
-        net_buying = counts["buying"] - counts["selling"]
         yield_score = yield_investor_score(yield_percent)
 
         if yield_score == 0:
@@ -519,8 +531,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         operating_margin_rating = operating_margin_investor_score(operating_margin)
         profitability_score = round(operating_margin_rating * 14 / 10)
 
-        consensus_score = min(4, counts["holders"]) + max(-2, min(2, net_buying))
-        consensus_score = max(0, min(6, consensus_score))
+        consensus_score = consensus_investor_score(counts)
         score = dividend_score + valuation_score + profitability_score + consensus_score
         consensus_items.append({
             # Older app builds decoded this field as a required String. Keep an
@@ -562,9 +573,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             consolidated_items[key] = item
     consensus_items = []
     for key, item in consolidated_items.items():
-        counts = issuer_consensus.get(key, {"holders": item["holders"], "buying": item["buying"], "selling": item["selling"]})
-        consensus_score = min(4, counts["holders"]) + max(-2, min(2, counts["buying"] - counts["selling"]))
-        consensus_score = max(0, min(6, consensus_score))
+        counts = issuer_consensus.get(key, {
+            "holders": item["holders"], "buying": item["buying"],
+            "selling": item["selling"], "newPositions": item.get("newPositions", 0),
+        })
+        consensus_score = consensus_investor_score(counts)
         score_without_consensus = (
             item["dividendInvestorScore"] + item["valuationInvestorScore"]
             + item["profitabilityInvestorScore"]
@@ -575,7 +588,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "opportunityScore": min(100, score_without_consensus + consensus_score) if item["scoreStatus"] == "COMPLETE" else None,
         })
         consensus_items.append(item)
-    consensus_items.sort(key=lambda item: (item["opportunityScore"] is not None, item["opportunityScore"] or -1, item["buying"], item["holders"]), reverse=True)
+    consensus_items.sort(key=lambda item: (
+        item["opportunityScore"] is not None, item["opportunityScore"] or -1,
+        item.get("newPositions", 0), item["buying"], item["holders"],
+    ), reverse=True)
 
     opportunities = []
     for company in (item for item in companies if item.get("metricsStatus") == "verified"):
