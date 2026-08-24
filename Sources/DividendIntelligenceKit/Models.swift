@@ -252,6 +252,10 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let yieldInvestorScore: Int?
     public let dividendGrowthInvestorScore: Int?
     public let opportunityScore: Int?
+    public let opportunityRank: Int?
+    public let previousOpportunityRank: Int?
+    public let rankChange: Int?
+    public let rankStatus: String?
     public let scoreStatus: String?
     public let missingScoreMetrics: [String]?
     public let scoreCoverage: Int?

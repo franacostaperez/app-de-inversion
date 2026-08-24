@@ -1,7 +1,7 @@
 import unittest
 
 from pipeline.build_snapshot import (
-    aggregate_holdings, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
+    aggregate_holdings, annotate_opportunity_rank_changes, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
     consensus_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
     retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
@@ -9,6 +9,27 @@ from pipeline.build_snapshot import (
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_annotates_opportunity_rank_movement_against_previous_snapshot(self):
+        previous = [
+            {"company": "Beta Inc", "opportunityScore": 80},
+            {"company": "Alpha Inc", "opportunityScore": 75},
+            {"company": "Old Inc", "opportunityScore": 70},
+            {"company": "Pending Inc", "opportunityScore": None},
+        ]
+        current = [
+            {"company": "Alpha Inc", "opportunityScore": 90},
+            {"company": "Beta Inc", "opportunityScore": 85},
+            {"company": "New Inc", "opportunityScore": 80},
+            {"company": "Pending Inc", "opportunityScore": None},
+        ]
+
+        annotate_opportunity_rank_changes(current, previous)
+
+        self.assertEqual((current[0]["opportunityRank"], current[0]["previousOpportunityRank"], current[0]["rankChange"], current[0]["rankStatus"]), (1, 2, 1, "UP"))
+        self.assertEqual((current[1]["opportunityRank"], current[1]["previousOpportunityRank"], current[1]["rankChange"], current[1]["rankStatus"]), (2, 1, -1, "DOWN"))
+        self.assertEqual((current[2]["opportunityRank"], current[2]["rankChange"], current[2]["rankStatus"]), (3, None, "NEW"))
+        self.assertEqual((current[3]["opportunityRank"], current[3]["rankStatus"]), (None, "UNRANKED"))
+
     def test_company_profiles_always_include_fields_required_by_released_apps(self):
         profile = app_safe_company_profiles([{
             "cusip": "1", "name": "A Co", "tickerResolutionSource": "Verified mapping",

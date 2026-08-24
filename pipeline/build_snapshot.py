@@ -365,7 +365,57 @@ def build_filing_updates(current: dict, holdings: list[dict], movements: list[di
     return sorted(updates.values(), key=lambda item: item["filingDate"], reverse=True)
 
 
-def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None, average_prices: dict[tuple[str, str], float] | None = None, company_reports: list[dict] | None = None) -> dict:
+def consensus_rank_key(item: dict) -> str:
+    """Return a stable identity for comparing consolidated consensus rows."""
+    return issuer_key(item.get("company")) or str(item.get("cusip") or item.get("ticker") or "")
+
+
+def annotate_opportunity_rank_changes(items: list[dict], previous_items: list[dict] | None = None) -> None:
+    """Annotate the scored ranking with its movement since the prior snapshot.
+
+    Positive ``rankChange`` means that the company moved up. Incomplete rows do
+    not receive a rank, so finishing a previously incomplete score is treated as
+    a new entry instead of an artificial jump from the bottom of the table.
+    """
+    previous_ranks = {}
+    derived_rank = 0
+    for previous in previous_items or []:
+        if previous.get("opportunityScore") is None:
+            continue
+        derived_rank += 1
+        rank = previous.get("opportunityRank") or derived_rank
+        key = consensus_rank_key(previous)
+        if key and key not in previous_ranks:
+            previous_ranks[key] = rank
+
+    current_rank = 0
+    for item in items:
+        if item.get("opportunityScore") is None:
+            item.update({
+                "opportunityRank": None,
+                "previousOpportunityRank": previous_ranks.get(consensus_rank_key(item)),
+                "rankChange": None,
+                "rankStatus": "UNRANKED",
+            })
+            continue
+
+        current_rank += 1
+        previous_rank = previous_ranks.get(consensus_rank_key(item))
+        if previous_rank is None:
+            rank_change = None
+            rank_status = "NEW"
+        else:
+            rank_change = previous_rank - current_rank
+            rank_status = "UP" if rank_change > 0 else "DOWN" if rank_change < 0 else "UNCHANGED"
+        item.update({
+            "opportunityRank": current_rank,
+            "previousOpportunityRank": previous_rank,
+            "rankChange": rank_change,
+            "rankStatus": rank_status,
+        })
+
+
+def build(current: dict, previous: dict, companies: list[dict], company_profiles: list[dict] | None = None, prior_updates: list[dict] | None = None, average_prices: dict[tuple[str, str], float] | None = None, company_reports: list[dict] | None = None, previous_consensus: list[dict] | None = None) -> dict:
     old_investors = {item["id"]: item for item in previous.get("investors", [])}
     company_by_ticker = {item["ticker"]: item for item in companies}
     company_by_cusip = {item["cusip"]: item for item in companies if item.get("cusip")}
@@ -613,6 +663,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         item["opportunityScore"] is not None, item["opportunityScore"] or -1,
         item.get("newPositions", 0), item["buying"], item["holders"],
     ), reverse=True)
+    annotate_opportunity_rank_changes(consensus_items, previous_consensus)
 
     opportunities = []
     for company in (item for item in companies if item.get("metricsStatus") == "verified"):
@@ -695,7 +746,10 @@ def main() -> None:
     if args.company_reports_directory and args.company_reports_directory.exists():
         company_reports = [json.loads(path.read_text()) for path in args.company_reports_directory.glob("*/*.json")]
     average_prices = estimate_average_purchase_prices(archived_filings)
-    snapshot = build(current, previous, companies, profiles, existing.get("filingUpdates", []), average_prices, company_reports)
+    snapshot = build(
+        current, previous, companies, profiles, existing.get("filingUpdates", []),
+        average_prices, company_reports, existing.get("consensus", []),
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
 

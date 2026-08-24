@@ -776,7 +776,12 @@ private struct ConsensusRankingView: View {
                             }
                             .frame(width: 32, height: 32)
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(displayCompanyName(item.company)).font(.subheadline.weight(.semibold)).lineLimit(2)
+                                HStack(spacing: 7) {
+                                    Text(displayCompanyName(item.company)).font(.subheadline.weight(.semibold)).lineLimit(2)
+                                    if ranking == .opportunity {
+                                        OpportunityRankMovementBadge(item: item)
+                                    }
+                                }
                                 HStack(spacing: 10) {
                                     Label("\(item.holders) fondos", systemImage: "building.columns")
                                     Label("+\(item.buying)", systemImage: "arrow.up.circle.fill").foregroundStyle(WhaleTheme.positive)
@@ -942,6 +947,14 @@ struct OpportunityAnalysisView: View {
                     .font(.footnote).foregroundStyle(.secondary)
             }
             Section("Indicadores") {
+                if let rank = item.opportunityRank {
+                    LabeledContent("Puesto en el ranking") {
+                        HStack(spacing: 8) {
+                            Text("#\(rank)").monospacedDigit()
+                            OpportunityRankMovementBadge(item: item)
+                        }
+                    }
+                }
                 LabeledContent("Fondos con posición", value: "\(item.holders)")
                 LabeledContent("Comprando", value: "\(item.buying)")
                 LabeledContent("Nuevas posiciones", value: "\(item.newPositions ?? 0)")
@@ -1045,6 +1058,39 @@ struct OpportunityAnalysisView: View {
 
     private func relativePriceLabel(_ value: Double) -> String {
         value.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%"
+    }
+}
+
+private struct OpportunityRankMovementBadge: View {
+    let item: ConsensusItem
+
+    private var presentation: (icon: String, text: String, color: Color, accessibility: String)? {
+        switch item.rankStatus {
+        case "UP":
+            let positions = abs(item.rankChange ?? 0)
+            return ("arrow.up", "+\(positions)", WhaleTheme.positive, "Sube \(positions) puestos desde la actualización anterior")
+        case "DOWN":
+            let positions = abs(item.rankChange ?? 0)
+            return ("arrow.down", "−\(positions)", WhaleTheme.negative, "Baja \(positions) puestos desde la actualización anterior")
+        case "NEW":
+            return ("sparkles", "Nueva", WhaleTheme.accent, "Nueva entrada en el ranking")
+        case "UNCHANGED":
+            return ("minus", "=", Color.secondary, "Sin cambios desde la actualización anterior")
+        default:
+            return nil
+        }
+    }
+
+    var body: some View {
+        if let presentation {
+            Label(presentation.text, systemImage: presentation.icon)
+                .font(.caption2.bold().monospacedDigit())
+                .foregroundStyle(presentation.color)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(presentation.color.opacity(0.12), in: Capsule())
+                .accessibilityLabel(presentation.accessibility)
+        }
     }
 }
 
