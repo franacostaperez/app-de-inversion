@@ -637,6 +637,7 @@ private struct HoldingDetailView: View {
     private func reportDate(_ value: String?) -> String {
         value.map { " · " + $0 } ?? ""
     }
+
 }
 
 private struct CompanyDetailView: View {
@@ -880,6 +881,17 @@ private struct OpportunityAnalysisView: View {
         } else if item.pe == nil {
             result.append("No hay PER verificable; el score no se publica hasta completar la valoración.")
         }
+        if let relativePrice = item.priceVsMovingAverage1000Percent {
+            if relativePrice < 0 {
+                result.append("La cotización está un \(abs(relativePrice).formatted(.number.precision(.fractionLength(1)))) % por debajo de su media de 1.000 sesiones y mejora el score.")
+            } else if relativePrice == 0 {
+                result.append("La cotización está prácticamente en su media de 1.000 sesiones.")
+            } else {
+                result.append("La cotización está un \(relativePrice.formatted(.number.precision(.fractionLength(1)))) % por encima de su media de 1.000 sesiones y recibe menos puntos.")
+            }
+        } else {
+            result.append("No existe todavía una media verificable de 1.000 sesiones; el score queda pendiente.")
+        }
         if let margin = item.operatingMargin {
             if margin <= 0 { result.append("El margen operativo no es positivo y no aporta puntos de rentabilidad.") }
             else if margin < 5 { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % es reducido y ofrece poco colchón ante una caída de ingresos.") }
@@ -941,6 +953,9 @@ private struct OpportunityAnalysisView: View {
                     Text("PER calculado con cotización diaria ÷ BPA diluido del último ejercicio.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+                LabeledContent("Precio", value: item.marketPrice.map { $0.formatted(.currency(code: "USD")) } ?? "—")
+                LabeledContent("Media 1.000 sesiones", value: item.movingAverage1000.map { $0.formatted(.currency(code: "USD")) } ?? "—")
+                LabeledContent("Precio vs media", value: item.priceVsMovingAverage1000Percent.map(relativePriceLabel) ?? "—")
                 LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
                 if let rating = item.operatingMarginRating {
                     LabeledContent("Nivel del margen", value: "\(rating) / 10")
@@ -958,7 +973,8 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 45, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 39, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Precio vs media 1.000", value: item.movingAverageInvestorScore ?? 0, maximum: 6, icon: "waveform.path.ecg")
                 ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 24, icon: "percent")
                 ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 9, icon: "chart.line.uptrend.xyaxis")
                 ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 14, icon: "gauge.with.dots.needle.50percent")
@@ -1026,6 +1042,10 @@ private struct OpportunityAnalysisView: View {
     private func reportDate(_ value: String?) -> String {
         value.map { " · " + $0 } ?? ""
     }
+
+    private func relativePriceLabel(_ value: Double) -> String {
+        value.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%"
+    }
 }
 
 private func scoreMetricNames(_ metrics: [String]?) -> [String] {
@@ -1035,6 +1055,7 @@ private func scoreMetricNames(_ metrics: [String]?) -> [String] {
         case "pe": "PER"
         case "dividendGrowth": "crecimiento del dividendo"
         case "operatingMargin": "margen operativo"
+        case "movingAverage1000": "media de 1.000 sesiones"
         default: $0
         }
     }

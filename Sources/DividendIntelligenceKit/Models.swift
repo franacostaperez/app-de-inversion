@@ -243,6 +243,9 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let peNotMeaningful: Bool?
     public let earningsPerShare: Double?
     public let peCalculation: String?
+    public let marketPrice: Double?
+    public let movingAverage1000: Double?
+    public let priceVsMovingAverage1000Percent: Double?
     public let operatingMargin: Double?
     public let roce: Double?
     public let dividendGrowth: Double?
@@ -254,6 +257,7 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let scoreCoverage: Int?
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?
+    public let movingAverageInvestorScore: Int?
     public let profitabilityInvestorScore: Int?
     public let operatingMarginRating: Int?
     public let consensusInvestorScore: Int?

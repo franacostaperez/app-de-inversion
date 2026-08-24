@@ -2,7 +2,8 @@ import unittest
 
 from pipeline.build_snapshot import (
     aggregate_holdings, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
-    consensus_investor_score, merge_known, operating_margin_investor_score, retained_filing_date, valuation_investor_score,
+    consensus_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
+    retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
 )
 
@@ -39,9 +40,9 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(scores, [0, 2, 7, 9, 15, 20, 24, 20, 14, 9, 5])
 
     def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 45)
-        self.assertLess(valuation_investor_score(12, 18), 45)
-        self.assertLess(valuation_investor_score(17.3, 18), 36)
+        self.assertEqual(valuation_investor_score(10, 18), 39)
+        self.assertLess(valuation_investor_score(12, 18), 39)
+        self.assertLess(valuation_investor_score(17.3, 18), 32)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
 
@@ -50,6 +51,12 @@ class SnapshotTests(unittest.TestCase):
         recently_added = consensus_investor_score({"holders": 4, "buying": 2, "selling": 0, "newPositions": 2})
         with_selling = consensus_investor_score({"holders": 4, "buying": 2, "selling": 2, "newPositions": 2})
         self.assertEqual((established, recently_added, with_selling), (6, 8, 6))
+
+    def test_moving_average_score_rewards_prices_below_the_average(self):
+        self.assertEqual(moving_average_investor_score(-30), 6)
+        self.assertGreater(moving_average_investor_score(-10), moving_average_investor_score(10))
+        self.assertEqual(moving_average_investor_score(0), 3)
+        self.assertEqual(moving_average_investor_score(40), 0)
 
     def test_operating_margin_uses_exact_ten_point_ladder(self):
         values = (-1, 0, 2.9, 3, 5.9, 6, 8.9, 9, 11.9, 12, 14.9, 15, 19.9, 20, 24.9, 25, 29.9, 30)
@@ -146,7 +153,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
         self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 14)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 31)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 27)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
         self.assertIsNone(result["consensus"][0]["opportunityScore"])
         self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")
@@ -201,7 +208,10 @@ class SnapshotTests(unittest.TestCase):
             "quarterEnd": "2026-03-31T00:00:00Z", "portfolioValue": 1,
             "holdings": [{"ticker": "AAA", "cusip": "1", "company": "Example Inc Class A", "shares": 1, "value": 1}],
         }]}
-        profiles = [{"cusip": "2", "name": "Example Inc", "marketPrice": 20, "paysDividend": True}]
+        profiles = [{
+            "cusip": "2", "name": "Example Inc", "marketPrice": 20, "paysDividend": True,
+            "movingAverage1000": 25, "priceVsMovingAverage1000Percent": -20,
+        }]
         reports = [{
             "cusip": "2", "companyName": "Example Inc", "form": "10-K", "filingDate": "2026-02-01T00:00:00Z",
             "summary": {"operatingMargin": 18, "roce": 22, "epsDiluted": 2},
@@ -215,6 +225,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(item["yield"], 5)
         self.assertEqual(item["earningsPerShare"], 2)
         self.assertEqual(item["peCalculation"], "PRICE_OVER_ANNUAL_DILUTED_EPS")
+        self.assertEqual(item["movingAverageInvestorScore"], 6)
         self.assertEqual(item["scoreStatus"], "COMPLETE")
         self.assertEqual(item["missingScoreMetrics"], [])
         self.assertIsNotNone(item["opportunityScore"])

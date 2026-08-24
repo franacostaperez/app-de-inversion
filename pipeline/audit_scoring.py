@@ -47,6 +47,8 @@ def build_audit(snapshot: dict) -> dict:
                 "peNotMeaningful": item.get("peNotMeaningful", False),
                 "operatingMargin": item.get("operatingMargin"),
                 "dividendGrowth": item.get("dividendGrowth"),
+                "movingAverage1000": item.get("movingAverage1000"),
+                "priceVsMovingAverage1000Percent": item.get("priceVsMovingAverage1000Percent"),
             },
         } for item in sorted(incomplete, key=lambda value: (value.get("scoreCoverage", 0), value.get("company", "")))],
     }

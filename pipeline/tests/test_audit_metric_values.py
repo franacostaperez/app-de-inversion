@@ -37,9 +37,9 @@ class MetricValueAuditTests(unittest.TestCase):
             }],
             "consensus": [{
                 "cusip": "1", "company": "Good", "operatingMargin": 20,
-                "opportunityScore": 65, "dividendInvestorScore": 20,
+                "opportunityScore": 70, "dividendInvestorScore": 20,
                 "valuationInvestorScore": 30, "profitabilityInvestorScore": 10,
-                "consensusInvestorScore": 5,
+                "consensusInvestorScore": 5, "movingAverageInvestorScore": 5,
             }],
         })
         self.assertEqual(audit["issuesRemaining"], 0)

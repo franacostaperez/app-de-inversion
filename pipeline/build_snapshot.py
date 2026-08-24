@@ -109,8 +109,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 45), (10, 45), (12, 41), (15, 34), (18, 27),
-        (22, 19), (28, 11), (35, 4), (45, 0),
+        (5, 39), (10, 39), (12, 36), (15, 30), (18, 24),
+        (22, 17), (28, 10), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
@@ -125,7 +125,7 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         adjustment = -3
     else:
         adjustment = -5
-    maximum = 45 if pe <= 10 else 44
+    maximum = 39 if pe <= 10 else 38
     return max(0, min(maximum, base + adjustment))
 
 
@@ -136,6 +136,16 @@ def consensus_investor_score(counts: dict) -> int:
     new_position_score = min(2, counts.get("newPositions", 0))
     selling_penalty = min(2, counts.get("selling", 0))
     return max(0, min(8, holders_score + buying_score + new_position_score - selling_penalty))
+
+
+def moving_average_investor_score(price_vs_average_percent: float | None) -> int:
+    """Reward prices below the verified 1,000-session moving average."""
+    if price_vs_average_percent is None:
+        return 0
+    return graduated_score(price_vs_average_percent, [
+        (-50, 6), (-25, 6), (-15, 5), (-5, 4), (0, 3),
+        (10, 2), (25, 1), (40, 0), (100, 0),
+    ])
 
 
 def operating_margin_investor_score(operating_margin: float | None) -> int:
@@ -486,6 +496,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             dividend_increases = False
 
         market_price = profile.get("marketPrice")
+        moving_average_1000 = profile.get("movingAverage1000")
+        price_vs_moving_average_1000 = profile.get("priceVsMovingAverage1000Percent")
+        if price_vs_moving_average_1000 is None and market_price is not None and moving_average_1000 is not None and moving_average_1000 > 0:
+            price_vs_moving_average_1000 = round((market_price / moving_average_1000 - 1) * 100, 2)
         eps = report_summary.get("epsDiluted") or report_summary.get("eps") or profile.get("eps")
         latest_dividend = annual_dividends[-1] if annual_dividends else profile.get("dividendPerShare")
         pe_was_derived = pe is None and market_price is not None and eps is not None and eps > 0
@@ -504,6 +518,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             missing_metrics.append("dividendGrowth")
         if operating_margin is None:
             missing_metrics.append("operatingMargin")
+        if price_vs_moving_average_1000 is None:
+            missing_metrics.append("movingAverage1000")
         sector = profile.get("sector", company.get("sector", "Unknown"))
         brand_strength = profile.get("brandStrength", "low")
         sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
@@ -527,12 +543,13 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         dividend_score = yield_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
+        moving_average_score = moving_average_investor_score(price_vs_moving_average_1000)
 
         operating_margin_rating = operating_margin_investor_score(operating_margin)
         profitability_score = round(operating_margin_rating * 14 / 10)
 
         consensus_score = consensus_investor_score(counts)
-        score = dividend_score + valuation_score + profitability_score + consensus_score
+        score = dividend_score + valuation_score + moving_average_score + profitability_score + consensus_score
         consensus_items.append({
             # Older app builds decoded this field as a required String. Keep an
             # empty compatibility value when no real ticker has been verified.
@@ -545,6 +562,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "peNotMeaningful": pe_not_meaningful,
             "earningsPerShare": eps,
             "peCalculation": "PRICE_OVER_ANNUAL_DILUTED_EPS" if pe_was_derived else "REPORTED",
+            "marketPrice": market_price,
+            "movingAverage1000": moving_average_1000,
+            "priceVsMovingAverage1000Percent": price_vs_moving_average_1000,
             "operatingMargin": operating_margin,
             "roce": roce,
             "dividendGrowth": dividend_growth,
@@ -553,9 +573,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "opportunityScore": min(100, score) if not missing_metrics else None,
             "scoreStatus": "COMPLETE" if not missing_metrics else "INCOMPLETE",
             "missingScoreMetrics": missing_metrics,
-            "scoreCoverage": round((4 - len(missing_metrics)) / 4 * 100),
+            "scoreCoverage": round((5 - len(missing_metrics)) / 5 * 100),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
+            "movingAverageInvestorScore": moving_average_score,
             "profitabilityInvestorScore": profitability_score,
             "operatingMarginRating": operating_margin_rating,
             "consensusInvestorScore": consensus_score,
@@ -580,7 +601,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         consensus_score = consensus_investor_score(counts)
         score_without_consensus = (
             item["dividendInvestorScore"] + item["valuationInvestorScore"]
-            + item["profitabilityInvestorScore"]
+            + item["movingAverageInvestorScore"] + item["profitabilityInvestorScore"]
         )
         item.update({
             **counts,
