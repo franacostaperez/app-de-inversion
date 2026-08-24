@@ -9,16 +9,16 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1637459/000163745923000143/khc-20230930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
-    "revenue": 19780000000,
-    "expenses": 19127000000,
+    "revenue": 6570000000,
+    "expenses": 5917000000,
     "operatingIncome": 653000000,
     "netIncome": 262000000,
-    "operatingMargin": 3.3,
+    "operatingMargin": 9.94,
     "roce": 0.8,
-    "netMargin": 1.32,
-    "totalDebt": 0,
+    "netMargin": 3.99,
+    "totalDebt": null,
     "cash": 1052000000,
     "cashFromOperations": 2620000000,
     "capitalExpenditure": 779000000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.5% frente al periodo comparable. El beneficio neto varió un -39.4% frente al periodo comparable. El margen neto del periodo más reciente es 1.3%. El ROCE estimado del periodo más reciente es 0.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +1.0% frente al periodo comparable. El beneficio neto varió un -39.4% frente al periodo comparable. El margen neto del periodo más reciente es 4.0%. El ROCE estimado del periodo más reciente es 0.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -546,15 +546,6 @@
       "concept": "GrossProfitPlusCostOfRevenue",
       "periods": [
         {
-          "startDate": "2021-12-26",
-          "endDate": "2022-09-24",
-          "value": 19104000000,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
           "startDate": "2022-06-26",
           "endDate": "2022-09-24",
           "value": 6505000000,
@@ -564,9 +555,9 @@
           "frame": "CY2022Q3"
         },
         {
-          "startDate": "2023-07-02",
-          "endDate": "2023-09-30",
-          "value": 6570000000,
+          "startDate": "2021-12-26",
+          "endDate": "2022-09-24",
+          "value": 19104000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
@@ -580,29 +571,15 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
+        },
         {
-          "startDate": null,
-          "endDate": "2022-12-31",
-          "value": 6000000,
+          "startDate": "2023-07-02",
+          "endDate": "2023-09-30",
+          "value": 6570000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2023-09-30",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2023Q3I"
         }
       ]
     }

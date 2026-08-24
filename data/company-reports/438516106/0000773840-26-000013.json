@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/773840/000077384026000013/hon-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 9758000000,
     "expenses": 1631000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 83.29,
     "roce": 16.17,
     "netMargin": -1.18,
-    "totalDebt": 29046000000,
+    "totalDebt": 28687000000,
     "cash": 12487000000,
     "cashFromOperations": 6408000000,
     "capitalExpenditure": 986000000,
@@ -535,6 +535,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 26765000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 28687000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q4I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "ShortTermBorrowings",
       "periods": [
@@ -813,16 +836,25 @@
       ]
     },
     "totalDebt": {
-      "concept": "LongTermDebt",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2025-12-31",
-          "value": 29046000000,
+          "endDate": "2024-12-31",
+          "value": 26765000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
-          "frame": null
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 28687000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q4I"
         }
       ]
     }

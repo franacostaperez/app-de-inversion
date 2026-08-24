@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/732712/000073271226000007/vz-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 138191000000,
     "expenses": 108932000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 21.17,
     "roce": 8.56,
     "netMargin": 12.43,
-    "totalDebt": 18618000000,
+    "totalDebt": 158150000000,
     "cash": 19048000000,
     "cashFromOperations": 37137000000,
     "capitalExpenditure": null,
@@ -291,6 +291,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 144014000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 158150000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q4I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -411,12 +434,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2024-12-31",
-          "value": 22633000000,
+          "value": 144014000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
@@ -425,11 +448,11 @@
         {
           "startDate": null,
           "endDate": "2025-12-31",
-          "value": 18618000000,
+          "value": 158150000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
-          "frame": null
+          "frame": "CY2025Q4I"
         }
       ]
     }

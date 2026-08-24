@@ -9,7 +9,7 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1570585/000157058525000021/lbtya-20241231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 4341900000,
     "expenses": 4402000000,
@@ -18,7 +18,7 @@
     "operatingMargin": -1.11,
     "roce": -0.22,
     "netMargin": 51.68,
-    "totalDebt": 9066900000,
+    "totalDebt": 9101000000,
     "cash": 1816300000,
     "cashFromOperations": 2032900000,
     "capitalExpenditure": null,
@@ -490,6 +490,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 9268600000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 9101000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -646,16 +669,25 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 9066900000,
+          "endDate": "2023-12-31",
+          "value": 9268600000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
-          "frame": "CY2024Q4I"
+          "frame": "CY2023Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 9101000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
         }
       ]
     }

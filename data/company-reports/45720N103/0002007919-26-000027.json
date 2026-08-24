@@ -9,7 +9,7 @@
   "reportDate": "2026-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/2007919/000200791926000027/inhibrx-20260331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": 30927000,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": -19.64,
     "netMargin": null,
-    "totalDebt": 174994000,
+    "totalDebt": null,
     "cash": 161657000,
     "cashFromOperations": -38026000,
     "capitalExpenditure": 0,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un -22.8% frente al periodo comparable. El ROCE estimado del periodo más reciente es -19.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un -22.8% frente al periodo comparable. El ROCE estimado del periodo más reciente es -19.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "operatingExpenses": {
       "concept": "OperatingExpenses",
@@ -321,29 +321,6 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",
           "frame": "CY2026Q1"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-12-31",
-          "value": 100559000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q1",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2026-03-31",
-          "value": 174994000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q1",
-          "frame": "CY2026Q1I"
         }
       ]
     }

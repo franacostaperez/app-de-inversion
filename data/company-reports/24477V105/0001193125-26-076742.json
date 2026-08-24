@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1813814/000119312526076742/dftx-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": 166309000,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": -44.54,
     "netMargin": null,
-    "totalDebt": 40579000,
+    "totalDebt": null,
     "cash": 257837000,
     "cashFromOperations": -131560000,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un +69.1% frente al periodo comparable. El ROCE estimado del periodo más reciente es -44.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un +69.1% frente al periodo comparable. El ROCE estimado del periodo más reciente es -44.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "operatingExpenses": {
       "concept": "OperatingExpenses",
@@ -303,20 +303,6 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
           "frame": "CY2025"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-12-31",
-          "value": 40579000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "FY",
-          "frame": "CY2025Q4I"
         }
       ]
     }

@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1370637/000137063726000019/etsy-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 2883501000,
     "expenses": 1799491000,
@@ -18,7 +18,7 @@
     "operatingMargin": 9.23,
     "roce": 18.19,
     "netMargin": 5.65,
-    "totalDebt": 2333230000,
+    "totalDebt": 2982238000,
     "cash": 1395836000,
     "cashFromOperations": 693414000,
     "capitalExpenditure": 15386000,
@@ -428,6 +428,20 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 2982238000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "ShortTermBorrowings",
       "periods": [
@@ -507,21 +521,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "LongTermDebt",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 2288083000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "FY",
-          "frame": "CY2024Q4I"
-        },
-        {
-          "startDate": null,
           "endDate": "2025-12-31",
-          "value": 2333230000,
+          "value": 2982238000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

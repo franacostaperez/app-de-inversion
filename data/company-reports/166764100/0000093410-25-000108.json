@@ -9,7 +9,7 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/93410/000009341025000108/cvx-20250930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 49726000000,
     "expenses": 44312000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 10.89,
     "roce": 1.86,
     "netMargin": 7.12,
-    "totalDebt": 3591000000,
+    "totalDebt": 37953000000,
     "cash": 8783000000,
     "cashFromOperations": 23150000000,
     "capitalExpenditure": null,
@@ -350,6 +350,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 20135000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-09-30",
+          "value": 37953000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "ShortTermBorrowings",
       "periods": [
@@ -482,15 +505,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-07-01",
-          "endDate": "2024-09-30",
-          "value": 6489000000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2024Q3"
-        },
-        {
           "startDate": "2024-01-01",
           "endDate": "2024-09-30",
           "value": 21447000000,
@@ -498,6 +512,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 6489000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3"
         },
         {
           "startDate": "2025-01-01",
@@ -520,12 +543,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
           "endDate": "2024-12-31",
-          "value": 4406000000,
+          "value": 20135000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
@@ -534,7 +557,7 @@
         {
           "startDate": null,
           "endDate": "2025-09-30",
-          "value": 3591000000,
+          "value": 37953000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",

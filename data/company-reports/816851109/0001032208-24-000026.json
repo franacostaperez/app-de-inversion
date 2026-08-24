@@ -9,7 +9,7 @@
   "reportDate": "2024-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1032208/000103220824000026/sre-20240630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 3011000000,
     "expenses": null,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": null,
     "netMargin": 24.08,
-    "totalDebt": 2197000000,
+    "totalDebt": null,
     "cash": 228000000,
     "cashFromOperations": 2520000000,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -9.7% frente al periodo comparable. El beneficio neto varió un +17.9% frente al periodo comparable. El margen neto del periodo más reciente es 24.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -9.7% frente al periodo comparable. El beneficio neto varió un +17.9% frente al periodo comparable. El margen neto del periodo más reciente es 24.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -393,29 +393,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 2342000000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2024-06-30",
-          "value": 2197000000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2024Q2I"
         }
       ]
     }

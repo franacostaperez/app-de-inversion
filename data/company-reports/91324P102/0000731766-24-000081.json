@@ -9,7 +9,7 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/731766/000073176624000081/unh-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 371622000000,
     "expenses": 339264000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 8.71,
     "roce": 18.53,
     "netMargin": 6.02,
-    "totalDebt": 58263000000,
+    "totalDebt": 61473000000,
     "cash": 25427000000,
     "cashFromOperations": 29068000000,
     "capitalExpenditure": 3386000000,
@@ -428,6 +428,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 56756000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 61473000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "debtNoncurrent": {
       "concept": "LongTermDebtNoncurrent",
       "periods": [
@@ -620,12 +643,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2022-12-31",
-          "value": 54513000000,
+          "value": 56756000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
@@ -634,7 +657,7 @@
         {
           "startDate": null,
           "endDate": "2023-12-31",
-          "value": 58263000000,
+          "value": 61473000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

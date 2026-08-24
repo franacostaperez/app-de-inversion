@@ -9,7 +9,7 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1692819/000162828023037205/vistra-20230930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 4086000000,
     "expenses": 3252000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 20.41,
     "roce": 3.6,
     "netMargin": 12.29,
-    "totalDebt": 0,
+    "totalDebt": 13693000000,
     "cash": 3170000000,
     "cashFromOperations": 4572000000,
     "capitalExpenditure": 1262000000,
@@ -355,6 +355,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 11971000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 13693000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q3I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "ShortTermBorrowings",
       "periods": [
@@ -511,12 +534,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
           "endDate": "2022-12-31",
-          "value": 650000000,
+          "value": 11971000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
@@ -525,7 +548,7 @@
         {
           "startDate": null,
           "endDate": "2023-09-30",
-          "value": 0,
+          "value": 13693000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",

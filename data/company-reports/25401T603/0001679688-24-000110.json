@@ -9,13 +9,13 @@
   "reportDate": "2024-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1679688/000167968824000110/dbrg-20240930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 76125000,
     "expenses": 76272000,
-    "operatingIncome": 112180000,
+    "operatingIncome": -147000,
     "netIncome": 13778000,
-    "operatingMargin": null,
+    "operatingMargin": -0.19,
     "roce": null,
     "netMargin": 18.1,
     "totalDebt": 295838000,
@@ -477,15 +477,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2023-07-01",
-          "endDate": "2023-09-30",
-          "value": 103248000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
           "startDate": "2023-01-01",
           "endDate": "2023-09-30",
           "value": 124729000,
@@ -495,9 +486,9 @@
           "frame": null
         },
         {
-          "startDate": "2024-07-01",
-          "endDate": "2024-09-30",
-          "value": -147000,
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-30",
+          "value": 103248000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
@@ -507,6 +498,15 @@
           "startDate": "2024-01-01",
           "endDate": "2024-09-30",
           "value": 112180000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": -147000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",

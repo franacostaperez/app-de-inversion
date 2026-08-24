@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1206264/000120626426000015/sgi-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 7476500000,
     "expenses": 6721600000,
@@ -18,7 +18,7 @@
     "operatingMargin": 10.1,
     "roce": 7.52,
     "netMargin": 5.14,
-    "totalDebt": 4606700000,
+    "totalDebt": 4685700000,
     "cash": 134900000,
     "cashFromOperations": 800100000,
     "capitalExpenditure": 166900000,
@@ -405,6 +405,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 3809900000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 4685700000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "longTermDebtTotal": {
       "concept": "LongTermDebt",
       "periods": [
@@ -516,16 +539,25 @@
       ]
     },
     "totalDebt": {
-      "concept": "LongTermDebt",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2025-12-31",
-          "value": 4606700000,
+          "endDate": "2024-12-31",
+          "value": 3809900000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
-          "frame": "CY2025Q4I"
+          "frame": "CY2024Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 4685700000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
         }
       ]
     }

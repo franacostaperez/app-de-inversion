@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000005/flut-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 16383000000,
     "expenses": 16347000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 0.22,
     "roce": 0.15,
     "netMargin": -2.48,
-    "totalDebt": 12266000000,
+    "totalDebt": 12299000000,
     "cash": 1828000000,
     "cashFromOperations": 1184000000,
     "capitalExpenditure": 105000000,
@@ -346,6 +346,20 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 12299000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q4I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -480,25 +494,16 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 6736000000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "FY",
-          "frame": "CY2024Q4I"
-        },
-        {
-          "startDate": null,
           "endDate": "2025-12-31",
-          "value": 12266000000,
+          "value": 12299000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
-          "frame": null
+          "frame": "CY2025Q4I"
         }
       ]
     }

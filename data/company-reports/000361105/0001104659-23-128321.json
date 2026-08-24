@@ -9,16 +9,16 @@
   "reportDate": "2023-11-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1750/000110465923128321/air-20231130x10q.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
-    "revenue": 1095100000,
+    "revenue": 545400000,
     "expenses": null,
     "operatingIncome": null,
     "netIncome": 23800000,
     "operatingMargin": null,
     "roce": null,
-    "netMargin": 2.17,
-    "totalDebt": 275000000,
+    "netMargin": 4.36,
+    "totalDebt": 277000000,
     "cash": 65100000,
     "cashFromOperations": -1300000,
     "capitalExpenditure": 16400000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +19.5% frente al periodo comparable. El beneficio neto varió un +5.8% frente al periodo comparable. El margen neto del periodo más reciente es 2.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +16.1% frente al periodo comparable. El beneficio neto varió un +5.8% frente al periodo comparable. El margen neto del periodo más reciente es 4.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -368,6 +368,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-05-31",
+          "value": 272000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2023Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-11-30",
+          "value": 277000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2023Q4I"
+        }
+      ]
+    },
     "debtNoncurrent": {
       "concept": "LongTermDebtNoncurrent",
       "periods": [
@@ -436,15 +459,6 @@
       "concept": "GrossProfitPlusCostOfRevenue",
       "periods": [
         {
-          "startDate": "2022-06-01",
-          "endDate": "2022-11-30",
-          "value": 916100000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2022-09-01",
           "endDate": "2022-11-30",
           "value": 469800000,
@@ -454,9 +468,9 @@
           "frame": "CY2022Q4"
         },
         {
-          "startDate": "2023-09-01",
-          "endDate": "2023-11-30",
-          "value": 545400000,
+          "startDate": "2022-06-01",
+          "endDate": "2022-11-30",
+          "value": 916100000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
@@ -470,25 +484,34 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
+        },
         {
-          "startDate": null,
-          "endDate": "2023-05-31",
-          "value": 269700000,
+          "startDate": "2023-09-01",
+          "endDate": "2023-11-30",
+          "value": 545400000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
           "frame": null
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-05-31",
+          "value": 272000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2023Q2I"
         },
         {
           "startDate": null,
           "endDate": "2023-11-30",
-          "value": 275000000,
+          "value": 277000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",

@@ -9,7 +9,7 @@
   "reportDate": "2023-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1375365/000137536523000036/smci-20230630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 7123482000,
     "expenses": 521870000,
@@ -433,6 +433,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-06-30",
+          "value": 596764000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-06-30",
+          "value": 290302000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "ShortTermBorrowings",
       "periods": [
@@ -535,7 +558,7 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
@@ -553,7 +576,7 @@
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
-          "frame": "CY2023Q2I"
+          "frame": null
         }
       ]
     }

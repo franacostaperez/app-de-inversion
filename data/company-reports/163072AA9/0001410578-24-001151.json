@@ -9,7 +9,7 @@
   "reportDate": "2024-07-02T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/887596/000141057824001151/cake-20240702x10q.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": 845350000,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": 2.62,
     "netMargin": null,
-    "totalDebt": 471054000,
+    "totalDebt": null,
     "cash": 40654000,
     "cashFromOperations": 94445000,
     "capitalExpenditure": 66297000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un +22.9% frente al periodo comparable. El ROCE estimado del periodo más reciente es 2.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un +22.9% frente al periodo comparable. El ROCE estimado del periodo más reciente es 2.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "operatingExpenses": {
       "concept": "CostsAndExpenses",
@@ -439,29 +439,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2024-01-02",
-          "value": 470047000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2024-07-02",
-          "value": 471054000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2024Q2I"
         }
       ]
     }

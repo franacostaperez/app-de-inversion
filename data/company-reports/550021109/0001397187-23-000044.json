@@ -9,7 +9,7 @@
   "reportDate": "2023-07-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1397187/000139718723000044/lulu-20230730.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 2209165000,
     "expenses": 1729908000,
@@ -18,7 +18,7 @@
     "operatingMargin": 21.69,
     "roce": 10.4,
     "netMargin": 15.46,
-    "totalDebt": 0,
+    "totalDebt": null,
     "cash": 1107530000,
     "cashFromOperations": 522213000,
     "capitalExpenditure": 145511000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +18.2% frente al periodo comparable. El beneficio neto varió un +18.0% frente al periodo comparable. El margen neto del periodo más reciente es 15.5%. El ROCE estimado del periodo más reciente es 10.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +18.2% frente al periodo comparable. El beneficio neto varió un +18.0% frente al periodo comparable. El margen neto del periodo más reciente es 15.5%. El ROCE estimado del periodo más reciente es 10.4%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -520,20 +520,6 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "Q2",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-07-30",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2023Q2I"
         }
       ]
     }

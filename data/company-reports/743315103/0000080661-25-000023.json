@@ -9,7 +9,7 @@
   "reportDate": "2025-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/80661/000008066125000023/pgr-20250331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 20409000000,
     "expenses": null,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": null,
     "netMargin": 12.58,
-    "totalDebt": 0,
+    "totalDebt": 6894000000,
     "cash": 207000000,
     "cashFromOperations": 5143000000,
     "capitalExpenditure": 59000000,
@@ -259,6 +259,38 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-03-31",
+          "value": 6890000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-12-31",
+          "value": 6893000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-03-31",
+          "value": 6894000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -361,12 +393,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2024-03-31",
-          "value": 0,
+          "value": 6890000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",
@@ -375,7 +407,7 @@
         {
           "startDate": null,
           "endDate": "2024-12-31",
-          "value": 0,
+          "value": 6893000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",
@@ -384,7 +416,7 @@
         {
           "startDate": null,
           "endDate": "2025-03-31",
-          "value": 0,
+          "value": 6894000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",

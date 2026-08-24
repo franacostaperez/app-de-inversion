@@ -9,7 +9,7 @@
   "reportDate": "2024-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1570585/000157058524000136/lbtya-20240331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 1945100000,
     "expenses": 1922500000,
@@ -18,7 +18,7 @@
     "operatingMargin": 1.16,
     "roce": 0.06,
     "netMargin": 26.22,
-    "totalDebt": 15468100000,
+    "totalDebt": 15520400000,
     "cash": 1139600000,
     "cashFromOperations": 245700000,
     "capitalExpenditure": null,
@@ -315,6 +315,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 15765900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-03-31",
+          "value": 15520400000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -390,12 +413,21 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 15765900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
           "endDate": "2024-03-31",
-          "value": 15468100000,
+          "value": 15520400000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",

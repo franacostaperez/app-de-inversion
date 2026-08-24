@@ -9,7 +9,7 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1156375/000115637523000190/cme-20230930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 1337800000,
     "expenses": 517600000,
@@ -18,7 +18,7 @@
     "operatingMargin": 61.31,
     "roce": 2.17,
     "netMargin": 56.08,
-    "totalDebt": 0,
+    "totalDebt": null,
     "cash": 2300200000,
     "cashFromOperations": 2409500000,
     "capitalExpenditure": 55600000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +9.0% frente al periodo comparable. El beneficio neto varió un +10.4% frente al periodo comparable. El margen neto del periodo más reciente es 56.1%. El ROCE estimado del periodo más reciente es 2.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +9.0% frente al periodo comparable. El beneficio neto varió un +10.4% frente al periodo comparable. El margen neto del periodo más reciente es 56.1%. El ROCE estimado del periodo más reciente es 2.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -489,29 +489,6 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2022-12-31",
-          "value": 16000000,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2023-09-30",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2023Q3I"
         }
       ]
     }

@@ -9,7 +9,7 @@
   "reportDate": "2026-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/19617/000162828026029344/jpm-20260331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": null,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": null,
     "netMargin": null,
-    "totalDebt": 68048000000,
+    "totalDebt": 448764000000,
     "cash": 312142000000,
     "cashFromOperations": -211761000000,
     "capitalExpenditure": null,
@@ -204,6 +204,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 435206000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-03-31",
+          "value": 448764000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "ShortTermBorrowings",
       "periods": [
@@ -297,12 +320,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
           "endDate": "2025-12-31",
-          "value": 64776000000,
+          "value": 435206000000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",
@@ -311,7 +334,7 @@
         {
           "startDate": null,
           "endDate": "2026-03-31",
-          "value": 68048000000,
+          "value": 448764000000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",

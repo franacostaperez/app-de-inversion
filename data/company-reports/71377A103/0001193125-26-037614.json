@@ -9,15 +9,15 @@
   "reportDate": "2025-12-27T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1618673/000119312526037614/pfgc-20251227.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
-    "revenue": 16444700000,
+    "revenue": 33520600000,
     "expenses": 1776300000,
     "operatingIncome": 190100000,
     "netIncome": 61700000,
-    "operatingMargin": 1.16,
+    "operatingMargin": 0.57,
     "roce": 1.4,
-    "netMargin": 0.38,
+    "netMargin": 0.18,
     "totalDebt": 5274100000,
     "cash": null,
     "cashFromOperations": 456000000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +5.2% frente al periodo comparable. El beneficio neto varió un +45.5% frente al periodo comparable. El margen neto del periodo más reciente es 0.4%. El ROCE estimado del periodo más reciente es 1.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +7.9% frente al periodo comparable. El beneficio neto varió un +45.5% frente al periodo comparable. El margen neto del periodo más reciente es 0.2%. El ROCE estimado del periodo más reciente es 1.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -564,15 +564,6 @@
       "concept": "GrossProfitPlusCostOfRevenue",
       "periods": [
         {
-          "startDate": "2024-06-30",
-          "endDate": "2024-12-28",
-          "value": 31053700000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2024-09-29",
           "endDate": "2024-12-28",
           "value": 15638200000,
@@ -582,9 +573,9 @@
           "frame": "CY2024Q4"
         },
         {
-          "startDate": "2025-06-29",
-          "endDate": "2025-12-27",
-          "value": 33520600000,
+          "startDate": "2024-06-30",
+          "endDate": "2024-12-28",
+          "value": 31053700000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -598,6 +589,15 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2025Q4"
+        },
+        {
+          "startDate": "2025-06-29",
+          "endDate": "2025-12-27",
+          "value": 33520600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         }
       ]
     },

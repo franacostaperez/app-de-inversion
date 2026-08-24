@@ -9,7 +9,7 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1809587/000141057825000783/beke-20241231x20f.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 12803625000,
     "expenses": 2627524000,
@@ -18,7 +18,7 @@
     "operatingMargin": 4.03,
     "roce": 4.68,
     "netMargin": 4.35,
-    "totalDebt": 288280000,
+    "totalDebt": null,
     "cash": 1567680000,
     "cashFromOperations": 1294255000,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. El margen neto del periodo más reciente es 4.3%. El ROCE estimado del periodo más reciente es 4.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. El margen neto del periodo más reciente es 4.3%. El ROCE estimado del periodo más reciente es 4.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -287,29 +287,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": "CY2024"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 290450000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "FY",
-          "frame": "CY2023Q4I"
-        },
-        {
-          "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 288280000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "FY",
-          "frame": "CY2024Q4I"
         }
       ]
     }

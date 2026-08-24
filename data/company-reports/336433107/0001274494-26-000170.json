@@ -9,7 +9,7 @@
   "reportDate": "2026-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1274494/000127449426000170/fslr-20260630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 1056193000,
     "expenses": 154618000,
@@ -18,7 +18,7 @@
     "operatingMargin": 42.64,
     "roce": 3.99,
     "netMargin": 40.01,
-    "totalDebt": 0,
+    "totalDebt": 37635000,
     "cash": 1688279000,
     "cashFromOperations": -359767000,
     "capitalExpenditure": 279849000,
@@ -473,6 +473,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 498572000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2025Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 37635000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
     "debtNoncurrent": {
       "concept": "LongTermDebtNoncurrent",
       "periods": [
@@ -538,12 +561,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2025-12-31",
-          "value": 282593000,
+          "value": 498572000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
@@ -552,7 +575,7 @@
         {
           "startDate": null,
           "endDate": "2026-06-30",
-          "value": 0,
+          "value": 37635000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",

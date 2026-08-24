@@ -9,7 +9,7 @@
   "reportDate": "2026-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1123360/000112336026000072/gpn-20260331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 2969682000,
     "expenses": 2985328000,
@@ -18,7 +18,7 @@
     "operatingMargin": -0.53,
     "roce": -0.03,
     "netMargin": -60.61,
-    "totalDebt": 22696960000,
+    "totalDebt": 22566800000,
     "cash": 5861312000,
     "cashFromOperations": -288821000,
     "capitalExpenditure": null,
@@ -292,6 +292,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 21462304000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-03-31",
+          "value": 22566800000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1I"
+        }
+      ]
+    },
     "longTermDebtTotal": {
       "concept": "LongTermDebt",
       "periods": [
@@ -376,12 +399,21 @@
       ]
     },
     "totalDebt": {
-      "concept": "LongTermDebt",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 21462304000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
           "endDate": "2026-03-31",
-          "value": 22696960000,
+          "value": 22566800000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",

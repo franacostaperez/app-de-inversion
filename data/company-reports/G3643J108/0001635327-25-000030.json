@@ -9,7 +9,7 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1635327/000163532725000030/flut-20250930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 3794000000,
     "expenses": 4628000000,
@@ -18,7 +18,7 @@
     "operatingMargin": -21.98,
     "roce": -3.42,
     "netMargin": -20.8,
-    "totalDebt": 12099000000,
+    "totalDebt": 12101000000,
     "cash": 1727000000,
     "cashFromOperations": 756000000,
     "capitalExpenditure": 69000000,
@@ -400,6 +400,20 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-09-30",
+          "value": 12101000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -514,15 +528,6 @@
       "concept": "GrossProfitPlusCostOfRevenue",
       "periods": [
         {
-          "startDate": "2024-07-01",
-          "endDate": "2024-09-30",
-          "value": 3248000000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2024Q3"
-        },
-        {
           "startDate": "2024-01-01",
           "endDate": "2024-09-30",
           "value": 10256000000,
@@ -530,6 +535,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": 3248000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3"
         },
         {
           "startDate": "2025-01-01",
@@ -552,21 +566,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 6736000000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
-          "startDate": null,
           "endDate": "2025-09-30",
-          "value": 12099000000,
+          "value": 12101000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",

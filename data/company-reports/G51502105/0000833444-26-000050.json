@@ -9,7 +9,7 @@
   "reportDate": "2026-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/833444/000083344426000050/jci-20260331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 6142000000,
     "expenses": null,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": null,
     "netMargin": 9.98,
-    "totalDebt": 882000000,
+    "totalDebt": null,
     "cash": 698000000,
     "cashFromOperations": null,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.2% frente al periodo comparable. El beneficio neto varió un +28.2% frente al periodo comparable. El margen neto del periodo más reciente es 10.0%. La deuda declarada queda incorporada para seguir su evolución.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.2% frente al periodo comparable. El beneficio neto varió un +28.2% frente al periodo comparable. El margen neto del periodo más reciente es 10.0%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -461,29 +461,6 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-09-30",
-          "value": 723000000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2025Q3I"
-        },
-        {
-          "startDate": null,
-          "endDate": "2026-03-31",
-          "value": 882000000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2026Q1I"
         }
       ]
     }

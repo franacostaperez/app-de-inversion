@@ -9,7 +9,7 @@
   "reportDate": "2024-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1813814/000095017024055681/mnmd-20240331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": 22204000,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": -10.56,
     "netMargin": null,
-    "totalDebt": 14190000,
+    "totalDebt": null,
     "cash": 252332000,
     "cashFromOperations": -16598000,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un +119.2% frente al periodo comparable. El ROCE estimado del periodo más reciente es -10.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un +119.2% frente al periodo comparable. El ROCE estimado del periodo más reciente es -10.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "operatingExpenses": {
       "concept": "OperatingExpenses",
@@ -312,20 +312,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2024-03-31",
-          "value": 14190000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q1",
-          "frame": "CY2024Q1I"
         }
       ]
     }

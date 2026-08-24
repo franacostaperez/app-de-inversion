@@ -9,7 +9,7 @@
   "reportDate": "2024-01-28T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1397187/000139718724000010/lulu-20240128.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 9619278000,
     "expenses": 7486602000,
@@ -18,7 +18,7 @@
     "operatingMargin": 22.17,
     "roce": 39.06,
     "netMargin": 16.12,
-    "totalDebt": 0,
+    "totalDebt": null,
     "cash": 2243971000,
     "cashFromOperations": 2296164000,
     "capitalExpenditure": 651865000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +18.6% frente al periodo comparable. El beneficio neto varió un +81.3% frente al periodo comparable. El margen neto del periodo más reciente es 16.1%. El ROCE estimado del periodo más reciente es 39.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +18.6% frente al periodo comparable. El beneficio neto varió un +81.3% frente al periodo comparable. El margen neto del periodo más reciente es 16.1%. El ROCE estimado del periodo más reciente es 39.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -448,20 +448,6 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2024-01-28",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "FY",
-          "frame": "CY2023Q4I"
         }
       ]
     }

@@ -9,7 +9,7 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1771515/000177151523000103/go-20230930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 1003913000,
     "expenses": 966356000,
@@ -18,7 +18,7 @@
     "operatingMargin": 3.74,
     "roce": 1.48,
     "netMargin": 2.7,
-    "totalDebt": 296250000,
+    "totalDebt": 294509000,
     "cash": 155663000,
     "cashFromOperations": 276218000,
     "capitalExpenditure": 112916000,
@@ -486,6 +486,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 379650000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 294509000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q3I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -606,12 +629,21 @@
       ]
     },
     "totalDebt": {
-      "concept": "LongTermDebt",
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
       "periods": [
         {
           "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 379650000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
           "endDate": "2023-09-30",
-          "value": 296250000,
+          "value": 294509000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",

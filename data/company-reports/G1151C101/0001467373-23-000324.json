@@ -9,7 +9,7 @@
   "reportDate": "2023-08-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1467373/000146737323000324/acn-20230831.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 15985200000,
     "expenses": 55301856000,
@@ -18,7 +18,7 @@
     "operatingMargin": 11.97,
     "roce": 5.76,
     "netMargin": 8.59,
-    "totalDebt": null,
+    "totalDebt": 147903000,
     "cash": 9045032000,
     "cashFromOperations": 9524268000,
     "capitalExpenditure": 528172000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.5% frente al periodo comparable. El beneficio neto varió un -31.7% frente al periodo comparable. El margen neto del periodo más reciente es 8.6%. El ROCE estimado del periodo más reciente es 5.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.5% frente al periodo comparable. El beneficio neto varió un -31.7% frente al periodo comparable. El margen neto del periodo más reciente es 8.6%. El ROCE estimado del periodo más reciente es 5.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -666,6 +666,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-08-31",
+          "value": 55068000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-08-31",
+          "value": 147903000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "epsDiluted": {
       "concept": "EarningsPerShareDiluted",
       "periods": [
@@ -899,6 +922,29 @@
           "startDate": "2022-09-01",
           "endDate": "2023-08-31",
           "value": 2827394000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-08-31",
+          "value": 55068000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-08-31",
+          "value": 147903000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",

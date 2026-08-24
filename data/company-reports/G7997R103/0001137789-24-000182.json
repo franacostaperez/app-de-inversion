@@ -9,7 +9,7 @@
   "reportDate": "2024-09-27T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1137789/000113778924000182/stx-20240927.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 2168000000,
     "expenses": 1765000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 18.59,
     "roce": 8.38,
     "netMargin": 14.07,
-    "totalDebt": 5676000000,
+    "totalDebt": 5729000000,
     "cash": 1239000000,
     "cashFromOperations": 95000000,
     "capitalExpenditure": 68000000,
@@ -347,6 +347,20 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-09-27",
+          "value": 5729000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q3I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -463,21 +477,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
-          "endDate": "2024-06-28",
-          "value": 5674000000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q1",
-          "frame": null
-        },
-        {
-          "startDate": null,
           "endDate": "2024-09-27",
-          "value": 5676000000,
+          "value": 5729000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",

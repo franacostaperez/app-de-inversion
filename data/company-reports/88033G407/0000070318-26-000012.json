@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/70318/000007031826000012/thc-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 21310000000,
     "expenses": 17802000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 16.46,
     "roce": 13.91,
     "netMargin": 11.11,
-    "totalDebt": null,
+    "totalDebt": 13265000000,
     "cash": 2883000000,
     "cashFromOperations": 3540000000,
     "capitalExpenditure": 1010000000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.1% frente al periodo comparable. El beneficio neto varió un -41.8% frente al periodo comparable. El margen neto del periodo más reciente es 11.1%. El ROCE estimado del periodo más reciente es 13.9%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.1% frente al periodo comparable. El beneficio neto varió un -41.8% frente al periodo comparable. El margen neto del periodo más reciente es 11.1%. El ROCE estimado del periodo más reciente es 13.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -314,6 +314,20 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 13265000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q4I"
+        }
+      ]
+    },
     "epsDiluted": {
       "concept": "EarningsPerShareDiluted",
       "periods": [
@@ -343,6 +357,20 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
           "frame": "CY2025"
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-12-31",
+          "value": 13265000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q4I"
         }
       ]
     }

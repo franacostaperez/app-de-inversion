@@ -9,7 +9,7 @@
   "reportDate": "2024-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/814547/000081454724000016/fico-20240331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 433809000,
     "expenses": 238968000,
@@ -18,7 +18,7 @@
     "operatingMargin": 44.91,
     "roce": 14.04,
     "netMargin": 29.92,
-    "totalDebt": 2028652000,
+    "totalDebt": 2043652000,
     "cash": 135667000,
     "cashFromOperations": 193155000,
     "capitalExpenditure": 5403000,
@@ -473,6 +473,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 1861658000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-03-31",
+          "value": 2043652000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2024Q1I"
+        }
+      ]
+    },
     "debtNoncurrent": {
       "concept": "LongTermDebtNoncurrent",
       "periods": [
@@ -561,12 +584,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "LongTermDebt",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2023-09-30",
-          "value": 1811658000,
+          "value": 1861658000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
@@ -575,7 +598,7 @@
         {
           "startDate": null,
           "endDate": "2024-03-31",
-          "value": 2028652000,
+          "value": 2043652000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",

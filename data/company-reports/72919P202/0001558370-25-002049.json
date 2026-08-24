@@ -9,7 +9,7 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1093691/000155837025002049/plug-20241231x10k.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 628814000,
     "expenses": 1394957000,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": -70.76,
     "netMargin": -334.71,
-    "totalDebt": 200000,
+    "totalDebt": null,
     "cash": 205693000,
     "cashFromOperations": -728643000,
     "capitalExpenditure": 287098000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -29.4% frente al periodo comparable. El beneficio neto varió un +53.8% frente al periodo comparable. El margen neto del periodo más reciente es -334.7%. El ROCE estimado del periodo más reciente es -70.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -29.4% frente al periodo comparable. El beneficio neto varió un +53.8% frente al periodo comparable. El margen neto del periodo más reciente es -334.7%. El ROCE estimado del periodo más reciente es -70.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -476,20 +476,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 200000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "FY",
-          "frame": "CY2024Q4I"
         }
       ]
     }

@@ -9,7 +9,7 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/89800/000008980023000031/shw-20230930.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 6116700000,
     "expenses": 4817900000,
@@ -18,7 +18,7 @@
     "operatingMargin": 21.23,
     "roce": 7.93,
     "netMargin": 12.45,
-    "totalDebt": 9597400000,
+    "totalDebt": 9936000000,
     "cash": 503400000,
     "cashFromOperations": 2603300000,
     "capitalExpenditure": null,
@@ -508,6 +508,38 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-09-30",
+          "value": 10534700000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2022Q3I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 10569700000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-09-30",
+          "value": 9936000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -746,12 +778,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2022-09-30",
-          "value": 9589500000,
+          "value": 10534700000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
@@ -760,16 +792,16 @@
         {
           "startDate": null,
           "endDate": "2022-12-31",
-          "value": 9591600000,
+          "value": 10569700000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
-          "frame": null
+          "frame": "CY2022Q4I"
         },
         {
           "startDate": null,
           "endDate": "2023-09-30",
-          "value": 9597400000,
+          "value": 9936000000,
           "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",

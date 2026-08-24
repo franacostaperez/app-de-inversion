@@ -9,7 +9,7 @@
   "reportDate": "2025-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1866692/000095017025104357/ampl-20250630.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 83270000,
     "expenses": 87552000,
@@ -495,15 +495,6 @@
       "concept": "GrossProfitLessOperatingExpenses",
       "periods": [
         {
-          "startDate": "2024-04-01",
-          "endDate": "2024-06-30",
-          "value": -27160000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2024Q2"
-        },
-        {
           "startDate": "2024-01-01",
           "endDate": "2024-06-30",
           "value": -51865000,
@@ -511,6 +502,15 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",
           "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": -27160000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2024Q2"
         },
         {
           "startDate": "2025-04-01",

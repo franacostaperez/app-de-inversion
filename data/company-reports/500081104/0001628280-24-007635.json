@@ -9,7 +9,7 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1853138/000162828024007635/aac-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": null,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": -0.21,
     "netMargin": null,
-    "totalDebt": 5000000,
+    "totalDebt": null,
     "cash": 1905123,
     "cashFromOperations": -1352509,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un -477668.0% frente al periodo comparable. El ROCE estimado del periodo más reciente es -0.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un -477668.0% frente al periodo comparable. El ROCE estimado del periodo más reciente es -0.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "operatingIncome": {
       "concept": "OperatingIncomeLoss",
@@ -225,29 +225,6 @@
     },
     "debtNoncurrent": {
       "concept": "LongTermDebtNoncurrent",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2022-12-31",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "FY",
-          "frame": "CY2022Q4I"
-        },
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 5000000,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "FY",
-          "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
       "periods": [
         {
           "startDate": null,

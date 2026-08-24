@@ -9,7 +9,7 @@
   "reportDate": "2024-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/96943/000009694324000072/tfx-20240331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 737849000,
     "expenses": 742642000,
@@ -18,7 +18,7 @@
     "operatingMargin": -0.65,
     "roce": -0.07,
     "netMargin": 2.07,
-    "totalDebt": 1667896000,
+    "totalDebt": null,
     "cash": 237423000,
     "cashFromOperations": null,
     "capitalExpenditure": 38432000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.8% frente al periodo comparable. El beneficio neto varió un -80.1% frente al periodo comparable. El margen neto del periodo más reciente es 2.1%. El ROCE estimado del periodo más reciente es -0.1%. La deuda declarada queda incorporada para seguir su evolución.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +3.8% frente al periodo comparable. El beneficio neto varió un -80.1% frente al periodo comparable. El margen neto del periodo más reciente es 2.1%. El ROCE estimado del periodo más reciente es -0.1%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -413,29 +413,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 1727572000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q1",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2024-03-31",
-          "value": 1667896000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q1",
-          "frame": "CY2024Q1I"
         }
       ]
     }

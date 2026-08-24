@@ -9,7 +9,7 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1559720/000155972025000010/abnb-20241231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 11102000000,
     "expenses": 8549000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 23.0,
     "roce": 23.64,
     "netMargin": 23.85,
-    "totalDebt": 1995000000,
+    "totalDebt": null,
     "cash": 6864000000,
     "cashFromOperations": 4518000000,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.9% frente al periodo comparable. El beneficio neto varió un -44.7% frente al periodo comparable. El margen neto del periodo más reciente es 23.9%. El ROCE estimado del periodo más reciente es 23.6%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.9% frente al periodo comparable. El beneficio neto varió un -44.7% frente al periodo comparable. El margen neto del periodo más reciente es 23.9%. El ROCE estimado del periodo más reciente es 23.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -357,29 +357,6 @@
     },
     "debtNoncurrent": {
       "concept": "LongTermDebtNoncurrent",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 1991000000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "FY",
-          "frame": "CY2023Q4I"
-        },
-        {
-          "startDate": null,
-          "endDate": "2024-12-31",
-          "value": 1995000000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "FY",
-          "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
       "periods": [
         {
           "startDate": null,

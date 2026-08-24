@@ -9,7 +9,7 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/8670/000000867026000011/adp-20251231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 5359300000,
     "expenses": 4081900000,
@@ -18,7 +18,7 @@
     "operatingMargin": 23.84,
     "roce": 10.22,
     "netMargin": 19.82,
-    "totalDebt": 3976400000,
+    "totalDebt": null,
     "cash": 2424700000,
     "cashFromOperations": 1775200000,
     "capitalExpenditure": null,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.2% frente al periodo comparable. El beneficio neto varió un +10.3% frente al periodo comparable. El margen neto del periodo más reciente es 19.8%. El ROCE estimado del periodo más reciente es 10.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.2% frente al periodo comparable. El beneficio neto varió un +10.3% frente al periodo comparable. El margen neto del periodo más reciente es 19.8%. El ROCE estimado del periodo más reciente es 10.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -550,15 +550,6 @@
       "concept": "RevenueLessCostsAndExpenses",
       "periods": [
         {
-          "startDate": "2024-07-01",
-          "endDate": "2024-12-31",
-          "value": 2304700000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
           "startDate": "2024-10-01",
           "endDate": "2024-12-31",
           "value": 1170200000,
@@ -566,6 +557,15 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2024Q4"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-12-31",
+          "value": 2304700000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q2",
+          "frame": null
         },
         {
           "startDate": "2025-07-01",
@@ -584,29 +584,6 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q2",
           "frame": "CY2025Q4"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-06-30",
-          "value": 3974700000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2025-12-31",
-          "value": 3976400000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q2",
-          "frame": "CY2025Q4I"
         }
       ]
     }

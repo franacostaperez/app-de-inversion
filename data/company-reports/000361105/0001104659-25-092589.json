@@ -9,7 +9,7 @@
   "reportDate": "2025-08-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1750/000110465925092589/air-20250831x10q.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 739600000,
     "expenses": null,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": null,
     "netMargin": 4.65,
-    "totalDebt": 1022100000,
+    "totalDebt": null,
     "cash": 80000000,
     "cashFromOperations": -44900000,
     "capitalExpenditure": 8700000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.8% frente al periodo comparable. El beneficio neto varió un +91.1% frente al periodo comparable. El margen neto del periodo más reciente es 4.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.8% frente al periodo comparable. El beneficio neto varió un +91.1% frente al periodo comparable. El margen neto del periodo más reciente es 4.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -321,29 +321,6 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",
           "frame": "CY2025Q3"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-05-31",
-          "value": 968000000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q1",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2025-08-31",
-          "value": 1022100000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q1",
-          "frame": "CY2025Q3I"
         }
       ]
     }

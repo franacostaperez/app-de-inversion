@@ -9,7 +9,7 @@
   "reportDate": "2026-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/96943/000009694326000050/tfx-20260331.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 548262000,
     "expenses": 528079000,
@@ -18,7 +18,7 @@
     "operatingMargin": 3.68,
     "roce": 0.33,
     "netMargin": -1.49,
-    "totalDebt": 2514268000,
+    "totalDebt": null,
     "cash": 309411000,
     "cashFromOperations": null,
     "capitalExpenditure": 18791000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +32.4% frente al periodo comparable. El beneficio neto varió un -108.6% frente al periodo comparable. El margen neto del periodo más reciente es -1.5%. El ROCE estimado del periodo más reciente es 0.3%. La deuda declarada queda incorporada para seguir su evolución.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +32.4% frente al periodo comparable. El beneficio neto varió un -108.6% frente al periodo comparable. El margen neto del periodo más reciente es -1.5%. El ROCE estimado del periodo más reciente es 0.3%.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -390,29 +390,6 @@
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",
           "frame": "CY2026Q1"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-12-31",
-          "value": 2541449000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q1",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2026-03-31",
-          "value": 2514268000,
-          "unit": "USD",
-          "fiscalYear": 2026,
-          "fiscalPeriod": "Q1",
-          "frame": "CY2026Q1I"
         }
       ]
     }

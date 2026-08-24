@@ -9,7 +9,7 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1852131/000162828024003593/nxt-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 710426000,
     "expenses": 561954000,
@@ -18,7 +18,7 @@
     "operatingMargin": 20.9,
     "roce": 11.12,
     "netMargin": 5.83,
-    "totalDebt": 144762000,
+    "totalDebt": null,
     "cash": 367818000,
     "cashFromOperations": 317481000,
     "capitalExpenditure": 3850000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +38.4% frente al periodo comparable. El margen neto del periodo más reciente es 5.8%. El ROCE estimado del periodo más reciente es 11.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +38.4% frente al periodo comparable. El margen neto del periodo más reciente es 5.8%. El ROCE estimado del periodo más reciente es 11.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -475,29 +475,6 @@
           "fiscalYear": 2024,
           "fiscalPeriod": "Q3",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-03-31",
-          "value": 147147000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 144762000,
-          "unit": "USD",
-          "fiscalYear": 2024,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2023Q4I"
         }
       ]
     }

@@ -9,7 +9,7 @@
   "reportDate": "2025-02-02T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1730168/000173016825000021/avgo-20250202.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 14916000000,
     "expenses": 3885000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 41.97,
     "roce": 4.33,
     "netMargin": 36.89,
-    "totalDebt": 1650000000,
+    "totalDebt": 68757000000,
     "cash": 9307000000,
     "cashFromOperations": 6113000000,
     "capitalExpenditure": 100000000,
@@ -370,6 +370,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-11-03",
+          "value": 69847000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-02-02",
+          "value": 68757000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q4I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -463,12 +486,12 @@
       ]
     },
     "totalDebt": {
-      "concept": "AvailableDebtComponents",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
         {
           "startDate": null,
           "endDate": "2024-11-03",
-          "value": 1245000000,
+          "value": 69847000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",
@@ -477,7 +500,7 @@
         {
           "startDate": null,
           "endDate": "2025-02-02",
-          "value": 1650000000,
+          "value": 68757000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",

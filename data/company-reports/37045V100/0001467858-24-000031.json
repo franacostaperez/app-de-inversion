@@ -9,7 +9,7 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1467858/000146785824000031/gm-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 171842000000,
     "expenses": 162544000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 5.41,
     "roce": 5.21,
     "netMargin": 5.89,
-    "totalDebt": null,
+    "totalDebt": 123494000000,
     "cash": 18853000000,
     "cashFromOperations": 20930000000,
     "capitalExpenditure": 10970000000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +9.6% frente al periodo comparable. El beneficio neto varió un +1.9% frente al periodo comparable. El margen neto del periodo más reciente es 5.9%. El ROCE estimado del periodo más reciente es 5.2%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +9.6% frente al periodo comparable. El beneficio neto varió un +1.9% frente al periodo comparable. El margen neto del periodo más reciente es 5.9%. El ROCE estimado del periodo más reciente es 5.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -346,6 +346,20 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 123494000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4I"
+        }
+      ]
+    },
     "epsDiluted": {
       "concept": "EarningsPerShareDiluted",
       "periods": [
@@ -430,6 +444,20 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 123494000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4I"
         }
       ]
     }

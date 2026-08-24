@@ -9,7 +9,7 @@
   "reportDate": "2026-04-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000102/wmt-20260430.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 177751000000,
     "expenses": 170258000000,
@@ -296,6 +296,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2026-01-31",
+          "value": 38166000000,
+          "unit": "USD",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-04-30",
+          "value": 40783000000,
+          "unit": "USD",
+          "fiscalYear": 2027,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1I"
+        }
+      ]
+    },
     "debtCurrent": {
       "concept": "LongTermDebtCurrent",
       "periods": [
@@ -430,17 +453,8 @@
       ]
     },
     "totalDebt": {
-      "concept": "DebtCurrentPlusNoncurrent",
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
       "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-04-30",
-          "value": 40605000000,
-          "unit": "USD",
-          "fiscalYear": 2027,
-          "fiscalPeriod": "Q1",
-          "frame": "CY2025Q1I"
-        },
         {
           "startDate": null,
           "endDate": "2026-01-31",

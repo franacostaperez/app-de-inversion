@@ -9,7 +9,7 @@
   "reportDate": "2024-12-28T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/90896/000095017025014483/sky-20241228.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 644925000,
     "expenses": 572117000,
@@ -18,7 +18,7 @@
     "operatingMargin": 11.29,
     "roce": 4.43,
     "netMargin": 9.54,
-    "totalDebt": 24696000,
+    "totalDebt": null,
     "cash": 581753000,
     "cashFromOperations": 194852000,
     "capitalExpenditure": 37971000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +15.3% frente al periodo comparable. El beneficio neto varió un +31.0% frente al periodo comparable. El margen neto del periodo más reciente es 9.5%. El ROCE estimado del periodo más reciente es 4.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +15.3% frente al periodo comparable. El beneficio neto varió un +31.0% frente al periodo comparable. El margen neto del periodo más reciente es 9.5%. El ROCE estimado del periodo más reciente es 4.4%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -434,29 +434,6 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2024-03-30",
-          "value": 24669000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2024-12-28",
-          "value": 24696000,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2024Q4I"
         }
       ]
     }

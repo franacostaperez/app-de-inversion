@@ -9,7 +9,7 @@
   "reportDate": "2024-05-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1341439/000095017024075605/orcl-20240531.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 52961000000,
     "expenses": 37608000000,
@@ -18,7 +18,7 @@
     "operatingMargin": 28.99,
     "roce": 14.03,
     "netMargin": 19.76,
-    "totalDebt": null,
+    "totalDebt": 86869000000,
     "cash": 10454000000,
     "cashFromOperations": 18673000000,
     "capitalExpenditure": 6866000000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.0% frente al periodo comparable. El beneficio neto varió un +23.1% frente al periodo comparable. El margen neto del periodo más reciente es 19.8%. El ROCE estimado del periodo más reciente es 14.0%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +6.0% frente al periodo comparable. El beneficio neto varió un +23.1% frente al periodo comparable. El margen neto del periodo más reciente es 19.8%. El ROCE estimado del periodo más reciente es 14.0%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -346,6 +346,29 @@
         }
       ]
     },
+    "reportedTotalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-05-31",
+          "value": 90481000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-05-31",
+          "value": 86869000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
     "epsDiluted": {
       "concept": "EarningsPerShareDiluted",
       "periods": [
@@ -435,6 +458,29 @@
           "startDate": "2023-06-01",
           "endDate": "2024-05-31",
           "value": 4391000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "DebtLongtermAndShorttermCombinedAmount",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-05-31",
+          "value": 90481000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-05-31",
+          "value": 86869000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",

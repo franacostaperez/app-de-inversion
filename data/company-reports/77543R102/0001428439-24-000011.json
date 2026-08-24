@@ -9,7 +9,7 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1428439/000142843924000011/roku-20231231.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 3484619000,
     "expenses": 2314992000,
@@ -18,7 +18,7 @@
     "operatingMargin": -22.74,
     "roce": -26.53,
     "netMargin": -20.36,
-    "totalDebt": 0,
+    "totalDebt": null,
     "cash": 2025891000,
     "cashFromOperations": 255856000,
     "capitalExpenditure": 82619000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.4% frente al periodo comparable. El beneficio neto varió un +42.5% frente al periodo comparable. El margen neto del periodo más reciente es -20.4%. El ROCE estimado del periodo más reciente es -26.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.4% frente al periodo comparable. El beneficio neto varió un +42.5% frente al periodo comparable. El margen neto del periodo más reciente es -20.4%. El ROCE estimado del periodo más reciente es -26.5%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -480,29 +480,6 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2022-12-31",
-          "value": 79985000,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "FY",
-          "frame": "CY2022Q4I"
-        },
-        {
-          "startDate": null,
-          "endDate": "2023-12-31",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "FY",
-          "frame": "CY2023Q4I"
         }
       ]
     }

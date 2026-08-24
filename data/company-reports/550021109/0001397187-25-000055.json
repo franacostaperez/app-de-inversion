@@ -9,7 +9,7 @@
   "reportDate": "2025-11-02T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1397187/000139718725000055/lulu-20251102.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": 2565920000,
     "expenses": 2130034000,
@@ -18,7 +18,7 @@
     "operatingMargin": 16.99,
     "roce": 7.13,
     "netMargin": 11.96,
-    "totalDebt": 0,
+    "totalDebt": null,
     "cash": 1035862000,
     "cashFromOperations": 459606000,
     "capitalExpenditure": 497602000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +7.1% frente al periodo comparable. El beneficio neto varió un -12.8% frente al periodo comparable. El margen neto del periodo más reciente es 12.0%. El ROCE estimado del periodo más reciente es 7.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +7.1% frente al periodo comparable. El beneficio neto varió un -12.8% frente al periodo comparable. El margen neto del periodo más reciente es 12.0%. El ROCE estimado del periodo más reciente es 7.1%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -502,20 +502,6 @@
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",
           "frame": "CY2025Q3"
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2025-11-02",
-          "value": 0,
-          "unit": "USD",
-          "fiscalYear": 2025,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2025Q3I"
         }
       ]
     }

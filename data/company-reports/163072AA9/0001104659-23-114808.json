@@ -9,7 +9,7 @@
   "reportDate": "2023-10-03T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/887596/000110465923114808/cake-20231003x10q.htm",
   "source": "SEC EDGAR XBRL",
-  "extractionVersion": 3,
+  "extractionVersion": 4,
   "summary": {
     "revenue": null,
     "expenses": 811180000,
@@ -18,7 +18,7 @@
     "operatingMargin": null,
     "roce": 0.88,
     "netMargin": null,
-    "totalDebt": 469543000,
+    "totalDebt": null,
     "cash": 63987000,
     "cashFromOperations": 150546000,
     "capitalExpenditure": 99923000,
@@ -28,7 +28,7 @@
     "expectedRevenue": null,
     "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un -848.3% frente al periodo comparable. El ROCE estimado del periodo más reciente es 0.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "El beneficio neto varió un -848.3% frente al periodo comparable. El ROCE estimado del periodo más reciente es 0.9%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "operatingExpenses": {
       "concept": "CostsAndExpenses",
@@ -434,29 +434,6 @@
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null
-        }
-      ]
-    },
-    "totalDebt": {
-      "concept": "AvailableDebtComponents",
-      "periods": [
-        {
-          "startDate": null,
-          "endDate": "2023-01-03",
-          "value": 468032000,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q3",
-          "frame": null
-        },
-        {
-          "startDate": null,
-          "endDate": "2023-10-03",
-          "value": 469543000,
-          "unit": "USD",
-          "fiscalYear": 2023,
-          "fiscalPeriod": "Q3",
-          "frame": "CY2023Q3I"
         }
       ]
     }
