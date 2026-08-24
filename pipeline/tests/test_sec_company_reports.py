@@ -1,9 +1,14 @@
 import unittest
 
-from pipeline.sec_company_reports import build_summary, fact_rows, recent_rows
+from pipeline.sec_company_reports import (
+    build_summary, fact_rows, merge_known, namespace_fact_rows, recent_rows, synthesize_income_statement,
+)
 
 
 class CompanyReportTests(unittest.TestCase):
+    def test_qualitative_profile_cannot_erase_verified_ticker(self):
+        self.assertEqual(merge_known({"ticker": "AAPL"}, {"ticker": None})["ticker"], "AAPL")
+
     def test_extracts_every_comparative_period_from_same_filing(self):
         facts = {"facts": {"us-gaap": {"Revenues": {"units": {"USD": [
             {"accn": "a", "start": "2024-01-01", "end": "2024-12-31", "val": 90, "fy": 2025, "fp": "FY"},
@@ -29,6 +34,27 @@ class CompanyReportTests(unittest.TestCase):
         self.assertEqual(summary["netMargin"], 15)
         self.assertEqual(summary["roce"], 16.67)
         self.assertIn("epsDiluted", summary)
+
+    def test_extracts_ifrs_facts(self):
+        facts = {"facts": {"ifrs-full": {"Revenue": {"units": {"EUR": [
+            {"accn": "a", "start": "2025-01-01", "end": "2025-12-31", "val": 120},
+        ]}}}}}
+        concept, periods = namespace_fact_rows(facts, "a", "ifrs-full", ("Revenue",))
+        self.assertEqual(concept, "Revenue")
+        self.assertEqual(periods[0]["value"], 120)
+
+    def test_reconstructs_revenue_and_operating_income_from_standard_subtotals(self):
+        period = {"startDate": "2025-01-01", "endDate": "2025-12-31", "unit": "USD"}
+        metrics = {
+            "grossProfit": {"concept": "GrossProfit", "periods": [{**period, "value": 40}]},
+            "costOfRevenue": {"concept": "CostOfRevenue", "periods": [{**period, "value": 60}]},
+            "operatingExpenses": {"concept": "OperatingExpenses", "periods": [{**period, "value": 15}]},
+        }
+        synthesize_income_statement(metrics)
+        summary, _ = build_summary(metrics)
+        self.assertEqual(summary["revenue"], 100)
+        self.assertEqual(summary["operatingIncome"], 25)
+        self.assertEqual(summary["operatingMargin"], 25)
 
     def test_keeps_dividend_per_share_without_calculating_payout(self):
         metrics = {

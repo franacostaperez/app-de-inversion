@@ -19,6 +19,15 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertIsNone(metric("<html></html>", "Dividend"))
         self.assertIsNone(number("—"))
 
+    def test_reads_current_google_finance_markup(self):
+        page = ('<div class="mfs7Fc">P/E ratio</div><div class="tip">Help</div>'
+                '<div class="P6K39c">12.75</div>'
+                '<div class="mfs7Fc">Dividend yield</div><span>Help</span>'
+                '<div class="P6K39c">4.25%</div>')
+        profile = profile_from_google("123", "Example", "ABC", "NYSE", page)
+        self.assertEqual(profile["peRatio"], 12.75)
+        self.assertEqual(profile["dividendYield"], 0.0425)
+
     def test_daily_refresh_preserves_qualitative_research(self):
         class Client:
             def google_quote(self, ticker, preferred_exchange=None):

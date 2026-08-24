@@ -73,13 +73,23 @@ def number(value):
 
 
 def metric(page: str, label: str) -> float | None:
-    pattern = rf'<div class="SwQK7">{re.escape(label)}</div><div class="dO6ijd">([^<]+)'
-    match = re.search(pattern, page)
-    return number(html.unescape(match.group(1))) if match else None
+    patterns = (
+        # Current Google Finance markup (2026).
+        rf'<div[^>]*>{re.escape(label)}</div>.{{0,900}}?<div class="P6K39c">([^<]+)',
+        # Legacy markup retained for reproducibility of fixtures and cached pages.
+        rf'<div class="SwQK7">{re.escape(label)}</div><div class="dO6ijd">([^<]+)',
+    )
+    for pattern in patterns:
+        match = re.search(pattern, page, re.DOTALL)
+        if match:
+            return number(html.unescape(match.group(1)))
+    return None
 
 
 def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page: str) -> dict:
-    yield_percent = metric(page, "Dividend")
+    yield_percent = metric(page, "Dividend yield")
+    if yield_percent is None:
+        yield_percent = metric(page, "Dividend")
     quarterly_dividend = metric(page, "Quarterly dividend")
     return {
         "cusip": cusip, "name": name, "ticker": ticker, "exchange": exchange,
@@ -249,9 +259,11 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         exchange, page = client.google_quote(ticker, existing.get("exchange"))
         if page:
             refreshed = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
-            for key in ("description", "businessModel", "revenueModel", "economicMoat", "sector", "industry", "website", "investorRelationsURL", "latestQuarterlyReportURL", "latestQuarterlyReportDate", "latestAnnualReportURL", "latestAnnualReportDate"):
-                if existing.get(key):
-                    refreshed[key] = existing[key]
+            # A source omitting a field today must not erase a previously verified
+            # value; any newly reported non-null metric still takes precedence.
+            for key, value in existing.items():
+                if refreshed.get(key) is None and value is not None:
+                    refreshed[key] = value
             by_cusip[cusip] = refreshed
         elif not existing:
             by_cusip[cusip] = {

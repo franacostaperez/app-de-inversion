@@ -15,6 +15,7 @@ from typing import Any
 DATA_BASE = "https://data.sec.gov"
 ARCHIVE_BASE = "https://www.sec.gov/Archives/edgar/data"
 FORMS = {"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A", "10-Q", "10-Q/A"}
+EXTRACTION_VERSION = 2
 
 CONCEPTS = {
     "revenue": ("RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues", "SalesRevenueNet"),
@@ -39,6 +40,28 @@ CONCEPTS = {
     "dividendsPaid": ("PaymentsOfDividendsCommonStock", "PaymentsOfDividends", "PaymentsOfOrdinaryDividends"),
 }
 
+IFRS_CONCEPTS = {
+    "revenue": ("Revenue",),
+    "costOfRevenue": ("CostOfSales",),
+    "operatingExpenses": ("DistributionCosts", "AdministrativeExpense"),
+    "grossProfit": ("GrossProfit",),
+    "operatingIncome": ("ProfitLossFromOperatingActivities", "OperatingProfitLoss"),
+    "netIncome": ("ProfitLoss",),
+    "interestExpense": ("FinanceCosts",),
+    "cashFromOperations": ("CashFlowsFromUsedInOperatingActivities",),
+    "capitalExpenditure": ("PurchaseOfPropertyPlantAndEquipment",),
+    "cash": ("CashAndCashEquivalents",),
+    "totalAssets": ("Assets",),
+    "totalLiabilities": ("Liabilities",),
+    "currentLiabilities": ("CurrentLiabilities",),
+    "shareholdersEquity": ("Equity", "EquityAttributableToOwnersOfParent"),
+    "debtCurrent": ("CurrentBorrowings",),
+    "debtNoncurrent": ("NoncurrentBorrowings",),
+    "epsDiluted": ("DilutedEarningsLossPerShare",),
+    "dividendPerShare": ("DividendsPerShare",),
+    "dividendsPaid": ("DividendsPaid", "DividendsPaidClassifiedAsFinancingActivities"),
+}
+
 
 def cutoff(today: date | None = None, years: int = 3) -> date:
     today = today or date.today()
@@ -46,6 +69,12 @@ def cutoff(today: date | None = None, years: int = 3) -> date:
         return today.replace(year=today.year - years)
     except ValueError:
         return today.replace(year=today.year - years, day=28)
+
+
+def merge_known(base: dict, preferred: dict) -> dict:
+    result = dict(base)
+    result.update({key: value for key, value in preferred.items() if value is not None})
+    return result
 
 
 class SecClient:
@@ -74,9 +103,15 @@ def recent_rows(submissions: dict[str, Any]) -> list[dict[str, str]]:
 
 
 def fact_rows(companyfacts: dict[str, Any], accession: str, concepts: tuple[str, ...]) -> tuple[str | None, list[dict]]:
-    us_gaap = companyfacts.get("facts", {}).get("us-gaap", {})
+    return namespace_fact_rows(companyfacts, accession, "us-gaap", concepts)
+
+
+def namespace_fact_rows(
+    companyfacts: dict[str, Any], accession: str, namespace: str, concepts: tuple[str, ...]
+) -> tuple[str | None, list[dict]]:
+    taxonomy = companyfacts.get("facts", {}).get(namespace, {})
     for concept in concepts:
-        fact = us_gaap.get(concept)
+        fact = taxonomy.get(concept)
         if not fact:
             continue
         preferred_unit = "USD/shares" if concept in {
@@ -106,6 +141,42 @@ def fact_rows(companyfacts: dict[str, Any], accession: str, concepts: tuple[str,
             matches.sort(key=lambda item: (item.get("endDate") or "", item.get("startDate") or ""))
             return concept, matches
     return None, []
+
+
+def synthesized_metric(concept: str, periods: list[dict]) -> dict:
+    return {"concept": concept, "periods": sorted(periods, key=lambda item: item.get("endDate") or "")}
+
+
+def period_values(metric: dict | None) -> dict[tuple[str | None, str | None], dict]:
+    return {
+        (period.get("startDate"), period.get("endDate")): period
+        for period in (metric or {}).get("periods", [])
+        if period.get("value") is not None
+    }
+
+
+def synthesize_income_statement(metrics: dict[str, dict]) -> None:
+    """Reconstruct standard subtotals only when the XBRL arithmetic is unambiguous."""
+    if "revenue" not in metrics and "grossProfit" in metrics and "costOfRevenue" in metrics:
+        gross, costs = period_values(metrics["grossProfit"]), period_values(metrics["costOfRevenue"])
+        periods = [{**gross[key], "value": gross[key]["value"] + costs[key]["value"]} for key in gross.keys() & costs.keys()]
+        if periods:
+            metrics["revenue"] = synthesized_metric("GrossProfitPlusCostOfRevenue", periods)
+
+    if "operatingIncome" in metrics or "operatingExpenses" not in metrics:
+        return
+    expenses = period_values(metrics["operatingExpenses"])
+    expense_concept = metrics["operatingExpenses"].get("concept")
+    if expense_concept not in {"CostsAndExpenses", "OperatingExpenses"}:
+        return
+    base_key = "revenue" if expense_concept == "CostsAndExpenses" else "grossProfit"
+    base = period_values(metrics.get(base_key))
+    periods = [{**base[key], "value": base[key]["value"] - expenses[key]["value"]} for key in base.keys() & expenses.keys()]
+    if periods:
+        metrics["operatingIncome"] = synthesized_metric(
+            "RevenueLessCostsAndExpenses" if base_key == "revenue" else "GrossProfitLessOperatingExpenses",
+            periods,
+        )
 
 
 def latest_value(metrics: dict[str, dict], key: str):
@@ -216,8 +287,13 @@ def extract_report(profile: dict, cik: int, row: dict[str, str], companyfacts: d
     metrics = {}
     for key, concepts in CONCEPTS.items():
         concept, periods = fact_rows(companyfacts, row["accessionNumber"], concepts)
+        if not periods:
+            concept, periods = namespace_fact_rows(
+                companyfacts, row["accessionNumber"], "ifrs-full", IFRS_CONCEPTS.get(key, ())
+            )
         if periods:
             metrics[key] = {"concept": concept, "periods": periods}
+    synthesize_income_statement(metrics)
     synthesize_total_debt(metrics)
     summary, narrative = build_summary(metrics)
     return {
@@ -231,6 +307,7 @@ def extract_report(profile: dict, cik: int, row: dict[str, str], companyfacts: d
         "reportDate": row["reportDate"] + "T00:00:00Z",
         "secURL": archive_url(cik, row["accessionNumber"], row["primaryDocument"]),
         "source": "SEC EDGAR XBRL",
+        "extractionVersion": EXTRACTION_VERSION,
         "summary": summary,
         "highlights": narrative,
         "metrics": metrics,
@@ -259,7 +336,11 @@ def run(client: SecClient, profiles: list[dict], output: Path, refresh: bool = F
                 try:
                     stored = json.loads(destination.read_text())
                     summary = stored.get("summary", {})
-                    needs_derived_metrics = "roce" not in summary or "epsDiluted" not in summary
+                    needs_derived_metrics = (
+                        stored.get("extractionVersion", 0) < EXTRACTION_VERSION
+                        or "operatingMargin" not in summary
+                        or "epsDiluted" not in summary
+                    )
                 except (OSError, json.JSONDecodeError):
                     needs_derived_metrics = True
             if refresh or not destination.exists() or needs_derived_metrics:
@@ -289,7 +370,7 @@ def main() -> None:
     qualitative = json.loads(args.qualitative_database.read_text()) if args.qualitative_database.exists() else []
     profiles = {item["cusip"]: item for item in base}
     for item in qualitative:
-        profiles[item["cusip"]] = {**profiles.get(item["cusip"], {}), **item}
+        profiles[item["cusip"]] = merge_known(profiles.get(item["cusip"], {}), item)
     written = run(SecClient(args.user_agent), list(profiles.values()), args.output, args.refresh)
     print(f"Archived {written} new company reports")
 
