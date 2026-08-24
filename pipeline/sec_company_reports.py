@@ -41,7 +41,7 @@ CONCEPTS = {
 }
 
 IFRS_CONCEPTS = {
-    "revenue": ("Revenue",),
+    "revenue": ("Revenue", "RevenueFromContractsWithCustomers"),
     "costOfRevenue": ("CostOfSales",),
     "operatingExpenses": ("DistributionCosts", "AdministrativeExpense"),
     "grossProfit": ("GrossProfit",),
@@ -58,7 +58,10 @@ IFRS_CONCEPTS = {
     "debtCurrent": ("CurrentBorrowings",),
     "debtNoncurrent": ("NoncurrentBorrowings",),
     "epsDiluted": ("DilutedEarningsLossPerShare",),
-    "dividendPerShare": ("DividendsPerShare",),
+    "dividendPerShare": (
+        "DividendsPerShare", "DividendsPaidOrdinarySharesPerShare",
+        "DividendsRecognisedAsDistributionsToOwnersPerShare",
+    ),
     "dividendsPaid": ("DividendsPaid", "DividendsPaidClassifiedAsFinancingActivities"),
 }
 

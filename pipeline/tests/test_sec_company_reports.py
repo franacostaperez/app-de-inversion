@@ -43,6 +43,16 @@ class CompanyReportTests(unittest.TestCase):
         self.assertEqual(concept, "Revenue")
         self.assertEqual(periods[0]["value"], 120)
 
+    def test_extracts_ifrs_dividend_per_share_concept_used_by_tsmc(self):
+        facts = {"facts": {"ifrs-full": {"DividendsPaidOrdinarySharesPerShare": {"units": {"TWD/shares": [
+            {"accn": "a", "start": "2025-01-01", "end": "2025-12-31", "val": 15},
+        ]}}}}}
+        concept, periods = namespace_fact_rows(
+            facts, "a", "ifrs-full", ("DividendsPaidOrdinarySharesPerShare",)
+        )
+        self.assertEqual(concept, "DividendsPaidOrdinarySharesPerShare")
+        self.assertEqual(periods[0]["value"], 15)
+
     def test_reconstructs_revenue_and_operating_income_from_standard_subtotals(self):
         period = {"startDate": "2025-01-01", "endDate": "2025-12-31", "unit": "USD"}
         metrics = {
