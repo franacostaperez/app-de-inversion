@@ -248,7 +248,7 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let dividendInvestorScore: Int?
     public let valuationInvestorScore: Int?
     public let profitabilityInvestorScore: Int?
-    public let roceInvestorScore: Int?
+    public let operatingMarginRating: Int?
     public let consensusInvestorScore: Int?
     public let sector: String?
     public let sectorPEBenchmark: Double?

@@ -50,9 +50,9 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     if dividend_yield is None or dividend_yield <= 0:
         return 0
     return graduated_score(dividend_yield, [
-        (0, 0), (1, 0), (2, 2), (3, 5), (3.5, 7), (4, 11),
-        (5, 14), (5.5, 16), (6, 18), (6.5, 18), (7, 16),
-        (8, 14), (9, 11), (10, 7), (12, 4), (15, 0), (20, 0),
+        (0, 0), (1, 0), (2, 2), (3, 6), (3.5, 8), (4, 13),
+        (5, 17), (5.5, 19), (6, 21), (6.5, 21), (7, 19),
+        (8, 16), (9, 13), (10, 8), (12, 5), (15, 0), (20, 0),
     ])
 
 
@@ -65,8 +65,8 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
     # receive the maximum valuation score. Sector and brand context can make a
     # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 48), (10, 48), (12, 43), (15, 36), (18, 29),
-        (22, 20), (28, 11), (35, 4), (45, 0),
+        (5, 50), (10, 50), (12, 45), (15, 38), (18, 30),
+        (22, 21), (28, 12), (35, 4), (45, 0),
     ])
     relative = pe / ideal_pe if ideal_pe > 0 else 1
     if relative <= 0.70:
@@ -81,7 +81,7 @@ def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
         adjustment = -3
     else:
         adjustment = -5
-    maximum = 48 if pe <= 10 else 47
+    maximum = 50 if pe <= 10 else 49
     return max(0, min(maximum, base + adjustment))
 
 
@@ -447,8 +447,6 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             missing_metrics.append("dividendGrowth")
         if operating_margin is None:
             missing_metrics.append("operatingMargin")
-        if roce is None:
-            missing_metrics.append("roce")
         sector = profile.get("sector", company.get("sector", "Unknown"))
         brand_strength = profile.get("brandStrength", "low")
         sector_multiplier = SECTOR_PE_MULTIPLIERS.get(sector, 1.0)
@@ -465,37 +463,21 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         elif dividend_growth < 1:
             growth_score = 1
         elif dividend_growth < 3:
-            growth_score = 3
+            growth_score = 4
         elif dividend_growth < 7:
-            growth_score = 5
-        else:
             growth_score = 7
+        else:
+            growth_score = 9
         dividend_score = yield_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
 
-        profitability_score = operating_margin_investor_score(operating_margin)
+        operating_margin_rating = operating_margin_investor_score(operating_margin)
+        profitability_score = round(operating_margin_rating * 14 / 10)
 
-        if roce is None:
-            roce_score = 0
-        elif roce <= 0:
-            roce_score = 0
-        elif roce < 5:
-            roce_score = 2
-        elif roce < 10:
-            roce_score = 4
-        elif roce < 15:
-            roce_score = 6
-        elif roce < 20:
-            roce_score = 9
-        elif roce < 30:
-            roce_score = 11
-        else:
-            roce_score = 12
-
-        consensus_score = min(3, counts["holders"]) + max(-2, min(2, net_buying))
-        consensus_score = max(0, min(5, consensus_score))
-        score = dividend_score + valuation_score + profitability_score + roce_score + consensus_score
+        consensus_score = min(4, counts["holders"]) + max(-2, min(2, net_buying))
+        consensus_score = max(0, min(6, consensus_score))
+        score = dividend_score + valuation_score + profitability_score + consensus_score
         consensus_items.append({
             # Older app builds decoded this field as a required String. Keep an
             # empty compatibility value when no real ticker has been verified.
@@ -516,11 +498,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "opportunityScore": min(100, score) if not missing_metrics else None,
             "scoreStatus": "COMPLETE" if not missing_metrics else "INCOMPLETE",
             "missingScoreMetrics": missing_metrics,
-            "scoreCoverage": round((5 - len(missing_metrics)) / 5 * 100),
+            "scoreCoverage": round((4 - len(missing_metrics)) / 4 * 100),
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
             "profitabilityInvestorScore": profitability_score,
-            "roceInvestorScore": roce_score,
+            "operatingMarginRating": operating_margin_rating,
             "consensusInvestorScore": consensus_score,
             "sector": sector,
             "sectorPEBenchmark": adjusted_pe_benchmark,
@@ -537,11 +519,11 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     consensus_items = []
     for key, item in consolidated_items.items():
         counts = issuer_consensus.get(key, {"holders": item["holders"], "buying": item["buying"], "selling": item["selling"]})
-        consensus_score = min(3, counts["holders"]) + max(-2, min(2, counts["buying"] - counts["selling"]))
-        consensus_score = max(0, min(5, consensus_score))
+        consensus_score = min(4, counts["holders"]) + max(-2, min(2, counts["buying"] - counts["selling"]))
+        consensus_score = max(0, min(6, consensus_score))
         score_without_consensus = (
             item["dividendInvestorScore"] + item["valuationInvestorScore"]
-            + item["profitabilityInvestorScore"] + item["roceInvestorScore"]
+            + item["profitabilityInvestorScore"]
         )
         item.update({
             **counts,

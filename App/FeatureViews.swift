@@ -881,14 +881,6 @@ private struct OpportunityAnalysisView: View {
         } else {
             result.append("No hay margen operativo anual comparable; el score queda pendiente hasta obtenerlo.")
         }
-        if let roce = item.roce {
-            if roce <= 0 { result.append("El ROCE no es positivo y no aporta puntos de eficiencia del capital.") }
-            else if roce < 10 { result.append("El ROCE del \(roce.formatted(.number.precision(.fractionLength(1)))) % es reducido y limita el score.") }
-            else if roce < 20 { result.append("El ROCE refleja una utilización razonable del capital empleado.") }
-            else { result.append("El ROCE del \(roce.formatted(.number.precision(.fractionLength(1)))) % indica una elevada eficiencia del capital y mejora el score.") }
-        } else {
-            result.append("No hay ROCE anual calculable; el score queda pendiente hasta obtenerlo.")
-        }
         if let growth = item.dividendGrowth {
             if growth < 0 { result.append("El dividendo por acción ha disminuido y no obtiene puntos por crecimiento.") }
             else if growth < 3 { result.append("El dividendo por acción crece a un ritmo anualizado moderado del \(growth.formatted(.number.precision(.fractionLength(1)))) %.") }
@@ -942,7 +934,9 @@ private struct OpportunityAnalysisView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 LabeledContent("Margen operativo", value: item.operatingMargin.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
-                LabeledContent("ROCE", value: item.roce.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—")
+                if let rating = item.operatingMarginRating {
+                    LabeledContent("Nivel del margen", value: "\(rating) / 10")
+                }
                 LabeledContent("Crecimiento del dividendo", value: item.dividendGrowth.map { $0.formatted(.number.precision(.fractionLength(1))) + "% anual" } ?? "—")
                 if let sector = item.sector { LabeledContent("Sector", value: sector) }
                 if let benchmark = item.sectorPEBenchmark {
@@ -956,12 +950,11 @@ private struct OpportunityAnalysisView: View {
             Section("Desglose del score") {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
-                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 48, icon: "scalemass.fill")
-                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 18, icon: "percent")
-                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 7, icon: "chart.line.uptrend.xyaxis")
-                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 10, icon: "gauge.with.dots.needle.50percent")
-                ScoreComponentRow(label: "ROCE", value: item.roceInvestorScore ?? 0, maximum: 12, icon: "arrow.triangle.2.circlepath")
-                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 5, icon: "building.columns.fill")
+                ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 50, icon: "scalemass.fill")
+                ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 21, icon: "percent")
+                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 9, icon: "chart.line.uptrend.xyaxis")
+                ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 14, icon: "gauge.with.dots.needle.50percent")
+                ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 6, icon: "building.columns.fill")
             }
             if !annualReports.isEmpty {
                 Section("Informes anuales publicados") {
@@ -1034,7 +1027,6 @@ private func scoreMetricNames(_ metrics: [String]?) -> [String] {
         case "pe": "PER"
         case "dividendGrowth": "crecimiento del dividendo"
         case "operatingMargin": "margen operativo"
-        case "roce": "ROCE"
         default: $0
         }
     }
