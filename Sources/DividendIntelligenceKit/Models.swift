@@ -121,6 +121,12 @@ public struct CompanyProfile: Codable, Identifiable, Sendable {
     public let sector: String?
     public let industry: String?
     public let marketCapitalization: Double?
+    public let marketPrice: Double?
+    public let movingAverage1000: Double?
+    public let priceVsMovingAverage1000Percent: Double?
+    public let movingAverage1000Sessions: Int?
+    public let movingAverage1000AsOf: String?
+    public let priceHistorySource: String?
     public let paysDividend: Bool?
     public let dividendPerShare: Double?
     public let dividendYield: Double?

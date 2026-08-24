@@ -3,7 +3,7 @@ import unittest
 from pipeline.build_snapshot import (
     aggregate_holdings, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
     merge_known, operating_margin_investor_score, retained_filing_date, valuation_investor_score,
-    yield_investor_score,
+    sanitize_company_profile, yield_investor_score,
 )
 
 
@@ -15,6 +15,21 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(profile["source"], "Verified mapping")
         self.assertEqual(profile["status"], "identified")
         self.assertTrue(profile["updatedAt"].endswith("Z"))
+
+    def test_non_equity_profile_cannot_keep_equity_metrics(self):
+        profile = sanitize_company_profile({
+            "cusip": "1", "quoteEligible": False, "marketPrice": 10,
+            "dividendYield": 0.08, "peRatio": 12, "paysDividend": True,
+        })
+        self.assertIsNone(profile["marketPrice"])
+        self.assertIsNone(profile["dividendYield"])
+        self.assertIsNone(profile["peRatio"])
+        self.assertIn("NON_EQUITY_OR_UNQUOTED_INSTRUMENT", profile["metricWarnings"])
+
+    def test_impossible_yield_is_quarantined(self):
+        profile = sanitize_company_profile({"cusip": "1", "dividendYield": 1.5})
+        self.assertIsNone(profile["dividendYield"])
+        self.assertIn("DIVIDEND_YIELD_OUT_OF_RANGE", profile["metricWarnings"])
 
     def test_missing_qualitative_value_cannot_erase_verified_ticker(self):
         self.assertEqual(merge_known({"ticker": "CPRX"}, {"ticker": None})["ticker"], "CPRX")

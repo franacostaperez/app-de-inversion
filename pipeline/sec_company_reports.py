@@ -15,10 +15,13 @@ from typing import Any
 DATA_BASE = "https://data.sec.gov"
 ARCHIVE_BASE = "https://www.sec.gov/Archives/edgar/data"
 FORMS = {"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A", "10-Q", "10-Q/A"}
-EXTRACTION_VERSION = 2
+EXTRACTION_VERSION = 3
 
 CONCEPTS = {
-    "revenue": ("RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues", "SalesRevenueNet"),
+    # `Revenues` must precede contract-only revenue. REITs and other issuers can
+    # report a small ancillary contract amount alongside their much larger
+    # consolidated rental/operating revenue.
+    "revenue": ("Revenues", "SalesRevenueNet", "RevenueFromContractWithCustomerExcludingAssessedTax"),
     "costOfRevenue": ("CostOfRevenue", "CostOfGoodsAndServicesSold", "CostOfGoodsSold"),
     "operatingExpenses": ("OperatingExpenses", "CostsAndExpenses"),
     "grossProfit": ("GrossProfit",),
@@ -187,10 +190,13 @@ def latest_value(metrics: dict[str, dict], key: str):
     return series[-1]["value"] if series else None
 
 
-def safe_margin(numerator, denominator):
+def safe_margin(numerator, denominator, maximum_absolute: float | None = None):
     if numerator is None or not denominator:
         return None
-    return round(numerator / denominator * 100, 2)
+    result = round(numerator / denominator * 100, 2)
+    if maximum_absolute is not None and abs(result) > maximum_absolute:
+        return None
+    return result
 
 
 def synthesize_total_debt(metrics: dict[str, dict]) -> None:
@@ -244,7 +250,10 @@ def build_summary(metrics: dict[str, dict]) -> tuple[dict, str]:
         "expenses": expenses,
         "operatingIncome": operating_income,
         "netIncome": net_income,
-        "operatingMargin": safe_margin(operating_income, revenue),
+        # An operating margin outside ±100% usually means the selected XBRL
+        # revenue is only an ancillary line and is not comparable to operating
+        # income. Quarantine it rather than awarding a perfect score.
+        "operatingMargin": safe_margin(operating_income, revenue, maximum_absolute=100),
         "roce": safe_margin(
             operating_income,
             total_assets - current_liabilities

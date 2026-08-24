@@ -1,9 +1,14 @@
 import unittest
 
-from pipeline.resolve_instruments import canonical_name, name_confidence, select_openfigi
+from pipeline.resolve_instruments import canonical_name, is_non_equity_holding, name_confidence, select_openfigi
 
 
 class InstrumentResolutionTests(unittest.TestCase):
+    def test_notes_and_warrants_are_not_quoted_as_common_equity(self):
+        self.assertTrue(is_non_equity_holding({"titleOfClass": "NOTE 3.250% 6/1"}))
+        self.assertTrue(is_non_equity_holding({"titleOfClass": "*W EXP 11/20/2028"}))
+        self.assertFalse(is_non_equity_holding({"titleOfClass": "COM CL A"}))
+
     def test_normalizes_common_13f_abbreviations(self):
         self.assertEqual(canonical_name("THE AES CORP DEL"), "AES")
         self.assertEqual(canonical_name("ACADIA RLTY TR"), "ACADIA REALTY TRUST")

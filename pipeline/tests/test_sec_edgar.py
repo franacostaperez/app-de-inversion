@@ -4,7 +4,7 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
-from pipeline.sec_edgar import all_13f_rows, archive_filings, filing_page_url, filing_rows, parse_information_table, quarter_from_date, retained_rows, retention_cutoff
+from pipeline.sec_edgar import all_13f_rows, archive_filings, filing_page_url, filing_rows, normalize_value_units, parse_information_table, quarter_from_date, retained_rows, retention_cutoff
 
 
 XML = b"""<?xml version="1.0" encoding="UTF-8"?>
@@ -15,6 +15,24 @@ XML = b"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 class EdgarTests(unittest.TestCase):
+    def test_repairs_a_filing_that_uses_legacy_thousands(self):
+        holdings = [
+            {"cusip": str(index), "shares": 100, "value": 10, "titleOfClass": "COM"}
+            for index in range(3)
+        ]
+        result, scale = normalize_value_units(holdings, {str(index): 100 for index in range(3)})
+        self.assertEqual(scale, 1000)
+        self.assertEqual(result[0]["value"], 10000)
+
+    def test_keeps_current_nearest_dollar_values(self):
+        holdings = [
+            {"cusip": str(index), "shares": 100, "value": 10000, "titleOfClass": "COM"}
+            for index in range(3)
+        ]
+        result, scale = normalize_value_units(holdings, {str(index): 100 for index in range(3)})
+        self.assertEqual(scale, 1)
+        self.assertEqual(result[0]["value"], 10000)
+
     def test_parses_namespaced_information_table(self):
         result = parse_information_table(XML, {"191216100": "KO"})
         self.assertEqual(result[0]["ticker"], "KO")

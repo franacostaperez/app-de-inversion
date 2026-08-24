@@ -97,7 +97,8 @@ def profile_from_google(cusip: str, name: str, ticker: str, exchange: str, page:
         "paysDividend": bool((yield_percent or 0) > 0),
         "dividendPerShare": round(quarterly_dividend * 4, 4) if quarterly_dividend is not None else None,
         "dividendYield": yield_percent / 100 if yield_percent is not None else None,
-        "peRatio": metric(page, "P/E ratio"),
+        "googleDividendYield": yield_percent / 100 if yield_percent is not None else None,
+        "peRatio": metric(page, "P/E ratio"), "googlePeRatio": metric(page, "P/E ratio"),
         "source": "Google Finance", "status": "enriched",
         "updatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
@@ -167,15 +168,64 @@ class MarketDataClient:
                     "marketCapitalization": raw(price.get("marketCap")),
                     "marketPrice": raw(financial.get("currentPrice")) or raw(price.get("regularMarketPrice")),
                     "peRatio": raw(summary.get("trailingPE")),
+                    "yahooPeRatio": raw(summary.get("trailingPE")),
                     "dividendYield": raw(summary.get("dividendYield")),
+                    "yahooDividendYield": raw(summary.get("dividendYield")),
                     "dividendPerShare": raw(summary.get("dividendRate")),
                     "eps": raw(stats.get("trailingEps")),
                 }
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
             pass
+        # Keep valuation history in GitHub as a compact derived metric instead
+        # of shipping thousands of daily quotes to every phone.
+        history = self.yahoo_history_metrics(ticker)
+        for key, value in history.items():
+            if value is not None:
+                result_profile[key] = value
         if result_profile.get("marketPrice") is None:
             result_profile["marketPrice"] = self.yahoo_chart_price(ticker)
         return result_profile
+
+    def yahoo_history_metrics(self, ticker: str) -> dict:
+        """Return the 1,000-session adjusted-close average and current discount/premium."""
+        path = (
+            "/v8/finance/chart/" + urllib.parse.quote(ticker)
+            + "?range=5y&interval=1d&events=history&includeAdjustedClose=true"
+        )
+        for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
+            try:
+                payload = json.loads(self.request("https://" + host + path))
+                results = payload.get("chart", {}).get("result") or []
+                if not results:
+                    continue
+                result = results[0]
+                indicators = result.get("indicators") or {}
+                adjusted_rows = indicators.get("adjclose") or []
+                quote_rows = indicators.get("quote") or []
+                values = adjusted_rows[0].get("adjclose", []) if adjusted_rows else []
+                if not values and quote_rows:
+                    values = quote_rows[0].get("close", [])
+                closes = [float(value) for value in values if value is not None and float(value) > 0]
+                current = (result.get("meta") or {}).get("regularMarketPrice")
+                if current is None and closes:
+                    current = closes[-1]
+                metrics = {"marketPrice": float(current)} if current is not None else {}
+                if len(closes) < 1000:
+                    return metrics
+                average = sum(closes[-1000:]) / 1000
+                timestamps = result.get("timestamp") or []
+                as_of = datetime.fromtimestamp(timestamps[-1], timezone.utc).date().isoformat() if timestamps else None
+                metrics.update({
+                    "movingAverage1000": round(average, 4),
+                    "priceVsMovingAverage1000Percent": round((float(current) / average - 1) * 100, 2),
+                    "movingAverage1000Sessions": 1000,
+                    "movingAverage1000AsOf": as_of,
+                    "priceHistorySource": "Yahoo Finance adjusted daily close",
+                })
+                return metrics
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError, ValueError, IndexError):
+                continue
+        return {}
 
     def yahoo_chart_price(self, ticker: str) -> float | None:
         """Use Yahoo's lightweight chart response when quoteSummary is throttled."""
@@ -231,6 +281,52 @@ class MarketDataClient:
         return result
 
 
+def normalized_yield(value) -> float | None:
+    value = number(value)
+    if value is None or value < 0:
+        return None
+    # Yahoo normally returns a fraction while display pages use percent. Keep
+    # the ingestion resilient to either representation.
+    if 0.20 < value <= 20:
+        value /= 100
+    return value if value <= 0.20 else None
+
+
+def validate_market_metrics(profile: dict) -> dict:
+    """Cross-check provider units and quarantine conflicting market metrics."""
+    warnings = [item for item in profile.get("metricWarnings", []) if not item.startswith("MARKET_")]
+    google_yield = normalized_yield(profile.get("googleDividendYield"))
+    yahoo_yield = normalized_yield(profile.get("yahooDividendYield"))
+    candidates = [value for value in (google_yield, yahoo_yield) if value is not None]
+    if len(candidates) == 2 and abs(candidates[0] - candidates[1]) > max(0.005, max(candidates) * 0.25):
+        profile["dividendYield"] = None
+        warnings.append("MARKET_YIELD_PROVIDER_CONFLICT")
+    elif candidates:
+        profile["dividendYield"] = google_yield if google_yield is not None else yahoo_yield
+    else:
+        profile["dividendYield"] = normalized_yield(profile.get("dividendYield"))
+
+    google_pe, yahoo_pe = number(profile.get("googlePeRatio")), number(profile.get("yahooPeRatio"))
+    pe_candidates = [value for value in (google_pe, yahoo_pe) if value is not None and value > 0]
+    if len(pe_candidates) == 2 and abs(pe_candidates[0] - pe_candidates[1]) / max(pe_candidates) > 0.35:
+        profile["peRatio"] = None
+        warnings.append("MARKET_PE_PROVIDER_CONFLICT")
+    elif pe_candidates:
+        profile["peRatio"] = google_pe if google_pe and google_pe > 0 else yahoo_pe
+
+    price, dividend = number(profile.get("marketPrice")), number(profile.get("dividendPerShare"))
+    if price and dividend is not None and profile.get("dividendYield") is not None:
+        calculated = dividend / price
+        if abs(calculated - profile["dividendYield"]) > max(0.006, profile["dividendYield"] * 0.30):
+            warnings.append("MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE")
+    profile["paysDividend"] = (profile.get("dividendYield") or 0) > 0 or (dividend or 0) > 0
+    if warnings:
+        profile["metricWarnings"] = sorted(set(warnings))
+    else:
+        profile.pop("metricWarnings", None)
+    return profile
+
+
 def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, max_new: int) -> list[dict]:
     by_cusip = {item["cusip"]: item for item in catalog}
     unique = {}
@@ -278,13 +374,14 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         if target and ticker:
             yahoo = client.yahoo_profile(ticker) if hasattr(client, "yahoo_profile") else {}
             for key, value in yahoo.items():
-                if value is not None and target.get(key) is None:
+                if value is not None and (key.startswith("yahoo") or target.get(key) is None):
                     target[key] = value
             if not target.get("investorRelationsURL") and yahoo.get("website"):
                 target["investorRelationsURL"] = yahoo["website"]
                 target["investorRelationsVerified"] = False
             if yahoo:
                 target["source"] = target.get("source", "Google Finance") + " · Yahoo Finance respaldo"
+            validate_market_metrics(target)
             try:
                 target.update(client.sec_reports(ticker))
             except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):

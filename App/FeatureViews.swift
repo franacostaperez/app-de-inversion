@@ -720,16 +720,17 @@ private struct ConsensusRankingView: View {
     }
 
     private var scoredCount: Int { items.filter { $0.opportunityScore != nil }.count }
+    private var pendingCount: Int { items.count - scoredCount }
 
     var body: some View {
         List {
             Section {
                 HStack(spacing: 0) {
-                    rankingMetric(value: "\(scoredCount)", label: "SCORE COMPLETO", icon: "checkmark.seal")
+                    rankingMetric(value: "\(items.count)", label: "EMPRESAS", icon: "building.2")
                     Divider().frame(height: 38).padding(.horizontal, 14)
-                    rankingMetric(value: "\(targetYieldCount)", label: "YIELD 3–9 %", icon: "leaf.fill")
+                    rankingMetric(value: "\(scoredCount)", label: "CON SCORE", icon: "checkmark.seal")
                     Divider().frame(height: 38).padding(.horizontal, 14)
-                    rankingMetric(value: "\(rankedItems.count)", label: "RESULTADOS", icon: "line.3.horizontal.decrease")
+                    rankingMetric(value: "\(pendingCount)", label: "COMPLETANDO", icon: "arrow.triangle.2.circlepath")
                 }
                 .padding(14)
                 .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -1059,10 +1060,25 @@ struct CompanyFinancialOverviewView: View {
                 .background(WhaleTheme.navy, in: RoundedRectangle(cornerRadius: 15))
 
                 if let profile {
+                    BusinessSummaryPanel(profile: profile)
+
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
                         overviewMetric("YIELD", profile.dividendYield.map { $0.formatted(.percent.precision(.fractionLength(1))) } ?? "—", "leaf.fill")
                         overviewMetric("PER", profile.peRatio.map { $0.formatted(.number.precision(.fractionLength(1))) + "x" } ?? "—", "chart.line.uptrend.xyaxis")
-                        overviewMetric("ANUALES", "\(annualReports.count)", "doc.text.fill")
+                        overviewMetric("PRECIO", profile.marketPrice.map { $0.formatted(.currency(code: profile.currency ?? "USD")) } ?? "—", "dollarsign")
+                        overviewMetric(
+                            "VS MEDIA 1.000",
+                            profile.priceVsMovingAverage1000Percent.map(relativePriceLabel) ?? "—",
+                            profile.priceVsMovingAverage1000Percent.map { $0 <= 0 ? "arrow.down.right" : "arrow.up.right" } ?? "calendar.badge.exclamationmark"
+                        )
+                    }
+                    if let average = profile.movingAverage1000 {
+                        Text("Media de 1.000 cierres diarios ajustados: \(average.formatted(.currency(code: profile.currency ?? "USD")))"
+                             + (profile.movingAverage1000AsOf.map { " · hasta \($0)" } ?? ""))
+                            .font(.caption2).foregroundStyle(.secondary)
+                    } else {
+                        Text("La media de 1.000 sesiones aparecerá cuando exista historial suficiente y verificable.")
+                            .font(.caption2).foregroundStyle(.secondary)
                     }
                 }
 
@@ -1118,10 +1134,6 @@ struct CompanyFinancialOverviewView: View {
                 }
 
                 if let profile {
-                    if let description = profile.description { textPanel("A qué se dedica", description, "building.2") }
-                    if let model = profile.businessModel { textPanel("Modelo de negocio", model, "gearshape.2") }
-                    if let revenue = profile.revenueModel { textPanel("Cómo gana dinero", revenue, "banknote") }
-                    if let moat = profile.economicMoat { textPanel("Foso defensivo", moat, "shield.lefthalf.filled") }
                     if let url = profile.investorRelationsURL {
                         Link(destination: url) {
                             Label(profile.investorRelationsVerified == true ? "Página oficial de inversores" : "Buscar relaciones con inversores", systemImage: "arrow.up.right.square")
@@ -1168,11 +1180,68 @@ struct CompanyFinancialOverviewView: View {
         }.frame(maxWidth: .infinity, alignment: .leading).padding(12).whalePanel()
     }
 
+    private func relativePriceLabel(_ value: Double) -> String {
+        value.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "%"
+    }
+
     private func textPanel(_ title: String, _ text: String, _ icon: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Label(title, systemImage: icon).font(.headline)
             Text(text).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(15).whalePanel()
+    }
+}
+
+private struct BusinessSummaryPanel: View {
+    let profile: CompanyProfile
+    @State private var expanded = false
+
+    private var hasContent: Bool {
+        [profile.description, profile.businessModel, profile.revenueModel, profile.economicMoat]
+            .contains { !($0 ?? "").isEmpty }
+    }
+
+    var body: some View {
+        if hasContent {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Label("Negocio en pocas palabras", systemImage: "building.2.crop.circle.fill")
+                        .font(.headline)
+                    Spacer()
+                    Button(expanded ? "Compactar" : "Ampliar") { withAnimation { expanded.toggle() } }
+                        .font(.caption.bold())
+                }
+                if let description = profile.description {
+                    Text(description)
+                        .font(.subheadline).foregroundStyle(.secondary)
+                        .lineLimit(expanded ? nil : 3)
+                }
+                compactBusinessItem("Cómo gana dinero", profile.revenueModel, "banknote")
+                compactBusinessItem("Foso defensivo", profile.economicMoat, "shield.lefthalf.filled")
+                if expanded {
+                    compactBusinessItem("Modelo operativo", profile.businessModel, "gearshape.2")
+                    HStack(spacing: 12) {
+                        if let sector = profile.sector { Label(sector, systemImage: "square.grid.2x2") }
+                        if let industry = profile.industry { Label(industry, systemImage: "hammer") }
+                    }
+                    .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(15)
+            .whalePanel()
+        }
+    }
+
+    @ViewBuilder
+    private func compactBusinessItem(_ title: String, _ text: String?, _ icon: String) -> some View {
+        if let text, !text.isEmpty {
+            Divider()
+            VStack(alignment: .leading, spacing: 4) {
+                Label(title, systemImage: icon).font(.caption.bold()).foregroundStyle(WhaleTheme.accent)
+                Text(text).font(.subheadline).foregroundStyle(.primary).lineLimit(expanded ? nil : 2)
+            }
+        }
     }
 }
 

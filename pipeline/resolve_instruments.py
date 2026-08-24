@@ -34,6 +34,8 @@ EQUITY_TYPES = {
     # OpenFIGI classifies US-listed ETFs such as SPY, MUB and IWM as Mutual Fund.
     "Mutual Fund",
 }
+RESOLUTION_VERSION = 2
+NON_EQUITY_TITLE_MARKERS = ("NOTE", "BOND", "DEBT", "CONVERT", "WARRANT", "W EXP")
 
 # Instruments which cannot be recovered from a current-symbol directory because
 # a corporate action removed the listing, plus one SEC-verified recent listing.
@@ -155,6 +157,11 @@ def name_confidence(left: str | None, right: str | None) -> float:
     return round(max(sequence, overlap), 4)
 
 
+def is_non_equity_holding(holding: dict) -> bool:
+    title = str(holding.get("titleOfClass") or "").upper()
+    return bool(holding.get("putCall")) or any(marker in title for marker in NON_EQUITY_TITLE_MARKERS)
+
+
 def select_openfigi(rows: list[dict], issuer: str, trusted_identifier: bool = False) -> tuple[dict | None, float]:
     candidates = [
         row for row in rows
@@ -238,9 +245,24 @@ def resolve(holdings: list[dict], profiles: list[dict], prior: dict, client: Res
     for cusip, holding in unique.items():
         existing = profiles_by_cusip.get(cusip, {})
         prior_mapping = mappings.get(cusip) or {}
+        if cusip in KNOWN_INSTRUMENTS:
+            mappings[cusip] = {"company": holding.get("company"), **KNOWN_INSTRUMENTS[cusip]}
+            issuer_tickers.setdefault(canonical_name(holding.get("company")), mappings[cusip]["ticker"])
+            continue
+        if is_non_equity_holding(holding):
+            mappings[cusip] = {
+                "ticker": existing.get("ticker") or prior_mapping.get("ticker"),
+                "company": holding.get("company"), "securityType": holding.get("titleOfClass"),
+                "listingStatus": "NON_EQUITY_INSTRUMENT", "quoteEligible": False,
+                "source": "SEC Form 13F security class", "confidence": 1.0,
+            }
+            continue
         ticker = existing.get("ticker") or prior_mapping.get("ticker")
         resolution_source = prior_mapping.get("source") or existing.get("tickerResolutionSource", "")
-        if ticker and "Yahoo Finance search" not in resolution_source:
+        if (
+            ticker and "Yahoo Finance search" not in resolution_source
+            and prior_mapping.get("resolutionVersion", 0) >= RESOLUTION_VERSION
+        ):
             prior_is_resolved = bool(prior_mapping.get("ticker")) and prior_mapping.get("listingStatus") != "IDENTIFIED_NO_ACTIVE_QUOTE"
             existing_status = existing.get("listingStatus")
             existing_quote_eligible = existing.get("quoteEligible")
@@ -260,10 +282,6 @@ def resolve(holdings: list[dict], profiles: list[dict], prior: dict, client: Res
             if mappings[cusip]["quoteEligible"] is None:
                 mappings[cusip]["quoteEligible"] = True
             issuer_tickers.setdefault(canonical_name(holding.get("company")), ticker)
-            continue
-        if cusip in KNOWN_INSTRUMENTS:
-            mappings[cusip] = {"company": holding.get("company"), **KNOWN_INSTRUMENTS[cusip]}
-            issuer_tickers.setdefault(canonical_name(holding.get("company")), mappings[cusip]["ticker"])
             continue
         name = canonical_name(holding.get("company"))
         exact = sec_by_name.get(name, [])
@@ -338,6 +356,7 @@ def resolve(holdings: list[dict], profiles: list[dict], prior: dict, client: Res
             "confidence": 1.0,
         })
     for cusip, mapping in mappings.items():
+        mapping["resolutionVersion"] = RESOLUTION_VERSION
         if cusip not in unique or not mapping.get("ticker"):
             continue
         mapping.setdefault("securityType", unique[cusip].get("titleOfClass"))

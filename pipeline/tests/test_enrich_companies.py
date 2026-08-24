@@ -1,7 +1,7 @@
 import unittest
 import urllib.error
 
-from pipeline.enrich_companies import enrich, metric, number, profile_from_google
+from pipeline.enrich_companies import enrich, metric, number, profile_from_google, validate_market_metrics
 
 
 class CompanyEnrichmentTests(unittest.TestCase):
@@ -75,6 +75,48 @@ class CompanyEnrichmentTests(unittest.TestCase):
 
         profile = Client().yahoo_profile("ABC")
         self.assertEqual(profile["marketPrice"], 123.45)
+
+    def test_calculates_exact_one_thousand_session_average(self):
+        import json
+        from pipeline.enrich_companies import MarketDataClient
+
+        class Client(MarketDataClient):
+            def request(self, url, payload=None):
+                closes = list(range(1, 1002))
+                return json.dumps({"chart": {"result": [{
+                    "meta": {"regularMarketPrice": 1001},
+                    "timestamp": list(range(1002)),
+                    "indicators": {"adjclose": [{"adjclose": closes}]},
+                }]}})
+
+        metrics = Client().yahoo_history_metrics("ABC")
+        self.assertEqual(metrics["movingAverage1000Sessions"], 1000)
+        self.assertAlmostEqual(metrics["movingAverage1000"], 501.5)
+        self.assertAlmostEqual(metrics["priceVsMovingAverage1000Percent"], 99.6)
+
+    def test_does_not_label_short_history_as_a_thousand_session_average(self):
+        import json
+        from pipeline.enrich_companies import MarketDataClient
+
+        class Client(MarketDataClient):
+            def request(self, url, payload=None):
+                return json.dumps({"chart": {"result": [{
+                    "meta": {"regularMarketPrice": 42},
+                    "indicators": {"adjclose": [{"adjclose": [40, 41, 42]}]},
+                }]}})
+
+        metrics = Client().yahoo_history_metrics("NEW")
+        self.assertEqual(metrics["marketPrice"], 42)
+        self.assertNotIn("movingAverage1000", metrics)
+
+    def test_normalizes_percent_yield_and_quarantines_provider_conflict(self):
+        normalized = validate_market_metrics({"yahooDividendYield": 4.2, "marketPrice": 100})
+        self.assertEqual(normalized["dividendYield"], 0.042)
+        conflicted = validate_market_metrics({
+            "googleDividendYield": 0.03, "yahooDividendYield": 0.09, "marketPrice": 100,
+        })
+        self.assertIsNone(conflicted["dividendYield"])
+        self.assertIn("MARKET_YIELD_PROVIDER_CONFLICT", conflicted["metricWarnings"])
 
 
 if __name__ == "__main__":

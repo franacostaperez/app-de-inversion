@@ -14,6 +14,8 @@ class QualitativeEnrichmentTests(unittest.TestCase):
         self.assertTrue(result["businessModel"])
         self.assertTrue(result["revenueModel"])
         self.assertTrue(result["economicMoat"])
+        self.assertIn("Ventajas competitivas potenciales", result["economicMoat"])
+        self.assertIn("retener clientes", result["businessModel"])
 
 
 if __name__ == "__main__":

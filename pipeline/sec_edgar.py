@@ -9,6 +9,7 @@ import os
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
+from statistics import median
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -18,6 +19,7 @@ from typing import Any
 DATA_BASE = "https://data.sec.gov"
 ARCHIVE_BASE = "https://www.sec.gov/Archives/edgar/data"
 RETENTION_YEARS = 3
+VALUE_NORMALIZATION_VERSION = 1
 
 
 def local_name(tag: str) -> str:
@@ -56,6 +58,33 @@ def parse_information_table(xml_data: bytes, ticker_by_cusip: dict[str, str]) ->
             "value": float(value_text.replace(",", "")),
         })
     return holdings
+
+
+def normalize_value_units(holdings: list[dict[str, Any]], market_prices: dict[str, float] | None = None) -> tuple[list[dict[str, Any]], int]:
+    """Repair filings that still submit legacy $000 values under the dollar schema.
+
+    Since January 2023 the SEC schema requires nearest-dollar values, but a
+    small number of managers continue to submit values in legacy thousands.
+    A filing-wide median against quoted equity prices distinguishes the two
+    units without changing individual positions selectively.
+    """
+    market_prices = market_prices or {}
+    ratios = []
+    for item in holdings:
+        title = str(item.get("titleOfClass") or "").upper()
+        if item.get("putCall") or any(marker in title for marker in ("NOTE", "BOND", "DEBT", "WARRANT", "W EXP")):
+            continue
+        shares = item.get("shares") or 0
+        price = market_prices.get(item.get("cusip"))
+        if shares > 0 and price and price > 0 and item.get("value") is not None:
+            ratios.append((item["value"] / shares) / price)
+    scale = 1
+    if len(ratios) >= 3 and 0.0002 <= median(ratios) <= 0.005:
+        scale = 1000
+        for item in holdings:
+            item["value"] *= scale
+            item["valueScaleApplied"] = scale
+    return holdings, scale
 
 
 def filing_rows(submissions: dict[str, Any]) -> list[dict[str, str]]:
@@ -112,7 +141,10 @@ def filing_page_url(cik: str, accession: str) -> str:
     return f"{archive_directory(cik, accession)}/{accession}-index.html"
 
 
-def download_information_table(client: SecClient, cik: str, row: dict[str, str], ticker_map: dict[str, str]) -> list[dict[str, Any]]:
+def download_information_table(
+    client: SecClient, cik: str, row: dict[str, str], ticker_map: dict[str, str],
+    market_prices: dict[str, float] | None = None,
+) -> list[dict[str, Any]]:
     base = archive_directory(cik, row["accessionNumber"])
     index = client.json(f"{base}/index.json")
     candidates = [
@@ -125,7 +157,7 @@ def download_information_table(client: SecClient, cik: str, row: dict[str, str],
         except ET.ParseError:
             continue
         if holdings:
-            return holdings
+            return normalize_value_units(holdings, market_prices)[0]
     raise RuntimeError(f"No information table found for {row['accessionNumber']}")
 
 
@@ -134,10 +166,13 @@ def quarter_from_date(report_date: str) -> str:
     return f"{year}-Q{(month - 1) // 3 + 1}"
 
 
-def normalize_investor(client: SecClient, investor: dict[str, str], rows: list[dict[str, str]], ticker_map: dict[str, str]) -> list[dict[str, Any]]:
+def normalize_investor(
+    client: SecClient, investor: dict[str, str], rows: list[dict[str, str]], ticker_map: dict[str, str],
+    market_prices: dict[str, float] | None = None,
+) -> list[dict[str, Any]]:
     normalized = []
     for row in rows[:2]:
-        holdings = download_information_table(client, investor["cik"], row, ticker_map)
+        holdings = download_information_table(client, investor["cik"], row, ticker_map, market_prices)
         normalized.append({
             "quarter": quarter_from_date(row["reportDate"]),
             "investor": {
@@ -156,22 +191,28 @@ def normalize_investor(client: SecClient, investor: dict[str, str], rows: list[d
     return normalized
 
 
-def archive_retained_filings(client: SecClient, investor: dict[str, str], rows: list[dict[str, str]], ticker_map: dict[str, str], output: Path) -> set[str]:
+def archive_retained_filings(
+    client: SecClient, investor: dict[str, str], rows: list[dict[str, str]], ticker_map: dict[str, str],
+    output: Path, market_prices: dict[str, float] | None = None,
+) -> set[str]:
     active = set()
     for row in rows:
         accession = row["accessionNumber"]
         active.add(accession)
         destination = output / investor["id"] / f"{accession}.json"
         if destination.exists():
-            continue
-        holdings = download_information_table(client, investor["cik"], row, ticker_map)
+            archived = json.loads(destination.read_text())
+            if archived.get("valueNormalizationVersion", 0) >= VALUE_NORMALIZATION_VERSION:
+                continue
+        holdings = download_information_table(client, investor["cik"], row, ticker_map, market_prices)
         payload = {
             "source": "SEC EDGAR", "investorId": investor["id"], "investorName": investor["name"],
             "manager": investor.get("manager"), "cik": investor["cik"], "accessionNumber": accession,
             "form": row["form"], "filingDate": f"{row['filingDate']}T00:00:00Z",
             "reportDate": f"{row['reportDate']}T00:00:00Z", "quarter": quarter_from_date(row["reportDate"]),
             "portfolioValue": sum(item["value"] for item in holdings),
-            "secURL": filing_page_url(investor["cik"], accession), "holdings": holdings,
+            "secURL": filing_page_url(investor["cik"], accession),
+            "valueNormalizationVersion": VALUE_NORMALIZATION_VERSION, "holdings": holdings,
         }
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
@@ -189,7 +230,10 @@ def prune_archives(output: Path, active_accessions: set[str]) -> None:
             directory.rmdir()
 
 
-def build_quarters(client: SecClient, investors: list[dict[str, str]], ticker_map: dict[str, str], filings_output: Path | None = None) -> tuple[dict, dict]:
+def build_quarters(
+    client: SecClient, investors: list[dict[str, str]], ticker_map: dict[str, str],
+    filings_output: Path | None = None, market_prices: dict[str, float] | None = None,
+) -> tuple[dict, dict]:
     current_investors = []
     previous_investors = []
     current_quarters = []
@@ -214,7 +258,7 @@ def build_quarters(client: SecClient, investors: list[dict[str, str]], ticker_ma
                 "quarter": quarter_from_date(row["reportDate"]),
                 "secURL": filing_page_url(investor["cik"], row["accessionNumber"]),
             })
-        normalized = normalize_investor(client, investor, original_rows, ticker_map)
+        normalized = normalize_investor(client, investor, original_rows, ticker_map, market_prices)
         if len(normalized) < 2:
             raise RuntimeError(f"Need two 13F-HR filings for {investor['name']}")
         current_investors.append(normalized[0]["investor"])
@@ -222,7 +266,7 @@ def build_quarters(client: SecClient, investors: list[dict[str, str]], ticker_ma
         current_quarters.append(normalized[0]["quarter"])
         previous_quarters.append(normalized[1]["quarter"])
         if filings_output:
-            active_accessions |= archive_retained_filings(client, investor, original_rows, ticker_map, filings_output)
+            active_accessions |= archive_retained_filings(client, investor, original_rows, ticker_map, filings_output, market_prices)
     if filings_output:
         prune_archives(filings_output, active_accessions)
     return (
@@ -277,7 +321,13 @@ def main() -> None:
     investors = json.loads(args.investors.read_text())
     companies = json.loads(args.companies.read_text())
     ticker_map = {item["cusip"].upper(): item["ticker"] for item in companies if item.get("cusip")}
-    current, previous = build_quarters(SecClient(args.user_agent), investors, ticker_map, args.filings_output)
+    market_prices = {
+        item["cusip"].upper(): float(item["marketPrice"])
+        for item in companies if item.get("cusip") and item.get("marketPrice")
+    }
+    current, previous = build_quarters(
+        SecClient(args.user_agent), investors, ticker_map, args.filings_output, market_prices
+    )
     for path, payload in ((args.current_output, current), (args.previous_output, previous)):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")

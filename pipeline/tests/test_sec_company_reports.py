@@ -1,7 +1,7 @@
 import unittest
 
 from pipeline.sec_company_reports import (
-    build_summary, fact_rows, merge_known, namespace_fact_rows, recent_rows, synthesize_income_statement,
+    CONCEPTS, build_summary, fact_rows, merge_known, namespace_fact_rows, recent_rows, synthesize_income_statement,
 )
 
 
@@ -34,6 +34,26 @@ class CompanyReportTests(unittest.TestCase):
         self.assertEqual(summary["netMargin"], 15)
         self.assertEqual(summary["roce"], 16.67)
         self.assertIn("epsDiluted", summary)
+
+    def test_rejects_impossible_operating_margin(self):
+        summary, _ = build_summary({
+            "revenue": {"periods": [{"value": 7}]},
+            "operatingIncome": {"periods": [{"value": 2000}]},
+        })
+        self.assertIsNone(summary["operatingMargin"])
+
+    def test_prefers_consolidated_revenues_over_ancillary_contract_revenue(self):
+        facts = {"facts": {"us-gaap": {
+            "RevenueFromContractWithCustomerExcludingAssessedTax": {"units": {"USD": [
+                {"accn": "a", "start": "2025-01-01", "end": "2025-12-31", "val": 7},
+            ]}},
+            "Revenues": {"units": {"USD": [
+                {"accn": "a", "start": "2025-01-01", "end": "2025-12-31", "val": 3000},
+            ]}},
+        }}}
+        concept, periods = fact_rows(facts, "a", CONCEPTS["revenue"])
+        self.assertEqual(concept, "Revenues")
+        self.assertEqual(periods[-1]["value"], 3000)
 
     def test_extracts_ifrs_facts(self):
         facts = {"facts": {"ifrs-full": {"Revenue": {"units": {"EUR": [

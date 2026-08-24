@@ -18,6 +18,15 @@ SECTOR_PE_MULTIPLIERS = {
     "Industrials": 1.10, "Materials": 0.95, "Real Estate": 1.15, "Utilities": 1.05,
 }
 BRAND_MULTIPLIERS = {"high": 1.20, "medium": 1.10, "low": 1.0}
+QUALITATIVE_PROFILE_FIELDS = {
+    "description", "businessModel", "revenueModel", "economicMoat", "brandStrength",
+    "investorRelationsURL", "investorRelationsVerified",
+}
+MARKET_PROFILE_FIELDS = {
+    "marketPrice", "marketCapitalization", "dividendYield", "dividendPerShare", "peRatio", "eps",
+    "movingAverage1000", "priceVsMovingAverage1000Percent", "movingAverage1000Sessions",
+    "movingAverage1000AsOf", "priceHistorySource",
+}
 
 
 def issuer_key(name: str | None) -> str:
@@ -46,6 +55,28 @@ def app_safe_company_profiles(profiles: list[dict]) -> list[dict]:
         item.setdefault("updatedAt", now)
         safe_profiles.append(item)
     return safe_profiles
+
+
+def sanitize_company_profile(profile: dict) -> dict:
+    """Prevent stale or non-equity market metrics from entering the app or score."""
+    item = dict(profile)
+    warnings = list(item.get("metricWarnings") or [])
+    if item.get("quoteEligible") is False:
+        for key in MARKET_PROFILE_FIELDS:
+            item[key] = None
+        item["paysDividend"] = None
+        warnings.append("NON_EQUITY_OR_UNQUOTED_INSTRUMENT")
+    dividend_yield = item.get("dividendYield")
+    if dividend_yield is not None and not 0 <= dividend_yield <= 0.20:
+        item["dividendYield"] = None
+        warnings.append("DIVIDEND_YIELD_OUT_OF_RANGE")
+    pe = item.get("peRatio")
+    if pe is not None and pe <= 0:
+        item["peRatio"] = None
+        warnings.append("PE_NOT_MEANINGFUL")
+    if warnings:
+        item["metricWarnings"] = sorted(set(warnings))
+    return item
 
 
 def graduated_score(value: float, points: list[tuple[float, float]]) -> int:
@@ -609,10 +640,16 @@ def main() -> None:
     valuation = json.loads(args.valuation_database.read_text()) if args.valuation_database and args.valuation_database.exists() else []
     profiles_by_cusip = {item["cusip"]: item for item in profiles}
     for research in qualitative:
-        profiles_by_cusip[research["cusip"]] = merge_known(profiles_by_cusip.get(research["cusip"], {}), research)
+        # Qualitative research must never overwrite ticker identity, price,
+        # yield or P/E. Mixing an old narrative record with a new share class
+        # previously produced impossible hybrid metrics.
+        qualitative_fields = {key: value for key, value in research.items() if key in QUALITATIVE_PROFILE_FIELDS}
+        profiles_by_cusip[research["cusip"]] = merge_known(
+            profiles_by_cusip.get(research["cusip"], {}), qualitative_fields
+        )
     for settings in valuation:
         profiles_by_cusip[settings["cusip"]] = merge_known(profiles_by_cusip.get(settings["cusip"], {}), settings)
-    profiles = sorted(profiles_by_cusip.values(), key=lambda item: item.get("name", ""))
+    profiles = sorted((sanitize_company_profile(item) for item in profiles_by_cusip.values()), key=lambda item: item.get("name", ""))
     existing = json.loads(args.output.read_text()) if args.output.exists() else {}
     archived_filings = []
     if args.filings_directory and args.filings_directory.exists():
