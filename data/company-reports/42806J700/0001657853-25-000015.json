@@ -9,12 +9,13 @@
   "reportDate": "2024-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1657853/000165785325000015/htz-20241231.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 9049000000,
     "expenses": 12286000000,
-    "operatingIncome": null,
+    "operatingIncome": -3237000000,
     "netIncome": -2862000000,
-    "operatingMargin": null,
+    "operatingMargin": -35.77,
     "roce": null,
     "netMargin": -31.63,
     "totalDebt": null,
@@ -25,8 +26,7 @@
     "dividendPerShare": null,
     "epsDiluted": -9.34,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": null
+    "expectedEPS": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -3.4% frente al periodo comparable. El beneficio neto varió un -564.6% frente al periodo comparable. El margen neto del periodo más reciente es -31.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -317,6 +317,38 @@
           "endDate": "2024-12-31",
           "value": -9.34,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 2449000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022"
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 286000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-12-31",
+          "value": -3237000000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "FY",
           "frame": null

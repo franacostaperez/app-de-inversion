@@ -9,12 +9,13 @@
   "reportDate": "2023-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1657853/000165785324000022/htz-20231231.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 9371000000,
     "expenses": 9085000000,
-    "operatingIncome": null,
+    "operatingIncome": 286000000,
     "netIncome": 616000000,
-    "operatingMargin": null,
+    "operatingMargin": 3.05,
     "roce": null,
     "netMargin": 6.57,
     "totalDebt": null,
@@ -25,8 +26,7 @@
     "dividendPerShare": null,
     "epsDiluted": 1.39,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": null
+    "expectedEPS": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +7.9% frente al periodo comparable. El beneficio neto varió un -70.1% frente al periodo comparable. El margen neto del periodo más reciente es 6.6%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -294,6 +294,38 @@
           "endDate": "2023-12-31",
           "value": 1.39,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 683000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 2449000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 286000000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "FY",
           "frame": null

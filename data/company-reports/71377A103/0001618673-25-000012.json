@@ -9,14 +9,15 @@
   "reportDate": "2025-06-28T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1618673/000161867325000012/pfgc-20250628.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
-    "revenue": null,
+    "revenue": 63298900000,
     "expenses": 6600300000,
     "operatingIncome": 816300000,
     "netIncome": 340200000,
-    "operatingMargin": null,
+    "operatingMargin": 1.29,
     "roce": 6.11,
-    "netMargin": null,
+    "netMargin": 0.54,
     "totalDebt": 5388800000,
     "cash": null,
     "cashFromOperations": 1210100000,
@@ -25,10 +26,9 @@
     "dividendPerShare": null,
     "epsDiluted": 2.18,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": null
+    "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un -21.9% frente al periodo comparable. El ROCE estimado del periodo más reciente es 6.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.6% frente al periodo comparable. El beneficio neto varió un -21.9% frente al periodo comparable. El margen neto del periodo más reciente es 0.5%. El ROCE estimado del periodo más reciente es 6.1%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -491,6 +491,38 @@
           "endDate": "2025-06-28",
           "value": 2.18,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "revenue": {
+      "concept": "GrossProfitPlusCostOfRevenue",
+      "periods": [
+        {
+          "startDate": "2022-07-03",
+          "endDate": "2023-07-01",
+          "value": 57254700000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2023-07-02",
+          "endDate": "2024-06-29",
+          "value": 58281200000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2024-06-30",
+          "endDate": "2025-06-28",
+          "value": 63298900000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",
           "frame": null

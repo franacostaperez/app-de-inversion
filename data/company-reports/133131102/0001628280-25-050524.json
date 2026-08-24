@@ -9,12 +9,13 @@
   "reportDate": "2025-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/906345/000162828025050524/cpt-20250930.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 2565000,
     "expenses": 145696000,
-    "operatingIncome": null,
+    "operatingIncome": -421103000,
     "netIncome": 108934000,
-    "operatingMargin": null,
+    "operatingMargin": -16417.27,
     "roce": null,
     "netMargin": 4246.94,
     "totalDebt": 3740200000,
@@ -25,10 +26,9 @@
     "dividendPerShare": 1.05,
     "epsDiluted": 1,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 317.13
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +50.3% frente al periodo comparable. El beneficio neto varió un -2691.2% frente al periodo comparable. El margen neto del periodo más reciente es 4246.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 317.1%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +50.3% frente al periodo comparable. El beneficio neto varió un -2691.2% frente al periodo comparable. El margen neto del periodo más reciente es 4246.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -430,6 +430,47 @@
           "startDate": "2025-01-01",
           "endDate": "2025-09-30",
           "value": 345465000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-09-30",
+          "value": -415197000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2024-09-30",
+          "value": -141653000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q3"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2025-09-30",
+          "value": -143131000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2025Q3"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-09-30",
+          "value": -421103000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q3",

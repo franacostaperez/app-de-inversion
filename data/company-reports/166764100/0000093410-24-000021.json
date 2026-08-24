@@ -9,13 +9,14 @@
   "reportDate": "2024-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/93410/000009341024000021/cvx-20240331.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 46580000000,
     "expenses": 40794000000,
-    "operatingIncome": null,
+    "operatingIncome": 5786000000,
     "netIncome": 5501000000,
-    "operatingMargin": null,
-    "roce": null,
+    "operatingMargin": 12.42,
+    "roce": 2.53,
     "netMargin": 11.81,
     "totalDebt": 282000000,
     "cash": 6278000000,
@@ -25,10 +26,9 @@
     "dividendPerShare": 1.63,
     "epsDiluted": 2.97,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 54.59
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.6% frente al periodo comparable. El beneficio neto varió un -16.3% frente al periodo comparable. El margen neto del periodo más reciente es 11.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 54.6%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.6% frente al periodo comparable. El beneficio neto varió un -16.3% frente al periodo comparable. El margen neto del periodo más reciente es 11.8%. El ROCE estimado del periodo más reciente es 2.5%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -363,6 +363,29 @@
           "startDate": "2024-01-01",
           "endDate": "2024-03-31",
           "value": 3003000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-03-31",
+          "value": 7568000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2023Q1"
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": 5786000000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q1",

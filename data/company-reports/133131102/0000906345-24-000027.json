@@ -9,12 +9,13 @@
   "reportDate": "2024-06-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/906345/000090634524000027/cpt-20240630.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 2606000,
     "expenses": 138889000,
-    "operatingIncome": null,
+    "operatingIncome": -136283000,
     "netIncome": 42917000,
-    "operatingMargin": null,
+    "operatingMargin": -5229.59,
     "roce": null,
     "netMargin": 1646.85,
     "totalDebt": 3552800000,
@@ -25,10 +26,9 @@
     "dividendPerShare": 1.03,
     "epsDiluted": 0.4,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 521.82
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +262.9% frente al periodo comparable. El beneficio neto varió un -52.9% frente al periodo comparable. El margen neto del periodo más reciente es 1646.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 521.8%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +262.9% frente al periodo comparable. El beneficio neto varió un -52.9% frente al periodo comparable. El margen neto del periodo más reciente es 1646.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -430,6 +430,47 @@
           "startDate": "2024-01-01",
           "endDate": "2024-06-30",
           "value": 223949000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-06-30",
+          "value": -270982000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-01",
+          "endDate": "2023-06-30",
+          "value": -136879000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-06-30",
+          "value": -273544000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": -136283000,
           "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",

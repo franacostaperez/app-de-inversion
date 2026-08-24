@@ -9,12 +9,13 @@
   "reportDate": "2026-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/906345/000162828026029188/cpt-20260331.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 2143000,
     "expenses": 140069000,
-    "operatingIncome": null,
+    "operatingIncome": -137926000,
     "netIncome": 42449000,
-    "operatingMargin": null,
+    "operatingMargin": -6436.12,
     "roce": null,
     "netMargin": 1980.82,
     "totalDebt": 4250500000,
@@ -25,10 +26,9 @@
     "dividendPerShare": 1.06,
     "epsDiluted": 0.4,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 270.79
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -13.8% frente al periodo comparable. El beneficio neto varió un +9.3% frente al periodo comparable. El margen neto del periodo más reciente es 1980.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 270.8%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -13.8% frente al periodo comparable. El beneficio neto varió un +9.3% frente al periodo comparable. El margen neto del periodo más reciente es 1980.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -322,6 +322,29 @@
           "startDate": "2026-01-01",
           "endDate": "2026-03-31",
           "value": 114948000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2026Q1"
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": -136933000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2025Q1"
+        },
+        {
+          "startDate": "2026-01-01",
+          "endDate": "2026-03-31",
+          "value": -137926000,
           "unit": "USD",
           "fiscalYear": 2026,
           "fiscalPeriod": "Q1",

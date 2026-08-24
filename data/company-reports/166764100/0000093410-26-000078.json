@@ -9,13 +9,14 @@
   "reportDate": "2025-12-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/93410/000009341026000078/cvx-20251231.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 184432000000,
     "expenses": 169288000000,
-    "operatingIncome": null,
+    "operatingIncome": 15144000000,
     "netIncome": 12299000000,
-    "operatingMargin": null,
-    "roce": null,
+    "operatingMargin": 8.21,
+    "roce": 5.21,
     "netMargin": 6.67,
     "totalDebt": 2345000000,
     "cash": 7285000000,
@@ -25,10 +26,9 @@
     "dividendPerShare": 6.84,
     "epsDiluted": 6.63,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 103.68
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.6% frente al periodo comparable. El beneficio neto varió un -30.4% frente al periodo comparable. El margen neto del periodo más reciente es 6.7%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 103.7%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.6% frente al periodo comparable. El beneficio neto varió un -30.4% frente al periodo comparable. El margen neto del periodo más reciente es 6.7%. El ROCE estimado del periodo más reciente es 5.2%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -435,6 +435,38 @@
           "startDate": "2025-01-01",
           "endDate": "2025-12-31",
           "value": 12751000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 25548000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023"
+        },
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-12-31",
+          "value": 18128000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-12-31",
+          "value": 15144000000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "FY",

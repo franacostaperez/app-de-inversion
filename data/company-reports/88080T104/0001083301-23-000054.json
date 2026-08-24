@@ -9,14 +9,15 @@
   "reportDate": "2023-09-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1083301/000108330123000054/wulf-20230930.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
-    "revenue": null,
+    "revenue": 45944000,
     "expenses": 20376000,
     "operatingIncome": -9689000,
     "netIncome": -19099000,
-    "operatingMargin": null,
+    "operatingMargin": -21.09,
     "roce": -4.77,
-    "netMargin": null,
+    "netMargin": -41.57,
     "totalDebt": 124929000,
     "cash": 6595000,
     "cashFromOperations": -6632000,
@@ -25,10 +26,9 @@
     "dividendPerShare": 0,
     "epsDiluted": -0.09,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": null
+    "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un -43.8% frente al periodo comparable. El ROCE estimado del periodo más reciente es -4.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +740.5% frente al periodo comparable. El beneficio neto varió un -43.8% frente al periodo comparable. El margen neto del periodo más reciente es -41.6%. El ROCE estimado del periodo más reciente es -4.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -600,6 +600,47 @@
           "endDate": "2023-09-30",
           "value": 0,
           "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "revenue": {
+      "concept": "GrossProfitPlusCostOfRevenue",
+      "periods": [
+        {
+          "startDate": "2022-07-01",
+          "endDate": "2022-09-30",
+          "value": 3864000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-09-30",
+          "value": 5466000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2023-09-30",
+          "value": 18955000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-09-30",
+          "value": 45944000,
+          "unit": "USD",
           "fiscalYear": 2023,
           "fiscalPeriod": "Q3",
           "frame": null

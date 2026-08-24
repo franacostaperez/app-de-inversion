@@ -9,12 +9,13 @@
   "reportDate": "2025-03-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1657853/000165785325000057/htzz-20250331.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 1813000000,
     "expenses": 2338000000,
-    "operatingIncome": null,
+    "operatingIncome": -525000000,
     "netIncome": -443000000,
-    "operatingMargin": null,
+    "operatingMargin": -28.96,
     "roce": null,
     "netMargin": -24.43,
     "totalDebt": null,
@@ -25,8 +26,7 @@
     "dividendPerShare": null,
     "epsDiluted": -1.44,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": null
+    "expectedEPS": null
   },
   "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -12.8% frente al periodo comparable. El beneficio neto varió un +138.2% frente al periodo comparable. El margen neto del periodo más reciente es -24.4%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
@@ -249,6 +249,29 @@
           "endDate": "2025-03-31",
           "value": -1.44,
           "unit": "USD/shares",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2024-01-01",
+          "endDate": "2024-03-31",
+          "value": -581000000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1"
+        },
+        {
+          "startDate": "2025-01-01",
+          "endDate": "2025-03-31",
+          "value": -525000000,
+          "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",
           "frame": null

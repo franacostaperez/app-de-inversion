@@ -9,12 +9,13 @@
   "reportDate": "2025-05-31T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/920760/000162828025033777/len-20250531.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 8377502000,
     "expenses": 7749056000,
-    "operatingIncome": null,
+    "operatingIncome": 1324285000,
     "netIncome": 477449000,
-    "operatingMargin": null,
+    "operatingMargin": 15.81,
     "roce": null,
     "netMargin": 5.7,
     "totalDebt": null,
@@ -25,10 +26,9 @@
     "dividendPerShare": null,
     "epsDiluted": 1.81,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 55.55
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.4% frente al periodo comparable. El beneficio neto varió un -50.0% frente al periodo comparable. El margen neto del periodo más reciente es 5.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 55.5%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -4.4% frente al periodo comparable. El beneficio neto varió un -50.0% frente al periodo comparable. El margen neto del periodo más reciente es 5.7%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -366,6 +366,47 @@
           "startDate": "2024-12-01",
           "endDate": "2025-05-31",
           "value": 265235000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2024-03-01",
+          "endDate": "2024-05-31",
+          "value": 1218708000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2024Q2"
+        },
+        {
+          "startDate": "2023-12-01",
+          "endDate": "2024-05-31",
+          "value": 2119804000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2025-03-01",
+          "endDate": "2025-05-31",
+          "value": 628446000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2024-12-01",
+          "endDate": "2025-05-31",
+          "value": 1324285000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q2",

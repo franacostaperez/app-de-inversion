@@ -9,12 +9,13 @@
   "reportDate": "2025-02-28T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/920760/000162828025016792/len-20250228.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
     "revenue": 7631545000,
     "expenses": 6935706000,
-    "operatingIncome": null,
+    "operatingIncome": 695839000,
     "netIncome": 519526000,
-    "operatingMargin": null,
+    "operatingMargin": 9.12,
     "roce": null,
     "netMargin": 6.81,
     "totalDebt": null,
@@ -25,10 +26,9 @@
     "dividendPerShare": null,
     "epsDiluted": 1.96,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": 25.34
+    "expectedEPS": null
   },
-  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +4.4% frente al periodo comparable. El beneficio neto varió un -27.8% frente al periodo comparable. El margen neto del periodo más reciente es 6.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital. El payout sobre beneficio neto es 25.3%.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +4.4% frente al periodo comparable. El beneficio neto varió un -27.8% frente al periodo comparable. El margen neto del periodo más reciente es 6.8%. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "revenue": {
       "concept": "Revenues",
@@ -294,6 +294,29 @@
           "startDate": "2024-12-01",
           "endDate": "2025-02-28",
           "value": 131646000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "RevenueLessCostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2023-12-01",
+          "endDate": "2024-02-29",
+          "value": 901096000,
+          "unit": "USD",
+          "fiscalYear": 2025,
+          "fiscalPeriod": "Q1",
+          "frame": "CY2024Q1"
+        },
+        {
+          "startDate": "2024-12-01",
+          "endDate": "2025-02-28",
+          "value": 695839000,
           "unit": "USD",
           "fiscalYear": 2025,
           "fiscalPeriod": "Q1",

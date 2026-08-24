@@ -9,14 +9,15 @@
   "reportDate": "2023-11-30T00:00:00Z",
   "secURL": "https://www.sec.gov/Archives/edgar/data/1750/000110465923128321/air-20231130x10q.htm",
   "source": "SEC EDGAR XBRL",
+  "extractionVersion": 2,
   "summary": {
-    "revenue": null,
+    "revenue": 545400000,
     "expenses": null,
     "operatingIncome": null,
     "netIncome": 23800000,
     "operatingMargin": null,
     "roce": null,
-    "netMargin": null,
+    "netMargin": 4.36,
     "totalDebt": 275000000,
     "cash": 65100000,
     "cashFromOperations": -1300000,
@@ -25,10 +26,9 @@
     "dividendPerShare": null,
     "epsDiluted": 0.67,
     "expectedRevenue": null,
-    "expectedEPS": null,
-    "payoutRatio": null
+    "expectedEPS": null
   },
-  "highlights": "El beneficio neto varió un +5.8% frente al periodo comparable. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +16.1% frente al periodo comparable. El beneficio neto varió un +5.8% frente al periodo comparable. El margen neto del periodo más reciente es 4.4%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
   "metrics": {
     "costOfRevenue": {
       "concept": "CostOfGoodsAndServicesSold",
@@ -426,6 +426,47 @@
           "endDate": "2023-11-30",
           "value": 0.67,
           "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        }
+      ]
+    },
+    "revenue": {
+      "concept": "GrossProfitPlusCostOfRevenue",
+      "periods": [
+        {
+          "startDate": "2022-06-01",
+          "endDate": "2022-11-30",
+          "value": 916100000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2022-09-01",
+          "endDate": "2022-11-30",
+          "value": 469800000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": "CY2022Q4"
+        },
+        {
+          "startDate": "2023-06-01",
+          "endDate": "2023-11-30",
+          "value": 1095100000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q2",
+          "frame": null
+        },
+        {
+          "startDate": "2023-09-01",
+          "endDate": "2023-11-30",
+          "value": 545400000,
+          "unit": "USD",
           "fiscalYear": 2024,
           "fiscalPeriod": "Q2",
           "frame": null
