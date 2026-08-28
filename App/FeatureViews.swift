@@ -1044,6 +1044,7 @@ struct OpportunityAnalysisView: View {
             else if ratio <= 1.10 { result.append("El PER está cerca de la referencia razonable para su sector.") }
             else { result.append("El PER supera la referencia ajustada de su sector y reduce el atractivo de valoración.") }
             if item.brandPremiumApplied == true { result.append("La referencia admite una prima moderada porque la empresa posee una marca o ecosistema especialmente fuerte.") }
+            result.append("La escala absoluta de PER es exigente: el sector o la marca no añaden puntos. Superar la referencia resta puntos adicionales; un PER bajo, por sí solo, no demuestra que la empresa sea una buena inversión.")
         } else if item.peNotMeaningful == true {
             result.append("El beneficio por acción no es positivo, por lo que el PER no es significativo y la valoración obtiene cero puntos.")
         } else if item.pe == nil {
@@ -1183,6 +1184,8 @@ struct OpportunityAnalysisView: View {
                 Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
                     .font(.footnote).foregroundStyle(.secondary)
                 ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 35, icon: "scalemass.fill")
+                Text("Base PER: ≤8x → 35; 10x → 30; 12x → 24; 15x → 16; 20x → 7; 25x → 2; ≥30x → 0 puntos. Interpolación y redondeo; hasta 12 puntos menos si supera la referencia ajustada. Sin bonificaciones por sector o marca.")
+                    .font(.caption2).foregroundStyle(.secondary)
                 ScoreComponentRow(label: "Precio vs media 1.000", value: item.movingAverageInvestorScore ?? 0, maximum: 6, icon: "waveform.path.ecg")
                 ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 22, icon: "percent")
                 ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 8, icon: "chart.line.uptrend.xyaxis")

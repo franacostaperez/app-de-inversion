@@ -129,8 +129,38 @@ y desde 30 % aporta los 12 puntos. Se interpola y redondea primero el nivel
 0–10 y después se pondera a 12. El máximo se reserva a márgenes de al menos 30 %.
 Un margen ausente mantiene el score incompleto, no se interpreta como margen cero.
 
-Regresión de referencia: Booz Allen (BAH), margen operativo 9,21 %, pasa de
-6 a 2 puntos de margen; conservando sus demás datos, de 67 a 63 puntos totales.
+Regresión del cambio de margen: Booz Allen (BAH), margen operativo 9,21 %, pasa de
+6 a 2 puntos de margen; conservando la valoración anterior, de 67 a 63 puntos totales.
+
+### Escala exigente de valoración (28/08/2026)
+
+La valoración mantiene **35 puntos sobre 100**, usando el mismo PER verificado
+que ya figuraba en el score. No se sustituye por PER forward ni se actualizan
+precios o beneficios al recalcular.
+
+| PER | Puntos base / 35 |
+|---|---:|
+| Positivo, ≤8x | 35 |
+| 10x | 30 |
+| 12x | 24 |
+| 15x | 16 |
+| 18x | 10 |
+| 20x | 7 |
+| 25x | 2 |
+| ≥30x | 0 |
+
+Se interpola y redondea entre niveles. Un PER superior a 8x nunca recibe el
+máximo, aunque el redondeo lo acerque. El sector y la marca **no bonifican** la
+puntuación base: la referencia ajustada solo determina una penalización
+adicional si se supera. Esa penalización es 0 en 1,00x la referencia, 2 en
+1,15x, 5 en 1,35x, 8 en 1,65x y 12 desde 2,00x, interpolando entre niveles.
+El resultado no puede ser negativo. PER ausente o no significativo aporta cero;
+el score incompleto continúa sin publicarse. Un PER bajo no garantiza calidad
+ni descarta beneficios extraordinarios o un pico del ciclo.
+
+Con los datos existentes de Booz Allen (PER 11,8x y referencia 12x), la valoración
+pasa de 33 a 25 puntos y, tras el endurecimiento previo del margen, el total pasa
+de 63 a 55. Los demás componentes y datos permanecen iguales.
 
 El workflow `Rebuild app snapshot` reconstruye y verifica los datos públicos
 cuando cambia la fórmula o una cartera CNMV, sin descargar ni sustituir las

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh margin scores and CNMV portfolios without replacing cached SEC data."""
+"""Refresh margin/valuation scores and CNMV without replacing cached SEC data."""
 
 import argparse
 import copy
@@ -9,9 +9,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from .build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score
+    from .build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score, valuation_investor_score
 except ImportError:
-    from build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score
+    from build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score, valuation_investor_score
 
 
 def refresh(snapshot, fund_portfolios):
@@ -20,11 +20,14 @@ def refresh(snapshot, fund_portfolios):
         rating = operating_margin_investor_score(row.get("operatingMargin"))
         points = round(rating * 12 / 10)
         old_points = row["profitabilityInvestorScore"]
-        # Only the margin component changes. Missing data stays incomplete.
+        valuation = valuation_investor_score(row.get("pe"), row.get("sectorPEBenchmark"))
+        old_valuation = row["valuationInvestorScore"]
+        # Change only the requested components; missing data stays incomplete.
         if row.get("opportunityScore") is not None:
-            row["opportunityScore"] = max(0, min(100, row["opportunityScore"] - old_points + points))
+            row["opportunityScore"] = max(0, min(100, row["opportunityScore"] - old_points + points - old_valuation + valuation))
         row["operatingMarginRating"] = rating
         row["profitabilityInvestorScore"] = points
+        row["valuationInvestorScore"] = valuation
     result["consensus"].sort(key=lambda row: (
         row["opportunityScore"] is not None, row["opportunityScore"] or -1,
         row.get("newPositions", 0), row["buying"], row["holders"],

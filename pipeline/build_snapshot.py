@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import unicodedata
 from collections import defaultdict
@@ -100,33 +101,23 @@ def yield_investor_score(dividend_yield: float | None) -> int:
     ])
 
 
-def valuation_investor_score(pe: float | None, ideal_pe: float) -> int:
-    if pe is None:
+def valuation_investor_score(pe: float | None, ideal_pe: float | None) -> int:
+    """Strict 35-point P/E scale; sector context may penalize, never inflate.
+
+    Low P/E is a valuation signal, not proof of business quality. Losses or
+    unavailable/non-finite multiples earn no points; build tracks missing data.
+    """
+    if pe is None or not math.isfinite(pe) or pe <= 0:
         return 0
-    if pe <= 0:
-        return 0
-    # Absolute price discipline comes first: only a P/E of 10x or less can
-    # receive the maximum valuation score. Sector and brand context can make a
-    # modest adjustment, but cannot turn a merely fair multiple into “perfect”.
     base = graduated_score(pe, [
-        (5, 35), (10, 35), (12, 32), (15, 27), (18, 22),
-        (22, 15), (28, 9), (35, 4), (45, 0),
+        (5, 35), (8, 35), (10, 30), (12, 24), (15, 16),
+        (18, 10), (20, 7), (25, 2), (30, 0),
     ])
-    relative = pe / ideal_pe if ideal_pe > 0 else 1
-    if relative <= 0.70:
-        adjustment = 4
-    elif relative <= 0.85:
-        adjustment = 3
-    elif relative <= 1.00:
-        adjustment = 1
-    elif relative <= 1.15:
-        adjustment = 0
-    elif relative <= 1.35:
-        adjustment = -3
-    else:
-        adjustment = -5
-    maximum = 35 if pe <= 10 else 34
-    return max(0, min(maximum, base + adjustment))
+    relative = pe / ideal_pe if ideal_pe is not None and math.isfinite(ideal_pe) and ideal_pe > 0 else 1
+    penalty = graduated_score(relative, [(1, 0), (1.15, 2), (1.35, 5), (1.65, 8), (2, 12)])
+    # Rounding immediately above 8x must not award the maximum.
+    maximum = 35 if pe <= 8 else 34
+    return max(0, min(maximum, base - penalty))
 
 
 def consensus_investor_score(counts: dict) -> int:

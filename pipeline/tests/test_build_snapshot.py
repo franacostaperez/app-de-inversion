@@ -60,12 +60,28 @@ class SnapshotTests(unittest.TestCase):
         scores = [yield_investor_score(value) for value in (1, 2, 3, 3.36, 4, 5, 6, 7.5, 9, 10, 12)]
         self.assertEqual(scores, [0, 2, 6, 8, 14, 18, 22, 18, 13, 8, 4])
 
-    def test_pe_score_reserves_perfect_score_for_ten_or_less(self):
-        self.assertEqual(valuation_investor_score(10, 18), 35)
-        self.assertLess(valuation_investor_score(12, 18), 35)
-        self.assertLess(valuation_investor_score(17.3, 18), 32)
+    def test_pe_score_reserves_perfect_score_for_eight_or_less(self):
+        self.assertEqual(valuation_investor_score(8, 18), 35)
+        self.assertLess(valuation_investor_score(8.001, 18), 35)
+        self.assertEqual(valuation_investor_score(10, 18), 30)
+        self.assertEqual(valuation_investor_score(12, 18), 24)
+        self.assertLess(valuation_investor_score(17.3, 18), 16)
         self.assertGreater(valuation_investor_score(15, 12), valuation_investor_score(20, 12))
         self.assertGreater(valuation_investor_score(10, 12), valuation_investor_score(30, 12))
+
+    def test_strict_pe_anchors_without_sector_bonuses(self):
+        self.assertEqual([valuation_investor_score(pe, 100) for pe in (8, 10, 12, 15, 18, 20, 25, 30, 60)], [35, 30, 24, 16, 10, 7, 2, 0, 0])
+        self.assertEqual(valuation_investor_score(15, 100), valuation_investor_score(15, 15))
+        self.assertLess(valuation_investor_score(15, 12), valuation_investor_score(15, 15))
+        self.assertEqual(valuation_investor_score(11.8, 12), 25)
+
+    def test_pe_score_is_bounded_monotone_and_rejects_invalid_multiples(self):
+        for benchmark in (6, 12, 20, 40, 100, 0, None):
+            scores = [valuation_investor_score(pe / 100, benchmark) for pe in range(1, 5001)]
+            self.assertEqual(scores, sorted(scores, reverse=True))
+            self.assertTrue(all(0 <= score <= 35 for score in scores))
+        for pe in (None, 0, -5, float('nan'), float('inf'), -float('inf')):
+            self.assertEqual(valuation_investor_score(pe, 12), 0)
 
     def test_consensus_rewards_new_positions_and_penalizes_selling(self):
         established = consensus_investor_score({"holders": 4, "buying": 2, "selling": 0, "newPositions": 0})
@@ -189,7 +205,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
         self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 13)
-        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 24)
+        self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 12)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
         self.assertIsNone(result["consensus"][0]["opportunityScore"])
         self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")
