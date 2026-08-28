@@ -1,0 +1,30 @@
+name: Validate app and portfolio data
+
+on:
+  push:
+    paths:
+      - "App/**"
+      - "Sources/**"
+      - "Tests/**"
+      - "data/fund-portfolios/**"
+      - "pipeline/**"
+      - ".github/workflows/validate-app.yml"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test data pipeline
+        run: python3 -m unittest discover -s pipeline/tests
+      - name: Build iOS app without signing
+        run: >-
+          xcodebuild -project DividendIntelligence.xcodeproj
+          -scheme "Dividend Intelligence" -configuration Debug
+          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO build

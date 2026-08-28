@@ -43,6 +43,29 @@ El repositorio debe ser público para usar `raw.githubusercontent.com` sin auten
 
 ## Pipeline
 
+### Numantia y carteras CNMV
+
+En **Fondos → Carteras CNMV → Numantia Patrimonio Global** se muestra el
+informe del primer semestre de 2026: 27 acciones, sus valores en euros,
+pesos sobre el patrimonio, 9 incorporaciones y 10 posiciones que dejan de
+figurar frente al 31/12/2025. Cada posición enlaza sus fuentes de mercado.
+
+La fuente versionada está en `data/fund-portfolios/numantia/2026-H1.json`.
+`build_snapshot.py` incorpora automáticamente el informe más reciente por fondo
+en `fundPortfolios`, incluso después de una actualización de EDGAR. El campo es
+complementario: no modifica los 13F ni el consenso basado en cantidades de acciones.
+El informe CNMV no publica cantidades de títulos ni precios de compra. No se
+estiman ni se confunden cambios de valoración con operaciones.
+
+Los dividendos TTM utilizan pagos efectivamente realizados en los 12 meses hasta
+la fecha del precio; se excluyen pagos futuros. Las métricas se guardan con fecha,
+divisa y fuentes propias. N/D significa no disponible/no fiable; N/M, pérdidas.
+La importación de un informe no actualiza por sí misma las métricas de mercado.
+
+**Esta sección requiere compilar e instalar la versión actualizada de la app.**
+Las versiones anteriores siguen leyendo el snapshot, pero ignoran el nuevo campo.
+No se ha cambiado la programación ni el universo del monitor de 13F.
+
 ### Descargar datos reales de EDGAR
 
 La SEC exige que las peticiones automatizadas se identifiquen. Define un User-Agent con nombre del proyecto y correo de contacto:

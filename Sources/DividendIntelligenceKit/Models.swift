@@ -13,9 +13,10 @@ public struct AppSnapshot: Codable, Sendable {
     public let filingUpdates: [FilingUpdate]
     public let companyProfiles: [CompanyProfile]
     public let companyReports: [CompanyReport]
+    public let fundPortfolios: [FundPortfolio]
 
     enum CodingKeys: String, CodingKey {
-        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports, fundPortfolios
     }
 
     public init(from decoder: Decoder) throws {
@@ -32,7 +33,69 @@ public struct AppSnapshot: Codable, Sendable {
         filingUpdates = try container.decodeIfPresent([FilingUpdate].self, forKey: .filingUpdates) ?? []
         companyProfiles = try container.decodeIfPresent([CompanyProfile].self, forKey: .companyProfiles) ?? []
         companyReports = try container.decodeIfPresent([CompanyReport].self, forKey: .companyReports) ?? []
+        fundPortfolios = try container.decodeIfPresent([FundPortfolio].self, forKey: .fundPortfolios) ?? []
     }
+}
+
+/// Complementary disclosures, kept separate from USD/share-based SEC 13Fs.
+public struct FundPortfolio: Codable, Identifiable, Sendable {
+    public let id: String
+    public let name: String
+    public let manager: String
+    public let managerRole: String
+    public let fundISIN: String
+    public let reportId: String
+    public let period: String
+    public let reportDate: Date
+    public let previousReportDate: Date
+    public let publicationDate: Date?
+    public let retrievedAt: Date
+    public let currency: String
+    public let netAssets: Double
+    public let equityValue: Double
+    public let equityWeight: Double
+    public let positionCount: Int
+    public let newPositions: Int
+    public let closedPositions: Int
+    public let sourceURL: URL
+    public let sourceName: String
+    public let notes: String
+    public let positions: [FundPosition]
+
+    public var currentPositions: [FundPosition] { positions.filter { $0.value > 0 } }
+    public var closed: [FundPosition] { positions.filter { $0.status == "CLOSED" } }
+}
+
+public struct FundPosition: Codable, Identifiable, Sendable {
+    public var id: String { isin }
+    public let isin: String
+    public let company: String
+    public let ticker: String?
+    public let reportedCurrency: String
+    public let value: Double
+    public let weight: Double
+    public let previousValue: Double
+    public let previousWeight: Double
+    public let weightChangePoints: Double
+    public let status: String
+    public let shares: Double?
+    public let metrics: FundMarketMetrics?
+}
+
+public struct FundMarketMetrics: Codable, Sendable {
+    public let consultedAt: Date
+    public let priceDate: String?
+    public let currency: String?
+    public let price: Double?
+    public let dividendTTM: Double?
+    public let yieldTTM: Double?
+    public let yieldAbove3: Bool?
+    public let peTrailing: Double?
+    public let peTrailingStatus: String?
+    public let peForward: Double?
+    public let peForwardStatus: String?
+    public let sources: [URL]
+    public let notes: String?
 }
 
 public struct CompanyReport: Codable, Identifiable, Sendable {

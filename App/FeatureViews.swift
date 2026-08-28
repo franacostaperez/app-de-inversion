@@ -396,6 +396,31 @@ struct FundsView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
+                if !snapshot.fundPortfolios.isEmpty {
+                    Text("CARTERAS CNMV").font(.caption.bold())
+                        .foregroundStyle(.secondary).frame(maxWidth: .infinity, alignment: .leading)
+                    ForEach(snapshot.fundPortfolios) { portfolio in
+                        NavigationLink {
+                            FundPortfolioView(portfolio: portfolio)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(portfolio.name).font(.headline).foregroundStyle(.primary)
+                                Text("\(portfolio.managerRole) · \(portfolio.manager)")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                HStack {
+                                    Text("\(portfolio.positionCount) acciones · \(portfolio.period)")
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                }.font(.subheadline).foregroundStyle(WhaleTheme.accent)
+                                Text("Informe semestral · no es un 13F")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }.frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(16).whalePanel()
+                        }.buttonStyle(.plain)
+                    }
+                    Text("CARTERAS SEC · 13F").font(.caption.bold())
+                        .foregroundStyle(.secondary).frame(maxWidth: .infinity, alignment: .leading)
+                }
                 ForEach(sortedInvestors) { investor in
                     Button {
                         withAnimation(.snappy) { selectedInvestorID = investor.id }
@@ -414,6 +439,144 @@ struct FundsView: View {
         .background(WhaleTheme.background)
         .navigationTitle("Fondos seguidos")
     }
+}
+
+private struct FundPortfolioView: View {
+    let portfolio: FundPortfolio
+    @State private var onlyNew = false
+    @State private var onlyHighYield = false
+
+    private var positions: [FundPosition] {
+        portfolio.currentPositions.filter {
+            (!onlyNew || $0.status == "NEW") && (!onlyHighYield || $0.metrics?.yieldAbove3 == true)
+        }
+    }
+
+    var body: some View {
+        List {
+            Section("Cartera oficial · \(portfolio.period)") {
+                LabeledContent("Asesor", value: portfolio.manager)
+                LabeledContent("Fecha de cartera", value: portfolio.reportDate.formatted(date: .abbreviated, time: .omitted))
+                LabeledContent("Comparada con", value: portfolio.previousReportDate.formatted(date: .abbreviated, time: .omitted))
+                LabeledContent("Patrimonio", value: portfolio.netAssets.formatted(.currency(code: portfolio.currency)))
+                LabeledContent("Acciones", value: "\(portfolio.positionCount) · \(portfolio.equityWeight.formatted(.number.precision(.fractionLength(2)))) % del patrimonio")
+                LabeledContent("Incorporaciones / salidas", value: "\(portfolio.newPositions) / \(portfolio.closedPositions)")
+                Link("Abrir informe oficial CNMV", destination: portfolio.sourceURL)
+            }
+            Section {
+                Toggle("Solo nuevas incorporaciones", isOn: $onlyNew)
+                Toggle("Solo yield TTM superior al 3 %", isOn: $onlyHighYield)
+            } footer: {
+                Text("Una incorporación no figuraba en el informe anterior. El yield se calcula con dividendos de los últimos 12 meses; N/D no equivale a 0 %.")
+            }
+            Section("Acciones · \(positions.count)") {
+                if positions.isEmpty {
+                    Text("No hay posiciones con datos verificados que cumplan estos filtros.")
+                        .foregroundStyle(.secondary)
+                }
+                ForEach(positions) { position in
+                    NavigationLink {
+                        FundPositionView(position: position, portfolio: portfolio)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 7) {
+                            HStack(alignment: .top) {
+                                Text(position.company).font(.headline)
+                                Spacer()
+                                Text(position.weight.formatted(.number.precision(.fractionLength(2))) + " %")
+                                    .font(.subheadline.bold()).monospacedDigit()
+                            }
+                            Text("\(position.ticker ?? position.isin) · \(position.value.formatted(.currency(code: portfolio.currency)))")
+                                .font(.caption).foregroundStyle(.secondary)
+                            HStack {
+                                if position.status == "NEW" {
+                                    Text("NUEVA").font(.caption2.bold()).foregroundStyle(WhaleTheme.positive)
+                                }
+                                Text("Yield TTM: " + fundYield(position.metrics?.yieldTTM)).font(.caption)
+                                if position.metrics?.yieldAbove3 == true {
+                                    Text(">3 %").font(.caption.bold()).foregroundStyle(WhaleTheme.positive)
+                                }
+                            }
+                            Text("PER: \(fundPE(position.metrics?.peTrailing, status: position.metrics?.peTrailingStatus)) · Forward: \(fundPE(position.metrics?.peForward, status: position.metrics?.peForwardStatus))")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }.padding(.vertical, 5)
+                    }
+                }
+            }
+            Section("Posiciones que ya no figuran · \(portfolio.closedPositions)") {
+                ForEach(portfolio.closed) { position in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(position.company)
+                        Text("Peso anterior: \(position.previousWeight.formatted(.number.precision(.fractionLength(2)))) % · \(position.isin)")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+            Section("Alcance y trazabilidad") {
+                Text(portfolio.notes).font(.caption)
+                Text("Consultado: " + portfolio.retrievedAt.formatted(date: .abbreviated, time: .omitted))
+                    .font(.caption).foregroundStyle(.secondary)
+                Text("Publicación: " + (portfolio.publicationDate?.formatted(date: .abbreviated, time: .omitted) ?? "N/D"))
+                    .font(.caption).foregroundStyle(.secondary)
+                Text("Las métricas tienen su propia fecha de consulta. Los datos semestrales no representan la cartera en tiempo real.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .navigationTitle(portfolio.name)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct FundPositionView: View {
+    let position: FundPosition
+    let portfolio: FundPortfolio
+
+    var body: some View {
+        List {
+            Section("Posición declarada") {
+                LabeledContent("ISIN", value: position.isin)
+                LabeledContent("Ticker de referencia", value: position.ticker ?? "N/D")
+                LabeledContent("Valor", value: position.value.formatted(.currency(code: portfolio.currency)))
+                LabeledContent("Peso", value: position.weight.formatted(.number.precision(.fractionLength(2))) + " %")
+                LabeledContent("Peso anterior", value: position.previousWeight.formatted(.number.precision(.fractionLength(2))) + " %")
+                LabeledContent("Variación de peso", value: position.weightChangePoints.formatted(.number.sign(strategy: .always()).precision(.fractionLength(2))) + " pp")
+                LabeledContent("Número de acciones", value: "N/D · no publicado")
+                Text("Una variación de valor o peso no demuestra una compra o venta: también influyen cotización, divisas y flujos del fondo.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Section("Dividendos y valoración") {
+                LabeledContent("Yield TTM", value: fundYield(position.metrics?.yieldTTM))
+                LabeledContent("¿Supera el 3 %?", value: position.metrics?.yieldAbove3.map { $0 ? "Sí" : "No" } ?? "N/D")
+                LabeledContent("PER trailing", value: fundPE(position.metrics?.peTrailing, status: position.metrics?.peTrailingStatus))
+                LabeledContent("PER forward", value: fundPE(position.metrics?.peForward, status: position.metrics?.peForwardStatus))
+                if let metrics = position.metrics {
+                    if let price = metrics.price {
+                        LabeledContent("Precio de referencia", value: price.formatted(.currency(code: metrics.currency ?? "USD")))
+                    }
+                    LabeledContent("Fecha del precio", value: metrics.priceDate ?? "N/D")
+                    LabeledContent("Consulta de métricas", value: metrics.consultedAt.formatted(date: .abbreviated, time: .omitted))
+                    if let notes = metrics.notes { Text(notes).font(.caption).foregroundStyle(.secondary) }
+                    ForEach(Array(metrics.sources.enumerated()), id: \.offset) { index, url in
+                        Link("Fuente de mercado \(index + 1)", destination: url)
+                    }
+                }
+                Text("N/D: dato no disponible o no fiable. N/M: múltiplo no significativo por pérdidas. En las inmobiliarias, el PER puede verse afectado por amortizaciones y extraordinarios.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Section("Fuente de cartera") {
+                Link(portfolio.sourceName, destination: portfolio.sourceURL)
+            }
+        }
+        .navigationTitle(position.company)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private func fundYield(_ value: Double?) -> String {
+    value.map { $0.formatted(.number.precision(.fractionLength(2))) + " %" } ?? "N/D"
+}
+
+private func fundPE(_ value: Double?, status: String?) -> String {
+    value.map { $0.formatted(.number.precision(.fractionLength(2))) + "x" } ?? (status == "N/M" ? "N/M" : "N/D")
 }
 
 private struct FundCard: View {

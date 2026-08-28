@@ -758,6 +758,65 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     }
 
 
+def load_fund_portfolios(directory: Path) -> list[dict]:
+    """Load the latest verified CNMV report per fund, without inventing trades."""
+    latest = {}
+    report_ids = set()
+    for path in sorted(directory.glob("*/*.json")):
+        report = json.loads(path.read_text())
+        if report["reportId"] in report_ids:
+            raise ValueError(f"Duplicate fund report: {report['reportId']}")
+        report_ids.add(report["reportId"])
+        if report["reportType"] != "CNMV_SEMIANNUAL" or report["currency"] != "EUR":
+            raise ValueError(f"Unsupported fund report: {path}")
+        if report["reportDate"] <= report["previousReportDate"]:
+            raise ValueError(f"Invalid comparison dates: {path}")
+        positions = report["positions"]
+        if len({row["isin"] for row in positions}) != len(positions):
+            raise ValueError(f"Duplicate ISIN in {path}")
+        # Each source cell is rounded to thousands of EUR. Preserve both
+        # the stated total and the row values, allowing only rounding error.
+        for field, total in (("value", "equityValue"), ("previousValue", "previousEquityValue")):
+            if abs(sum(row[field] for row in positions) - report[total]) > len(positions) * 500:
+                raise ValueError(f"Unreconciled {field} in {path}")
+        for row in positions:
+            if row["value"] < 0 or row["previousValue"] < 0:
+                raise ValueError(f"Negative holding value: {row['isin']}")
+            for value_key, weight_key, assets_key in (
+                ("value", "weight", "netAssets"),
+                ("previousValue", "previousWeight", "previousNetAssets"),
+            ):
+                expected = row[value_key] / report[assets_key] * 100
+                if abs(row[weight_key] - expected) > 0.02:
+                    raise ValueError(f"Invalid weight: {row['isin']}")
+            row["status"] = (
+                "NEW" if row["value"] > 0 and row["previousValue"] == 0
+                else "CLOSED" if row["value"] == 0 and row["previousValue"] > 0
+                else "HELD"
+            )
+            row["weightChangePoints"] = round(row["weight"] - row["previousWeight"], 2)
+            # Missing quantity remains missing, never a synthetic zero.
+            row["shares"] = None
+            row["estimatedAveragePurchasePrice"] = None
+            metrics = row.get("metrics")
+            if metrics:
+                price, dividend = metrics.get("price"), metrics.get("dividendTTM")
+                metrics["yieldTTM"] = dividend / price * 100 if price and price > 0 and dividend is not None else None
+                metrics["yieldAbove3"] = metrics["yieldTTM"] > 3 if metrics["yieldTTM"] is not None else None
+                for key in ("peTrailing", "peForward"):
+                    if metrics.get(key) is not None and metrics[key] <= 0:
+                        metrics[key] = None
+                        metrics[key + "Status"] = "N/M"
+        report["positions"] = sorted(positions, key=lambda row: (-row["value"], row["isin"]))
+        report["positionCount"] = sum(row["value"] > 0 for row in positions)
+        report["newPositions"] = sum(row["status"] == "NEW" for row in positions)
+        report["closedPositions"] = sum(row["status"] == "CLOSED" for row in positions)
+        prior = latest.get(report["id"])
+        if prior is None or report["reportDate"] > prior["reportDate"]:
+            latest[report["id"]] = report
+    return sorted(latest.values(), key=lambda report: report["name"])
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--current", type=Path, required=True)
@@ -768,6 +827,8 @@ def main() -> None:
     parser.add_argument("--valuation-database", type=Path)
     parser.add_argument("--filings-directory", type=Path)
     parser.add_argument("--company-reports-directory", type=Path)
+    parser.add_argument("--fund-portfolios-directory", type=Path,
+                        default=Path(__file__).resolve().parents[1] / "data/fund-portfolios")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     current = json.loads(args.current.read_text())
@@ -800,6 +861,9 @@ def main() -> None:
         current, previous, companies, profiles, existing.get("filingUpdates", []),
         average_prices, company_reports, existing.get("consensus", []),
     )
+    # Non-13F disclosures stay separate: CNMV values are EUR and do not
+    # disclose share counts. Never feed their value changes into 13F signals.
+    snapshot["fundPortfolios"] = load_fund_portfolios(args.fund_portfolios_directory)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
 
