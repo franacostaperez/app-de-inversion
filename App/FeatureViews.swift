@@ -1062,9 +1062,10 @@ struct OpportunityAnalysisView: View {
         }
         if let margin = item.operatingMargin {
             if margin <= 0 { result.append("El margen operativo no es positivo y no aporta puntos de rentabilidad.") }
-            else if margin < 5 { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % es reducido y ofrece poco colchón ante una caída de ingresos.") }
-            else if margin < 15 { result.append("El margen operativo es moderado y aporta una puntuación intermedia de rentabilidad.") }
-            else { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % refleja una rentabilidad elevada y refuerza el score.") }
+            else if margin <= 5 { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % es reducido y no aporta puntos de rentabilidad.") }
+            else if margin < 15 { result.append("El margen operativo es bajo o moderado y recibe pocos puntos con la escala exigente de rentabilidad.") }
+            else if margin < 25 { result.append("El margen operativo refuerza el score, pero los niveles más altos se reservan para márgenes del 25–30 %.") }
+            else { result.append("El margen operativo del \(margin.formatted(.number.precision(.fractionLength(1)))) % obtiene una puntuación elevada; el máximo exige al menos un 30 %.") }
         } else {
             result.append("No hay margen operativo anual comparable; el score queda pendiente hasta obtenerlo.")
         }
@@ -1186,6 +1187,8 @@ struct OpportunityAnalysisView: View {
                 ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 22, icon: "percent")
                 ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 8, icon: "chart.line.uptrend.xyaxis")
                 ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 12, icon: "gauge.with.dots.needle.50percent")
+                Text("Escala exigente de margen: ≤5 % → 0; 10 % → 2; 15 % → 5; 20 % → 7; 25 % → 10; ≥30 % → 12 puntos. Interpolación y redondeo entre niveles.")
+                    .font(.caption2).foregroundStyle(.secondary)
                 ScoreComponentRow(label: "Solvencia", value: item.leverageInvestorScore ?? 0, maximum: 10, icon: "shield.lefthalf.filled")
                 ScoreComponentRow(label: "Consenso", value: item.consensusInvestorScore ?? 0, maximum: 7, icon: "building.columns.fill")
             }

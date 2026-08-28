@@ -160,28 +160,17 @@ def moving_average_investor_score(price_vs_average_percent: float | None) -> int
 
 
 def operating_margin_investor_score(operating_margin: float | None) -> int:
-    """Score annual operating margin on the user-defined 1–10 ladder."""
+    """Strict 0–10 rating: weak margins earn little; 30% earns full credit.
+
+    The component retains its 12/100 weight. Missing data is separately
+    marked incomplete by build(); losses and margins <=5% earn zero.
+    """
     if operating_margin is None:
         return 0
-    if operating_margin < 0:
-        return 1
-    if operating_margin < 3:
-        return 2
-    if operating_margin < 6:
-        return 3
-    if operating_margin < 9:
-        return 4
-    if operating_margin < 12:
-        return 5
-    if operating_margin < 15:
-        return 6
-    if operating_margin < 20:
-        return 7
-    if operating_margin < 25:
-        return 8
-    if operating_margin < 30:
-        return 9
-    return 10
+    rating = graduated_score(operating_margin, [
+        (0, 0), (5, 0), (10, 2), (15, 4), (20, 6), (25, 8), (30, 10),
+    ])
+    return min(9, rating) if operating_margin < 30 else 10
 
 
 def aggregate_holdings(items: list[dict]) -> list[dict]:

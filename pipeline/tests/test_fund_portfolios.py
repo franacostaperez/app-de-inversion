@@ -75,6 +75,24 @@ class FundPortfolioTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             self.assertEqual(load_fund_portfolios(Path(folder)), [])
 
+    def test_verified_market_metrics_and_missing_data(self):
+        result = self.load(self.report())
+        rows = {row.get("ticker"): row for row in result["positions"] if row["value"] > 0}
+        self.assertEqual(len(rows), 27)
+        for row in rows.values():
+            metrics = row["metrics"]
+            self.assertTrue(metrics["sources"])
+            self.assertTrue(metrics["priceDate"])
+            self.assertEqual(metrics["consultedAt"], "2026-08-28T00:00:00Z")
+            if metrics["dividendTTM"] is not None:
+                self.assertAlmostEqual(sum(payment["amount"] for payment in metrics["dividendPayments"]), metrics["dividendTTM"])
+                self.assertAlmostEqual(metrics["yieldTTM"], metrics["dividendTTM"] / metrics["price"] * 100)
+        self.assertEqual(rows["TSLA"]["metrics"]["yieldTTM"], 0)
+        self.assertIsNone(rows["AMRZ"]["metrics"]["yieldTTM"])
+        self.assertEqual(rows["WOSG.L"]["metrics"]["currency"], "GBP")
+        self.assertEqual(rows["WOSG.L"]["metrics"]["price"], 7.20)
+        self.assertEqual({row["ticker"] for row in rows.values() if row["status"] == "NEW" and row["metrics"]["yieldAbove3"]}, {"REXR", "SFC.TO", "POOL", "ARE", "ALX"})
+
     def test_latest_report_is_selected_and_ids_cannot_repeat(self):
         with tempfile.TemporaryDirectory() as folder:
             directory = Path(folder) / "numantia"

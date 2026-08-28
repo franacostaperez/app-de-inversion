@@ -1,0 +1,46 @@
+name: Rebuild app snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "pipeline/build_snapshot.py"
+      - "pipeline/refresh_snapshot.py"
+      - "data/fund-portfolios/**"
+      - ".github/workflows/rebuild-snapshot.yml"
+
+permissions:
+  contents: write
+
+# Share the daily updater's main-branch lock to avoid concurrent data commits.
+concurrency:
+  group: dividend-data-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test pipeline
+        run: python -m unittest discover -s pipeline/tests
+      - name: Refresh scores and CNMV without changing SEC data
+        run: python pipeline/refresh_snapshot.py
+      - name: Audit rebuilt snapshot
+        run: |
+          python pipeline/audit_scoring.py --snapshot data/public/snapshot.json --output data/public/scoring-audit.json
+          python pipeline/audit_metric_values.py --snapshot data/public/snapshot.json --output data/public/metric-audit.json
+      - name: Commit generated outputs
+        run: |
+          if git diff --quiet -- data/public/snapshot.json data/public/scoring-audit.json data/public/metric-audit.json; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/public/snapshot.json data/public/scoring-audit.json data/public/metric-audit.json
+          git commit -m "data: rebuild app snapshot from verified inputs"
+          git push

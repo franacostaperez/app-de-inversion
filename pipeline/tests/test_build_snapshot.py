@@ -86,12 +86,20 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(moving_average_investor_score(0), 3)
         self.assertEqual(moving_average_investor_score(40), 0)
 
-    def test_operating_margin_uses_exact_ten_point_ladder(self):
-        values = (-1, 0, 2.9, 3, 5.9, 6, 8.9, 9, 11.9, 12, 14.9, 15, 19.9, 20, 24.9, 25, 29.9, 30)
+    def test_operating_margin_penalizes_weak_margins(self):
+        values = (None, -10, 0, 3, 5, 9, 9.21, 10, 15, 20, 25, 30, 60)
         self.assertEqual(
             [operating_margin_investor_score(value) for value in values],
-            [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10],
+            [0, 0, 0, 0, 0, 2, 2, 2, 4, 6, 8, 10, 10],
         )
+
+    def test_margin_component_keeps_weight_and_booz_allen_gets_two_points(self):
+        self.assertEqual(round(operating_margin_investor_score(9.21) * 12 / 10), 2)
+        self.assertEqual(round(operating_margin_investor_score(30) * 12 / 10), 12)
+        self.assertLess(operating_margin_investor_score(29.99), 10)
+        ratings = [operating_margin_investor_score(value / 10) for value in range(-100, 601)]
+        self.assertEqual(ratings, sorted(ratings))
+        self.assertTrue(all(0 <= rating <= 10 for rating in ratings))
 
     def test_non_dividend_company_gets_no_dividend_growth_points(self):
         current = {"quarter": "2026-Q1", "investors": [{

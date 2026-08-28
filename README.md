@@ -119,3 +119,20 @@ Fuentes oficiales: [API de EDGAR](https://www.sec.gov/search-filings/edgar-appli
 - 20% smart money
 
 Cada bloque se conserva en el JSON para que la puntuación sea explicable y ajustable.
+
+### Escala exigente de margen operativo (28/08/2026)
+
+El score de oportunidades usa un componente de margen de **12 puntos sobre 100**.
+No se cambia su peso ni los otros componentes. La escala se endurece: hasta 5 %
+no aporta puntos; 10 % aporta 2; 15 % aporta 5; 20 % aporta 7; 25 % aporta 10;
+y desde 30 % aporta los 12 puntos. Se interpola y redondea primero el nivel
+0–10 y después se pondera a 12. El máximo se reserva a márgenes de al menos 30 %.
+Un margen ausente mantiene el score incompleto, no se interpreta como margen cero.
+
+Regresión de referencia: Booz Allen (BAH), margen operativo 9,21 %, pasa de
+6 a 2 puntos de margen; conservando sus demás datos, de 67 a 63 puntos totales.
+
+El workflow `Rebuild app snapshot` reconstruye y verifica los datos públicos
+cuando cambia la fórmula o una cartera CNMV, sin descargar ni sustituir las
+fuentes SEC existentes. Las métricas de Numantia son una consulta fechada,
+no cotizaciones en tiempo real ni una actualización automática de dividendos.
