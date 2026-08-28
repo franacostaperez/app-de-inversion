@@ -2,6 +2,23 @@ import XCTest
 @testable import DividendIntelligenceKit
 
 final class ModelDecodingTests: XCTestCase {
+    func testVersionedScoreMaximumsAndLegacyCompatibility() throws {
+        let legacy = Data("""
+        {"ticker":"BAH","company":"Booz Allen","holders":1,"buying":1,"selling":0}
+        """.utf8)
+        let old = try JSONDecoder().decode(ConsensusItem.self, from: legacy)
+        XCTAssertNil(old.dividendGrowthScoreMaximum)
+        XCTAssertNil(old.opportunityScoreMaximum)
+        let current = Data("""
+        {"ticker":"BAH","company":"Booz Allen","holders":1,"buying":1,"selling":0,
+         "dividendGrowthInvestorScore":5,"dividendGrowthScoreMaximum":5,
+         "opportunityScore":52,"opportunityScoreMaximum":97}
+        """.utf8)
+        let updated = try JSONDecoder().decode(ConsensusItem.self, from: current)
+        XCTAssertEqual(updated.dividendGrowthScoreMaximum, 5)
+        XCTAssertEqual(updated.opportunityScoreMaximum, 97)
+    }
+
     func testMovementActionLabel() {
         XCTAssertEqual(MovementAction.increased.label, "Aumentada")
         XCTAssertEqual(MovementAction.sold.label, "Vendida")

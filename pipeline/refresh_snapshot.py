@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh margin/valuation scores and CNMV without replacing cached SEC data."""
+"""Refresh scoring weights and CNMV without replacing cached SEC data."""
 
 import argparse
 import copy
@@ -9,9 +9,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from .build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score, valuation_investor_score
+    from .build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score, valuation_investor_score, reweight_dividend_growth_score, DIVIDEND_GROWTH_SCORE_MAXIMUM, OPPORTUNITY_SCORE_MAXIMUM
 except ImportError:
-    from build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score, valuation_investor_score
+    from build_snapshot import annotate_opportunity_rank_changes, load_fund_portfolios, operating_margin_investor_score, valuation_investor_score, reweight_dividend_growth_score, DIVIDEND_GROWTH_SCORE_MAXIMUM, OPPORTUNITY_SCORE_MAXIMUM
 
 
 def refresh(snapshot, fund_portfolios):
@@ -22,12 +22,18 @@ def refresh(snapshot, fund_portfolios):
         old_points = row["profitabilityInvestorScore"]
         valuation = valuation_investor_score(row.get("pe"), row.get("sectorPEBenchmark"))
         old_valuation = row["valuationInvestorScore"]
+        old_growth = row.get("dividendGrowthInvestorScore", 0)
+        growth = reweight_dividend_growth_score(old_growth, row.get("dividendGrowthScoreMaximum", 8))
         # Change only the requested components; missing data stays incomplete.
         if row.get("opportunityScore") is not None:
-            row["opportunityScore"] = max(0, min(100, row["opportunityScore"] - old_points + points - old_valuation + valuation))
+            row["opportunityScore"] = max(0, min(OPPORTUNITY_SCORE_MAXIMUM, row["opportunityScore"] - old_points + points - old_valuation + valuation - old_growth + growth))
         row["operatingMarginRating"] = rating
         row["profitabilityInvestorScore"] = points
         row["valuationInvestorScore"] = valuation
+        row["dividendGrowthInvestorScore"] = growth
+        row["dividendInvestorScore"] = row.get("yieldInvestorScore", 0) + growth
+        row["dividendGrowthScoreMaximum"] = DIVIDEND_GROWTH_SCORE_MAXIMUM
+        row["opportunityScoreMaximum"] = OPPORTUNITY_SCORE_MAXIMUM
     result["consensus"].sort(key=lambda row: (
         row["opportunityScore"] is not None, row["opportunityScore"] or -1,
         row.get("newPositions", 0), row["buying"], row["holders"],

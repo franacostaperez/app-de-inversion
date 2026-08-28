@@ -122,7 +122,7 @@ Cada bloque se conserva en el JSON para que la puntuación sea explicable y ajus
 
 ### Escala exigente de margen operativo (28/08/2026)
 
-El score de oportunidades usa un componente de margen de **12 puntos sobre 100**.
+El score de oportunidades usa un componente de margen de **12 puntos**.
 No se cambia su peso ni los otros componentes. La escala se endurece: hasta 5 %
 no aporta puntos; 10 % aporta 2; 15 % aporta 5; 20 % aporta 7; 25 % aporta 10;
 y desde 30 % aporta los 12 puntos. Se interpola y redondea primero el nivel
@@ -134,7 +134,7 @@ Regresión del cambio de margen: Booz Allen (BAH), margen operativo 9,21 %, pasa
 
 ### Escala exigente de valoración (28/08/2026)
 
-La valoración mantiene **35 puntos sobre 100**, usando el mismo PER verificado
+La valoración mantiene **35 puntos**, usando el mismo PER verificado
 que ya figuraba en el score. No se sustituye por PER forward ni se actualizan
 precios o beneficios al recalcular.
 
@@ -166,3 +166,18 @@ El workflow `Rebuild app snapshot` reconstruye y verifica los datos públicos
 cuando cambia la fórmula o una cartera CNMV, sin descargar ni sustituir las
 fuentes SEC existentes. Las métricas de Numantia son una consulta fechada,
 no cotizaciones en tiempo real ni una actualización automática de dividendos.
+
+### Dividendo creciente: máximo 5 puntos
+
+Los tramos anteriores 1, 4, 7 y 8 se reescalan a **1, 3, 4 y 5**, respectivamente
+(5/8, redondeo al entero más próximo con mitades hacia arriba). Se conservan
+los requisitos de elegibilidad: sin yield puntuable, con recortes detectados o
+sin crecimiento verificable, no se obtienen puntos. No se reparte el peso
+retirado entre otros componentes ni se normaliza el total: el máximo pasa de
+100 a **97 puntos**. El yield mantiene su máximo de 22; el bloque combinado de
+dividendos suma como máximo 27. La app muestra los máximos incluidos en los
+datos, con compatibilidad para snapshots anteriores.
+
+La migración preserva los ceros por falta de elegibilidad, no vuelve a penalizar
+al refrescar y no modifica métricas financieras. Booz Allen pasa de 8 a 5 puntos
+de crecimiento y de 55 a 52 puntos totales, manteniendo los demás componentes.

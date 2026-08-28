@@ -18,6 +18,8 @@ SECTOR_PE_MULTIPLIERS = {
     "Consumer Staples": 1.15, "Financials": 0.90, "Energy": 0.85, "Healthcare": 1.20,
     "Industrials": 1.10, "Materials": 0.95, "Real Estate": 1.15, "Utilities": 1.05,
 }
+DIVIDEND_GROWTH_SCORE_MAXIMUM = 5
+OPPORTUNITY_SCORE_MAXIMUM = 97  # 22 + 5 + 35 + 6 + 12 + 7 + 10; no redistribution
 BRAND_MULTIPLIERS = {"high": 1.20, "medium": 1.10, "low": 1.0}
 QUALITATIVE_PROFILE_FIELDS = {
     "description", "businessModel", "revenueModel", "economicMoat", "brandStrength",
@@ -99,6 +101,15 @@ def yield_investor_score(dividend_yield: float | None) -> int:
         (5, 18), (5.5, 20), (6, 22), (6.5, 22), (7, 20),
         (8, 17), (9, 13), (10, 8), (12, 4), (15, 0), (20, 0),
     ])
+
+
+def reweight_dividend_growth_score(points: int, previous_maximum: int = 8) -> int:
+    """Rescale existing eligible points with half-up rounding; preserve zero."""
+    if previous_maximum <= 0:
+        raise ValueError("Dividend growth maximum must be positive")
+    bounded = max(0, min(previous_maximum, points))
+    return min(DIVIDEND_GROWTH_SCORE_MAXIMUM,
+               (2 * bounded * DIVIDEND_GROWTH_SCORE_MAXIMUM + previous_maximum) // (2 * previous_maximum))
 
 
 def valuation_investor_score(pe: float | None, ideal_pe: float | None) -> int:
@@ -611,6 +622,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             growth_score = 7
         else:
             growth_score = 8
+        growth_score = reweight_dividend_growth_score(growth_score)
         dividend_score = yield_score + growth_score
 
         valuation_score = valuation_investor_score(pe, adjusted_pe_benchmark)
@@ -649,7 +661,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "dividendGrowth": dividend_growth,
             "yieldInvestorScore": yield_score,
             "dividendGrowthInvestorScore": growth_score,
-            "opportunityScore": min(100, score) if not missing_metrics else None,
+            "dividendGrowthScoreMaximum": DIVIDEND_GROWTH_SCORE_MAXIMUM,
+            "opportunityScoreMaximum": OPPORTUNITY_SCORE_MAXIMUM,
+            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score) if not missing_metrics else None,
             "scoreStatus": "COMPLETE" if not missing_metrics else "INCOMPLETE",
             "missingScoreMetrics": missing_metrics,
             "scoreCoverage": round((6 - len(missing_metrics)) / 6 * 100),
@@ -686,7 +700,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         item.update({
             **counts,
             "consensusInvestorScore": consensus_score,
-            "opportunityScore": min(100, score_without_consensus + consensus_score) if item["scoreStatus"] == "COMPLETE" else None,
+            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score_without_consensus + consensus_score) if item["scoreStatus"] == "COMPLETE" else None,
         })
         consensus_items.append(item)
     consensus_items.sort(key=lambda item: (

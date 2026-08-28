@@ -4,6 +4,15 @@ from pipeline.audit_metric_values import build_metric_audit
 
 
 class MetricValueAuditTests(unittest.TestCase):
+    def test_current_score_maximum_includes_solvency(self):
+        audit = build_metric_audit({"consensus": [{
+            "company": "Complete", "opportunityScore": 97, "opportunityScoreMaximum": 97,
+            "dividendInvestorScore": 27, "valuationInvestorScore": 35,
+            "movingAverageInvestorScore": 6, "profitabilityInvestorScore": 12,
+            "consensusInvestorScore": 7, "leverageInvestorScore": 10,
+        }]})
+        self.assertNotIn("SCORE_COMPONENTS_DO_NOT_SUM", audit["issuesByCode"])
+
     def test_detects_yield_instrument_margin_and_score_errors(self):
         audit = build_metric_audit({
             "generatedAt": "now",

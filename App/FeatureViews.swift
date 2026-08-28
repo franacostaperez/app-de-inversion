@@ -1112,7 +1112,7 @@ struct OpportunityAnalysisView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Score para dividendos a largo plazo").font(.caption).foregroundStyle(.secondary)
                         if let score = item.opportunityScore {
-                            Text("\(score) / 100").font(.largeTitle.bold().monospacedDigit())
+                            Text("\(score) / \(item.opportunityScoreMaximum ?? 100)").font(.largeTitle.bold().monospacedDigit())
                         } else {
                             Text("Pendiente de datos").font(.title2.bold())
                             Text("Cobertura \(item.scoreCoverage ?? 0)% · falta " + missingMetricLabels.joined(separator: ", "))
@@ -1181,14 +1181,14 @@ struct OpportunityAnalysisView: View {
                 }
             }
             Section("Desglose del score") {
-                Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de 100.")
+                Text("Cada fila muestra los puntos obtenidos y su peso máximo sobre el total de \(item.opportunityScoreMaximum ?? 100).")
                     .font(.footnote).foregroundStyle(.secondary)
                 ScoreComponentRow(label: "Valoración", value: item.valuationInvestorScore ?? 0, maximum: 35, icon: "scalemass.fill")
                 Text("Base PER: ≤8x → 35; 10x → 30; 12x → 24; 15x → 16; 20x → 7; 25x → 2; ≥30x → 0 puntos. Interpolación y redondeo; hasta 12 puntos menos si supera la referencia ajustada. Sin bonificaciones por sector o marca.")
                     .font(.caption2).foregroundStyle(.secondary)
                 ScoreComponentRow(label: "Precio vs media 1.000", value: item.movingAverageInvestorScore ?? 0, maximum: 6, icon: "waveform.path.ecg")
                 ScoreComponentRow(label: "Yield", value: item.yieldInvestorScore ?? 0, maximum: 22, icon: "percent")
-                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: 8, icon: "chart.line.uptrend.xyaxis")
+                ScoreComponentRow(label: "Dividendo creciente", value: item.dividendGrowthInvestorScore ?? 0, maximum: item.dividendGrowthScoreMaximum ?? 8, icon: "chart.line.uptrend.xyaxis")
                 ScoreComponentRow(label: "Margen operativo", value: item.profitabilityInvestorScore ?? 0, maximum: 12, icon: "gauge.with.dots.needle.50percent")
                 Text("Escala exigente de margen: ≤5 % → 0; 10 % → 2; 15 % → 5; 20 % → 7; 25 % → 10; ≥30 % → 12 puntos. Interpolación y redondeo entre niveles.")
                     .font(.caption2).foregroundStyle(.secondary)

@@ -322,7 +322,9 @@ public struct ConsensusItem: Codable, Identifiable, Sendable {
     public let dividendGrowth: Double?
     public let yieldInvestorScore: Int?
     public let dividendGrowthInvestorScore: Int?
+    public let dividendGrowthScoreMaximum: Int?
     public let opportunityScore: Int?
+    public let opportunityScoreMaximum: Int?
     public let opportunityRank: Int?
     public let previousOpportunityRank: Int?
     public let rankChange: Int?

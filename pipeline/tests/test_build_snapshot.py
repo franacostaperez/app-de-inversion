@@ -5,10 +5,20 @@ from pipeline.build_snapshot import (
     consensus_investor_score, debt_to_earnings_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
     retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
+    reweight_dividend_growth_score, OPPORTUNITY_SCORE_MAXIMUM,
 )
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_dividend_growth_maximum_is_five_without_redistribution(self):
+        self.assertEqual([reweight_dividend_growth_score(value) for value in (0, 1, 4, 7, 8)], [0, 1, 3, 4, 5])
+        self.assertEqual([reweight_dividend_growth_score(value, 5) for value in range(6)], list(range(6)))
+        self.assertEqual(OPPORTUNITY_SCORE_MAXIMUM, 22 + 5 + 35 + 6 + 12 + 7 + 10)
+        self.assertEqual(reweight_dividend_growth_score(-1), 0)
+        self.assertEqual(reweight_dividend_growth_score(999), 5)
+        with self.assertRaises(ValueError):
+            reweight_dividend_growth_score(1, 0)
+
     def test_annotates_opportunity_rank_movement_against_previous_snapshot(self):
         previous = [
             {"company": "Beta Inc", "opportunityScore": 80},
@@ -204,7 +214,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["holdings"][0]["weight"], 100.0)
         self.assertEqual(result["consensus"][0]["cusip"], "000000001")
         self.assertIn("opportunityScore", result["consensus"][0])
-        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 13)
+        self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 10)
         self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 12)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
         self.assertIsNone(result["consensus"][0]["opportunityScore"])
@@ -252,7 +262,9 @@ class SnapshotTests(unittest.TestCase):
         }]
         item = build(current, {"investors": []}, companies, company_reports=reports)["consensus"][0]
         self.assertEqual(item["dividendGrowth"], 10)
-        self.assertEqual(item["dividendGrowthInvestorScore"], 8)
+        self.assertEqual(item["dividendGrowthInvestorScore"], 5)
+        self.assertEqual(item["dividendGrowthScoreMaximum"], 5)
+        self.assertEqual(item["opportunityScoreMaximum"], 97)
 
     def test_derives_market_metrics_and_publishes_score_only_when_complete(self):
         current = {"quarter": "2026-Q1", "investors": [{

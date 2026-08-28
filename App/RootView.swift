@@ -554,7 +554,7 @@ private struct DividendIdeaCard: View {
             HStack(alignment: .top) {
                 CompanyMonogram(name: item.company, tint: WhaleTheme.accent)
                 Spacer()
-                ScorePill(score: item.opportunityScore)
+                ScorePill(score: item.opportunityScore, maximum: item.opportunityScoreMaximum ?? 100)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(displayCompanyName(item.company))
@@ -620,7 +620,7 @@ private struct DividendSignalRow: View {
                 .font(.caption.bold())
             }
             Spacer()
-            ScorePill(score: item.opportunityScore)
+            ScorePill(score: item.opportunityScore, maximum: item.opportunityScoreMaximum ?? 100)
             Image(systemName: "chevron.right")
                 .font(.caption2.bold())
                 .foregroundStyle(.tertiary)
@@ -657,6 +657,7 @@ private struct CompanyMonogram: View {
 
 private struct ScorePill: View {
     let score: Int?
+    let maximum: Int
 
     var body: some View {
         HStack(spacing: 4) {
@@ -668,7 +669,7 @@ private struct ScorePill: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 5)
         .background(color.opacity(0.11), in: Capsule())
-        .accessibilityLabel(score.map { "Score \($0) sobre 100" } ?? "Score pendiente")
+        .accessibilityLabel(score.map { "Score \($0) sobre \(maximum)" } ?? "Score pendiente")
     }
 
     private var color: Color {

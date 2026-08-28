@@ -100,10 +100,10 @@ def build_metric_audit(snapshot: dict) -> dict:
             add_issue(issues, item, "OPERATING_MARGIN_OUT_OF_RANGE", "error", {"operatingMargin": margin})
         components = [numeric(item.get(key)) or 0 for key in (
             "dividendInvestorScore", "valuationInvestorScore", "movingAverageInvestorScore",
-            "profitabilityInvestorScore", "consensusInvestorScore"
+            "profitabilityInvestorScore", "consensusInvestorScore", "leverageInvestorScore"
         )]
         score = numeric(item.get("opportunityScore"))
-        if score is not None and abs(min(100, sum(components)) - score) > 0.01:
+        if score is not None and abs(min(item.get("opportunityScoreMaximum", 100), sum(components)) - score) > 0.01:
             add_issue(issues, item, "SCORE_COMPONENTS_DO_NOT_SUM", "error", {
                 "score": score, "componentsTotal": sum(components),
             })
