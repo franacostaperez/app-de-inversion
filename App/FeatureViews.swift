@@ -422,8 +422,9 @@ struct FundsView: View {
                         .foregroundStyle(.secondary).frame(maxWidth: .infinity, alignment: .leading)
                 }
                 ForEach(sortedInvestors) { investor in
-                    Button {
-                        withAnimation(.snappy) { selectedInvestorID = investor.id }
+                    NavigationLink {
+                        InvestorFundDetailView(investor: investor, snapshot: snapshot)
+                            .onAppear { selectedInvestorID = investor.id }
                     } label: {
                         FundCard(
                             investor: investor,
@@ -438,6 +439,106 @@ struct FundsView: View {
         }
         .background(WhaleTheme.background)
         .navigationTitle("Fondos seguidos")
+    }
+}
+
+private struct InvestorFundDetailView: View {
+    let investor: Investor
+    let snapshot: AppSnapshot
+    @State private var yieldFilter: DividendYieldFilter = .all
+
+    private var positions: [Holding] {
+        snapshot.holdings
+            .filter { $0.investorId == investor.id && yieldFilter.matches(profile(for: $0)?.dividendYield.map { $0 * 100 }) }
+            .sorted { $0.weight > $1.weight }
+    }
+
+    private var movements: [Movement] {
+        snapshot.movements.filter { $0.investorId == investor.id }
+    }
+
+    var body: some View {
+        List {
+            Section("Cartera · \(investor.quarter ?? snapshot.asOfQuarter)") {
+                LabeledContent("Responsable", value: investor.manager ?? "No informado")
+                LabeledContent("Valor declarado", value: compactMoney(investor.portfolioValue))
+                LabeledContent("Empresas", value: "\(snapshot.holdings.filter { $0.investorId == investor.id }.count)")
+                LabeledContent("Cambios del periodo", value: "\(movements.count)")
+            }
+
+            Section {
+                DividendYieldFilterPicker(selection: $yieldFilter)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+            }
+
+            Section("Empresas · \(positions.count)") {
+                if positions.isEmpty {
+                    Text("No hay empresas que coincidan con el filtro seleccionado.")
+                        .foregroundStyle(.secondary)
+                }
+                ForEach(Array(positions.enumerated()), id: \.element.id) { index, holding in
+                    NavigationLink {
+                        CompanyFinancialOverviewView(
+                            companyName: holding.company,
+                            profile: profile(for: holding),
+                            reports: snapshot.companyReports.filter { $0.cusip == holding.cusip },
+                            holdings: snapshot.holdings.filter { $0.cusip == holding.cusip }
+                        )
+                    } label: {
+                        VStack(alignment: .leading, spacing: 7) {
+                            HStack(alignment: .firstTextBaseline) {
+                                Text("\(index + 1)")
+                                    .font(.caption.bold().monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                                    .frame(width: 24, alignment: .leading)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(displayCompanyName(holding.company)).font(.headline).lineLimit(2)
+                                    Text(holding.ticker).font(.caption.bold().monospaced()).foregroundStyle(WhaleTheme.accent)
+                                }
+                                Spacer()
+                                Text(holding.weight.formatted(.number.precision(.fractionLength(2))) + " %")
+                                    .font(.subheadline.bold().monospacedDigit())
+                            }
+                            HStack(spacing: 10) {
+                                Label(holding.value.formatted(.currency(code: "USD")), systemImage: "dollarsign.circle")
+                                if let quote = quote(for: holding) {
+                                    Label(quote, systemImage: "chart.line.uptrend.xyaxis")
+                                }
+                            }
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            if let dividendYield = profile(for: holding)?.dividendYield {
+                                Label(
+                                    "Yield " + (dividendYield * 100).formatted(.number.precision(.fractionLength(2))) + " %",
+                                    systemImage: "leaf.fill"
+                                )
+                                .font(.caption.bold())
+                                .foregroundStyle(dividendYield >= 0.03 ? WhaleTheme.positive : .secondary)
+                            }
+                        }
+                        .padding(.vertical, 5)
+                    }
+                }
+            }
+
+            Section("Origen") {
+                Text("Posiciones declaradas en el último formulario 13F disponible. Los valores y pesos corresponden a la fecha del informe, no a una cartera en tiempo real.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .navigationTitle(investor.name)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func profile(for holding: Holding) -> CompanyProfile? {
+        snapshot.companyProfiles.first { $0.cusip == holding.cusip }
+    }
+
+    private func quote(for holding: Holding) -> String? {
+        guard let profile = profile(for: holding), let price = profile.marketPrice else { return nil }
+        return price.formatted(.currency(code: profile.currency ?? "USD"))
     }
 }
 
