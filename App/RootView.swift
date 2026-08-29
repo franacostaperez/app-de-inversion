@@ -183,6 +183,15 @@ private struct DividendEventsView: View {
     private var confirmedCount: Int { snapshot.dividendEvents.filter { !$0.isEstimated }.count }
     private var estimatedCount: Int { snapshot.dividendEvents.filter(\.isEstimated).count }
 
+    private var profilesByTicker: [String: CompanyProfile] {
+        Dictionary(
+            snapshot.companyProfiles.compactMap { profile in
+                profile.ticker.map { ($0.uppercased(), profile) }
+            },
+            uniquingKeysWith: { first, _ in first }
+        )
+    }
+
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
@@ -209,7 +218,11 @@ private struct DividendEventsView: View {
                         Section {
                             VStack(spacing: 10) {
                                 ForEach(section.events) { event in
-                                    DividendEventCard(event: event, exchangeRates: snapshot.exchangeRates)
+                                    DividendEventCard(
+                                        event: event,
+                                        profile: profilesByTicker[event.ticker.uppercased()],
+                                        exchangeRates: snapshot.exchangeRates
+                                    )
                                 }
                             }
                         } header: {
@@ -357,10 +370,20 @@ private struct DividendDateHeader: View {
 
 private struct DividendEventCard: View {
     let event: DividendEvent
+    let profile: CompanyProfile?
     let exchangeRates: ExchangeRates?
 
     private var amountInEUR: Double? {
         exchangeRates?.amountInEUR(event.amount, currency: event.currency)
+    }
+
+    private var quoteCurrency: String {
+        (profile?.currency ?? event.currency).uppercased()
+    }
+
+    private var quoteInEUR: Double? {
+        guard let price = profile?.marketPrice else { return nil }
+        return exchangeRates?.amountInEUR(price, currency: quoteCurrency)
     }
 
     var body: some View {
@@ -395,6 +418,38 @@ private struct DividendEventCard: View {
                             .font(.caption2).foregroundStyle(WhaleTheme.warning)
                     }
                 }
+            }
+
+            if let price = profile?.marketPrice {
+                HStack(spacing: 8) {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .foregroundStyle(WhaleTheme.info)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("COTIZACIÓN")
+                            .font(.system(size: 7, weight: .bold))
+                            .foregroundStyle(.secondary)
+                        if let quoteInEUR {
+                            Text((quoteCurrency == "EUR" ? "" : "≈ ") + quoteInEUR.formatted(.currency(code: "EUR")))
+                                .font(.subheadline.bold().monospacedDigit())
+                            if quoteCurrency != "EUR" {
+                                Text("Original: " + price.formatted(.currency(code: quoteCurrency)))
+                                    .font(.caption2).foregroundStyle(.secondary)
+                            }
+                        } else {
+                            Text(price.formatted(.currency(code: quoteCurrency)))
+                                .font(.subheadline.bold().monospacedDigit())
+                        }
+                    }
+                    Spacer()
+                    if let updatedAt = profile?.updatedAt {
+                        Text("Actualizada\n" + updatedAt.formatted(date: .abbreviated, time: .shortened))
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.trailing)
+                    }
+                }
+                .padding(10)
+                .background(WhaleTheme.info.opacity(0.06), in: RoundedRectangle(cornerRadius: 9))
             }
 
             HStack(spacing: 7) {

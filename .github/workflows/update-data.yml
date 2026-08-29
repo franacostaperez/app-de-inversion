@@ -11,7 +11,8 @@ on:
       - "data/config/dividend_ir_sources.json"
       - "pipeline/**"
   schedule:
-    - cron: "17 7 * * *"
+    # 07:17 and 19:17 UTC: refresh quotes and dividend data twice every day.
+    - cron: "17 7,19 * * *"
 
 permissions:
   contents: write
