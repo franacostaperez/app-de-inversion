@@ -120,4 +120,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/source/latest.json data/source/previous.json data/companies/index.json data/companies/qualitative.json data/instruments/mappings.json data/filings data/company-reports data/public/snapshot.json data/public/scoring-audit.json data/public/metric-audit.json
           git commit -m "data: update dividend snapshot"
+          git pull --rebase origin main
           git push
