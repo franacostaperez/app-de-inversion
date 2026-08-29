@@ -661,6 +661,39 @@ private struct DashboardView: View {
             }
     }
 
+    private var dividendRisks: [ConsensusItem] {
+        snapshot.consensus
+            .filter { item in
+                item.holders > 0 && ((item.yield ?? 0) > 9 || (item.dividendGrowth ?? 0) < 0)
+            }
+            .sorted { ($0.yield ?? 0) > ($1.yield ?? 0) }
+    }
+
+    private var upcomingDividendEvents: [DividendEvent] {
+        let today = Calendar.current.startOfDay(for: Date())
+        return snapshot.dividendEvents
+            .filter { nextDividendDate($0, onOrAfter: today) != nil }
+            .sorted {
+                (nextDividendDate($0, onOrAfter: today) ?? .distantFuture) <
+                (nextDividendDate($1, onOrAfter: today) ?? .distantFuture)
+            }
+    }
+
+    private var nextThirtyDaysCount: Int {
+        let today = Calendar.current.startOfDay(for: Date())
+        let limit = Calendar.current.date(byAdding: .day, value: 30, to: today) ?? .distantFuture
+        return upcomingDividendEvents.filter {
+            guard let date = nextDividendDate($0, onOrAfter: today) else { return false }
+            return date <= limit
+        }.count
+    }
+
+    private var averageIncomeYield: Double? {
+        let values = incomeIdeas.compactMap(\.yield)
+        guard !values.isEmpty else { return nil }
+        return values.reduce(0, +) / Double(values.count)
+    }
+
     private var highConvictionCount: Int {
         snapshot.consensus.filter { $0.holders >= 4 && $0.buying > $0.selling }.count
     }
@@ -674,9 +707,10 @@ private struct DashboardView: View {
             LazyVStack(alignment: .leading, spacing: 22) {
                 dividendHomeHeader
                 dividendPulse
+                upcomingIncome
 
                 if !incomeIdeas.isEmpty {
-                    SectionTitle("Oportunidades de renta", detail: "Yield 3–9 % · score completo")
+                    SectionTitle("Renta de calidad", detail: "Yield 3–9 % · análisis completo")
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack(spacing: 12) {
                             ForEach(incomeIdeas.prefix(8)) { item in
@@ -719,6 +753,22 @@ private struct DashboardView: View {
                     )
                 }
 
+                if !dividendRisks.isEmpty {
+                    dividendCollection(
+                        title: "Alertas de dividendo",
+                        detail: "Yield elevado o dividendo en descenso",
+                        icon: "exclamationmark.triangle.fill",
+                        tint: WhaleTheme.warning,
+                        items: Array(dividendRisks.prefix(5)),
+                        value: { item in
+                            if let growth = item.dividendGrowth, growth < 0 {
+                                return growth.formatted(.number.sign(strategy: .always()).precision(.fractionLength(1))) + "% anual"
+                            }
+                            return item.yield.map { "Yield " + $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "Revisar"
+                        }
+                    )
+                }
+
                 fundMonitor
 
                 Label(
@@ -742,11 +792,11 @@ private struct DashboardView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("RADAR DE DIVIDENDOS")
+                    Text("INTELIGENCIA DE DIVIDENDOS")
                         .font(.system(size: 10, weight: .heavy))
                         .tracking(1.2)
                         .foregroundStyle(.white.opacity(0.68))
-                    Text("Invierte con renta\ny convicción")
+                    Text("Renta hoy.\nCrecimiento mañana.")
                         .font(.system(size: 29, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
                         .fixedSize(horizontal: false, vertical: true)
@@ -786,11 +836,39 @@ private struct DashboardView: View {
 
     private var dividendPulse: some View {
         VStack(alignment: .leading, spacing: 13) {
-            SectionTitle("Pulso de oportunidades", detail: "Universo institucional")
+            SectionTitle("Resumen de renta", detail: "Próximos pagos y calidad")
             HStack(spacing: 9) {
-                PulseMetric(value: "\(scoredCompanies.count)", label: "Analizadas", icon: "checkmark.seal.fill", tint: WhaleTheme.accent)
-                PulseMetric(value: "\(targetYieldCount)", label: "Yield objetivo", icon: "percent", tint: WhaleTheme.positive)
-                PulseMetric(value: "\(highConvictionCount)", label: "Convicción", icon: "building.columns.fill", tint: WhaleTheme.info)
+                PulseMetric(value: "\(nextThirtyDaysCount)", label: "Pagos 30 días", icon: "calendar.badge.clock", tint: WhaleTheme.accent)
+                PulseMetric(value: averageIncomeYield.map { $0.formatted(.number.precision(.fractionLength(1))) + "%" } ?? "—", label: "Yield medio", icon: "percent", tint: WhaleTheme.positive)
+                PulseMetric(value: "\(growingDividendIdeas.count)", label: "Crecientes", icon: "chart.line.uptrend.xyaxis", tint: WhaleTheme.info)
+            }
+        }
+    }
+
+    private var upcomingIncome: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            SectionTitle("Próximos dividendos", detail: "Importe por acción · EUR")
+            if upcomingDividendEvents.isEmpty {
+                Text("No hay pagos próximos disponibles.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(14)
+                    .whalePanel()
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(Array(upcomingDividendEvents.prefix(4).enumerated()), id: \.element.id) { index, event in
+                        UpcomingDividendRow(
+                            event: event,
+                            date: nextDividendDate(event, onOrAfter: Calendar.current.startOfDay(for: Date())),
+                            euroAmount: snapshot.exchangeRates?.amountInEUR(event.amount, currency: event.currency)
+                        )
+                        if index < min(3, upcomingDividendEvents.count - 1) {
+                            Divider().padding(.leading, 52)
+                        }
+                    }
+                }
+                .whalePanel()
             }
         }
     }
@@ -823,7 +901,7 @@ private struct DashboardView: View {
 
     private var fundMonitor: some View {
         VStack(alignment: .leading, spacing: 13) {
-            SectionTitle("Monitor 13F", detail: investor?.quarter ?? snapshot.asOfQuarter)
+            SectionTitle("Convicción institucional", detail: "Carteras 13F · " + (investor?.quarter ?? snapshot.asOfQuarter))
             FundSelector(investors: snapshot.investors, selection: $selectedInvestorID)
 
             HStack(spacing: 9) {
@@ -1038,6 +1116,54 @@ private struct PulseMetric: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .whalePanel()
+    }
+}
+
+private struct UpcomingDividendRow: View {
+    let event: DividendEvent
+    let date: Date?
+    let euroAmount: Double?
+
+    var body: some View {
+        HStack(spacing: 12) {
+            VStack(spacing: 1) {
+                Text(date?.formatted(.dateTime.day()) ?? "—")
+                    .font(.headline.bold().monospacedDigit())
+                Text(date?.formatted(.dateTime.month(.abbreviated)).uppercased() ?? "")
+                    .font(.system(size: 8, weight: .heavy))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(width: 38, height: 42)
+            .background(WhaleTheme.accent.opacity(0.10), in: RoundedRectangle(cornerRadius: 10))
+
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 6) {
+                    Text(event.ticker).font(.subheadline.bold().monospaced())
+                    Text(event.isEstimated ? "ESTIMADO" : "CONFIRMADO")
+                        .font(.system(size: 7, weight: .heavy))
+                        .foregroundStyle(event.isEstimated ? WhaleTheme.warning : WhaleTheme.positive)
+                }
+                Text(displayCompanyName(event.company))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+            Spacer()
+            VStack(alignment: .trailing, spacing: 2) {
+                if let euroAmount {
+                    Text(((event.isEstimated || event.currency.uppercased() != "EUR") ? "≈ " : "") + euroAmount.formatted(.currency(code: "EUR")))
+                        .font(.subheadline.bold().monospacedDigit())
+                } else {
+                    Text(event.amount.formatted(.number.precision(.fractionLength(2...6))) + " " + event.currency)
+                        .font(.subheadline.bold().monospacedDigit())
+                }
+                Text("por acción")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
     }
 }
 
