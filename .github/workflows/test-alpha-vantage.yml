@@ -2,6 +2,9 @@ name: Test Alpha Vantage dividends
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/test-alpha-vantage.yml'
 
 permissions:
   contents: read
