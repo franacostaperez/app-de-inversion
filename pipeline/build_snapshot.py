@@ -857,6 +857,7 @@ def main() -> None:
     )
     # Non-13F disclosures stay separate: CNMV values are EUR and do not
     # disclose share counts. Never feed their value changes into 13F signals.
+    snapshot["dividendEvents"] = existing.get("dividendEvents", [])
     snapshot["fundPortfolios"] = load_fund_portfolios(args.fund_portfolios_directory)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
