@@ -22,12 +22,21 @@ jobs:
           from pathlib import Path
           path = Path("pipeline/dividend_events.py")
           text = path.read_text()
-          old = "zip(history[-16:], history[-15:])"
-          new = "zip(history[-16:-1], history[-15:])"
-          if old in text:
-              path.write_text(text.replace(old, new, 1))
-          elif new not in text:
-              raise SystemExit("Estimator pairing expression not found")
+          candidates = [
+              "    for (previous_date, previous), (current_date, current) in zip(history[-16:], history[-15:]):",
+              "    for (previous_date, previous), (current_date, current) in zip(history[-16:-1], history[-15:]):",
+          ]
+          replacement = (
+              "    raise_history = history[-16:]\n"
+              "    for (previous_date, previous), (current_date, current) in zip(raise_history, raise_history[1:]):"
+          )
+          for old in candidates:
+              if old in text:
+                  path.write_text(text.replace(old, replacement, 1))
+                  break
+          else:
+              if replacement not in text:
+                  raise SystemExit("Estimator pairing expression not found")
           PY
       - name: Test pipeline
         run: python -m unittest discover -s pipeline/tests
