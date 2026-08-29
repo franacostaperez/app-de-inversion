@@ -1,0 +1,41 @@
+name: Fix dividend estimator pairing
+
+on:
+  push:
+    paths:
+      - ".github/workflows/fix-dividend-estimator.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Patch historical raise pairing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("pipeline/dividend_events.py")
+          text = path.read_text()
+          old = "zip(history[-16:], history[-15:])"
+          new = "zip(history[-16:-1], history[-15:])"
+          if old in text:
+              path.write_text(text.replace(old, new, 1))
+          elif new not in text:
+              raise SystemExit("Estimator pairing expression not found")
+          PY
+      - name: Test pipeline
+        run: python -m unittest discover -s pipeline/tests
+      - name: Commit fix
+        run: |
+          if git diff --quiet -- pipeline/dividend_events.py; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pipeline/dividend_events.py
+          git commit -m "fix: detect recurring dividend raises"
+          git push
