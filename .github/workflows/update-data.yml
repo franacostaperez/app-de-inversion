@@ -8,6 +8,7 @@ on:
     paths:
       - ".github/workflows/update-data.yml"
       - "data/config/investors.json"
+      - "data/config/dividend_ir_sources.json"
       - "pipeline/**"
   schedule:
     - cron: "17 7 * * *"
@@ -90,6 +91,18 @@ jobs:
           --filings-directory data/filings
           --company-reports-directory data/company-reports
           --output data/public/snapshot.json
+      - name: Build dividend event calendar
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+        run: >-
+          python pipeline/dividend_events.py
+          --snapshot data/public/snapshot.json
+          --ir-sources data/config/dividend_ir_sources.json
+          --horizon-days 180
+          --max-ir 30
+          --max-sec 30
+          --max-alpha 20
       - name: Audit scoring data coverage
         run: >-
           python pipeline/audit_scoring.py
