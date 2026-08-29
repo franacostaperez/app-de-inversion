@@ -683,7 +683,7 @@ private struct DashboardView: View {
                                 NavigationLink {
                                     opportunityDestination(item)
                                 } label: {
-                                    DividendIdeaCard(item: item)
+                                    DividendIdeaCard(item: item, quote: quoteText(for: item))
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -811,7 +811,7 @@ private struct DashboardView: View {
                     NavigationLink {
                         opportunityDestination(item)
                     } label: {
-                        DividendSignalRow(item: item, icon: icon, tint: tint, signal: value(item))
+                        DividendSignalRow(item: item, icon: icon, tint: tint, signal: value(item), quote: quoteText(for: item))
                     }
                     .buttonStyle(.plain)
                     if index < items.count - 1 { Divider().padding(.leading, 58) }
@@ -884,6 +884,26 @@ private struct DashboardView: View {
 
     private func profile(for holding: Holding) -> CompanyProfile? {
         snapshot.companyProfiles.first { $0.cusip == holding.cusip }
+    }
+
+    private func profile(for item: ConsensusItem) -> CompanyProfile? {
+        if let cusip = item.cusip, let match = snapshot.companyProfiles.first(where: { $0.cusip == cusip }) {
+            return match
+        }
+        return snapshot.companyProfiles.first { $0.ticker?.uppercased() == item.ticker.uppercased() }
+    }
+
+    private func quoteText(for item: ConsensusItem) -> String? {
+        let companyProfile = profile(for: item)
+        guard let price = item.marketPrice ?? companyProfile?.marketPrice else { return nil }
+        let currency = (companyProfile?.currency ?? "USD").uppercased()
+        guard let rates = snapshot.exchangeRates,
+              let euroPrice = rates.amountInEUR(price, currency: currency) else {
+            return price.formatted(.currency(code: currency))
+        }
+        let euro = (currency == "EUR" ? "" : "≈ ") + euroPrice.formatted(.currency(code: "EUR"))
+        guard currency != "EUR" else { return euro }
+        return euro + " · " + price.formatted(.currency(code: currency))
     }
 
     private func yieldPercent(for holding: Holding) -> Double? {
@@ -1029,6 +1049,7 @@ private struct PulseMetric: View {
 
 private struct DividendIdeaCard: View {
     let item: ConsensusItem
+    let quote: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
@@ -1047,6 +1068,12 @@ private struct DividendIdeaCard: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                if let quote {
+                    Label(quote, systemImage: "chart.line.uptrend.xyaxis")
+                        .font(.caption.bold().monospacedDigit())
+                        .foregroundStyle(WhaleTheme.info)
+                        .lineLimit(1)
+                }
             }
             Divider()
             HStack(spacing: 12) {
@@ -1083,6 +1110,7 @@ private struct DividendSignalRow: View {
     let icon: String
     let tint: Color
     let signal: String
+    let quote: String?
 
     var body: some View {
         HStack(spacing: 12) {
@@ -1099,6 +1127,12 @@ private struct DividendSignalRow: View {
                     Text("\(item.holders) fondos")
                 }
                 .font(.caption.bold())
+                if let quote {
+                    Text("Cotización " + quote)
+                        .font(.caption2.bold().monospacedDigit())
+                        .foregroundStyle(WhaleTheme.info)
+                        .lineLimit(1)
+                }
             }
             Spacer()
             ScorePill(score: item.opportunityScore, maximum: item.opportunityScoreMaximum ?? 100)
