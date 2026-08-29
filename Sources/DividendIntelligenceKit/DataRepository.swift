@@ -29,7 +29,9 @@ public struct DataRepository: SnapshotLoading {
         guard let remoteURL else {
             throw SnapshotError.invalidResponse
         }
-        let (data, response) = try await session.data(from: remoteURL)
+        var request = URLRequest(url: remoteURL, cachePolicy: .reloadIgnoringLocalCacheData)
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
             throw SnapshotError.invalidResponse
         }
