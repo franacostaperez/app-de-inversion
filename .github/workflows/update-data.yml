@@ -30,6 +30,27 @@ jobs:
           python-version: "3.12"
       - name: Test pipeline
         run: python -m unittest discover -s pipeline/tests
+      - name: Build dividend event calendar
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+        run: >-
+          python pipeline/dividend_events.py
+          --snapshot data/public/snapshot.json
+          --ir-sources data/config/dividend_ir_sources.json
+          --horizon-days 180
+          --max-ir 30
+          --max-sec 30
+          --max-alpha 20
+      - name: Publish dividend calendar immediately
+        run: |
+          if git diff --quiet -- data/public/snapshot.json; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/public/snapshot.json
+          git commit -m "data: update dividend events"
+          git pull --rebase origin main
+          git push
       - name: Download latest 13F filings from SEC EDGAR
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
@@ -91,18 +112,6 @@ jobs:
           --filings-directory data/filings
           --company-reports-directory data/company-reports
           --output data/public/snapshot.json
-      - name: Build dividend event calendar
-        env:
-          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-        run: >-
-          python pipeline/dividend_events.py
-          --snapshot data/public/snapshot.json
-          --ir-sources data/config/dividend_ir_sources.json
-          --horizon-days 180
-          --max-ir 30
-          --max-sec 30
-          --max-alpha 20
       - name: Audit scoring data coverage
         run: >-
           python pipeline/audit_scoring.py
