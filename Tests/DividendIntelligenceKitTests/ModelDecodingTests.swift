@@ -40,6 +40,18 @@ final class ModelDecodingTests: XCTestCase {
         decoder.dateDecodingStrategy = .iso8601
         let snapshot = try decoder.decode(AppSnapshot.self, from: data)
         XCTAssertTrue(snapshot.fundPortfolios.isEmpty)
+        XCTAssertNil(snapshot.exchangeRates)
+    }
+
+    func testEURConversionUsesSnapshotRateAndKeepsEURUnchanged() throws {
+        let data = Data("""
+        {"base":"EUR","asOf":"2026-08-28","source":"Banco Central Europeo",
+         "sourceURL":"https://www.ecb.europa.eu/","rates":{"EUR":1,"USD":1.25}}
+        """.utf8)
+        let rates = try JSONDecoder().decode(ExchangeRates.self, from: data)
+        XCTAssertEqual(rates.amountInEUR(1, currency: "USD")!, 0.8, accuracy: 0.000_001)
+        XCTAssertEqual(rates.amountInEUR(1, currency: "EUR"), 1)
+        XCTAssertNil(rates.amountInEUR(1, currency: "CAD"))
     }
 
     func testCNMVPositionDoesNotRequireFabricatedSharesOrMarketMetrics() throws {

@@ -1,10 +1,19 @@
 import unittest
 from datetime import date
 
-from pipeline.dividend_events import extract_event_from_text, estimate_from_alpha_history
+from pipeline.dividend_events import extract_event_from_text, estimate_from_alpha_history, parse_ecb_rates
 
 
 class DividendEventsTests(unittest.TestCase):
+    def test_parses_ecb_rates_as_units_per_eur(self):
+        document = """<Envelope><Cube><Cube time="2026-08-28">
+          <Cube currency="USD" rate="1.1650"/><Cube currency="GBP" rate="0.86120"/>
+        </Cube></Cube></Envelope>"""
+        result = parse_ecb_rates(document)
+        self.assertEqual(result["base"], "EUR")
+        self.assertEqual(result["asOf"], "2026-08-28")
+        self.assertEqual(result["rates"], {"EUR": 1.0, "USD": 1.165, "GBP": 0.8612})
+
     def test_extracts_official_ir_event(self):
         text = (
             "Realty Income declared a monthly cash dividend of $0.2710 per share. "

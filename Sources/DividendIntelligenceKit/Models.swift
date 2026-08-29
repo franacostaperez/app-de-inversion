@@ -15,9 +15,10 @@ public struct AppSnapshot: Codable, Sendable {
     public let companyReports: [CompanyReport]
     public let fundPortfolios: [FundPortfolio]
     public let dividendEvents: [DividendEvent]
+    public let exchangeRates: ExchangeRates?
 
     enum CodingKeys: String, CodingKey {
-        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports, fundPortfolios, dividendEvents
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports, fundPortfolios, dividendEvents, exchangeRates
     }
 
     public init(from decoder: Decoder) throws {
@@ -36,6 +37,23 @@ public struct AppSnapshot: Codable, Sendable {
         companyReports = try container.decodeIfPresent([CompanyReport].self, forKey: .companyReports) ?? []
         fundPortfolios = try container.decodeIfPresent([FundPortfolio].self, forKey: .fundPortfolios) ?? []
         dividendEvents = try container.decodeIfPresent([DividendEvent].self, forKey: .dividendEvents) ?? []
+        exchangeRates = try container.decodeIfPresent(ExchangeRates.self, forKey: .exchangeRates)
+    }
+}
+
+public struct ExchangeRates: Codable, Sendable {
+    public let base: String
+    public let asOf: String
+    public let source: String
+    public let sourceURL: URL?
+    /// Number of units of each currency equivalent to one unit of `base`.
+    public let rates: [String: Double]
+
+    public func amountInEUR(_ amount: Double, currency: String) -> Double? {
+        let code = currency.uppercased()
+        if code == "EUR" { return amount }
+        guard base.uppercased() == "EUR", let rate = rates[code], rate > 0 else { return nil }
+        return amount / rate
     }
 }
 

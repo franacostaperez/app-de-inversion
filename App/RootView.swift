@@ -209,7 +209,7 @@ private struct DividendEventsView: View {
                         Section {
                             VStack(spacing: 10) {
                                 ForEach(section.events) { event in
-                                    DividendEventCard(event: event)
+                                    DividendEventCard(event: event, exchangeRates: snapshot.exchangeRates)
                                 }
                             }
                         } header: {
@@ -225,6 +225,12 @@ private struct DividendEventsView: View {
                 .font(.caption2)
                 .foregroundStyle(.secondary)
                 .padding(.top, 4)
+
+                if let rates = snapshot.exchangeRates {
+                    Label("Conversión aproximada a EUR · \(rates.source) · \(rates.asOf)", systemImage: "eurosign.arrow.circlepath")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             }
             .padding(16)
         }
@@ -257,11 +263,19 @@ private struct DividendEventsView: View {
             HStack(spacing: 9) {
                 DividendSummaryMetric(value: "\(confirmedCount)", label: "Confirmados", tint: WhaleTheme.positive)
                 DividendSummaryMetric(value: "\(estimatedCount)", label: "Estimados", tint: WhaleTheme.warning)
-                DividendSummaryMetric(value: "\(snapshot.dividendEvents.count)", label: "Eventos", tint: WhaleTheme.info)
+                DividendSummaryMetric(value: totalEURText, label: "Total EUR / acción", tint: WhaleTheme.info)
             }
         }
         .padding(16)
         .whalePanel()
+    }
+
+    private var totalEURText: String {
+        guard let rates = snapshot.exchangeRates else { return "—" }
+        let converted = visibleEvents.compactMap { rates.amountInEUR($0.amount, currency: $0.currency) }
+        guard converted.count == visibleEvents.count, !converted.isEmpty else { return "—" }
+        let approximate = visibleEvents.contains { $0.currency.uppercased() != "EUR" || $0.isEstimated }
+        return (approximate ? "≈ " : "") + converted.reduce(0, +).formatted(.currency(code: "EUR"))
     }
 
     private var dateStrip: some View {
@@ -343,6 +357,11 @@ private struct DividendDateHeader: View {
 
 private struct DividendEventCard: View {
     let event: DividendEvent
+    let exchangeRates: ExchangeRates?
+
+    private var amountInEUR: Double? {
+        exchangeRates?.amountInEUR(event.amount, currency: event.currency)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
@@ -360,10 +379,21 @@ private struct DividendEventCard: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text((event.isEstimated ? "≈ " : "") + event.amount.formatted(.number.precision(.fractionLength(2...4))))
-                        .font(.title3.bold().monospacedDigit())
-                    Text(event.currency + " / acción")
-                        .font(.caption2).foregroundStyle(.secondary)
+                    if let amountInEUR {
+                        Text(((event.isEstimated || event.currency.uppercased() != "EUR") ? "≈ " : "") + amountInEUR.formatted(.currency(code: "EUR")))
+                            .font(.title3.bold().monospacedDigit())
+                        Text("por acción")
+                            .font(.caption2).foregroundStyle(.secondary)
+                        if event.currency.uppercased() != "EUR" {
+                            Text("Original: " + event.amount.formatted(.number.precision(.fractionLength(2...6))) + " " + event.currency)
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
+                    } else {
+                        Text((event.isEstimated ? "≈ " : "") + event.amount.formatted(.number.precision(.fractionLength(2...6))) + " " + event.currency)
+                            .font(.title3.bold().monospacedDigit())
+                        Text("Conversión a EUR no disponible")
+                            .font(.caption2).foregroundStyle(WhaleTheme.warning)
+                    }
                 }
             }
 

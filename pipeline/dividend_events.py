@@ -20,6 +20,7 @@ import re
 import statistics
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 from html import unescape
@@ -34,6 +35,7 @@ except ImportError:
 
 
 DEFAULT_USER_AGENT = "DividendIntelligence/1.0 dividend-events"
+ECB_DAILY_RATES_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 MONTHS = {
     "january": 1, "february": 2, "march": 3, "april": 4,
     "may": 5, "june": 6, "july": 7, "august": 8,
@@ -110,6 +112,35 @@ def parse_human_date(value: str) -> date | None:
 
 def iso(value: date | None) -> str | None:
     return value.isoformat() if value else None
+
+
+def parse_ecb_rates(document: str) -> dict[str, Any]:
+    """Parse the ECB daily reference feed (currencies quoted per EUR)."""
+    root = ET.fromstring(document)
+    dated = next((node for node in root.iter() if node.attrib.get("time")), None)
+    if dated is None:
+        raise ValueError("ECB response does not contain a dated rate table")
+    rates = {"EUR": 1.0}
+    for node in dated:
+        currency = node.attrib.get("currency")
+        raw_rate = node.attrib.get("rate")
+        if currency and raw_rate:
+            rates[currency.upper()] = float(raw_rate)
+    if len(rates) < 2:
+        raise ValueError("ECB response does not contain exchange rates")
+    return {
+        "base": "EUR",
+        "asOf": dated.attrib["time"],
+        "source": "Banco Central Europeo",
+        "sourceURL": ECB_DAILY_RATES_URL,
+        "rates": rates,
+    }
+
+
+def fetch_ecb_rates() -> dict[str, Any]:
+    request = urllib.request.Request(ECB_DAILY_RATES_URL, headers={"User-Agent": DEFAULT_USER_AGENT})
+    with urllib.request.urlopen(request, timeout=20) as response:
+        return parse_ecb_rates(response.read().decode("utf-8"))
 
 
 def strip_html(document: str) -> str:
@@ -648,6 +679,12 @@ def main() -> None:
 
     today = date.fromisoformat(args.today) if args.today else date.today()
     snapshot = json.loads(args.snapshot.read_text())
+    try:
+        snapshot["exchangeRates"] = fetch_ecb_rates()
+    except Exception as exc:
+        # A transient FX outage must not discard the last known auditable table.
+        if not snapshot.get("exchangeRates"):
+            raise RuntimeError("No ECB exchange rates available for EUR dividend conversion") from exc
     events = build_events(
         snapshot,
         ir_sources=load_ir_sources(args.ir_sources),
