@@ -6,15 +6,19 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import time
 import urllib.parse
 import urllib.request
 from datetime import date
 from typing import Any
 
 API_URL = "https://www.alphavantage.co/query"
+FREE_RATE_DELAY_SECONDS = 1.2
 
 
 def fetch_dividends(symbol: str, api_key: str) -> dict[str, Any]:
+    # Alpha Vantage's free tier asks clients to stay at or below 1 request/sec.
+    time.sleep(FREE_RATE_DELAY_SECONDS)
     params = urllib.parse.urlencode({
         "function": "DIVIDENDS",
         "symbol": symbol,
