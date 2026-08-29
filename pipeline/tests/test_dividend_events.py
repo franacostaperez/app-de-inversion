@@ -27,6 +27,8 @@ class DividendEventsTests(unittest.TestCase):
         self.assertEqual(event["recordDate"], "2026-08-31")
         self.assertEqual(event["paymentDate"], "2026-09-15")
         self.assertEqual(event["status"], "confirmed")
+        self.assertEqual(event["source"], "Investor Relations")
+        self.assertEqual(event["confidence"], 100)
 
     def test_estimate_detects_regular_quarterly_raise_period(self):
         rows = []
@@ -50,9 +52,12 @@ class DividendEventsTests(unittest.TestCase):
         )
         self.assertIsNotNone(event)
         self.assertEqual(event["status"], "estimated")
+        self.assertEqual(event["source"], "Estimación")
+        self.assertGreaterEqual(event["confidence"], 60)
         self.assertGreater(event["amount"], 0.45)
         self.assertAlmostEqual(event["amount"], 0.468, delta=0.01)
         self.assertTrue(event["paymentDate"].startswith("2026-10"))
+        self.assertIn("subida anual habitual", event["estimatedReason"])
 
 
 if __name__ == "__main__":
