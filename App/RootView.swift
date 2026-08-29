@@ -760,7 +760,7 @@ private struct DashboardView: View {
             HStack(spacing: 8) {
                 Label(snapshot.asOfQuarter, systemImage: "calendar")
                 Label("GitHub", systemImage: "checkmark.icloud.fill")
-                Label("Diario", systemImage: "arrow.triangle.2.circlepath")
+                Label("2× al día", systemImage: "arrow.triangle.2.circlepath")
             }
             .font(.caption.bold())
             .foregroundStyle(.white.opacity(0.82))
@@ -897,13 +897,7 @@ private struct DashboardView: View {
         let companyProfile = profile(for: item)
         guard let price = item.marketPrice ?? companyProfile?.marketPrice else { return nil }
         let currency = (companyProfile?.currency ?? "USD").uppercased()
-        guard let rates = snapshot.exchangeRates,
-              let euroPrice = rates.amountInEUR(price, currency: currency) else {
-            return price.formatted(.currency(code: currency))
-        }
-        let euro = (currency == "EUR" ? "" : "≈ ") + euroPrice.formatted(.currency(code: "EUR"))
-        guard currency != "EUR" else { return euro }
-        return euro + " · " + price.formatted(.currency(code: currency))
+        return price.formatted(.currency(code: currency))
     }
 
     private func yieldPercent(for holding: Holding) -> Double? {
@@ -1069,7 +1063,7 @@ private struct DividendIdeaCard: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                 if let quote {
-                    Label(quote, systemImage: "chart.line.uptrend.xyaxis")
+                    Label("Cotización " + quote, systemImage: "chart.line.uptrend.xyaxis")
                         .font(.caption.bold().monospacedDigit())
                         .foregroundStyle(WhaleTheme.info)
                         .lineLimit(1)
