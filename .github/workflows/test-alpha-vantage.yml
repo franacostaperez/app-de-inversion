@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - '.github/workflows/test-alpha-vantage.yml'
+      - 'pipeline/alpha_vantage_dividends.py'
 
 permissions:
   contents: read
