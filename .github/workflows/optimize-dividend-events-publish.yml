@@ -24,68 +24,20 @@ jobs:
           text = path.read_text()
           needle = '    snapshot["fundPortfolios"] = load_fund_portfolios(args.fund_portfolios_directory)\n'
           insert = '    snapshot["dividendEvents"] = existing.get("dividendEvents", [])\n' + needle
-          if 'snapshot["dividendEvents"] = existing.get("dividendEvents", [])' not in text:
+          marker = 'snapshot["dividendEvents"] = existing.get("dividendEvents", [])'
+          if marker not in text:
               if needle not in text:
                   raise SystemExit("build_snapshot insertion point not found")
               path.write_text(text.replace(needle, insert, 1))
-          PY
-      - name: Move dividend calendar to fast publish path
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path(".github/workflows/update-data.yml")
-          text = path.read_text()
-          old_block = '''      - name: Build dividend event calendar
-        env:
-          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-        run: >-
-          python pipeline/dividend_events.py
-          --snapshot data/public/snapshot.json
-          --ir-sources data/config/dividend_ir_sources.json
-          --horizon-days 180
-          --max-ir 30
-          --max-sec 30
-          --max-alpha 20
-'''
-          if old_block not in text:
-              raise SystemExit("Dividend calendar block not found")
-          text = text.replace(old_block, "", 1)
-          anchor = '      - name: Test pipeline\n        run: python -m unittest discover -s pipeline/tests\n'
-          fast_block = '''      - name: Build dividend event calendar
-        env:
-          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-        run: >-
-          python pipeline/dividend_events.py
-          --snapshot data/public/snapshot.json
-          --ir-sources data/config/dividend_ir_sources.json
-          --horizon-days 180
-          --max-ir 30
-          --max-sec 30
-          --max-alpha 20
-      - name: Publish dividend calendar immediately
-        run: |
-          if git diff --quiet -- data/public/snapshot.json; then exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/public/snapshot.json
-          git commit -m "data: update dividend events"
-          git pull --rebase origin main
-          git push
-'''
-          if anchor not in text:
-              raise SystemExit("Test pipeline anchor not found")
-          text = text.replace(anchor, anchor + fast_block, 1)
-          path.write_text(text)
           PY
       - name: Test pipeline
         run: python -m unittest discover -s pipeline/tests
       - name: Commit optimization
         run: |
+          if git diff --quiet -- pipeline/build_snapshot.py; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add pipeline/build_snapshot.py .github/workflows/update-data.yml
-          git commit -m "ci: publish dividend events before full refresh"
+          git add pipeline/build_snapshot.py
+          git commit -m "feat: preserve dividend events on snapshot rebuild"
           git pull --rebase origin main
           git push
