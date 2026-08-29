@@ -14,9 +14,10 @@ public struct AppSnapshot: Codable, Sendable {
     public let companyProfiles: [CompanyProfile]
     public let companyReports: [CompanyReport]
     public let fundPortfolios: [FundPortfolio]
+    public let dividendEvents: [DividendEvent]
 
     enum CodingKeys: String, CodingKey {
-        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports, fundPortfolios
+        case generatedAt, asOfQuarter, isDemo, opportunities, investors, consensus, movements, holdings, filings, filingUpdates, companyProfiles, companyReports, fundPortfolios, dividendEvents
     }
 
     public init(from decoder: Decoder) throws {
@@ -34,7 +35,33 @@ public struct AppSnapshot: Codable, Sendable {
         companyProfiles = try container.decodeIfPresent([CompanyProfile].self, forKey: .companyProfiles) ?? []
         companyReports = try container.decodeIfPresent([CompanyReport].self, forKey: .companyReports) ?? []
         fundPortfolios = try container.decodeIfPresent([FundPortfolio].self, forKey: .fundPortfolios) ?? []
+        dividendEvents = try container.decodeIfPresent([DividendEvent].self, forKey: .dividendEvents) ?? []
     }
+}
+
+
+public struct DividendEvent: Codable, Identifiable, Sendable {
+    public var id: String {
+        let eventDate = paymentDate ?? exDividendDate ?? recordDate ?? declarationDate ?? "undated"
+        return "\(ticker)-\(eventDate)-\(amount)-\(source)"
+    }
+
+    public let ticker: String
+    public let company: String
+    public let amount: Double
+    public let currency: String
+    public let declarationDate: String?
+    public let exDividendDate: String?
+    public let recordDate: String?
+    public let paymentDate: String?
+    public let status: String
+    public let source: String
+    public let sourceURL: URL?
+    public let sourcePriority: Int
+    public let confidence: Int
+    public let estimatedReason: String?
+
+    public var isEstimated: Bool { status.lowercased() == "estimated" }
 }
 
 /// Complementary disclosures, kept separate from USD/share-based SEC 13Fs.
