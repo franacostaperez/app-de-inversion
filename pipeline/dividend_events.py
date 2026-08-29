@@ -414,7 +414,8 @@ def estimate_from_alpha_history(
 
     last_amount = float(history[-1][1]["amount"])
     change_events: list[tuple[int, float]] = []
-    for (previous_date, previous), (current_date, current) in zip(history[-16:], history[-15:]):
+    raise_history = history[-16:]
+    for (previous_date, previous), (current_date, current) in zip(raise_history, raise_history[1:]):
         try:
             old = float(previous["amount"])
             new = float(current["amount"])
