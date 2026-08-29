@@ -1,0 +1,28 @@
+name: Inspect published dividend events
+
+on:
+  push:
+    paths:
+      - ".github/workflows/inspect-dividend-events.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print dividend events
+        run: |
+          python - <<'PY'
+          import json
+          snapshot = json.load(open("data/public/snapshot.json"))
+          events = snapshot.get("dividendEvents", [])
+          print(json.dumps({
+              "count": len(events),
+              "confirmed": sum(e.get("status") == "confirmed" for e in events),
+              "estimated": sum(e.get("status") == "estimated" for e in events),
+              "events": events,
+          }, indent=2, ensure_ascii=False))
+          PY
