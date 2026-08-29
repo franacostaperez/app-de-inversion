@@ -1,0 +1,83 @@
+name: Harden dividend per-share parsing
+
+on:
+  push:
+    paths:
+      - ".github/workflows/fix-dividend-amount-parser.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Require explicit per-share dividend amounts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("pipeline/dividend_events.py")
+          text = path.read_text()
+          old = '''AMOUNT_PATTERNS = [
+    re.compile(r"(?:cash\\s+)?dividend(?:\\s+of)?[^$€£]{0,90}([$€£])\\s*([0-9]+(?:\\.[0-9]+)?)", re.IGNORECASE),
+    re.compile(r"([$€£])\\s*([0-9]+(?:\\.[0-9]+)?)\\s+per\\s+(?:common\\s+)?share", re.IGNORECASE),
+]'''
+          new = '''AMOUNT_PATTERNS = [
+    re.compile(
+        r"(?:regular\\s+|quarterly\\s+|monthly\\s+|cash\\s+)*dividend"
+        r"(?:\\s+of|\\s+in\\s+the\\s+amount\\s+of)?\\s*([$€£])\\s*([0-9]+(?:\\.[0-9]+)?)"
+        r"\\s+per\\s+(?:common\\s+)?share",
+        re.IGNORECASE,
+    ),
+    re.compile(r"([$€£])\\s*([0-9]+(?:\\.[0-9]+)?)\\s+per\\s+(?:common\\s+)?share", re.IGNORECASE),
+]'''
+          if old not in text:
+              if new not in text:
+                  raise SystemExit("AMOUNT_PATTERNS block not found")
+          else:
+              path.write_text(text.replace(old, new, 1))
+
+          test_path = Path("pipeline/tests/test_dividend_events.py")
+          tests = test_path.read_text()
+          marker = "    def test_estimate_detects_regular_quarterly_raise_period(self):\n"
+          addition = '''    def test_rejects_aggregate_dividend_amounts_without_per_share_language(self):
+        text = (
+            "Cash dividends of $949 million were recorded during the quarter. "
+            "The dividend is payable on September 25, 2026."
+        )
+        event = extract_event_from_text(
+            text,
+            ticker="KHC",
+            company="Kraft Heinz",
+            currency="USD",
+            source="SEC/EDGAR",
+            source_url="https://example.com/filing",
+            source_priority=2,
+            confidence=98,
+            today=date(2026, 8, 29),
+            horizon_days=180,
+        )
+        self.assertIsNone(event)
+
+'''
+          if "test_rejects_aggregate_dividend_amounts_without_per_share_language" not in tests:
+              if marker not in tests:
+                  raise SystemExit("Test insertion marker not found")
+              test_path.write_text(tests.replace(marker, addition + marker, 1))
+          PY
+      - name: Test pipeline
+        run: python -m unittest discover -s pipeline/tests
+      - name: Commit parser fix
+        run: |
+          if git diff --quiet -- pipeline/dividend_events.py pipeline/tests/test_dividend_events.py; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pipeline/dividend_events.py pipeline/tests/test_dividend_events.py
+          git commit -m "fix: require per-share dividend amounts"
+          git pull --rebase origin main
+          git push
