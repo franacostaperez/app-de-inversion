@@ -1,10 +1,23 @@
 import unittest
 import urllib.error
 
-from pipeline.enrich_companies import enrich, google_description, metric, number, profile_from_google, validate_market_metrics
+from pipeline.enrich_companies import enrich, google_description, metric, number, portfolio_holdings, profile_from_google, validate_market_metrics
 
 
 class CompanyEnrichmentTests(unittest.TestCase):
+    def test_manual_portfolio_company_becomes_an_enrichment_candidate(self):
+        positions = [{"ticker": "ABC", "name": "Example", "exchange": "NYSE"}]
+        result = portfolio_holdings(positions, [])
+        self.assertEqual(result, [{
+            "cusip": "PORTFOLIO:ABC", "ticker": "ABC", "company": "Example",
+            "exchange": "NYSE", "value": -1,
+        }])
+
+    def test_manual_company_reuses_verified_catalog_identity(self):
+        positions = [{"ticker": "ABC", "name": "Example"}]
+        result = portfolio_holdings(positions, [{"ticker": "ABC", "cusip": "123"}])
+        self.assertEqual(result[0]["cusip"], "123")
+
     def test_reads_google_finance_metrics(self):
         page = ('<div class="SwQK7">Dividend</div><div class="dO6ijd">6.25%</div>'
                 '<div class="SwQK7">Quarterly dividend</div><div class="dO6ijd">$0.40</div>'

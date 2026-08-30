@@ -9,6 +9,7 @@ on:
       - ".github/workflows/update-data.yml"
       - "data/config/investors.json"
       - "data/config/dividend_ir_sources.json"
+      - "data/config/portfolio.json"
       - "pipeline/**"
   schedule:
     # 07:17 and 19:17 UTC: refresh quotes and dividend data twice every day.
@@ -78,6 +79,7 @@ jobs:
           python pipeline/enrich_companies.py
           --holdings data/source/latest.json data/source/previous.json
           --database data/companies/index.json
+          --manual-companies data/config/portfolio.json
           --max-new 1000
       - name: Complete qualitative company profiles
         run: >-

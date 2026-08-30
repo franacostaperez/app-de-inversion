@@ -364,6 +364,28 @@ def validate_market_metrics(profile: dict) -> dict:
     return profile
 
 
+def portfolio_holdings(positions: list[dict], catalog: list[dict]) -> list[dict]:
+    """Convert manually saved portfolio positions into enrichment candidates."""
+    catalog_by_ticker = {
+        str(item.get("ticker", "")).upper(): item["cusip"]
+        for item in catalog
+        if item.get("ticker") and item.get("cusip")
+    }
+    unique = {}
+    for position in positions:
+        ticker = str(position.get("ticker", "")).strip().upper()
+        if not ticker:
+            continue
+        unique[ticker] = {
+            "cusip": catalog_by_ticker.get(ticker, f"PORTFOLIO:{ticker}"),
+            "ticker": ticker,
+            "company": position.get("name") or ticker,
+            "exchange": position.get("exchange"),
+            "value": -1,
+        }
+    return list(unique.values())
+
+
 def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, max_new: int) -> list[dict]:
     by_cusip = {item["cusip"]: item for item in catalog}
     unique = {}
@@ -388,7 +410,7 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         # but must never be enriched as though they were currently quoted shares.
         if existing.get("quoteEligible") is False:
             continue
-        ticker = existing.get("ticker")
+        ticker = existing.get("ticker") or holding.get("ticker")
         if not ticker:
             if new_count >= max_new:
                 continue
@@ -399,7 +421,8 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
             new_count += 1
         if not ticker:
             continue
-        exchange, page = client.google_quote(ticker, existing.get("exchange"))
+        preferred_exchange = existing.get("exchange") or holding.get("exchange")
+        exchange, page = client.google_quote(ticker, preferred_exchange)
         if page:
             refreshed = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
             # A source omitting a field today must not erase a previously verified
@@ -444,6 +467,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--holdings", type=Path, nargs="+", required=True)
     parser.add_argument("--database", type=Path, required=True)
+    parser.add_argument("--manual-companies", type=Path)
     parser.add_argument("--max-new", type=int, default=5)
     args = parser.parse_args()
     sources = [json.loads(path.read_text()) for path in args.holdings]
@@ -454,6 +478,10 @@ def main() -> None:
         for holding in investor.get("holdings", [])
     ]
     catalog = json.loads(args.database.read_text()) if args.database.exists() else []
+    if args.manual_companies and args.manual_companies.exists():
+        manual = json.loads(args.manual_companies.read_text())
+        positions = manual.get("positions", []) if isinstance(manual, dict) else manual
+        holdings.extend(portfolio_holdings(positions, catalog))
     updated = enrich(holdings, catalog, MarketDataClient(), args.max_new)
     args.database.parent.mkdir(parents=True, exist_ok=True)
     args.database.write_text(json.dumps(updated, indent=2, ensure_ascii=False) + "\n")
