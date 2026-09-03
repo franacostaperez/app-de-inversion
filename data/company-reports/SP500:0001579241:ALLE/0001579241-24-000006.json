@@ -1,0 +1,570 @@
+{
+  "cusip": "SP500:0001579241:ALLE",
+  "ticker": "ALLE",
+  "companyName": "Allegion",
+  "cik": "1579241",
+  "accessionNumber": "0001579241-24-000006",
+  "form": "10-K",
+  "filingDate": "2024-02-20T00:00:00Z",
+  "reportDate": "2023-12-31T00:00:00Z",
+  "secURL": "https://www.sec.gov/Archives/edgar/data/1579241/000157924124000006/alle-20231231.htm",
+  "source": "SEC EDGAR XBRL",
+  "extractionVersion": 4,
+  "summary": {
+    "revenue": 3650800000,
+    "expenses": 2942400000,
+    "operatingIncome": 708400000,
+    "netIncome": 540400000,
+    "operatingMargin": 19.4,
+    "roce": 21.92,
+    "netMargin": 14.8,
+    "totalDebt": 2015000000,
+    "cash": 468100000,
+    "cashFromOperations": 600600000,
+    "capitalExpenditure": 84200000,
+    "dividendsPaid": 158700000,
+    "dividendPerShare": 1.8,
+    "epsDiluted": 6.12,
+    "expectedRevenue": null,
+    "expectedEPS": null
+  },
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +11.6% frente al periodo comparable. El beneficio neto varió un +18.0% frente al periodo comparable. El margen neto del periodo más reciente es 14.8%. El ROCE estimado del periodo más reciente es 21.9%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "metrics": {
+    "revenue": {
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 2867400000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 3271900000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 3650800000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "costOfRevenue": {
+      "concept": "CostOfGoodsAndServicesSold",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 1662500000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 1949500000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 2069300000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "OperatingIncomeLoss",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 530200000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 586400000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 708400000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "netIncome": {
+      "concept": "NetIncomeLoss",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 483000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 458000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 540400000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "interestExpense": {
+      "concept": "InterestExpense",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 50200000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 75900000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 93100000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "cashFromOperations": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 488600000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 459500000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 600600000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "capitalExpenditure": {
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 45400000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 64000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 84200000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "cash": {
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 288000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 468100000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "totalAssets": {
+      "concept": "Assets",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2021-12-31",
+          "value": 3051000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 3991200000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 4311500000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "totalLiabilities": {
+      "concept": "Liabilities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 3046700000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 2993200000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 703600000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 1079700000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "shareholdersEquity": {
+      "concept": "StockholdersEquity",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 941800000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 1318300000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q4I"
+        }
+      ]
+    },
+    "debtCurrent": {
+      "concept": "LongTermDebtCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 12600000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 412600000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "debtNoncurrent": {
+      "concept": "LongTermDebtNoncurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 2081900000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 1602400000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "longTermDebtTotal": {
+      "concept": "LongTermDebt",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 2094500000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 2015000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "epsDiluted": {
+      "concept": "EarningsPerShareDiluted",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 5.34,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 5.19,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 6.12,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareCashPaid",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 1.44,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 1.64,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 1.8,
+          "unit": "USD/shares",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividendsCommonStock",
+      "periods": [
+        {
+          "startDate": "2021-01-01",
+          "endDate": "2021-12-31",
+          "value": 129000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2021"
+        },
+        {
+          "startDate": "2022-01-01",
+          "endDate": "2022-12-31",
+          "value": 143900000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        },
+        {
+          "startDate": "2023-01-01",
+          "endDate": "2023-12-31",
+          "value": 158700000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "DebtCurrentPlusNoncurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-12-31",
+          "value": 2094500000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": "CY2022Q4I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-12-31",
+          "value": 2015000000,
+          "unit": "USD",
+          "fiscalYear": 2023,
+          "fiscalPeriod": "FY",
+          "frame": null
+        }
+      ]
+    }
+  }
+}

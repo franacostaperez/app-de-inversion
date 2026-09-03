@@ -1,0 +1,574 @@
+{
+  "cusip": "SP500:0000829224:SBUX",
+  "ticker": "SBUX",
+  "companyName": "Starbucks",
+  "cik": "829224",
+  "accessionNumber": "0000829224-24-000042",
+  "form": "10-Q",
+  "filingDate": "2024-07-30T00:00:00Z",
+  "reportDate": "2024-06-30T00:00:00Z",
+  "secURL": "https://www.sec.gov/Archives/edgar/data/829224/000082922424000042/sbux-20240630.htm",
+  "source": "SEC EDGAR XBRL",
+  "extractionVersion": 4,
+  "summary": {
+    "revenue": 9113900000,
+    "expenses": 7670300000,
+    "operatingIncome": 1517500000,
+    "netIncome": 1054800000,
+    "operatingMargin": 16.65,
+    "roce": 6.76,
+    "netMargin": 11.57,
+    "totalDebt": 15551400000,
+    "cash": 3179100000,
+    "cashFromOperations": 4560000000,
+    "capitalExpenditure": 1979300000,
+    "dividendsPaid": 1939000000,
+    "dividendPerShare": null,
+    "epsDiluted": 0.93,
+    "expectedRevenue": null,
+    "expectedEPS": null
+  },
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un -0.6% frente al periodo comparable. El beneficio neto varió un -7.6% frente al periodo comparable. El margen neto del periodo más reciente es 11.6%. El ROCE estimado del periodo más reciente es 6.8%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "metrics": {
+    "revenue": {
+      "concept": "Revenues",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 26602000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-03",
+          "endDate": "2023-07-02",
+          "value": 9168300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 27102300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 9113900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "operatingExpenses": {
+      "concept": "CostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 22707700000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-03",
+          "endDate": "2023-07-02",
+          "value": 7654100000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 23198200000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 7670300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "OperatingIncomeLoss",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 4164600000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-03",
+          "endDate": "2023-07-02",
+          "value": 1583900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 4101900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 1517500000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "netIncome": {
+      "concept": "NetIncomeLoss",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 2905200000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-03",
+          "endDate": "2023-07-02",
+          "value": 1141700000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 2851700000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 1054800000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "interestExpense": {
+      "concept": "InterestExpense",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 406900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-03",
+          "endDate": "2023-07-02",
+          "value": 140900000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 422000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 141300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "cashFromOperations": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 4063700000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 4560000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "capitalExpenditure": {
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 1634100000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 1979300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "cash": {
+      "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2022-10-02",
+          "value": 2818400000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-07-02",
+          "value": 3357000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 3551500000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 3179100000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "totalAssets": {
+      "concept": "Assets",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 29445500000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 30111800000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "totalLiabilities": {
+      "concept": "Liabilities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 37433300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 38049200000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 9345300000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 7649500000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "shareholdersEquity": {
+      "concept": "StockholdersEquity",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": -7994800000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": -7945400000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "debtCurrent": {
+      "concept": "LongTermDebtCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 1818600000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 0,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "debtNoncurrent": {
+      "concept": "LongTermDebtNoncurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 13547600000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 15551400000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "longTermDebtTotal": {
+      "concept": "LongTermDebt",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 15366200000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 15551400000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    },
+    "epsDiluted": {
+      "concept": "EarningsPerShareDiluted",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 2.52,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-04-03",
+          "endDate": "2023-07-02",
+          "value": 0.99,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2023Q2"
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 2.51,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2024-04-01",
+          "endDate": "2024-06-30",
+          "value": 0.93,
+          "unit": "USD/shares",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2022-10-03",
+          "endDate": "2023-07-02",
+          "value": 1824800000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": "2023-10-02",
+          "endDate": "2024-06-30",
+          "value": 1939000000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "DebtCurrentPlusNoncurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-10-01",
+          "value": 15366200000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": null
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 15551400000,
+          "unit": "USD",
+          "fiscalYear": 2024,
+          "fiscalPeriod": "Q3",
+          "frame": "CY2024Q2I"
+        }
+      ]
+    }
+  }
+}

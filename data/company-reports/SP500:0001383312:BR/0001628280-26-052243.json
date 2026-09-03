@@ -1,0 +1,588 @@
+{
+  "cusip": "SP500:0001383312:BR",
+  "ticker": "BR",
+  "companyName": "Broadridge Financial Solutions",
+  "cik": "1383312",
+  "accessionNumber": "0001628280-26-052243",
+  "form": "10-K",
+  "filingDate": "2026-08-04T00:00:00Z",
+  "reportDate": "2026-06-30T00:00:00Z",
+  "secURL": "https://www.sec.gov/Archives/edgar/data/1383312/000162828026052243/br-20260630.htm",
+  "source": "SEC EDGAR XBRL",
+  "extractionVersion": 4,
+  "summary": {
+    "revenue": 7476800000,
+    "expenses": 6176200000,
+    "operatingIncome": 1300600000,
+    "netIncome": 1124300000,
+    "operatingMargin": 17.4,
+    "roce": 17.27,
+    "netMargin": 15.04,
+    "totalDebt": 3254600000,
+    "cash": 402900000,
+    "cashFromOperations": 1345600000,
+    "capitalExpenditure": 67200000,
+    "dividendsPaid": 443500000,
+    "dividendPerShare": 3.9,
+    "epsDiluted": 9.6,
+    "expectedRevenue": null,
+    "expectedEPS": null
+  },
+  "highlights": "Ingresos y comparativas temporales extraídos del XBRL del informe. Los ingresos variaron un +8.5% frente al periodo comparable. El beneficio neto varió un +33.9% frente al periodo comparable. El margen neto del periodo más reciente es 15.0%. El ROCE estimado del periodo más reciente es 17.3%. La deuda declarada queda incorporada para seguir su evolución. Incluye generación de caja operativa y, cuando está disponible, inversión de capital.",
+  "metrics": {
+    "revenue": {
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 6506800000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 6889100000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 7476800000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "costOfRevenue": {
+      "concept": "CostOfGoodsAndServicesSold",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 4572900000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 4752300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 5100700000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "operatingExpenses": {
+      "concept": "CostsAndExpenses",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 5489700000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 5700600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 6176200000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "operatingIncome": {
+      "concept": "OperatingIncomeLoss",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 1017100000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 1188600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 1300600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "netIncome": {
+      "concept": "NetIncomeLoss",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 698100000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 839500000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 1124300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "cashFromOperations": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 1056200000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 1171300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 1345600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "capitalExpenditure": {
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 57400000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 43800000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 67200000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "cash": {
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 561500000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 402900000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "totalAssets": {
+      "concept": "Assets",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 8242400000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 8545000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 8945300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "totalLiabilities": {
+      "concept": "Liabilities",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 5889900000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 6104700000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "currentLiabilities": {
+      "concept": "LiabilitiesCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 1861200000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 1414800000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "shareholdersEquity": {
+      "concept": "StockholdersEquity",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2023-06-30",
+          "value": 2240600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2023Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2024-06-30",
+          "value": 2168200000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 2655100000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 2840500000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "debtCurrent": {
+      "concept": "LongTermDebtCurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 499300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 0,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "debtNoncurrent": {
+      "concept": "LongTermDebtNoncurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 2753000000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 3254600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "longTermDebtTotal": {
+      "concept": "LongTermDebt",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 3252300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 3254600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    },
+    "epsDiluted": {
+      "concept": "EarningsPerShareDiluted",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 5.86,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 7.1,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 9.6,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "dividendPerShare": {
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 3.2,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 3.52,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 3.9,
+          "unit": "USD/shares",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "dividendsPaid": {
+      "concept": "PaymentsOfDividends",
+      "periods": [
+        {
+          "startDate": "2023-07-01",
+          "endDate": "2024-06-30",
+          "value": 368200000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2024"
+        },
+        {
+          "startDate": "2024-07-01",
+          "endDate": "2025-06-30",
+          "value": 402300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025"
+        },
+        {
+          "startDate": "2025-07-01",
+          "endDate": "2026-06-30",
+          "value": 443500000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026"
+        }
+      ]
+    },
+    "totalDebt": {
+      "concept": "DebtCurrentPlusNoncurrent",
+      "periods": [
+        {
+          "startDate": null,
+          "endDate": "2025-06-30",
+          "value": 3252300000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2025Q2I"
+        },
+        {
+          "startDate": null,
+          "endDate": "2026-06-30",
+          "value": 3254600000,
+          "unit": "USD",
+          "fiscalYear": 2026,
+          "fiscalPeriod": "FY",
+          "frame": "CY2026Q2I"
+        }
+      ]
+    }
+  }
+}
