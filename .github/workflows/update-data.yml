@@ -72,6 +72,10 @@ jobs:
           --holdings data/source/latest.json data/source/previous.json
           --company-database data/companies/index.json
           --mapping-database data/instruments/mappings.json
+      - name: Synchronize S&P 500 universe
+        run: >-
+          python pipeline/sync_sp500.py
+          --database data/companies/index.json
       - name: Enrich newly reported companies
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
