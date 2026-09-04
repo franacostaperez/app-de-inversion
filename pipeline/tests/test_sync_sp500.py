@@ -1,12 +1,32 @@
 import unittest
 
-from pipeline.sync_sp500 import merge_catalog, parse_constituents
+from pipeline.sync_sp500 import merge_catalog, parse_constituents, validate_constituents
 
 
 class SyncSP500Tests(unittest.TestCase):
     def test_parse_rejects_incomplete_source(self):
         with self.assertRaises(ValueError):
             parse_constituents("<html></html>")
+
+    def test_validation_accepts_503_tickers_for_500_companies(self):
+        members = [
+            {"ticker": f"T{index}", "cik": str(index + 1).zfill(10)}
+            for index in range(500)
+        ]
+        members.extend([
+            {"ticker": "T0.B", "cik": "0000000001"},
+            {"ticker": "T1.B", "cik": "0000000002"},
+            {"ticker": "T2.B", "cik": "0000000003"},
+        ])
+        validate_constituents(members)
+
+    def test_validation_rejects_fewer_than_500_companies(self):
+        members = [
+            {"ticker": f"T{index}", "cik": str(index + 1).zfill(10)}
+            for index in range(499)
+        ]
+        with self.assertRaisesRegex(ValueError, "500 empresas únicas"):
+            validate_constituents(members)
 
     def test_merge_reuses_ticker_and_keeps_share_classes_distinct(self):
         catalog = [{"cusip": "real", "ticker": "GOOG", "name": "Alphabet"}]
