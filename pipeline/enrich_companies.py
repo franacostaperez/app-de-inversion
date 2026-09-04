@@ -367,8 +367,16 @@ def validate_market_metrics(profile: dict) -> dict:
     yahoo_yield = normalized_yield(profile.get("yahooDividendYield"))
     candidates = [value for value in (google_yield, yahoo_yield) if value is not None]
     if len(candidates) == 2 and abs(candidates[0] - candidates[1]) > max(0.005, max(candidates) * 0.25):
-        profile["dividendYield"] = None
-        warnings.append("MARKET_YIELD_PROVIDER_CONFLICT")
+        price = number(profile.get("marketPrice"))
+        dividend = number(profile.get("dividendPerShare"))
+        implied_yield = dividend / price if price and dividend is not None else None
+        closest = min(candidates, key=lambda value: abs(value - implied_yield)) if implied_yield is not None else None
+        if closest is not None and abs(closest - implied_yield) <= max(0.002, implied_yield * 0.15):
+            profile["dividendYield"] = closest
+            warnings.append("MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE")
+        else:
+            profile["dividendYield"] = None
+            warnings.append("MARKET_YIELD_PROVIDER_CONFLICT")
     elif candidates:
         profile["dividendYield"] = google_yield if google_yield is not None else yahoo_yield
     else:

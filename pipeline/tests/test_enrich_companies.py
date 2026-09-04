@@ -242,6 +242,19 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertIsNone(conflicted["dividendYield"])
         self.assertIn("MARKET_YIELD_PROVIDER_CONFLICT", conflicted["metricWarnings"])
 
+    def test_resolves_yield_conflict_with_verified_annual_dividend_rate(self):
+        resolved = validate_market_metrics({
+            "googleDividendYield": 0.0346,
+            "yahooDividendYield": 0.0173,
+            "marketPrice": 188.06,
+            "dividendPerShare": 6.52,
+        })
+        self.assertEqual(resolved["dividendYield"], 0.0346)
+        self.assertIn(
+            "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE",
+            resolved["metricWarnings"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
