@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-04T15:55:35.554324Z",
+  "generatedAt": "2026-09-04T16:23:57.515482Z",
   "profilesAudited": 995,
   "scoresAudited": 672,
-  "issuesRemaining": 61,
+  "issuesRemaining": 59,
   "issuesBySeverity": {
-    "error": 60,
+    "error": 58,
     "warning": 1
   },
   "issuesByCode": {
-    "YIELD_PROVIDER_CONFLICT": 30,
-    "PE_PROVIDER_CONFLICT": 30,
+    "YIELD_PROVIDER_CONFLICT": 29,
+    "PE_PROVIDER_CONFLICT": 29,
     "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
   },
   "adjustmentsAppliedByPipeline": {
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_PROVIDER_CONFLICT": 30,
-    "MARKET_PE_PROVIDER_CONFLICT": 30,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 29,
+    "MARKET_PE_PROVIDER_CONFLICT": 29,
     "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
   },
   "issues": [
@@ -26,7 +26,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 20.75,
+        "google": 20.65,
         "yahoo": 40.795
       }
     },
@@ -37,7 +37,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 9.14,
+        "google": 9.16,
         "yahoo": 123.998852
       }
     },
@@ -48,7 +48,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 45.14,
+        "google": 45.29,
         "yahoo": 20.294118
       }
     },
@@ -59,7 +59,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 88.13,
+        "google": 88.3,
         "yahoo": 55.0
       }
     },
@@ -81,7 +81,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 56.38,
+        "google": 56.41,
         "yahoo": 32.373702
       }
     },
@@ -103,7 +103,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 67.44,
+        "google": 67.5,
         "yahoo": 2.585595
       }
     },
@@ -114,19 +114,8 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 58.21,
+        "google": 58.27,
         "yahoo": 17.931864
-      }
-    },
-    {
-      "company": "CrowdStrike",
-      "cusip": "SP500:0001535527:CRWD",
-      "ticker": "CRWD",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 3725.42,
-        "yahoo": 5735.2
       }
     },
     {
@@ -147,7 +136,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 40.49,
+        "google": 40.87,
         "yahoo": 170.252072
       }
     },
@@ -158,7 +147,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 50.75,
+        "google": 50.69,
         "yahoo": 25.870253
       }
     },
@@ -169,7 +158,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 368.32,
+        "google": 369.38,
         "yahoo": 1546.63144
       }
     },
@@ -180,7 +169,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 25.87,
+        "google": 25.93,
         "yahoo": 47.049837
       }
     },
@@ -191,7 +180,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 76.52,
+        "google": 76.47,
         "yahoo": 25.043344
       }
     },
@@ -224,7 +213,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 40.61,
+        "google": 40.54,
         "yahoo": 119.679833
       }
     },
@@ -235,7 +224,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 48.27,
+        "google": 48.15,
         "yahoo": 29.182057
       }
     },
@@ -246,7 +235,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 17.42,
+        "google": 17.57,
         "yahoo": 6.960674
       }
     },
@@ -257,7 +246,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 12.61,
+        "google": 12.62,
         "yahoo": 32.829649
       }
     },
@@ -268,7 +257,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 25.72,
+        "google": 25.8,
         "yahoo": 158.069522
       }
     },
@@ -279,7 +268,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 9.28,
+        "google": 9.31,
         "yahoo": 17.979351
       }
     },
@@ -290,7 +279,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 71.36,
+        "google": 71.18,
         "yahoo": 232.675676
       }
     },
@@ -301,7 +290,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 822.18,
+        "google": 825.47,
         "yahoo": 314.86087
       }
     },
@@ -312,7 +301,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 92.82,
+        "google": 92.99,
         "yahoo": 59.227273
       }
     },
@@ -334,7 +323,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 119.64,
+        "google": 119.6,
         "yahoo": 14.967213
       }
     },
@@ -345,7 +334,7 @@
       "code": "PE_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "google": 18.11,
+        "google": 18.14,
         "yahoo": 57.666667
       }
     },
@@ -357,18 +346,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 3.46,
-        "yahooPercent": 1.733
-      }
-    },
-    {
-      "company": "AMRIZE LTD",
-      "cusip": "H2927K103",
-      "ticker": "AMRZ",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.0,
-        "yahooPercent": 1.502
+        "yahooPercent": 1.731
       }
     },
     {
@@ -378,8 +356,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 1.01,
-        "yahooPercent": 0.507
+        "googlePercent": 1.02,
+        "yahooPercent": 0.509
       }
     },
     {
@@ -400,8 +378,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 1.41,
-        "yahooPercent": 0.703
+        "googlePercent": 1.4,
+        "yahooPercent": 0.702
       }
     },
     {
@@ -411,19 +389,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 5.73,
-        "yahooPercent": 2.863
-      }
-    },
-    {
-      "company": "CARNIVAL CORP",
-      "cusip": "143658300",
-      "ticker": "CCL",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 2.55,
-        "yahooPercent": 1.91
+        "googlePercent": 5.75,
+        "yahooPercent": 2.876
       }
     },
     {
@@ -433,8 +400,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 1.18,
-        "yahooPercent": 0.576
+        "googlePercent": 1.19,
+        "yahooPercent": 0.579
       }
     },
     {
@@ -445,7 +412,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 1.85,
-        "yahooPercent": 4.007
+        "yahooPercent": 4.014
       }
     },
     {
@@ -455,8 +422,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 3.81,
-        "yahooPercent": 2.812
+        "googlePercent": 3.82,
+        "yahooPercent": 2.819
       }
     },
     {
@@ -466,8 +433,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 2.09,
-        "yahooPercent": 1.045
+        "googlePercent": 2.1,
+        "yahooPercent": 1.049
       }
     },
     {
@@ -489,7 +456,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 1.07,
-        "yahooPercent": 0.266
+        "yahooPercent": 0.267
       }
     },
     {
@@ -499,8 +466,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 1.41,
-        "yahooPercent": 4.299
+        "googlePercent": 1.4,
+        "yahooPercent": 4.27
       }
     },
     {
@@ -511,7 +478,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 1.34,
-        "yahooPercent": 2.134
+        "yahooPercent": 2.132
       }
     },
     {
@@ -522,7 +489,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 1.34,
-        "yahooPercent": 2.131
+        "yahooPercent": 2.133
       }
     },
     {
@@ -532,8 +499,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 3.62,
-        "yahooPercent": 5.313
+        "googlePercent": 3.61,
+        "yahooPercent": 5.31
       }
     },
     {
@@ -543,8 +510,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 3.61,
-        "yahooPercent": 7.545
+        "googlePercent": 3.62,
+        "yahooPercent": 7.546
       }
     },
     {
@@ -555,7 +522,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 1.81,
-        "yahooPercent": 0.811
+        "yahooPercent": 0.813
       }
     },
     {
@@ -576,8 +543,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 1.03,
-        "yahooPercent": 0.257
+        "googlePercent": 1.02,
+        "yahooPercent": 0.255
       }
     },
     {
@@ -587,8 +554,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 3.85,
-        "yahooPercent": 2.886
+        "googlePercent": 3.86,
+        "yahooPercent": 2.895
       }
     },
     {
@@ -598,8 +565,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 1.28,
-        "yahooPercent": 0.32
+        "googlePercent": 1.27,
+        "yahooPercent": 0.317
       }
     },
     {
@@ -610,7 +577,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 0.18,
-        "yahooPercent": 6.29
+        "yahooPercent": 6.321
       }
     },
     {
@@ -621,7 +588,29 @@
       "severity": "error",
       "details": {
         "googlePercent": 1.12,
-        "yahooPercent": 2.214
+        "yahooPercent": 2.213
+      }
+    },
+    {
+      "company": "SMURFIT WESTROCK PLC",
+      "cusip": "G8267P108",
+      "ticker": "SW",
+      "code": "YIELD_PROVIDER_CONFLICT",
+      "severity": "error",
+      "details": {
+        "googlePercent": 3.94,
+        "yahooPercent": 2.951
+      }
+    },
+    {
+      "company": "Skyworks Solutions",
+      "cusip": "SP500:0000004127:SWKS",
+      "ticker": "SWKS",
+      "code": "YIELD_PROVIDER_CONFLICT",
+      "severity": "error",
+      "details": {
+        "googlePercent": 3.86,
+        "yahooPercent": 2.893
       }
     },
     {
@@ -631,8 +620,8 @@
       "code": "YIELD_PROVIDER_CONFLICT",
       "severity": "error",
       "details": {
-        "googlePercent": 3.45,
-        "yahooPercent": 2.558
+        "googlePercent": 3.44,
+        "yahooPercent": 2.548
       }
     },
     {
@@ -654,18 +643,7 @@
       "severity": "error",
       "details": {
         "googlePercent": 0.58,
-        "yahooPercent": 2.698
-      }
-    },
-    {
-      "company": "Weyerhaeuser",
-      "cusip": "SP500:0000106535:WY",
-      "ticker": "WY",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.64,
-        "yahooPercent": 2.728
+        "yahooPercent": 2.699
       }
     },
     {
@@ -686,9 +664,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.277,
-        "calculatedPercent": 27.682,
-        "price": 1.445,
+        "reportedPercent": 0.273,
+        "calculatedPercent": 27.304,
+        "price": 1.465,
         "dividendPerShare": 0.4
       }
     }
