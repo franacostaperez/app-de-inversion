@@ -39,6 +39,38 @@ class SyncSP500Tests(unittest.TestCase):
         self.assertEqual({item["ticker"] for item in result}, {"GOOG", "GOOGL"})
         self.assertTrue(all(item["sp500"] for item in result))
 
+    def test_merge_never_attaches_index_membership_to_a_debt_instrument(self):
+        catalog = [{
+            "cusip": "bond", "ticker": "ABC", "name": "ABC note",
+            "quoteEligible": False, "listingStatus": "NON_EQUITY_INSTRUMENT",
+            "securityType": "NOTE 1.5%", "sp500": True,
+        }]
+        members = [{
+            "ticker": "ABC", "name": "ABC Inc", "sector": "IT",
+            "industry": "Software", "cik": "0000000123",
+        }]
+        result, added = merge_catalog(catalog, members, "2026-09-04T00:00:00Z")
+        selected = [item for item in result if item.get("sp500")]
+        self.assertEqual(added, 1)
+        self.assertEqual(len(selected), 1)
+        self.assertEqual(selected[0]["cusip"], "SP500:0000000123:ABC")
+        self.assertIsNot(selected[0].get("quoteEligible"), False)
+
+    def test_merge_prefers_the_quoted_common_stock_over_a_same_ticker_note(self):
+        catalog = [
+            {"cusip": "bond", "ticker": "ABC", "quoteEligible": False, "sp500": True},
+            {"cusip": "stock", "ticker": "ABC", "quoteEligible": True,
+             "listingStatus": "ACTIVE", "securityType": "COM"},
+        ]
+        members = [{
+            "ticker": "ABC", "name": "ABC Inc", "sector": "IT",
+            "industry": "Software", "cik": "0000000123",
+        }]
+        result, added = merge_catalog(catalog, members, "2026-09-04T00:00:00Z")
+        selected = [item for item in result if item.get("sp500")]
+        self.assertEqual(added, 0)
+        self.assertEqual([item["cusip"] for item in selected], ["stock"])
+
 
 if __name__ == "__main__":
     unittest.main()

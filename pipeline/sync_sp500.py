@@ -86,10 +86,35 @@ def parse_constituents(html: str) -> list[dict]:
 
 
 def merge_catalog(catalog: list[dict], constituents: list[dict], now: str) -> tuple[list[dict], int]:
-    by_ticker = {str(item.get("ticker", "")).upper(): item for item in catalog if item.get("ticker")}
+    by_ticker: dict[str, list[dict]] = {}
+    for existing in catalog:
+        ticker = str(existing.get("ticker", "")).upper()
+        if ticker:
+            by_ticker.setdefault(ticker, []).append(existing)
+        if existing.get("sp500"):
+            existing["sp500"] = False
+
+    def quoted_equity(candidates: list[dict]) -> dict | None:
+        eligible = [item for item in candidates if item.get("quoteEligible") is not False]
+        if not eligible:
+            return None
+        return max(eligible, key=lambda item: (
+            item.get("quoteEligible") is True,
+            item.get("listingStatus") == "ACTIVE",
+            str(item.get("securityType") or "").upper() in {"COM", "COMMON", "COMMON STOCK"},
+            str(item.get("cusip") or "").startswith("SP500:"),
+        ))
+
     added = 0
     for member in constituents:
-        item = by_ticker.get(member["ticker"])
+        candidates = by_ticker.get(member["ticker"], [])
+        item = quoted_equity(candidates)
+        if item is None:
+            synthetic_cusip = f"SP500:{member['cik']}:{member['ticker']}"
+            item = next(
+                (candidate for candidate in candidates if candidate.get("cusip") == synthetic_cusip),
+                None,
+            )
         if item is None:
             item = {
                 "cusip": f"SP500:{member['cik']}:{member['ticker']}",
@@ -107,7 +132,7 @@ def merge_catalog(catalog: list[dict], constituents: list[dict], now: str) -> tu
                 "updatedAt": now,
             }
             catalog.append(item)
-            by_ticker[member["ticker"]] = item
+            by_ticker.setdefault(member["ticker"], []).append(item)
             added += 1
         item["sp500"] = True
         item["sp500Sector"] = member["sector"]
@@ -117,10 +142,6 @@ def merge_catalog(catalog: list[dict], constituents: list[dict], now: str) -> tu
             item["sector"] = member["sector"]
         if not item.get("industry"):
             item["industry"] = member["industry"]
-    current = {member["ticker"] for member in constituents}
-    for item in catalog:
-        if item.get("sp500") and str(item.get("ticker", "")).upper() not in current:
-            item["sp500"] = False
     return sorted(catalog, key=lambda item: item.get("name", "")), added
 
 

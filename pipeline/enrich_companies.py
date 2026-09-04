@@ -488,7 +488,9 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
                 target["investorRelationsURL"] = yahoo["website"]
                 target["investorRelationsVerified"] = False
             if yahoo:
-                target["source"] = target.get("source", "Google Finance") + " · Yahoo Finance respaldo"
+                source = target.get("source", "Google Finance")
+                if "Yahoo Finance respaldo" not in source:
+                    target["source"] = source + " · Yahoo Finance respaldo"
             validate_market_metrics(target)
             try:
                 target.update(client.sec_reports(ticker))
