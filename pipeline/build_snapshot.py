@@ -176,29 +176,77 @@ def operating_margin_investor_score(operating_margin: float | None) -> int:
     return min(9, rating) if operating_margin < 30 else 10
 
 
-def quality_investor_score(summary: dict) -> dict:
+def quality_investor_score(summary: dict, sector: str = "", industry: str = "") -> dict:
     """Score business quality from the annual metrics that are actually available.
 
-    The 12-point component combines operating margin (4), ROCE (3), net
-    margin (3), and cash conversion (2). At least two metrics are required.
-    Missing weights are not redistributed and coverage remains explicit.
+    Industrial companies use margins, ROCE and cash conversion. Financial
+    companies use net margin, positive earnings, payout safety and efficiency;
+    real-estate companies use margins plus cash and dividend coverage. At
+    least two metrics are required and missing weights are not redistributed.
     """
     net_income = summary.get("netIncome")
     cash_from_operations = summary.get("cashFromOperations")
     cash_conversion = None
     if net_income is not None and cash_from_operations is not None:
         cash_conversion = 0 if net_income <= 0 else cash_from_operations / net_income
+    dividends_paid = summary.get("dividendsPaid")
+    payout_ratio = None
+    if net_income is not None and net_income > 0 and dividends_paid is not None:
+        payout_ratio = abs(dividends_paid) / net_income
+    revenue = summary.get("revenue")
+    expenses = summary.get("expenses")
+    efficiency_ratio = None
+    if revenue is not None and revenue > 0 and expenses is not None:
+        efficiency_ratio = abs(expenses) / revenue
+    dividend_cash_coverage = None
+    if cash_from_operations is not None and dividends_paid not in (None, 0):
+        dividend_cash_coverage = cash_from_operations / abs(dividends_paid)
 
-    definitions = (
-        ("operatingMargin", summary.get("operatingMargin"), 4,
-         [(-10, 0), (5, 0), (10, 1), (15, 2), (20, 3), (25, 4)]),
-        ("roce", summary.get("roce"), 3,
-         [(-10, 0), (5, 0), (10, 1), (15, 2), (20, 3)]),
-        ("netMargin", summary.get("netMargin"), 3,
-         [(-10, 0), (3, 0), (8, 1), (12, 2), (18, 3)]),
-        ("cashConversion", cash_conversion, 2,
-         [(0, 0), (0.6, 0), (0.9, 1), (1.1, 2)]),
-    )
+    sector_text = str(sector or "").lower()
+    industry_text = str(industry or "").lower()
+    financial_business = "financial" in sector_text or any(keyword in industry_text for keyword in (
+        "bank", "insurance", "financial", "capital markets", "asset management",
+        "credit services", "mortgage", "brokerage",
+    ))
+    real_estate_business = "real estate" in sector_text or any(keyword in industry_text for keyword in (
+        "reit", "real estate",
+    ))
+    if financial_business:
+        model = "FINANCIAL"
+        definitions = (
+            ("netMargin", summary.get("netMargin"), 5,
+             [(-10, 0), (5, 1), (10, 2), (15, 3), (20, 4), (30, 5)]),
+            ("positiveEarnings", None if net_income is None else (1 if net_income > 0 else 0), 2,
+             [(0, 0), (1, 2)]),
+            ("payoutSafety", payout_ratio, 3,
+             [(0, 3), (0.5, 3), (0.75, 2), (1, 1), (1.25, 0)]),
+            ("efficiency", efficiency_ratio, 2,
+             [(0.3, 2), (0.5, 2), (0.7, 1), (0.9, 0), (1.5, 0)]),
+        )
+    elif real_estate_business:
+        model = "REAL_ESTATE"
+        definitions = (
+            ("operatingMargin", summary.get("operatingMargin"), 3,
+             [(-10, 0), (10, 0), (20, 1), (30, 2), (40, 3)]),
+            ("netMargin", summary.get("netMargin"), 2,
+             [(-10, 0), (5, 0), (15, 1), (25, 2)]),
+            ("cashConversion", cash_conversion, 4,
+             [(0, 0), (0.8, 1), (1.2, 2), (1.8, 3), (2.5, 4)]),
+            ("dividendCashCoverage", dividend_cash_coverage, 3,
+             [(0, 0), (0.8, 1), (1, 2), (1.25, 3)]),
+        )
+    else:
+        model = "GENERAL"
+        definitions = (
+            ("operatingMargin", summary.get("operatingMargin"), 4,
+             [(-10, 0), (5, 0), (10, 1), (15, 2), (20, 3), (25, 4)]),
+            ("roce", summary.get("roce"), 3,
+             [(-10, 0), (5, 0), (10, 1), (15, 2), (20, 3)]),
+            ("netMargin", summary.get("netMargin"), 3,
+             [(-10, 0), (3, 0), (8, 1), (12, 2), (18, 3)]),
+            ("cashConversion", cash_conversion, 2,
+             [(0, 0), (0.6, 0), (0.9, 1), (1.1, 2)]),
+        )
     components = {}
     available_count = 0
     available_maximum = 0
@@ -231,6 +279,7 @@ def quality_investor_score(summary: dict) -> dict:
             else "PARTIAL" if usable
             else "MISSING"
         ),
+        "model": model,
         "components": components,
     }
 
@@ -582,6 +631,12 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         direct_profile = profiles_by_cusip.get(ticker, {})
         profile = merge_known(profiles_by_issuer.get(issuer_key(direct_profile.get("name") or display_name), {}), direct_profile)
         display_name = profile.get("name", display_name)
+        sector = profile.get("sector", company.get("sector", "Unknown"))
+        industry = str(profile.get("industry") or "")
+        financial_business = "financial" in str(sector).lower() or any(keyword in industry.lower() for keyword in (
+            "bank", "insurance", "financial", "capital markets", "asset management",
+            "credit services", "mortgage", "brokerage",
+        ))
         report = latest_reports.get(ticker) or latest_reports_by_issuer.get(issuer_key(display_name)) or {}
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
@@ -594,7 +649,10 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         net_income = report_summary.get("netIncome")
         net_margin = report_summary.get("netMargin")
         cash_from_operations = report_summary.get("cashFromOperations")
-        quality = quality_investor_score(report_summary)
+        revenue = report_summary.get("revenue")
+        expenses = report_summary.get("expenses")
+        dividends_paid = report_summary.get("dividendsPaid")
+        quality = quality_investor_score(report_summary, sector, industry)
         dividend_periods = ((report.get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
         annual_dividends = []
         for period in sorted(dividend_periods, key=lambda item: item.get("endDate", "")):
@@ -636,21 +694,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             missing_metrics.append("dividendGrowth")
         if price_vs_moving_average_1000 is None:
             missing_metrics.append("movingAverage1000")
-        quality_missing_names = {
-            "operatingMargin": "qualityOperatingMargin",
-            "roce": "qualityROCE",
-            "netMargin": "qualityNetMargin",
-            "cashConversion": "qualityCashConversion",
-        }
         for component_name, component in quality["components"].items():
             if not component["available"]:
-                missing_metrics.append(quality_missing_names[component_name])
-        sector = profile.get("sector", company.get("sector", "Unknown"))
-        industry = str(profile.get("industry") or "").lower()
-        financial_business = "financial" in str(sector).lower() or any(keyword in industry for keyword in (
-            "bank", "insurance", "financial", "capital markets", "asset management",
-            "credit services", "mortgage", "brokerage",
-        ))
+                missing_metrics.append(f"quality{component_name[0].upper()}{component_name[1:]}")
         net_debt = max(0, total_debt - cash) if total_debt is not None and cash is not None else None
         debt_basis = "NET_DEBT_TO_NET_INCOME" if net_debt is not None else "TOTAL_DEBT_TO_NET_INCOME"
         debt_amount = net_debt if net_debt is not None else total_debt
@@ -733,6 +779,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "roce": roce,
             "netMargin": net_margin,
             "cashFromOperations": cash_from_operations,
+            "revenue": revenue,
+            "expenses": expenses,
+            "dividendsPaid": dividends_paid,
             "totalDebt": total_debt,
             "cash": cash,
             "netDebt": net_debt,
@@ -757,6 +806,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "qualityScoreMaximum": QUALITY_SCORE_MAXIMUM,
             "qualityCoverage": quality["coverage"],
             "qualityStatus": quality["status"],
+            "qualityModel": quality["model"],
             "qualityComponents": quality["components"],
             "profitabilityInvestorScore": profitability_score,
             "operatingMarginRating": operating_margin_rating,
@@ -824,6 +874,14 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     } for investor in current.get("investors", [])]
     investors.sort(key=lambda item: item["portfolioValue"], reverse=True)
     filing_updates = build_filing_updates(current, holdings, movements, prior_updates or [])
+    public_profiles = app_safe_company_profiles(company_profiles or [])
+    sp500_company_count = len({
+        str(item.get("sp500Cik")).lstrip("0")
+        for item in public_profiles
+        if item.get("sp500") and item.get("sp500Cik")
+    })
+    if sp500_company_count and sp500_company_count != 500:
+        raise ValueError(f"Expected 500 unique S&P 500 companies, found {sp500_company_count}")
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "asOfQuarter": current["quarter"],
@@ -835,9 +893,59 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "holdings": holdings,
         "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
         "filingUpdates": filing_updates,
-        "companyProfiles": app_safe_company_profiles(company_profiles or []),
+        "coverage": {
+            "sp500Companies": sp500_company_count,
+            "companyProfiles": len(public_profiles),
+            "consensusCompanies": len(consensus_items),
+        },
+        "companyProfiles": public_profiles,
         "companyReports": compact_company_reports(company_reports or []),
     }
+
+
+def build_public_snapshot_core(snapshot: dict) -> tuple[dict, dict[str, list[dict]]]:
+    """Return a lightweight initial payload and per-ticker report bundles."""
+    reports_by_ticker: dict[str, list[dict]] = defaultdict(list)
+    annual_summaries = []
+    for report in snapshot.get("companyReports", []):
+        ticker = str(report.get("ticker") or "").upper()
+        if not ticker:
+            continue
+        reports_by_ticker[ticker].append(report)
+        if str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
+            annual_summaries.append({
+                "ticker": ticker,
+                "form": report.get("form"),
+                "filingDate": report.get("filingDate"),
+                "reportDate": report.get("reportDate"),
+                "summary": report.get("summary") or {},
+            })
+    report_files = {
+        ticker: f"company-reports/{re.sub(r'[^A-Z0-9._-]', '_', ticker)}.json"
+        for ticker in reports_by_ticker
+    }
+    core = dict(snapshot)
+    core["companyReports"] = []
+    core["companyReportSummaries"] = annual_summaries
+    core["companyReportFiles"] = report_files
+    return core, reports_by_ticker
+
+
+def write_public_snapshot_files(snapshot: dict, output: Path) -> None:
+    """Write the compatible full snapshot plus the fast, lazy-load bundle."""
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
+    core, reports_by_ticker = build_public_snapshot_core(snapshot)
+    output.with_name("snapshot-core.json").write_text(
+        json.dumps(core, ensure_ascii=False, separators=(",", ":")) + "\n"
+    )
+    reports_directory = output.parent / "company-reports"
+    reports_directory.mkdir(parents=True, exist_ok=True)
+    for ticker, reports in reports_by_ticker.items():
+        file_name = re.sub(r"[^A-Z0-9._-]", "_", ticker) + ".json"
+        (reports_directory / file_name).write_text(
+            json.dumps(reports, ensure_ascii=False, separators=(",", ":")) + "\n"
+        )
 
 
 def load_fund_portfolios(directory: Path) -> list[dict]:
@@ -947,8 +1055,7 @@ def main() -> None:
     # disclose share counts. Never feed their value changes into 13F signals.
     snapshot["dividendEvents"] = existing.get("dividendEvents", [])
     snapshot["fundPortfolios"] = load_fund_portfolios(args.fund_portfolios_directory)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
+    write_public_snapshot_files(snapshot, args.output)
 
 
 if __name__ == "__main__":

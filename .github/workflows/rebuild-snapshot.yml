@@ -30,17 +30,27 @@ jobs:
           python-version: "3.12"
       - name: Test pipeline
         run: python -m unittest discover -s pipeline/tests
-      - name: Refresh scores and CNMV without changing SEC data
-        run: python pipeline/refresh_snapshot.py
+      - name: Rebuild snapshot from the verified local data
+        run: >-
+          python pipeline/build_snapshot.py
+          --current data/source/latest.json
+          --previous data/source/previous.json
+          --companies data/source/companies.json
+          --company-database data/companies/index.json
+          --qualitative-database data/companies/qualitative.json
+          --valuation-database data/config/company_valuation.json
+          --filings-directory data/filings
+          --company-reports-directory data/company-reports
+          --output data/public/snapshot.json
       - name: Audit rebuilt snapshot
         run: |
           python pipeline/audit_scoring.py --snapshot data/public/snapshot.json --output data/public/scoring-audit.json
           python pipeline/audit_metric_values.py --snapshot data/public/snapshot.json --output data/public/metric-audit.json
       - name: Commit generated outputs
         run: |
-          if git diff --quiet -- data/public/snapshot.json data/public/scoring-audit.json data/public/metric-audit.json; then exit 0; fi
+          if git diff --quiet -- data/public/snapshot.json data/public/snapshot-core.json data/public/company-reports data/public/scoring-audit.json data/public/metric-audit.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/public/snapshot.json data/public/scoring-audit.json data/public/metric-audit.json
+          git add data/public/snapshot.json data/public/snapshot-core.json data/public/company-reports data/public/scoring-audit.json data/public/metric-audit.json
           git commit -m "data: rebuild app snapshot from verified inputs"
           git push

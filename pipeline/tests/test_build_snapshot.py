@@ -2,7 +2,8 @@ import unittest
 
 from pipeline.build_snapshot import (
     aggregate_holdings, annotate_opportunity_rank_changes, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
-    consensus_investor_score, debt_to_earnings_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
+    build_public_snapshot_core, consensus_investor_score, debt_to_earnings_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
+    quality_investor_score,
     retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
     reweight_dividend_growth_score, OPPORTUNITY_SCORE_MAXIMUM,
@@ -127,6 +128,34 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(ratings, sorted(ratings))
         self.assertTrue(all(0 <= rating <= 10 for rating in ratings))
 
+    def test_quality_uses_sector_specific_models_and_explicit_coverage(self):
+        general = quality_investor_score({
+            "operatingMargin": 22, "roce": 18, "netMargin": 14,
+            "cashFromOperations": 120, "netIncome": 100,
+        }, "Industrials", "Aerospace")
+        financial = quality_investor_score({
+            "netMargin": 22, "netIncome": 100, "dividendsPaid": -55,
+            "revenue": 300, "expenses": 150,
+        }, "Financials", "Bank")
+        real_estate = quality_investor_score({
+            "operatingMargin": 35, "netMargin": 20, "netIncome": 50,
+            "cashFromOperations": 100, "dividendsPaid": -75,
+        }, "Real Estate", "REIT")
+        self.assertEqual((general["model"], general["coverage"], general["status"]), ("GENERAL", 100, "COMPLETE"))
+        self.assertEqual((financial["model"], financial["coverage"], financial["status"]), ("FINANCIAL", 100, "COMPLETE"))
+        self.assertEqual((real_estate["model"], real_estate["coverage"], real_estate["status"]), ("REAL_ESTATE", 100, "COMPLETE"))
+
+    def test_public_core_removes_heavy_reports_and_keeps_lazy_manifest(self):
+        snapshot = {"companyReports": [
+            {"ticker": "ABC", "form": "10-K/A", "filingDate": "2026-01-01", "summary": {"netIncome": 1}},
+            {"ticker": "ABC", "form": "10-Q", "filingDate": "2026-05-01", "summary": {"netIncome": 2}},
+        ]}
+        core, bundles = build_public_snapshot_core(snapshot)
+        self.assertEqual(core["companyReports"], [])
+        self.assertEqual(core["companyReportFiles"]["ABC"], "company-reports/ABC.json")
+        self.assertEqual(len(core["companyReportSummaries"]), 1)
+        self.assertEqual(len(bundles["ABC"]), 2)
+
     def test_non_dividend_company_gets_no_dividend_growth_points(self):
         current = {"quarter": "2026-Q1", "investors": [{
             "id": "x", "name": "Manager", "filingDate": "2026-05-15T00:00:00Z",
@@ -217,9 +246,9 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["consensus"][0]["dividendInvestorScore"], 10)
         self.assertEqual(result["consensus"][0]["valuationInvestorScore"], 12)
         self.assertEqual(result["consensus"][0]["profitabilityInvestorScore"], 0)
-        self.assertIsNone(result["consensus"][0]["opportunityScore"])
-        self.assertEqual(result["consensus"][0]["scoreStatus"], "INCOMPLETE")
-        self.assertIn("operatingMargin", result["consensus"][0]["missingScoreMetrics"])
+        self.assertIsNotNone(result["consensus"][0]["opportunityScore"])
+        self.assertEqual(result["consensus"][0]["scoreStatus"], "PARTIAL")
+        self.assertIn("qualityOperatingMargin", result["consensus"][0]["missingScoreMetrics"])
         self.assertNotIn("roce", result["consensus"][0]["missingScoreMetrics"])
 
     def test_creates_a_filing_news_summary(self):
@@ -293,8 +322,8 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(item["debtToEarnings"], 2)
         self.assertEqual(item["debtRatioBasis"], "NET_DEBT_TO_NET_INCOME")
         self.assertEqual(item["leverageInvestorScore"], 8)
-        self.assertEqual(item["scoreStatus"], "COMPLETE")
-        self.assertEqual(item["missingScoreMetrics"], [])
+        self.assertEqual(item["scoreStatus"], "PARTIAL")
+        self.assertIn("qualityNetMargin", item["missingScoreMetrics"])
         self.assertIsNotNone(item["opportunityScore"])
 
     def test_consolidates_share_classes_without_counting_a_fund_twice(self):
