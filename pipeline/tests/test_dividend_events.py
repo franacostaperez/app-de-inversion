@@ -1,10 +1,24 @@
 import unittest
 from datetime import date
 
-from pipeline.dividend_events import extract_event_from_text, estimate_from_alpha_history, parse_ecb_rates
+from pipeline.dividend_events import extract_event_from_text, estimate_from_alpha_history, parse_ecb_rates, ranked_candidates
 
 
 class DividendEventsTests(unittest.TestCase):
+    def test_prioritizes_full_company_score_universe(self):
+        snapshot = {
+            "companyProfiles": [
+                {"ticker": "OLD", "paysDividend": True},
+                {"ticker": "TOP", "paysDividend": True},
+            ],
+            "companyScores": [
+                {"ticker": "TOP", "opportunityScore": 90, "yield": 4},
+                {"ticker": "OLD", "opportunityScore": 40, "yield": 5},
+            ],
+            "consensus": [{"ticker": "OLD", "opportunityRank": 1}],
+        }
+        self.assertEqual([row["ticker"] for row in ranked_candidates(snapshot)], ["TOP", "OLD"])
+
     def test_parses_ecb_rates_as_units_per_eur(self):
         document = """<Envelope><Cube><Cube time="2026-08-28">
           <Cube currency="USD" rate="1.1650"/><Cube currency="GBP" rate="0.86120"/>

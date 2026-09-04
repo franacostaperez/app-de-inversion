@@ -87,6 +87,8 @@ def sanitize_company_profile(profile: dict) -> dict:
 def preserve_runtime_snapshot_data(snapshot: dict, existing: dict) -> dict:
     """Keep independently refreshed data when rebuilding the 13F snapshot."""
     snapshot["dividendEvents"] = existing.get("dividendEvents", [])
+    if isinstance(existing.get("dividendCoverage"), dict):
+        snapshot["dividendCoverage"] = existing["dividendCoverage"]
     rates = existing.get("exchangeRates")
     if isinstance(rates, dict) and isinstance(rates.get("rates"), dict):
         snapshot["exchangeRates"] = rates

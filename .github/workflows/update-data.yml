@@ -42,7 +42,7 @@ jobs:
           --ir-sources data/config/dividend_ir_sources.json
           --horizon-days 180
           --max-ir 30
-          --max-sec 30
+          --max-sec 60
           --max-alpha 20
       - name: Publish dividend calendar immediately
         run: |

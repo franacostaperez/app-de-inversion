@@ -547,11 +547,12 @@ def ranked_candidates(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
         for row in snapshot.get("companyProfiles", [])
         if row.get("ticker")
     }
-    consensus = {
-        (row.get("ticker") or "").upper(): row
-        for row in snapshot.get("consensus", [])
-        if row.get("ticker")
-    }
+    scored_rows = snapshot.get("companyScores") or snapshot.get("consensus", [])
+    consensus = {}
+    for index, row in enumerate(scored_rows, start=1):
+        ticker = (row.get("ticker") or "").upper()
+        if ticker:
+            consensus[ticker] = {**row, "_priorityRank": row.get("opportunityRank") or index}
     held = {(row.get("ticker") or "").upper() for row in snapshot.get("holdings", []) if row.get("ticker")}
     candidates = []
     for ticker, profile in profiles.items():
@@ -563,7 +564,7 @@ def ranked_candidates(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
         pays = profile.get("paysDividend") is True or (isinstance(dividend_yield, (int, float)) and dividend_yield > 0)
         if not pays:
             continue
-        rank = signal.get("opportunityRank") or 9999
+        rank = signal.get("_priorityRank") or 9999
         candidates.append((
             0 if ticker in held else 1,
             rank,
@@ -697,6 +698,14 @@ def main() -> None:
         sec_user_agent=os.environ.get("SEC_USER_AGENT", DEFAULT_USER_AGENT),
     )
     snapshot["dividendEvents"] = events
+    eligible_companies = len(ranked_candidates(snapshot))
+    companies_with_events = len({item.get("ticker") for item in events if item.get("ticker")})
+    snapshot["dividendCoverage"] = {
+        "eligibleCompanies": eligible_companies,
+        "companiesWithEvents": companies_with_events,
+        "coveragePercent": round(companies_with_events / eligible_companies * 100, 1) if eligible_companies else 0,
+        "horizonDays": max(1, args.horizon_days),
+    }
     snapshot["generatedAt"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     args.snapshot.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")) + "\n")
     print(json.dumps({
