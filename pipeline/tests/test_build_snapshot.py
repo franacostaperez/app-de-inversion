@@ -170,6 +170,31 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(item["dividendGrowthInvestorScore"], 0)
         self.assertEqual(item["dividendInvestorScore"], 0)
 
+    def test_scores_quoted_company_even_when_no_monitored_fund_holds_it(self):
+        current = {"quarter": "2026-Q1", "investors": []}
+        profiles = [{
+            "cusip": "SP500:1:MO", "ticker": "MO", "name": "Altria",
+            "marketPrice": 70, "dividendYield": 0.06, "peRatio": 14,
+            "movingAverage1000": 50, "paysDividend": True,
+        }]
+        result = build(current, {"investors": []}, [], company_profiles=profiles)
+        self.assertEqual(result["consensus"], [])
+        self.assertEqual(len(result["companyScores"]), 1)
+        self.assertEqual(result["companyScores"][0]["ticker"], "MO")
+        self.assertIsNotNone(result["companyScores"][0]["opportunityScore"])
+        self.assertEqual(result["companyScores"][0]["holders"], 0)
+
+    def test_empty_annual_amendment_does_not_hide_original_report_metrics(self):
+        current = {"quarter": "2026-Q1", "investors": []}
+        profiles = [{"cusip": "1", "ticker": "MO", "name": "Altria", "marketPrice": 70}]
+        reports = [
+            {"cusip": "1", "ticker": "MO", "companyName": "Altria", "form": "10-K", "filingDate": "2026-02-01", "reportDate": "2025-12-31", "summary": {"operatingMargin": 42, "netMargin": 30}},
+            {"cusip": "1", "ticker": "MO", "companyName": "Altria", "form": "10-K/A", "filingDate": "2026-05-01", "reportDate": "2025-12-31", "summary": {"operatingMargin": None, "netMargin": None}},
+        ]
+        item = build(current, {"investors": []}, [], company_profiles=profiles, company_reports=reports)["companyScores"][0]
+        self.assertEqual(item["operatingMargin"], 42)
+        self.assertEqual(item["netMargin"], 30)
+
     def test_compacts_report_metrics_without_losing_annual_history(self):
         annual_old = {
             "cusip": "1", "accessionNumber": "old", "form": "10-K", "filingDate": "2025-02-01",

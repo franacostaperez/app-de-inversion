@@ -31,6 +31,7 @@ MARKET_PROFILE_FIELDS = {
     "movingAverage1000", "priceVsMovingAverage1000Percent", "movingAverage1000Sessions",
     "movingAverage1000AsOf", "priceHistorySource",
 }
+ZERO_CONSENSUS = {"holders": 0, "buying": 0, "selling": 0, "newPositions": 0}
 
 
 def issuer_key(name: str | None) -> str:
@@ -81,6 +82,32 @@ def sanitize_company_profile(profile: dict) -> dict:
     if warnings:
         item["metricWarnings"] = sorted(set(warnings))
     return item
+
+
+def scoreable_company_profile(profile: dict) -> bool:
+    """Return whether a profile represents a quoted company security."""
+    if not profile.get("ticker") or profile.get("quoteEligible") is False:
+        return False
+    if profile.get("listingStatus") == "NON_EQUITY_INSTRUMENT":
+        return False
+    security_type = str(profile.get("securityType") or "").upper()
+    return not any(label in security_type for label in ("MUTUAL FUND", "ETF", "WARRANT"))
+
+
+def annual_report_rank(report: dict) -> tuple:
+    """Prefer the newest annual period, then the filing with usable facts.
+
+    Empty amendments such as a 10-K/A must not hide the original 10-K values.
+    """
+    summary = report.get("summary") or {}
+    available_facts = sum(value is not None for value in summary.values())
+    form = str(report.get("form") or "").upper()
+    return (
+        report.get("reportDate", ""),
+        available_facts,
+        not form.endswith("/A"),
+        report.get("filingDate", ""),
+    )
 
 
 def graduated_score(value: float, points: list[tuple[float, float]]) -> int:
@@ -608,6 +635,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
                     "changePercent": change,
                 })
 
+    institutional_security_ids = set(consensus)
     consensus_items = []
     profiles_by_cusip = {item["cusip"]: item for item in (company_profiles or [])}
     profiles_by_issuer = {}
@@ -620,12 +648,17 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     for report in company_reports or []:
         cusip = report.get("cusip")
         if cusip and str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
-            if cusip not in latest_reports or report.get("filingDate", "") > latest_reports[cusip].get("filingDate", ""):
+            if cusip not in latest_reports or annual_report_rank(report) > annual_report_rank(latest_reports[cusip]):
                 latest_reports[cusip] = report
             key = issuer_key(report.get("companyName"))
-            if key and (key not in latest_reports_by_issuer or report.get("filingDate", "") > latest_reports_by_issuer[key].get("filingDate", "")):
+            if key and (key not in latest_reports_by_issuer or annual_report_rank(report) > annual_report_rank(latest_reports_by_issuer[key])):
                 latest_reports_by_issuer[key] = report
-    for ticker, counts in consensus.items():
+    score_candidates = dict(consensus)
+    for profile_item in company_profiles or []:
+        cusip = profile_item.get("cusip")
+        if cusip and scoreable_company_profile(profile_item):
+            score_candidates.setdefault(cusip, dict(ZERO_CONSENSUS))
+    for ticker, counts in score_candidates.items():
         company = company_by_cusip.get(ticker, company_by_ticker.get(ticker, {}))
         display_name = company.get("company", consensus_names.get(ticker, holding_name_by_ticker.get(ticker, ticker)))
         direct_profile = profiles_by_cusip.get(ticker, {})
@@ -815,8 +848,51 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "sectorPEBenchmark": adjusted_pe_benchmark,
             "brandPremiumApplied": brand_strength in ("high", "medium"),
         })
+    scored_security_items = consensus_items
+    company_scores_by_ticker = {}
+    scoreable_tickers = {
+        str(profile.get("ticker") or "").upper()
+        for profile in company_profiles or []
+        if scoreable_company_profile(profile)
+    }
+    for item in scored_security_items:
+        ticker = str(item.get("ticker") or "").upper()
+        if not ticker or ticker not in scoreable_tickers:
+            continue
+        profile = profiles_by_cusip.get(item.get("cusip"), {})
+        rank = (
+            profile.get("ticker") == item.get("ticker"),
+            profile.get("marketPrice") is not None,
+            item.get("scoreCoverage", 0),
+            item.get("holders", 0),
+        )
+        existing = company_scores_by_ticker.get(ticker)
+        if existing is None or rank > existing[0]:
+            company_scores_by_ticker[ticker] = (rank, dict(item))
+    company_scores = []
+    for _, item in company_scores_by_ticker.values():
+        counts = issuer_consensus.get(issuer_key(item.get("company")), dict(ZERO_CONSENSUS))
+        consensus_score = consensus_investor_score(counts)
+        score_without_consensus = (
+            item["dividendInvestorScore"] + item["valuationInvestorScore"]
+            + item["movingAverageInvestorScore"] + item["profitabilityInvestorScore"]
+            + item["leverageInvestorScore"]
+        )
+        item.update({
+            **counts,
+            "consensusInvestorScore": consensus_score,
+            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score_without_consensus + consensus_score),
+        })
+        company_scores.append(item)
+    company_scores.sort(key=lambda item: (
+        item["opportunityScore"] is not None, item["opportunityScore"] or -1,
+        item.get("scoreCoverage", 0), item.get("company", ""),
+    ), reverse=True)
+
     consolidated_items = {}
-    for item in consensus_items:
+    for item in scored_security_items:
+        if item.get("cusip") not in institutional_security_ids:
+            continue
         key = issuer_key(item.get("company")) or item.get("cusip")
         existing = consolidated_items.get(key)
         rank = (item.get("scoreCoverage", 0), item.get("holders", 0))
@@ -889,6 +965,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         "opportunities": opportunities,
         "investors": investors,
         "consensus": consensus_items,
+        "companyScores": company_scores,
         "movements": movements,
         "holdings": holdings,
         "filings": [item for item in (current.get("filings") or fallback_filing_history(current, previous)) if retained_filing_date(item["filingDate"])],
@@ -897,6 +974,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "sp500Companies": sp500_company_count,
             "companyProfiles": len(public_profiles),
             "consensusCompanies": len(consensus_items),
+            "scoredCompanyTickers": len(company_scores),
         },
         "companyProfiles": public_profiles,
         "companyReports": compact_company_reports(company_reports or []),

@@ -11,6 +11,8 @@ class ScoringAuditTests(unittest.TestCase):
              "missingScoreMetrics": ["pe", "operatingMargin"], "yield": 4},
         ]})
         self.assertEqual(audit["companiesWithCompleteScore"], 1)
+        self.assertEqual(audit["companiesWithScore"], 1)
+        self.assertEqual(audit["companiesWithoutScore"], 1)
         self.assertEqual(audit["missingByMetric"], {"pe": 1, "operatingMargin": 1})
         self.assertEqual(audit["companies"][0]["company"], "Pending")
         self.assertEqual(audit["blockingCategories"], {"VERIFIED_TICKER_MISSING_METRICS": 1})

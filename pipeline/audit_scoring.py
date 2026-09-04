@@ -10,8 +10,23 @@ from pathlib import Path
 
 
 def build_audit(snapshot: dict) -> dict:
-    items = snapshot.get("consensus", [])
-    incomplete = [item for item in items if item.get("opportunityScore") is None]
+    items = snapshot.get("companyScores") or snapshot.get("consensus", [])
+    without_score = [item for item in items if item.get("opportunityScore") is None]
+    incomplete = [
+        item for item in items
+        if item.get("opportunityScore") is None
+        or item.get("scoreStatus") not in (None, "COMPLETE")
+    ]
+    scored_tickers = {str(item.get("ticker") or "").upper() for item in items}
+    scoreable_profile_tickers = {
+        str(profile.get("ticker") or "").upper()
+        for profile in snapshot.get("companyProfiles", [])
+        if profile.get("ticker")
+        and profile.get("quoteEligible") is not False
+        and profile.get("listingStatus") != "NON_EQUITY_INSTRUMENT"
+        and not any(label in str(profile.get("securityType") or "").upper() for label in ("MUTUAL FUND", "ETF", "WARRANT"))
+    }
+    missing_score_rows = sorted(scoreable_profile_tickers - scored_tickers)
     profiles = {item.get("cusip"): item for item in snapshot.get("companyProfiles", [])}
     missing_counts = Counter(metric for item in incomplete for metric in item.get("missingScoreMetrics", []))
     combinations = Counter(" + ".join(item.get("missingScoreMetrics", [])) or "none" for item in incomplete)
@@ -26,8 +41,13 @@ def build_audit(snapshot: dict) -> dict:
     return {
         "generatedAt": snapshot.get("generatedAt"),
         "totalCompanies": len(items),
+        "companiesWithScore": len(items) - len(without_score),
+        "companiesWithoutScore": len(without_score),
         "companiesWithCompleteScore": len(items) - len(incomplete),
+        "companiesWithPartialScore": len(incomplete) - len(without_score),
         "companiesWithoutCompleteScore": len(incomplete),
+        "scoreableProfileTickers": len(scoreable_profile_tickers),
+        "profileTickersWithoutScoreRow": missing_score_rows,
         "missingByMetric": dict(missing_counts.most_common()),
         "blockingCategories": dict(blocking_categories.most_common()),
         "mostFrequentMissingCombinations": [
