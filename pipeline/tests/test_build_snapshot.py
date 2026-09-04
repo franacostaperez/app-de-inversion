@@ -4,6 +4,7 @@ from pipeline.build_snapshot import (
     aggregate_holdings, annotate_opportunity_rank_changes, app_safe_company_profiles, build, classify, compact_company_reports, estimate_average_purchase_prices,
     build_public_snapshot_core, consensus_investor_score, debt_to_earnings_investor_score, merge_known, moving_average_investor_score, operating_margin_investor_score,
     quality_investor_score,
+    preserve_runtime_snapshot_data,
     retained_filing_date, valuation_investor_score,
     sanitize_company_profile, yield_investor_score,
     reweight_dividend_growth_score, OPPORTUNITY_SCORE_MAXIMUM,
@@ -11,6 +12,20 @@ from pipeline.build_snapshot import (
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_rebuild_preserves_dividend_events_and_exchange_rates(self):
+        events = [{"ticker": "MO", "paymentDate": "2026-10-10"}]
+        exchange_rates = {"base": "EUR", "asOf": "2026-09-04", "rates": {"USD": 1.17}}
+        rebuilt = preserve_runtime_snapshot_data({}, {
+            "dividendEvents": events,
+            "exchangeRates": exchange_rates,
+        })
+        self.assertEqual(rebuilt["dividendEvents"], events)
+        self.assertEqual(rebuilt["exchangeRates"], exchange_rates)
+
+    def test_rebuild_ignores_malformed_exchange_rates(self):
+        rebuilt = preserve_runtime_snapshot_data({}, {"exchangeRates": {"base": "EUR"}})
+        self.assertNotIn("exchangeRates", rebuilt)
+
     def test_dividend_growth_maximum_is_five_without_redistribution(self):
         self.assertEqual([reweight_dividend_growth_score(value) for value in (0, 1, 4, 7, 8)], [0, 1, 3, 4, 5])
         self.assertEqual([reweight_dividend_growth_score(value, 5) for value in range(6)], list(range(6)))

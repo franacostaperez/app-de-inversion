@@ -84,6 +84,15 @@ def sanitize_company_profile(profile: dict) -> dict:
     return item
 
 
+def preserve_runtime_snapshot_data(snapshot: dict, existing: dict) -> dict:
+    """Keep independently refreshed data when rebuilding the 13F snapshot."""
+    snapshot["dividendEvents"] = existing.get("dividendEvents", [])
+    rates = existing.get("exchangeRates")
+    if isinstance(rates, dict) and isinstance(rates.get("rates"), dict):
+        snapshot["exchangeRates"] = rates
+    return snapshot
+
+
 def scoreable_company_profile(profile: dict) -> bool:
     """Return whether a profile represents a quoted company security."""
     if not profile.get("ticker") or profile.get("quoteEligible") is False:
@@ -1131,7 +1140,7 @@ def main() -> None:
     )
     # Non-13F disclosures stay separate: CNMV values are EUR and do not
     # disclose share counts. Never feed their value changes into 13F signals.
-    snapshot["dividendEvents"] = existing.get("dividendEvents", [])
+    preserve_runtime_snapshot_data(snapshot, existing)
     snapshot["fundPortfolios"] = load_fund_portfolios(args.fund_portfolios_directory)
     write_public_snapshot_files(snapshot, args.output)
 
