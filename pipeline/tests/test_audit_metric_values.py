@@ -13,6 +13,18 @@ class MetricValueAuditTests(unittest.TestCase):
         }]})
         self.assertNotIn("SCORE_COMPONENTS_DO_NOT_SUM", audit["issuesByCode"])
 
+    def test_audits_full_company_score_universe_and_accepts_handled_conflicts(self):
+        audit = build_metric_audit({
+            "companyProfiles": [{
+                "cusip": "1", "ticker": "ONE", "googlePeRatio": 10, "yahooPeRatio": 30,
+                "peRatio": None, "metricWarnings": ["MARKET_PE_PROVIDER_CONFLICT"],
+            }],
+            "consensus": [],
+            "companyScores": [{"cusip": "1", "company": "One", "opportunityScore": None}],
+        })
+        self.assertEqual(audit["scoresAudited"], 1)
+        self.assertNotIn("PE_PROVIDER_CONFLICT", audit["issuesByCode"])
+
     def test_detects_yield_instrument_margin_and_score_errors(self):
         audit = build_metric_audit({
             "generatedAt": "now",

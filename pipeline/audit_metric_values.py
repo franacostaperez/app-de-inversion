@@ -38,11 +38,12 @@ def add_issue(issues: list[dict], item: dict, code: str, severity: str, details:
 
 def build_metric_audit(snapshot: dict) -> dict:
     profiles = snapshot.get("companyProfiles", [])
-    consensus = snapshot.get("consensus", [])
+    scores = snapshot.get("companyScores") or snapshot.get("consensus", [])
     issues: list[dict] = []
     market_fields = ("marketPrice", "dividendYield", "dividendPerShare", "peRatio", "eps")
 
     for item in profiles:
+        metric_warnings = set(item.get("metricWarnings") or [])
         if item.get("quoteEligible") is False and any(item.get(key) is not None for key in market_fields):
             add_issue(issues, item, "NON_EQUITY_HAS_MARKET_METRICS", "error", {
                 key: item.get(key) for key in market_fields if item.get(key) is not None
@@ -54,7 +55,11 @@ def build_metric_audit(snapshot: dict) -> dict:
         yahoo_yield = normalized_yield(item.get("yahooDividendYield"))
         if google_yield is not None and yahoo_yield is not None:
             difference = abs(google_yield - yahoo_yield)
-            if difference > max(0.005, max(google_yield, yahoo_yield) * 0.25):
+            handled_yield_conflict = any(code in metric_warnings for code in (
+                "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE",
+                "MARKET_YIELD_PROVIDER_CONFLICT",
+            ))
+            if difference > max(0.005, max(google_yield, yahoo_yield) * 0.25) and not handled_yield_conflict:
                 add_issue(issues, item, "YIELD_PROVIDER_CONFLICT", "error", {
                     "googlePercent": round(google_yield * 100, 3),
                     "yahooPercent": round(yahoo_yield * 100, 3),
@@ -76,7 +81,11 @@ def build_metric_audit(snapshot: dict) -> dict:
             })
         google_pe = numeric(item.get("googlePeRatio"))
         yahoo_pe = numeric(item.get("yahooPeRatio"))
-        if google_pe and yahoo_pe and abs(google_pe - yahoo_pe) / max(google_pe, yahoo_pe) > 0.35:
+        handled_pe_conflict = any(code in metric_warnings for code in (
+            "MARKET_PE_CONFLICT_RESOLVED_BY_PRICE_OVER_EPS",
+            "MARKET_PE_PROVIDER_CONFLICT",
+        ))
+        if google_pe and yahoo_pe and abs(google_pe - yahoo_pe) / max(google_pe, yahoo_pe) > 0.35 and not handled_pe_conflict:
             add_issue(issues, item, "PE_PROVIDER_CONFLICT", "error", {
                 "google": google_pe, "yahoo": yahoo_pe,
             })
@@ -94,7 +103,7 @@ def build_metric_audit(snapshot: dict) -> dict:
             })
 
     seen_issuers: dict[str, dict] = {}
-    for item in consensus:
+    for item in scores:
         margin = numeric(item.get("operatingMargin"))
         if margin is not None and abs(margin) > 100:
             add_issue(issues, item, "OPERATING_MARGIN_OUT_OF_RANGE", "error", {"operatingMargin": margin})
@@ -125,7 +134,7 @@ def build_metric_audit(snapshot: dict) -> dict:
     return {
         "generatedAt": snapshot.get("generatedAt"),
         "profilesAudited": len(profiles),
-        "scoresAudited": len(consensus),
+        "scoresAudited": len(scores),
         "issuesRemaining": len(issues),
         "issuesBySeverity": dict(sorted(by_severity.items())),
         "issuesByCode": dict(by_code.most_common()),

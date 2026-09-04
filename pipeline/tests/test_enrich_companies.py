@@ -255,6 +255,19 @@ class CompanyEnrichmentTests(unittest.TestCase):
             resolved["metricWarnings"],
         )
 
+    def test_resolves_pe_conflict_with_price_over_positive_eps(self):
+        resolved = validate_market_metrics({
+            "googlePeRatio": 20,
+            "yahooPeRatio": 50,
+            "marketPrice": 120,
+            "eps": 4,
+        })
+        self.assertEqual(resolved["peRatio"], 30)
+        self.assertIn(
+            "MARKET_PE_CONFLICT_RESOLVED_BY_PRICE_OVER_EPS",
+            resolved["metricWarnings"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

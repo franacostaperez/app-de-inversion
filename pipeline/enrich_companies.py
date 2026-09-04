@@ -385,8 +385,15 @@ def validate_market_metrics(profile: dict) -> dict:
     google_pe, yahoo_pe = number(profile.get("googlePeRatio")), number(profile.get("yahooPeRatio"))
     pe_candidates = [value for value in (google_pe, yahoo_pe) if value is not None and value > 0]
     if len(pe_candidates) == 2 and abs(pe_candidates[0] - pe_candidates[1]) / max(pe_candidates) > 0.35:
-        profile["peRatio"] = None
-        warnings.append("MARKET_PE_PROVIDER_CONFLICT")
+        price = number(profile.get("marketPrice"))
+        eps = number(profile.get("eps"))
+        derived_pe = price / eps if price and eps and eps > 0 else None
+        if derived_pe is not None and 0 < derived_pe <= 500:
+            profile["peRatio"] = derived_pe
+            warnings.append("MARKET_PE_CONFLICT_RESOLVED_BY_PRICE_OVER_EPS")
+        else:
+            profile["peRatio"] = None
+            warnings.append("MARKET_PE_PROVIDER_CONFLICT")
     elif pe_candidates:
         profile["peRatio"] = google_pe if google_pe and google_pe > 0 else yahoo_pe
 
