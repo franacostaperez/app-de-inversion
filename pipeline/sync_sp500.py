@@ -12,6 +12,7 @@ from pathlib import Path
 
 DEFAULT_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 USER_AGENT = "DividendIntelligence/1.0 (franacostaperez@gmail.com)"
+EXPECTED_COMPANY_COUNT = 500
 
 
 class ConstituentsTableParser(HTMLParser):
@@ -47,6 +48,16 @@ class ConstituentsTableParser(HTMLParser):
             self.in_target = False
 
 
+def validate_constituents(constituents: list[dict]) -> None:
+    unique_ciks = {str(item.get("cik", "")).lstrip("0") for item in constituents}
+    unique_ciks.discard("")
+    if len(unique_ciks) != EXPECTED_COMPANY_COUNT:
+        raise ValueError(
+            f"Se esperaban {EXPECTED_COMPANY_COUNT} empresas únicas del S&P 500; "
+            f"se encontraron {len(unique_ciks)} en {len(constituents)} valores"
+        )
+
+
 def parse_constituents(html: str) -> list[dict]:
     parser = ConstituentsTableParser()
     parser.feed(html)
@@ -70,8 +81,7 @@ def parse_constituents(html: str) -> list[dict]:
                 "industry": row["GICS Sub-Industry"],
                 "cik": str(row["CIK"]).zfill(10),
             })
-    if len(result) < 490:
-        raise ValueError(f"Solo se encontraron {len(result)} componentes")
+    validate_constituents(result)
     return result
 
 
@@ -131,7 +141,11 @@ def main() -> None:
     now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     catalog, added = merge_catalog(catalog, members, now)
     args.database.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
-    print(json.dumps({"constituents": len(members), "added": added}))
+    print(json.dumps({
+        "companies": len({member["cik"] for member in members}),
+        "constituents": len(members),
+        "added": added,
+    }))
 
 
 if __name__ == "__main__":
