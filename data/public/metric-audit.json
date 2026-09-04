@@ -1,15 +1,14 @@
 {
-  "generatedAt": "2026-09-04T22:10:56.087753Z",
+  "generatedAt": "2026-09-04T23:04:55.115433Z",
   "profilesAudited": 995,
-  "scoresAudited": 672,
-  "issuesRemaining": 63,
+  "scoresAudited": 926,
+  "issuesRemaining": 7,
   "issuesBySeverity": {
-    "error": 62,
+    "error": 6,
     "warning": 1
   },
   "issuesByCode": {
-    "YIELD_PROVIDER_CONFLICT": 33,
-    "PE_PROVIDER_CONFLICT": 29,
+    "DUPLICATE_CONSENSUS_ISSUER": 6,
     "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
   },
   "adjustmentsAppliedByPipeline": {
@@ -20,685 +19,63 @@
   },
   "issues": [
     {
-      "company": "AMPHENOL CORP",
-      "cusip": "032095101",
-      "ticker": "APH",
-      "code": "PE_PROVIDER_CONFLICT",
+      "company": "ALPHABET INC",
+      "cusip": "02079K107",
+      "ticker": "GOOG",
+      "code": "DUPLICATE_CONSENSUS_ISSUER",
       "severity": "error",
       "details": {
-        "google": 20.72,
-        "yahoo": 40.795
+        "otherCusip": "02079K602"
       }
     },
     {
-      "company": "ANDERSEN GROUP INC",
-      "cusip": "033853102",
-      "ticker": "ANDG",
-      "code": "PE_PROVIDER_CONFLICT",
+      "company": "ALPHABET INC",
+      "cusip": "02079K305",
+      "ticker": "GOOGL",
+      "code": "DUPLICATE_CONSENSUS_ISSUER",
       "severity": "error",
       "details": {
-        "google": 9.08,
-        "yahoo": 123.998852
+        "otherCusip": "02079K602"
       }
     },
     {
-      "company": "APTIV PLC",
-      "cusip": "G3265R107",
-      "ticker": "APTV",
-      "code": "PE_PROVIDER_CONFLICT",
+      "company": "Fox Corp",
+      "cusip": "35137L105",
+      "ticker": "FOXA",
+      "code": "DUPLICATE_CONSENSUS_ISSUER",
       "severity": "error",
       "details": {
-        "google": 45.28,
-        "yahoo": 20.561086
+        "otherCusip": "35137L204"
       }
     },
     {
-      "company": "ARBOR REALTY TRUST INC",
-      "cusip": "038923108",
-      "ticker": "ABR",
-      "code": "PE_PROVIDER_CONFLICT",
+      "company": "LENNAR CORP",
+      "cusip": "526057302",
+      "ticker": "LEN/B",
+      "code": "DUPLICATE_CONSENSUS_ISSUER",
       "severity": "error",
       "details": {
-        "google": 89.67,
-        "yahoo": 55.0
+        "otherCusip": "526057104"
       }
     },
     {
-      "company": "ARCOSA INC",
-      "cusip": "039653100",
-      "ticker": "ACA",
-      "code": "PE_PROVIDER_CONFLICT",
+      "company": "LIBERTY LIVE HOLDINGS INC",
+      "cusip": "530909308",
+      "ticker": "LLYVK",
+      "code": "DUPLICATE_CONSENSUS_ISSUER",
       "severity": "error",
       "details": {
-        "google": 14.58,
-        "yahoo": 32.473214
+        "otherCusip": "530909100"
       }
     },
     {
-      "company": "Becton Dickinson",
-      "cusip": "SP500:0000010795:BDX",
-      "ticker": "BDX",
-      "code": "PE_PROVIDER_CONFLICT",
+      "company": "ZILLOW GROUP INC",
+      "cusip": "98954M200",
+      "ticker": "Z",
+      "code": "DUPLICATE_CONSENSUS_ISSUER",
       "severity": "error",
       "details": {
-        "google": 55.81,
-        "yahoo": 32.373702
-      }
-    },
-    {
-      "company": "CANTOR EQUITY PARTNERS V INC",
-      "cusip": "G1828S109",
-      "ticker": "CEPV",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 59.17,
-        "yahoo": 38.441027
-      }
-    },
-    {
-      "company": "CARIS LIFE SCIENCES INC",
-      "cusip": "142152107",
-      "ticker": "CAI",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 68.33,
-        "yahoo": 2.58977
-      }
-    },
-    {
-      "company": "CIRCLE INTERNET GROUP INC",
-      "cusip": "172573107",
-      "ticker": "CRCL",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 58.24,
-        "yahoo": 17.763527
-      }
-    },
-    {
-      "company": "DUPONT DE NEMOURS INC",
-      "cusip": "26614N102",
-      "ticker": "DD",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 312.74,
-        "yahoo": 56.699571
-      }
-    },
-    {
-      "company": "EQUIPMENTSHARE COM INC",
-      "cusip": "29445S100",
-      "ticker": "EQPT",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 41.43,
-        "yahoo": 184.738388
-      }
-    },
-    {
-      "company": "ETSY INC",
-      "cusip": "29786A106",
-      "ticker": "ETSY",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 49.42,
-        "yahoo": 25.870253
-      }
-    },
-    {
-      "company": "FORGENT POWER SOLUTIONS INC",
-      "cusip": "34631F102",
-      "ticker": "FPS",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 367.27,
-        "yahoo": 1554.557464
-      }
-    },
-    {
-      "company": "HONEYWELL AEROSPACE INC",
-      "cusip": "43849R105",
-      "ticker": "HONA",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 26.22,
-        "yahoo": 47.049837
-      }
-    },
-    {
-      "company": "International Flavors & Fragrances",
-      "cusip": "SP500:0000051253:IFF",
-      "ticker": "IFF",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 76.49,
-        "yahoo": 25.043344
-      }
-    },
-    {
-      "company": "Iren Limited",
-      "cusip": "Q4982L109",
-      "ticker": "IREN",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 80.18,
-        "yahoo": 51.415584
-      }
-    },
-    {
-      "company": "JOHNSON CONTROLS INTERNATION",
-      "cusip": "G51502105",
-      "ticker": "JCI",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 25.19,
-        "yahoo": 39.225352
-      }
-    },
-    {
-      "company": "LIBERTY MEDIA CORP DEL",
-      "cusip": "531229755",
-      "ticker": "FWONK",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 40.52,
-        "yahoo": 119.679833
-      }
-    },
-    {
-      "company": "MIAMI INTL HLDGS INC",
-      "cusip": "59356Q108",
-      "ticker": "MIAX",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 48.53,
-        "yahoo": 29.182057
-      }
-    },
-    {
-      "company": "MNTN INC",
-      "cusip": "55318A108",
-      "ticker": "MNTN",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 17.46,
-        "yahoo": 6.960674
-      }
-    },
-    {
-      "company": "Martin Marietta Materials",
-      "cusip": "SP500:0000916076:MLM",
-      "ticker": "MLM",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 12.65,
-        "yahoo": 32.829649
-      }
-    },
-    {
-      "company": "NEPTUNE INS HLDGS INC",
-      "cusip": "64073B103",
-      "ticker": "NP",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 25.54,
-        "yahoo": 158.069522
-      }
-    },
-    {
-      "company": "OCCIDENTAL PETE CORP",
-      "cusip": "674599105",
-      "ticker": "OXY",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 9.27,
-        "yahoo": 17.979351
-      }
-    },
-    {
-      "company": "Omnicom Group",
-      "cusip": "SP500:0000029989:OMC",
-      "ticker": "OMC",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 70.93,
-        "yahoo": 232.675676
-      }
-    },
-    {
-      "company": "Palo Alto Networks Inc",
-      "cusip": "697435105",
-      "ticker": "PANW",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 829.36,
-        "yahoo": 285.634783
-      }
-    },
-    {
-      "company": "Rocket Cos Inc",
-      "cusip": "77311W101",
-      "ticker": "RKT",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 93.52,
-        "yahoo": 59.227273
-      }
-    },
-    {
-      "company": "SPERO THERAPEUTICS INC",
-      "cusip": "84833T103",
-      "ticker": "SPRO",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 31.78,
-        "yahoo": 8.785714
-      }
-    },
-    {
-      "company": "WEBULL CORP",
-      "cusip": "G9572D103",
-      "ticker": "BULL",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 118.72,
-        "yahoo": 15.688525
-      }
-    },
-    {
-      "company": "YESWAY INC",
-      "cusip": "98585C100",
-      "ticker": "YSWY",
-      "code": "PE_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "google": 18.57,
-        "yahoo": 57.666667
-      }
-    },
-    {
-      "company": "ACCENTURE PLC IRELAND",
-      "cusip": "G1151C101",
-      "ticker": "ACN",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.49,
-        "yahooPercent": 1.746
-      }
-    },
-    {
-      "company": "AMRIZE LTD",
-      "cusip": "H2927K103",
-      "ticker": "AMRZ",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.0,
-        "yahooPercent": 1.506
-      }
-    },
-    {
-      "company": "AON PLC",
-      "cusip": "G0403H108",
-      "ticker": "AON",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.02,
-        "yahooPercent": 0.508
-      }
-    },
-    {
-      "company": "AVALONBAY CMNTYS INC",
-      "cusip": "053484101",
-      "ticker": "AVB",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.84,
-        "yahooPercent": 0.0
-      }
-    },
-    {
-      "company": "Allegion",
-      "cusip": "SP500:0001579241:ALLE",
-      "ticker": "ALLE",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.4,
-        "yahooPercent": 0.7
-      }
-    },
-    {
-      "company": "Amcor",
-      "cusip": "SP500:0001748790:AMCR",
-      "ticker": "AMCR",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 5.76,
-        "yahooPercent": 2.879
-      }
-    },
-    {
-      "company": "CHUBB LIMITED",
-      "cusip": "H1467J104",
-      "ticker": "CB",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.19,
-        "yahooPercent": 0.583
-      }
-    },
-    {
-      "company": "CME GROUP INC",
-      "cusip": "12572Q105",
-      "ticker": "CME",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.85,
-        "yahooPercent": 3.999
-      }
-    },
-    {
-      "company": "Cigna",
-      "cusip": "SP500:0001739940:CI",
-      "ticker": "CI",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 2.21,
-        "yahooPercent": 1.639
-      }
-    },
-    {
-      "company": "EXELON CORP",
-      "cusip": "30161N101",
-      "ticker": "EXC",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.85,
-        "yahooPercent": 2.841
-      }
-    },
-    {
-      "company": "Everest Group",
-      "cusip": "SP500:0001095073:EG",
-      "ticker": "EG",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 2.1,
-        "yahooPercent": 1.05
-      }
-    },
-    {
-      "company": "FULL TRUCK ALLIANCE CO LTD",
-      "cusip": "35969L108",
-      "ticker": "YMM",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 2.91,
-        "yahooPercent": 1.942
-      }
-    },
-    {
-      "company": "GLOBALFOUNDRIES INC",
-      "cusip": "G39387108",
-      "ticker": "GFS",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.06,
-        "yahooPercent": 0.265
-      }
-    },
-    {
-      "company": "Grupo Financiero Galicia S.A",
-      "cusip": "399909100",
-      "ticker": "GGAL",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.4,
-        "yahooPercent": 4.283
-      }
-    },
-    {
-      "company": "HONEYWELL INTL INC",
-      "cusip": "438516205",
-      "ticker": "HON",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.34,
-        "yahooPercent": 2.12
-      }
-    },
-    {
-      "company": "HONEYWELL INTL INC",
-      "cusip": "438516106",
-      "ticker": "HON",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.34,
-        "yahooPercent": 2.12
-      }
-    },
-    {
-      "company": "HUNTSMAN CORP",
-      "cusip": "447011107",
-      "ticker": "HUN",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.64,
-        "yahooPercent": 5.343
-      }
-    },
-    {
-      "company": "Host Hotels & Resorts",
-      "cusip": "SP500:0001070750:HST",
-      "ticker": "HST",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.63,
-        "yahooPercent": 7.574
-      }
-    },
-    {
-      "company": "JANUS LIVING INC",
-      "cusip": "471024109",
-      "ticker": "JAN",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.85,
-        "yahooPercent": 0.831
-      }
-    },
-    {
-      "company": "JOHNSON CONTROLS INTERNATION",
-      "cusip": "G51502105",
-      "ticker": "JCI",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.1,
-        "yahooPercent": 0.552
-      }
-    },
-    {
-      "company": "KRAFT HEINZ CO",
-      "cusip": "500754106",
-      "ticker": "KHC",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 6.44,
-        "yahooPercent": 4.829
-      }
-    },
-    {
-      "company": "LINCOLN INTL INC",
-      "cusip": "533714101",
-      "ticker": "LCLN",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.03,
-        "yahooPercent": 0.257
-      }
-    },
-    {
-      "company": "PERSHING SQUARE INC",
-      "cusip": "71531U102",
-      "ticker": "PS",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.25,
-        "yahooPercent": 0.312
-      }
-    },
-    {
-      "company": "PROGRESSIVE CORP",
-      "cusip": "743315103",
-      "ticker": "PGR",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 0.18,
-        "yahooPercent": 6.348
-      }
-    },
-    {
-      "company": "Paccar",
-      "cusip": "SP500:0000075362:PCAR",
-      "ticker": "PCAR",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.12,
-        "yahooPercent": 2.213
-      }
-    },
-    {
-      "company": "SMURFIT WESTROCK PLC",
-      "cusip": "G8267P108",
-      "ticker": "SW",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.95,
-        "yahooPercent": 2.959
-      }
-    },
-    {
-      "company": "Skyworks Solutions",
-      "cusip": "SP500:0000004127:SWKS",
-      "ticker": "SWKS",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.84,
-        "yahooPercent": 2.878
-      }
-    },
-    {
-      "company": "Stanley Black & Decker",
-      "cusip": "SP500:0000093556:SWK",
-      "ticker": "SWK",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.45,
-        "yahooPercent": 2.558
-      }
-    },
-    {
-      "company": "Steris",
-      "cusip": "SP500:0001757898:STE",
-      "ticker": "STE",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.23,
-        "yahooPercent": 0.561
-      }
-    },
-    {
-      "company": "VERSIGENT PLC",
-      "cusip": "G9600F104",
-      "ticker": "VGNT",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.04,
-        "yahooPercent": 0.0
-      }
-    },
-    {
-      "company": "W. R. Berkley Corporation",
-      "cusip": "SP500:0000011544:WRB",
-      "ticker": "WRB",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 0.58,
-        "yahooPercent": 2.705
-      }
-    },
-    {
-      "company": "Weyerhaeuser",
-      "cusip": "SP500:0000106535:WY",
-      "ticker": "WY",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 3.65,
-        "yahooPercent": 2.737
-      }
-    },
-    {
-      "company": "YUM BRANDS INC",
-      "cusip": "988498101",
-      "ticker": "YUM",
-      "code": "YIELD_PROVIDER_CONFLICT",
-      "severity": "error",
-      "details": {
-        "googlePercent": 1.99,
-        "yahooPercent": 1.466
+        "otherCusip": "98954M101"
       }
     },
     {
