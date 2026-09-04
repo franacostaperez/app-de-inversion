@@ -19,6 +19,7 @@ SECTOR_PE_MULTIPLIERS = {
     "Industrials": 1.10, "Materials": 0.95, "Real Estate": 1.15, "Utilities": 1.05,
 }
 DIVIDEND_GROWTH_SCORE_MAXIMUM = 5
+QUALITY_SCORE_MAXIMUM = 12
 OPPORTUNITY_SCORE_MAXIMUM = 97  # 22 + 5 + 35 + 6 + 12 + 7 + 10; no redistribution
 BRAND_MULTIPLIERS = {"high": 1.20, "medium": 1.10, "low": 1.0}
 QUALITATIVE_PROFILE_FIELDS = {
@@ -173,6 +174,65 @@ def operating_margin_investor_score(operating_margin: float | None) -> int:
         (0, 0), (5, 0), (10, 2), (15, 4), (20, 6), (25, 8), (30, 10),
     ])
     return min(9, rating) if operating_margin < 30 else 10
+
+
+def quality_investor_score(summary: dict) -> dict:
+    """Score business quality from the annual metrics that are actually available.
+
+    The 12-point component combines operating margin (4), ROCE (3), net
+    margin (3), and cash conversion (2). At least two metrics are required.
+    Missing weights are not redistributed and coverage remains explicit.
+    """
+    net_income = summary.get("netIncome")
+    cash_from_operations = summary.get("cashFromOperations")
+    cash_conversion = None
+    if net_income is not None and cash_from_operations is not None:
+        cash_conversion = 0 if net_income <= 0 else cash_from_operations / net_income
+
+    definitions = (
+        ("operatingMargin", summary.get("operatingMargin"), 4,
+         [(-10, 0), (5, 0), (10, 1), (15, 2), (20, 3), (25, 4)]),
+        ("roce", summary.get("roce"), 3,
+         [(-10, 0), (5, 0), (10, 1), (15, 2), (20, 3)]),
+        ("netMargin", summary.get("netMargin"), 3,
+         [(-10, 0), (3, 0), (8, 1), (12, 2), (18, 3)]),
+        ("cashConversion", cash_conversion, 2,
+         [(0, 0), (0.6, 0), (0.9, 1), (1.1, 2)]),
+    )
+    components = {}
+    available_count = 0
+    available_maximum = 0
+    score = 0
+    for name, value, maximum, scale in definitions:
+        available = value is not None and math.isfinite(float(value))
+        component_score = graduated_score(float(value), scale) if available else 0
+        component_score = max(0, min(maximum, component_score))
+        components[name] = {
+            "score": component_score,
+            "maximum": maximum,
+            "available": available,
+            "value": round(float(value), 3) if available else None,
+        }
+        if available:
+            available_count += 1
+            available_maximum += maximum
+            score += component_score
+
+    usable = available_count >= 2
+    if not usable:
+        available_maximum = 0
+        score = 0
+    return {
+        "score": min(QUALITY_SCORE_MAXIMUM, score),
+        "availableMaximum": available_maximum,
+        "coverage": round(available_maximum / QUALITY_SCORE_MAXIMUM * 100),
+        "status": (
+            "COMPLETE" if available_maximum == QUALITY_SCORE_MAXIMUM
+            else "PARTIAL" if usable
+            else "MISSING"
+        ),
+        "components": components,
+    }
 
 
 def aggregate_holdings(items: list[dict]) -> list[dict]:
@@ -532,6 +592,9 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         total_debt = report_summary.get("totalDebt")
         cash = report_summary.get("cash")
         net_income = report_summary.get("netIncome")
+        net_margin = report_summary.get("netMargin")
+        cash_from_operations = report_summary.get("cashFromOperations")
+        quality = quality_investor_score(report_summary)
         dividend_periods = ((report.get("metrics") or {}).get("dividendPerShare") or {}).get("periods", [])
         annual_dividends = []
         for period in sorted(dividend_periods, key=lambda item: item.get("endDate", "")):
@@ -571,10 +634,17 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             missing_metrics.append("pe")
         if dividend_growth is None:
             missing_metrics.append("dividendGrowth")
-        if operating_margin is None:
-            missing_metrics.append("operatingMargin")
         if price_vs_moving_average_1000 is None:
             missing_metrics.append("movingAverage1000")
+        quality_missing_names = {
+            "operatingMargin": "qualityOperatingMargin",
+            "roce": "qualityROCE",
+            "netMargin": "qualityNetMargin",
+            "cashConversion": "qualityCashConversion",
+        }
+        for component_name, component in quality["components"].items():
+            if not component["available"]:
+                missing_metrics.append(quality_missing_names[component_name])
         sector = profile.get("sector", company.get("sector", "Unknown"))
         industry = str(profile.get("industry") or "").lower()
         financial_business = "financial" in str(sector).lower() or any(keyword in industry for keyword in (
@@ -629,10 +699,21 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         moving_average_score = moving_average_investor_score(price_vs_moving_average_1000)
 
         operating_margin_rating = operating_margin_investor_score(operating_margin)
-        profitability_score = round(operating_margin_rating * 12 / 10)
+        profitability_score = quality["score"]
 
         consensus_score = consensus_investor_score(counts)
         score = dividend_score + valuation_score + moving_average_score + profitability_score + consensus_score + leverage_score
+        available_score_maximum = (
+            (22 if yield_percent is not None else 0)
+            + (DIVIDEND_GROWTH_SCORE_MAXIMUM if dividend_growth is not None else 0)
+            + (35 if pe is not None or pe_not_meaningful else 0)
+            + (6 if price_vs_moving_average_1000 is not None else 0)
+            + quality["availableMaximum"]
+            + (10 if leverage_status != "MISSING" else 0)
+            + 7
+        )
+        score_coverage = round(available_score_maximum / OPPORTUNITY_SCORE_MAXIMUM * 100)
+        missing_metrics = sorted(set(missing_metrics))
         consensus_items.append({
             # Older app builds decoded this field as a required String. Keep an
             # empty compatibility value when no real ticker has been verified.
@@ -650,6 +731,8 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "priceVsMovingAverage1000Percent": price_vs_moving_average_1000,
             "operatingMargin": operating_margin,
             "roce": roce,
+            "netMargin": net_margin,
+            "cashFromOperations": cash_from_operations,
             "totalDebt": total_debt,
             "cash": cash,
             "netDebt": net_debt,
@@ -663,13 +746,18 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
             "dividendGrowthInvestorScore": growth_score,
             "dividendGrowthScoreMaximum": DIVIDEND_GROWTH_SCORE_MAXIMUM,
             "opportunityScoreMaximum": OPPORTUNITY_SCORE_MAXIMUM,
-            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score) if not missing_metrics else None,
-            "scoreStatus": "COMPLETE" if not missing_metrics else "INCOMPLETE",
+            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score),
+            "scoreStatus": "COMPLETE" if score_coverage == 100 else "PARTIAL",
             "missingScoreMetrics": missing_metrics,
-            "scoreCoverage": round((6 - len(missing_metrics)) / 6 * 100),
+            "scoreCoverage": score_coverage,
             "dividendInvestorScore": dividend_score,
             "valuationInvestorScore": valuation_score,
             "movingAverageInvestorScore": moving_average_score,
+            "qualityInvestorScore": profitability_score,
+            "qualityScoreMaximum": QUALITY_SCORE_MAXIMUM,
+            "qualityCoverage": quality["coverage"],
+            "qualityStatus": quality["status"],
+            "qualityComponents": quality["components"],
             "profitabilityInvestorScore": profitability_score,
             "operatingMarginRating": operating_margin_rating,
             "consensusInvestorScore": consensus_score,
@@ -700,7 +788,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         item.update({
             **counts,
             "consensusInvestorScore": consensus_score,
-            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score_without_consensus + consensus_score) if item["scoreStatus"] == "COMPLETE" else None,
+            "opportunityScore": min(OPPORTUNITY_SCORE_MAXIMUM, score_without_consensus + consensus_score),
         })
         consensus_items.append(item)
     consensus_items.sort(key=lambda item: (
