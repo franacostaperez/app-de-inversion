@@ -113,6 +113,22 @@ class CompanyEnrichmentTests(unittest.TestCase):
         profile = Client().yahoo_profile("ABC")
         self.assertEqual(profile["marketPrice"], 123.45)
 
+    def test_reads_market_cap_and_pe_from_public_yahoo_time_series(self):
+        import json
+        from pipeline.enrich_companies import MarketDataClient
+
+        class Client(MarketDataClient):
+            def request(self, url, payload=None):
+                return json.dumps({"timeseries": {"result": [
+                    {"trailingMarketCap": [{"reportedValue": {"raw": 12300000000}}]},
+                    {"trailingPeRatio": [{"reportedValue": {"raw": 18.75}}]},
+                ]}})
+
+        metrics = Client().yahoo_fundamental_metrics("ABC")
+        self.assertEqual(metrics["marketCapitalization"], 12300000000)
+        self.assertEqual(metrics["peRatio"], 18.75)
+        self.assertEqual(metrics["yahooPeRatio"], 18.75)
+
     def test_live_yahoo_price_replaces_a_stale_price_from_a_previous_ticker(self):
         class Client:
             def google_quote(self, ticker, preferred_exchange=None):
@@ -152,6 +168,33 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertEqual(metrics["movingAverage1000Sessions"], 1000)
         self.assertAlmostEqual(metrics["movingAverage1000"], 501.5)
         self.assertAlmostEqual(metrics["priceVsMovingAverage1000Percent"], 99.6)
+
+    def test_derives_trailing_dividend_and_yield_from_chart_events(self):
+        import json
+        from pipeline.enrich_companies import MarketDataClient
+
+        class Client(MarketDataClient):
+            def request(self, url, payload=None):
+                return json.dumps({"chart": {"result": [{
+                    "meta": {
+                        "regularMarketPrice": 100,
+                        "regularMarketTime": 2_000_000_000,
+                        "currency": "USD",
+                        "exchangeName": "NYQ",
+                    },
+                    "timestamp": list(range(1002)),
+                    "events": {"dividends": {
+                        "1": {"date": 1_990_000_000, "amount": 1.0},
+                        "2": {"date": 1_980_000_000, "amount": 1.0},
+                        "old": {"date": 1_900_000_000, "amount": 9.0},
+                    }},
+                    "indicators": {"adjclose": [{"adjclose": list(range(1, 1002))}]},
+                }]}})
+
+        metrics = Client().yahoo_history_metrics("ABC")
+        self.assertEqual(metrics["dividendPerShare"], 2.0)
+        self.assertEqual(metrics["yahooDividendYield"], 0.02)
+        self.assertEqual(metrics["exchange"], "NYSE")
 
     def test_does_not_label_short_history_as_a_thousand_session_average(self):
         import json

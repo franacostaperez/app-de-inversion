@@ -20,8 +20,12 @@ from pathlib import Path
 USER_AGENT = "Mozilla/5.0 DividendIntelligence/1.0"
 EXCHANGES = ("NASDAQ", "NYSE", "NYSEARCA")
 LIVE_YAHOO_FIELDS = {
-    "marketPrice", "movingAverage1000", "priceVsMovingAverage1000Percent",
+    "marketPrice", "marketCapitalization", "movingAverage1000", "priceVsMovingAverage1000Percent",
     "movingAverage1000Sessions", "movingAverage1000AsOf", "priceHistorySource",
+}
+YAHOO_EXCHANGES = {
+    "NMS": "NASDAQ", "NGM": "NASDAQ", "NCM": "NASDAQ",
+    "NYQ": "NYSE", "ASE": "NYSEAMERICAN", "PCX": "NYSEARCA",
 }
 TICKER_OVERRIDES = {
     "674599105": "OXY", "02079K107": "GOOG", "500754106": "KHC", "009158106": "APD",
@@ -177,35 +181,10 @@ class MarketDataClient:
         return preferred.get("ticker") if preferred else None
 
     def yahoo_profile(self, ticker: str) -> dict:
-        url = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/" + urllib.parse.quote(ticker)
-        url += "?modules=assetProfile,summaryDetail,defaultKeyStatistics,financialData,price"
-        result_profile = {}
-        try:
-            payload = json.loads(self.request(url))
-            result = payload.get("quoteSummary", {}).get("result") or []
-            if result:
-                data = result[0]
-                asset = data.get("assetProfile", {})
-                summary = data.get("summaryDetail", {})
-                stats = data.get("defaultKeyStatistics", {})
-                financial = data.get("financialData", {})
-                price = data.get("price", {})
-                raw = lambda item: item.get("raw") if isinstance(item, dict) else item
-                result_profile = {
-                    "description": asset.get("longBusinessSummary"),
-                    "sector": asset.get("sector"), "industry": asset.get("industry"),
-                    "country": asset.get("country"), "website": asset.get("website"),
-                    "marketCapitalization": raw(price.get("marketCap")),
-                    "marketPrice": raw(financial.get("currentPrice")) or raw(price.get("regularMarketPrice")),
-                    "peRatio": raw(summary.get("trailingPE")),
-                    "yahooPeRatio": raw(summary.get("trailingPE")),
-                    "dividendYield": raw(summary.get("dividendYield")),
-                    "yahooDividendYield": raw(summary.get("dividendYield")),
-                    "dividendPerShare": raw(summary.get("dividendRate")),
-                    "eps": raw(stats.get("trailingEps")),
-                }
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
-            pass
+        # quoteSummary now requires a browser crumb and returns HTTP 401 in
+        # unattended jobs. The public time-series and chart endpoints expose
+        # the same objective metrics without cookies.
+        result_profile = self.yahoo_fundamental_metrics(ticker)
         # Keep valuation history in GitHub as a compact derived metric instead
         # of shipping thousands of daily quotes to every phone.
         history = self.yahoo_history_metrics(ticker)
@@ -216,11 +195,43 @@ class MarketDataClient:
             result_profile["marketPrice"] = self.yahoo_chart_price(ticker)
         return result_profile
 
+    def yahoo_fundamental_metrics(self, ticker: str) -> dict:
+        """Return latest market cap and trailing P/E from Yahoo time series."""
+        encoded = urllib.parse.quote(ticker)
+        period2 = int(time.time()) + 86400
+        period1 = period2 - 400 * 86400
+        path = (
+            f"/ws/fundamentals-timeseries/v1/finance/timeseries/{encoded}"
+            f"?symbol={encoded}&type=trailingMarketCap,trailingPeRatio"
+            f"&period1={period1}&period2={period2}"
+        )
+        metric_map = {
+            "trailingMarketCap": ("marketCapitalization",),
+            "trailingPeRatio": ("peRatio", "yahooPeRatio"),
+        }
+        for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
+            try:
+                payload = json.loads(self.request("https://" + host + path))
+                result = payload.get("timeseries", {}).get("result") or []
+                metrics = {}
+                for series in result:
+                    for source_key, target_keys in metric_map.items():
+                        values = series.get(source_key) or []
+                        raw = (values[-1].get("reportedValue") or {}).get("raw") if values else None
+                        if raw is not None:
+                            for target_key in target_keys:
+                                metrics[target_key] = float(raw)
+                if metrics:
+                    return metrics
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError, ValueError, IndexError):
+                continue
+        return {}
+
     def yahoo_history_metrics(self, ticker: str) -> dict:
         """Return the 1,000-session adjusted-close average and current discount/premium."""
         path = (
             "/v8/finance/chart/" + urllib.parse.quote(ticker)
-            + "?range=5y&interval=1d&events=history&includeAdjustedClose=true"
+            + "?range=5y&interval=1d&events=div&includeAdjustedClose=true"
         )
         for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
             try:
@@ -236,10 +247,30 @@ class MarketDataClient:
                 if not values and quote_rows:
                     values = quote_rows[0].get("close", [])
                 closes = [float(value) for value in values if value is not None and float(value) > 0]
-                current = (result.get("meta") or {}).get("regularMarketPrice")
+                meta = result.get("meta") or {}
+                current = meta.get("regularMarketPrice")
                 if current is None and closes:
                     current = closes[-1]
                 metrics = {"marketPrice": float(current)} if current is not None else {}
+                if meta.get("currency"):
+                    metrics["currency"] = meta["currency"]
+                exchange = YAHOO_EXCHANGES.get(meta.get("exchangeName"), meta.get("fullExchangeName"))
+                if exchange:
+                    metrics["exchange"] = exchange
+                latest_timestamp = meta.get("regularMarketTime") or (result.get("timestamp") or [None])[-1]
+                if current is not None and latest_timestamp:
+                    cutoff_timestamp = latest_timestamp - 365.25 * 86400
+                    dividends = (result.get("events") or {}).get("dividends") or {}
+                    trailing_dividend = sum(
+                        float(item.get("amount") or 0)
+                        for item in dividends.values()
+                        if item.get("date") and item["date"] >= cutoff_timestamp
+                    )
+                    metrics.update({
+                        "dividendPerShare": round(trailing_dividend, 6),
+                        "dividendYield": trailing_dividend / float(current),
+                        "yahooDividendYield": trailing_dividend / float(current),
+                    })
                 if len(closes) < 1000:
                     metrics["_movingAverage1000Unavailable"] = True
                     return metrics
@@ -404,7 +435,11 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
             "value": -1,
         })
     new_count = 0
-    for cusip, holding in sorted(unique.items(), key=lambda pair: pair[1].get("value", 0), reverse=True):
+    def enrichment_priority(pair):
+        cusip, holding = pair
+        return (bool(by_cusip.get(cusip, {}).get("sp500")), holding.get("value", 0))
+
+    for cusip, holding in sorted(unique.items(), key=enrichment_priority, reverse=True):
         existing = by_cusip.get(cusip, {})
         # Historical tickers and debt identities are retained for 13F traceability,
         # but must never be enriched as though they were currently quoted shares.

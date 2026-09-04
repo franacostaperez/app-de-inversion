@@ -340,7 +340,8 @@ def run(client: SecClient, profiles: list[dict], output: Path, refresh: bool = F
     written = 0
     for profile in profiles:
         ticker = str(profile.get("ticker") or "").upper()
-        cik = mapping.get(ticker)
+        profile_cik = str(profile.get("sp500Cik") or "").strip()
+        cik = int(profile_cik) if profile_cik.isdigit() else mapping.get(ticker)
         if not cik:
             continue
         submissions = client.json(f"{DATA_BASE}/submissions/CIK{cik:010d}.json")
