@@ -38,7 +38,8 @@ def add_issue(issues: list[dict], item: dict, code: str, severity: str, details:
 
 def build_metric_audit(snapshot: dict) -> dict:
     profiles = snapshot.get("companyProfiles", [])
-    scores = snapshot.get("companyScores") or snapshot.get("consensus", [])
+    company_scores = snapshot.get("companyScores") or []
+    scores = company_scores or snapshot.get("consensus", [])
     issues: list[dict] = []
     market_fields = ("marketPrice", "dividendYield", "dividendPerShare", "peRatio", "eps")
 
@@ -116,13 +117,16 @@ def build_metric_audit(snapshot: dict) -> dict:
             add_issue(issues, item, "SCORE_COMPONENTS_DO_NOT_SUM", "error", {
                 "score": score, "componentsTotal": sum(components),
             })
-        key = "".join(ch for ch in (item.get("company") or "").lower() if ch.isalnum())
-        if key and key in seen_issuers:
-            add_issue(issues, item, "DUPLICATE_CONSENSUS_ISSUER", "error", {
-                "otherCusip": seen_issuers[key].get("cusip"),
-            })
-        elif key:
-            seen_issuers[key] = item
+        # Different listed share classes can legitimately share an issuer name.
+        # The legacy institutional consensus should still be consolidated by issuer.
+        if not company_scores:
+            key = "".join(ch for ch in (item.get("company") or "").lower() if ch.isalnum())
+            if key and key in seen_issuers:
+                add_issue(issues, item, "DUPLICATE_CONSENSUS_ISSUER", "error", {
+                    "otherCusip": seen_issuers[key].get("cusip"),
+                })
+            elif key:
+                seen_issuers[key] = item
 
     by_code = Counter(issue["code"] for issue in issues)
     by_severity = Counter(issue["severity"] for issue in issues)

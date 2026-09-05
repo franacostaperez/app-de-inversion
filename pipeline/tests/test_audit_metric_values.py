@@ -25,6 +25,15 @@ class MetricValueAuditTests(unittest.TestCase):
         self.assertEqual(audit["scoresAudited"], 1)
         self.assertNotIn("PE_PROVIDER_CONFLICT", audit["issuesByCode"])
 
+    def test_distinct_share_classes_are_not_duplicate_score_errors(self):
+        audit = build_metric_audit({
+            "companyScores": [
+                {"cusip": "1", "ticker": "GOOG", "company": "Alphabet", "opportunityScore": None},
+                {"cusip": "2", "ticker": "GOOGL", "company": "Alphabet", "opportunityScore": None},
+            ],
+        })
+        self.assertNotIn("DUPLICATE_CONSENSUS_ISSUER", audit["issuesByCode"])
+
     def test_detects_yield_instrument_margin_and_score_errors(self):
         audit = build_metric_audit({
             "generatedAt": "now",
