@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-05T21:11:07.990041Z",
+  "generatedAt": "2026-09-05T21:47:49.075845Z",
   "totalCompanies": 1026,
   "companiesWithScore": 1026,
   "companiesWithoutScore": 0,
-  "companiesWithCompleteScore": 457,
-  "companiesWithPartialScore": 569,
-  "companiesWithoutCompleteScore": 569,
+  "companiesWithCompleteScore": 456,
+  "companiesWithPartialScore": 570,
+  "companiesWithoutCompleteScore": 570,
   "scoreableProfileTickers": 1026,
   "profileTickersWithoutScoreRow": [],
   "missingByMetric": {
@@ -17,13 +17,13 @@
     "qualityCashConversion": 91,
     "qualityEfficiency": 69,
     "dividendGrowth": 67,
-    "pe": 60,
+    "pe": 63,
     "qualityPayoutSafety": 19,
     "qualityDividendCashCoverage": 9,
     "qualityPositiveEarnings": 2
   },
   "blockingCategories": {
-    "VERIFIED_TICKER_MISSING_METRICS": 569
+    "VERIFIED_TICKER_MISSING_METRICS": 570
   },
   "mostFrequentMissingCombinations": [
     {
@@ -260,27 +260,13 @@
       "metrics": [
         "dividendGrowth",
         "qualityEfficiency",
-        "qualityNetMargin",
-        "qualityPayoutSafety",
-        "qualityPositiveEarnings"
-      ],
-      "companies": 2
-    },
-    {
-      "metrics": [
-        "dividendGrowth",
-        "qualityEfficiency",
         "qualityNetMargin"
       ],
       "companies": 2
     },
     {
       "metrics": [
-        "debtToEarnings",
-        "qualityCashConversion",
-        "qualityNetMargin",
-        "qualityOperatingMargin",
-        "qualityRoce"
+        "pe"
       ],
       "companies": 2
     },
@@ -352,6 +338,17 @@
       "metrics": [
         "dividendGrowth",
         "movingAverage1000",
+        "qualityOperatingMargin",
+        "qualityRoce"
+      ],
+      "companies": 2
+    },
+    {
+      "metrics": [
+        "debtToEarnings",
+        "pe",
+        "qualityCashConversion",
+        "qualityNetMargin",
         "qualityOperatingMargin",
         "qualityRoce"
       ],
@@ -423,14 +420,18 @@
     },
     {
       "metrics": [
-        "pe",
-        "qualityPayoutSafety"
+        "dividendGrowth",
+        "qualityEfficiency",
+        "qualityNetMargin",
+        "qualityPayoutSafety",
+        "qualityPositiveEarnings"
       ],
       "companies": 1
     },
     {
       "metrics": [
-        "pe"
+        "pe",
+        "qualityPayoutSafety"
       ],
       "companies": 1
     },
@@ -499,12 +500,12 @@
     },
     {
       "metrics": [
-        "debtToEarnings",
+        "dividendGrowth",
         "pe",
-        "qualityCashConversion",
+        "qualityEfficiency",
         "qualityNetMargin",
-        "qualityOperatingMargin",
-        "qualityRoce"
+        "qualityPayoutSafety",
+        "qualityPositiveEarnings"
       ],
       "companies": 1
     },
@@ -537,6 +538,16 @@
         "qualityDividendCashCoverage",
         "qualityNetMargin",
         "qualityOperatingMargin"
+      ],
+      "companies": 1
+    },
+    {
+      "metrics": [
+        "debtToEarnings",
+        "qualityCashConversion",
+        "qualityNetMargin",
+        "qualityOperatingMargin",
+        "qualityRoce"
       ],
       "companies": 1
     },
@@ -2253,6 +2264,68 @@
       }
     },
     {
+      "company": "Vista Energy S.A.B. De C.V.",
+      "cusip": "92837L109",
+      "scoreCoverage": 41,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "debtToEarnings",
+        "pe",
+        "qualityCashConversion",
+        "qualityNetMargin",
+        "qualityOperatingMargin",
+        "qualityRoce"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0,
+        "movingAverage1000": 40.7668,
+        "priceVsMovingAverage1000Percent": 80.86,
+        "totalDebt": null,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": null,
+        "debtToEarnings": null,
+        "debtRatioBasis": null,
+        "leverageStatus": "MISSING"
+      }
+    },
+    {
+      "company": "Grupo Financiero Galicia S.A",
+      "cusip": "399909100",
+      "scoreCoverage": 46,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "dividendGrowth",
+        "pe",
+        "qualityEfficiency",
+        "qualityNetMargin",
+        "qualityPayoutSafety",
+        "qualityPositiveEarnings"
+      ],
+      "availableMetrics": {
+        "yield": 1.4,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": null,
+        "movingAverage1000": 32.1839,
+        "priceVsMovingAverage1000Percent": 37.83,
+        "totalDebt": null,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": null,
+        "debtToEarnings": null,
+        "debtRatioBasis": null,
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
       "company": "ORUKA THERAPEUTICS INC",
       "cusip": "687604108",
       "scoreCoverage": 46,
@@ -2441,6 +2514,32 @@
         "netDebt": 4045000000,
         "netIncome": 555000000,
         "debtToEarnings": 7.29,
+        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "CALCULATED"
+      }
+    },
+    {
+      "company": "Experian",
+      "cusip": "FTSE100:EXPN",
+      "scoreCoverage": 64,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": 1.8399999999999999,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": 24.22,
+        "dividendGrowth": 8.63,
+        "movingAverage1000": 3213.7441,
+        "priceVsMovingAverage1000Percent": -12.44,
+        "totalDebt": 5565000000.0,
+        "cash": 336000000.0,
+        "netDebt": 5229000000.0,
+        "netIncome": 1502000000.0,
+        "debtToEarnings": 3.48,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -2768,7 +2867,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 41.374909,
+        "pe": 42.462768,
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -2923,7 +3022,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 59.612139,
+        "pe": 67.274903,
         "earningsPerShare": null,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -3741,36 +3840,6 @@
       }
     },
     {
-      "company": "Vista Energy S.A.B. De C.V.",
-      "cusip": "92837L109",
-      "scoreCoverage": 77,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "debtToEarnings",
-        "qualityCashConversion",
-        "qualityNetMargin",
-        "qualityOperatingMargin",
-        "qualityRoce"
-      ],
-      "availableMetrics": {
-        "yield": 0,
-        "pe": 9.67,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": 0,
-        "movingAverage1000": 40.7668,
-        "priceVsMovingAverage1000Percent": 80.86,
-        "totalDebt": null,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": null,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "MISSING"
-      }
-    },
-    {
       "company": "WEBULL CORP",
       "cusip": "G9572D103",
       "scoreCoverage": 77,
@@ -4559,36 +4628,6 @@
         "debtToEarnings": null,
         "debtRatioBasis": null,
         "leverageStatus": "MISSING"
-      }
-    },
-    {
-      "company": "Grupo Financiero Galicia S.A",
-      "cusip": "399909100",
-      "scoreCoverage": 82,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency",
-        "qualityNetMargin",
-        "qualityPayoutSafety",
-        "qualityPositiveEarnings"
-      ],
-      "availableMetrics": {
-        "yield": 1.4,
-        "pe": 121.55,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 32.1839,
-        "priceVsMovingAverage1000Percent": 37.83,
-        "totalDebt": null,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": null,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -5628,7 +5667,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 35.94,
+        "pe": 58.95,
         "earningsPerShare": 2.62,
         "peNotMeaningful": false,
         "operatingMargin": 20.07,
@@ -6170,7 +6209,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 28.257732,
+        "pe": 27.300699,
         "earningsPerShare": -2.14,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -6521,7 +6560,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 60.59,
+        "pe": 30.05,
         "earningsPerShare": 1.21,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -6629,7 +6668,7 @@
       ],
       "availableMetrics": {
         "yield": 1.0376875228686424,
-        "pe": 38.339122,
+        "pe": 48.211541,
         "earningsPerShare": 8.96,
         "peNotMeaningful": false,
         "operatingMargin": 29.52,
@@ -7213,7 +7252,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 68.17585,
+        "pe": 67.928118,
         "earningsPerShare": -7.49,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -7268,7 +7307,7 @@
       ],
       "availableMetrics": {
         "yield": 2.0721094073767095,
-        "pe": 17.888058,
+        "pe": 21.028207,
         "earningsPerShare": 2.198,
         "peNotMeaningful": false,
         "operatingMargin": 5.1,
@@ -8596,7 +8635,7 @@
       ],
       "availableMetrics": {
         "yield": 4.1,
-        "pe": 11.837607,
+        "pe": 15.666667,
         "earningsPerShare": -2.06,
         "peNotMeaningful": false,
         "operatingMargin": -4.9,
@@ -8622,7 +8661,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 521.222222,
+        "pe": 485.555556,
         "earningsPerShare": -0.34,
         "peNotMeaningful": false,
         "operatingMargin": -7.38,
@@ -8648,7 +8687,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 24.33,
+        "pe": 57.0,
         "earningsPerShare": 0.06,
         "peNotMeaningful": false,
         "operatingMargin": 1.93,
@@ -9794,7 +9833,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 39.15,
+        "pe": 40.5,
         "earningsPerShare": 2.11,
         "peNotMeaningful": false,
         "operatingMargin": 36.77,
@@ -11730,7 +11769,7 @@
       ],
       "availableMetrics": {
         "yield": 6.05,
-        "pe": 37.67,
+        "pe": 20.92,
         "earningsPerShare": 1.36,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -12188,7 +12227,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 24.11,
+        "pe": 74.3,
         "earningsPerShare": 0.27,
         "peNotMeaningful": false,
         "operatingMargin": 3.33,
@@ -13179,7 +13218,7 @@
       ],
       "availableMetrics": {
         "yield": 0.34,
-        "pe": 74.884615,
+        "pe": 66.980769,
         "earningsPerShare": -0.15,
         "peNotMeaningful": false,
         "operatingMargin": 1.98,
@@ -14065,7 +14104,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 147.25,
+        "pe": 148.875,
         "earningsPerShare": 2.1,
         "peNotMeaningful": false,
         "operatingMargin": 7.06,
@@ -14980,7 +15019,7 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 30.83,
-        "movingAverage1000": 270.0334,
+        "movingAverage1000": 270.0333,
         "priceVsMovingAverage1000Percent": 83.92,
         "totalDebt": 219941000000.0,
         "cash": null,
@@ -15266,7 +15305,7 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 28.34,
-        "movingAverage1000": 265.9978,
+        "movingAverage1000": 265.9977,
         "priceVsMovingAverage1000Percent": 29.63,
         "totalDebt": 581248000.0,
         "cash": null,
@@ -15625,7 +15664,7 @@
       ],
       "availableMetrics": {
         "yield": 3.9599999999999995,
-        "pe": 3.93,
+        "pe": 7.8,
         "earningsPerShare": 5.83,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -15864,7 +15903,7 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 32.9,
-        "movingAverage1000": 3688.0571,
+        "movingAverage1000": 3688.0572,
         "priceVsMovingAverage1000Percent": 5.42,
         "totalDebt": 3669110397.0,
         "cash": null,
