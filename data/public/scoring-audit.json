@@ -1,42 +1,42 @@
 {
-  "generatedAt": "2026-09-05T21:07:11.495497Z",
+  "generatedAt": "2026-09-05T21:11:07.990041Z",
   "totalCompanies": 1026,
   "companiesWithScore": 1026,
   "companiesWithoutScore": 0,
-  "companiesWithCompleteScore": 381,
-  "companiesWithPartialScore": 645,
-  "companiesWithoutCompleteScore": 645,
+  "companiesWithCompleteScore": 457,
+  "companiesWithPartialScore": 569,
+  "companiesWithoutCompleteScore": 569,
   "scoreableProfileTickers": 1026,
   "profileTickersWithoutScoreRow": [],
   "missingByMetric": {
     "debtToEarnings": 320,
     "qualityOperatingMargin": 242,
-    "dividendGrowth": 162,
     "qualityRoce": 159,
     "movingAverage1000": 152,
     "qualityNetMargin": 151,
     "qualityCashConversion": 91,
     "qualityEfficiency": 69,
+    "dividendGrowth": 67,
     "pe": 60,
     "qualityPayoutSafety": 19,
     "qualityDividendCashCoverage": 9,
     "qualityPositiveEarnings": 2
   },
   "blockingCategories": {
-    "VERIFIED_TICKER_MISSING_METRICS": 645
+    "VERIFIED_TICKER_MISSING_METRICS": 569
   },
   "mostFrequentMissingCombinations": [
     {
       "metrics": [
         "debtToEarnings"
       ],
-      "companies": 127
+      "companies": 128
     },
     {
       "metrics": [
-        "dividendGrowth"
+        "qualityEfficiency"
       ],
-      "companies": 99
+      "companies": 50
     },
     {
       "metrics": [
@@ -52,12 +52,6 @@
     },
     {
       "metrics": [
-        "qualityEfficiency"
-      ],
-      "companies": 36
-    },
-    {
-      "metrics": [
         "movingAverage1000"
       ],
       "companies": 32
@@ -68,6 +62,12 @@
         "qualityRoce"
       ],
       "companies": 29
+    },
+    {
+      "metrics": [
+        "dividendGrowth"
+      ],
+      "companies": 23
     },
     {
       "metrics": [
@@ -93,8 +93,7 @@
     },
     {
       "metrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
+        "qualityOperatingMargin"
       ],
       "companies": 15
     },
@@ -104,12 +103,6 @@
         "qualityOperatingMargin"
       ],
       "companies": 15
-    },
-    {
-      "metrics": [
-        "qualityOperatingMargin"
-      ],
-      "companies": 14
     },
     {
       "metrics": [
@@ -159,14 +152,14 @@
     },
     {
       "metrics": [
-        "debtToEarnings",
-        "dividendGrowth"
+        "qualityDividendCashCoverage"
       ],
-      "companies": 7
+      "companies": 6
     },
     {
       "metrics": [
-        "qualityDividendCashCoverage"
+        "debtToEarnings",
+        "dividendGrowth"
       ],
       "companies": 6
     },
@@ -260,13 +253,6 @@
       "metrics": [
         "qualityEfficiency",
         "qualityPayoutSafety"
-      ],
-      "companies": 2
-    },
-    {
-      "metrics": [
-        "dividendGrowth",
-        "qualityOperatingMargin"
       ],
       "companies": 2
     },
@@ -409,9 +395,15 @@
     },
     {
       "metrics": [
-        "dividendGrowth",
         "qualityCashConversion",
         "qualityDividendCashCoverage"
+      ],
+      "companies": 1
+    },
+    {
+      "metrics": [
+        "dividendGrowth",
+        "qualityEfficiency"
       ],
       "companies": 1
     },
@@ -425,6 +417,12 @@
     {
       "metrics": [
         "dividendGrowth",
+        "qualityOperatingMargin"
+      ],
+      "companies": 1
+    },
+    {
+      "metrics": [
         "pe",
         "qualityPayoutSafety"
       ],
@@ -432,7 +430,6 @@
     },
     {
       "metrics": [
-        "dividendGrowth",
         "pe"
       ],
       "companies": 1
@@ -2314,34 +2311,6 @@
       }
     },
     {
-      "company": "Standard Life",
-      "cusip": "FTSE100:SDLF",
-      "scoreCoverage": 56,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "pe",
-        "qualityPayoutSafety"
-      ],
-      "availableMetrics": {
-        "yield": 6.01,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 600.1786,
-        "priceVsMovingAverage1000Percent": 55.37,
-        "totalDebt": 3293000000.0,
-        "cash": 7302000000.0,
-        "netDebt": 0,
-        "netIncome": -443000000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "LIBERTY LIVE HOLDINGS INC",
       "cusip": "530909100",
       "scoreCoverage": 58,
@@ -2396,33 +2365,6 @@
       }
     },
     {
-      "company": "Segro",
-      "cusip": "FTSE100:SGRO",
-      "scoreCoverage": 59,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "pe"
-      ],
-      "availableMetrics": {
-        "yield": 3.32,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 68.73,
-        "dividendGrowth": null,
-        "movingAverage1000": 774.8775,
-        "priceVsMovingAverage1000Percent": 22.63,
-        "totalDebt": 5599000000.0,
-        "cash": 37000000.0,
-        "netDebt": 5562000000.0,
-        "netIncome": 551000000.0,
-        "debtToEarnings": 10.09,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "CADIZ INC",
       "cusip": "127537207",
       "scoreCoverage": 60,
@@ -2450,6 +2392,33 @@
       }
     },
     {
+      "company": "Standard Life",
+      "cusip": "FTSE100:SDLF",
+      "scoreCoverage": 61,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe",
+        "qualityPayoutSafety"
+      ],
+      "availableMetrics": {
+        "yield": 6.01,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": -10.26,
+        "movingAverage1000": 600.1786,
+        "priceVsMovingAverage1000Percent": 55.37,
+        "totalDebt": 3293000000.0,
+        "cash": 7302000000.0,
+        "netDebt": 0,
+        "netIncome": -443000000.0,
+        "debtToEarnings": 0,
+        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
       "company": "LIBERTY MEDIA CORP DEL",
       "cusip": "531229755",
       "scoreCoverage": 62,
@@ -2474,6 +2443,32 @@
         "debtToEarnings": 7.29,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
+      }
+    },
+    {
+      "company": "Segro",
+      "cusip": "FTSE100:SGRO",
+      "scoreCoverage": 64,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "pe"
+      ],
+      "availableMetrics": {
+        "yield": 3.32,
+        "pe": null,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": 68.73,
+        "dividendGrowth": 6.89,
+        "movingAverage1000": 774.8775,
+        "priceVsMovingAverage1000Percent": 22.63,
+        "totalDebt": 5599000000.0,
+        "cash": 37000000.0,
+        "netDebt": 5562000000.0,
+        "netIncome": 551000000.0,
+        "debtToEarnings": 10.09,
+        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -5895,33 +5890,6 @@
       }
     },
     {
-      "company": "Persimmon",
-      "cusip": "FTSE100:PSN",
-      "scoreCoverage": 85,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "debtToEarnings",
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 5.24,
-        "pe": 12.16,
-        "earningsPerShare": 0.882,
-        "peNotMeaningful": false,
-        "operatingMargin": 11.0,
-        "dividendGrowth": null,
-        "movingAverage1000": 1271.2214,
-        "priceVsMovingAverage1000Percent": -9.93,
-        "totalDebt": null,
-        "cash": 117000000.0,
-        "netDebt": null,
-        "netIncome": 285700000.0,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "MISSING"
-      }
-    },
-    {
       "company": "Tyson Foods",
       "cusip": "SP500:0000100493:TSN",
       "scoreCoverage": 85,
@@ -6868,34 +6836,6 @@
         "debtToEarnings": null,
         "debtRatioBasis": null,
         "leverageStatus": "MISSING"
-      }
-    },
-    {
-      "company": "British Land",
-      "cusip": "FTSE100:BLND",
-      "scoreCoverage": 88,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityCashConversion",
-        "qualityDividendCashCoverage"
-      ],
-      "availableMetrics": {
-        "yield": 5.53,
-        "pe": 9.23,
-        "earningsPerShare": 0.453,
-        "peNotMeaningful": false,
-        "operatingMargin": 57.36,
-        "dividendGrowth": null,
-        "movingAverage1000": 381.1159,
-        "priceVsMovingAverage1000Percent": 9.68,
-        "totalDebt": 3105000000.0,
-        "cash": 176000000.0,
-        "netDebt": 2929000000.0,
-        "netIncome": 454000000.0,
-        "debtToEarnings": 6.45,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
       }
     },
     {
@@ -9741,6 +9681,32 @@
       }
     },
     {
+      "company": "Persimmon",
+      "cusip": "FTSE100:PSN",
+      "scoreCoverage": 90,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "debtToEarnings"
+      ],
+      "availableMetrics": {
+        "yield": 5.24,
+        "pe": 12.16,
+        "earningsPerShare": 0.882,
+        "peNotMeaningful": false,
+        "operatingMargin": 11.0,
+        "dividendGrowth": -8.91,
+        "movingAverage1000": 1271.2214,
+        "priceVsMovingAverage1000Percent": -9.93,
+        "totalDebt": null,
+        "cash": 117000000.0,
+        "netDebt": null,
+        "netIncome": 285700000.0,
+        "debtToEarnings": null,
+        "debtRatioBasis": null,
+        "leverageStatus": "MISSING"
+      }
+    },
+    {
       "company": "QUALYS INC",
       "cusip": "74758T303",
       "scoreCoverage": 90,
@@ -10863,60 +10829,6 @@
       }
     },
     {
-      "company": "Tritax Big Box REIT",
-      "cusip": "FTSE100:BBOX",
-      "scoreCoverage": 92,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityOperatingMargin"
-      ],
-      "availableMetrics": {
-        "yield": 5.3,
-        "pe": 14.77,
-        "earningsPerShare": 0.1439,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 148.4474,
-        "priceVsMovingAverage1000Percent": 3.74,
-        "totalDebt": 2733900000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 363300000.0,
-        "debtToEarnings": 7.53,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "3i",
-      "cusip": "FTSE100:III",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 3.05,
-        "pe": 5.34,
-        "earningsPerShare": 5.386,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 2785.4696,
-        "priceVsMovingAverage1000Percent": -0.52,
-        "totalDebt": 1261000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 5294000000.0,
-        "debtToEarnings": 0.24,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "APA Corporation",
       "cusip": "SP500:0001841666:APA",
       "scoreCoverage": 93,
@@ -10971,33 +10883,6 @@
       }
     },
     {
-      "company": "Aberdeen Group",
-      "cusip": "FTSE100:ABDN",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 5.85,
-        "pe": 11.65,
-        "earningsPerShare": 0.212,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 183.1329,
-        "priceVsMovingAverage1000Percent": 36.51,
-        "totalDebt": 557000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 399000000.0,
-        "debtToEarnings": 1.4,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "Alcoa Corp",
       "cusip": "013872106",
       "scoreCoverage": 93,
@@ -11022,33 +10907,6 @@
         "debtToEarnings": 0.73,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Alliance Witan",
-      "cusip": "FTSE100:ALW",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 2.11,
-        "pe": 8.57,
-        "earningsPerShare": 0.5697,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 1164.7836,
-        "priceVsMovingAverage1000Percent": 17.45,
-        "totalDebt": 369998000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 224464000.0,
-        "debtToEarnings": 1.65,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -11160,30 +11018,30 @@
       }
     },
     {
-      "company": "Barclays",
-      "cusip": "FTSE100:BARC",
+      "company": "British Land",
+      "cusip": "FTSE100:BLND",
       "scoreCoverage": 93,
       "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
       "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
+        "qualityCashConversion",
+        "qualityDividendCashCoverage"
       ],
       "availableMetrics": {
-        "yield": 2.32,
-        "pe": 10.28,
-        "earningsPerShare": 0.423,
+        "yield": 5.53,
+        "pe": 9.23,
+        "earningsPerShare": 0.453,
         "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 270.0334,
-        "priceVsMovingAverage1000Percent": 83.92,
-        "totalDebt": 219941000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 7172000000.0,
-        "debtToEarnings": 30.67,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+        "operatingMargin": 57.36,
+        "dividendGrowth": -15.69,
+        "movingAverage1000": 381.1159,
+        "priceVsMovingAverage1000Percent": 9.68,
+        "totalDebt": 3105000000.0,
+        "cash": 176000000.0,
+        "netDebt": 2929000000.0,
+        "netIncome": 454000000.0,
+        "debtToEarnings": 6.45,
+        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "CALCULATED"
       }
     },
     {
@@ -11430,33 +11288,6 @@
       }
     },
     {
-      "company": "F & C Investment Trust",
-      "cusip": "FTSE100:FCIT",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 1.22,
-        "pe": 4.54,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 265.9978,
-        "priceVsMovingAverage1000Percent": 29.63,
-        "totalDebt": 581248000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 664860000.0,
-        "debtToEarnings": 0.87,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "Fifth Third Bancorp",
       "cusip": "SP500:0000035527:FITB",
       "scoreCoverage": 93,
@@ -11511,33 +11342,6 @@
       }
     },
     {
-      "company": "HSBC",
-      "cusip": "FTSE100:HSBA",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 3.58,
-        "pe": 15.09,
-        "earningsPerShare": 1.2,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 823.713,
-        "priceVsMovingAverage1000Percent": 91.84,
-        "totalDebt": 256139000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 22285000000.0,
-        "debtToEarnings": 11.49,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "IBM",
       "cusip": "SP500:0000051143:IBM",
       "scoreCoverage": 93,
@@ -11565,33 +11369,6 @@
       }
     },
     {
-      "company": "ICG",
-      "cusip": "FTSE100:ICG",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 4.47,
-        "pe": 11.88,
-        "earningsPerShare": 1.639,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 1783.5319,
-        "priceVsMovingAverage1000Percent": 9.11,
-        "totalDebt": 6429300000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 478400000.0,
-        "debtToEarnings": 13.44,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "International Paper",
       "cusip": "SP500:0000051434:IP",
       "scoreCoverage": 93,
@@ -11616,33 +11393,6 @@
         "debtToEarnings": null,
         "debtRatioBasis": null,
         "leverageStatus": "LOSS_MAKING_WITH_DEBT"
-      }
-    },
-    {
-      "company": "Investec",
-      "cusip": "FTSE100:INVP",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 5.77,
-        "pe": 8.66,
-        "earningsPerShare": 0.75,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 532.7021,
-        "priceVsMovingAverage1000Percent": 25.77,
-        "totalDebt": 2550051000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 724507000.0,
-        "debtToEarnings": 3.52,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -11697,60 +11447,6 @@
         "debtToEarnings": 0.88,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Lion Finance Group",
-      "cusip": "FTSE100:BGEO",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 2.37,
-        "pe": 8.94,
-        "earningsPerShare": 49.5161,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 5632.3514,
-        "priceVsMovingAverage1000Percent": 141.82,
-        "totalDebt": 8609208000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 2161329000.0,
-        "debtToEarnings": 3.98,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Lloyds Banking Group",
-      "cusip": "FTSE100:LLOY",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 3.56,
-        "pe": 14.09,
-        "earningsPerShare": 0.069,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 65.5396,
-        "priceVsMovingAverage1000Percent": 71.8,
-        "totalDebt": 95145000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 4659000000.0,
-        "debtToEarnings": 20.42,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -11943,33 +11639,6 @@
       }
     },
     {
-      "company": "NatWest Group",
-      "cusip": "FTSE100:NWG",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 5.0,
-        "pe": 9.37,
-        "earningsPerShare": 0.674,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 395.6666,
-        "priceVsMovingAverage1000Percent": 76.87,
-        "totalDebt": 71826000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 5831000000.0,
-        "debtToEarnings": 12.32,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "Nike, Inc.",
       "cusip": "SP500:0000320187:NKE",
       "scoreCoverage": 93,
@@ -12048,33 +11717,6 @@
         "debtToEarnings": 3.26,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Pershing Square Holdings",
-      "cusip": "FTSE100:PSH",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 1.36,
-        "pe": 3.735998,
-        "earningsPerShare": 14.08,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 3688.0571,
-        "priceVsMovingAverage1000Percent": 5.42,
-        "totalDebt": 3669110397.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 2525375901.0,
-        "debtToEarnings": 1.45,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -12237,60 +11879,6 @@
         "debtToEarnings": 3.68,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Scottish Mortgage Investment Trust",
-      "cusip": "FTSE100:SMT",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 0.3,
-        "pe": 5.45,
-        "earningsPerShare": 2.7531,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 940.2134,
-        "priceVsMovingAverage1000Percent": 59.54,
-        "totalDebt": 1606198000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 3101619000.0,
-        "debtToEarnings": 0.52,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Standard Chartered",
-      "cusip": "FTSE100:STAN",
-      "scoreCoverage": 93,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth",
-        "qualityEfficiency"
-      ],
-      "availableMetrics": {
-        "yield": 2.3,
-        "pe": 14.41,
-        "earningsPerShare": 1.896,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 1060.2119,
-        "priceVsMovingAverage1000Percent": 111.66,
-        "totalDebt": 105367000000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 5085000000.0,
-        "debtToEarnings": 20.72,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -13502,58 +13090,6 @@
       }
     },
     {
-      "company": "Admiral Group",
-      "cusip": "FTSE100:ADM",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.74,
-        "pe": 17.53,
-        "earningsPerShare": 2.417,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 2764.3062,
-        "priceVsMovingAverage1000Percent": 38.05,
-        "totalDebt": 1885800000.0,
-        "cash": 3949100000.0,
-        "netDebt": 0,
-        "netIncome": 742600000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Airtel Africa",
-      "cusip": "FTSE100:AAF",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.55,
-        "pe": 23.99,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 33.14,
-        "dividendGrowth": null,
-        "movingAverage1000": 176.5869,
-        "priceVsMovingAverage1000Percent": 97.86,
-        "totalDebt": 6412000000.0,
-        "cash": 878000000.0,
-        "netDebt": 5534000000.0,
-        "netIncome": 679000000.0,
-        "debtToEarnings": 8.15,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "Alexandria Real Estate Equities",
       "cusip": "SP500:0001035443:ARE",
       "scoreCoverage": 95,
@@ -13607,58 +13143,6 @@
       }
     },
     {
-      "company": "Anglo American plc",
-      "cusip": "FTSE100:AAL",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 0.69,
-        "pe": null,
-        "earningsPerShare": -3.3,
-        "peNotMeaningful": true,
-        "operatingMargin": 21.51,
-        "dividendGrowth": null,
-        "movingAverage1000": 2597.7888,
-        "priceVsMovingAverage1000Percent": 60.37,
-        "totalDebt": 15481000000.0,
-        "cash": 6146000000.0,
-        "netDebt": 9335000000.0,
-        "netIncome": -3741000000.0,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "LOSS_MAKING_WITH_DEBT"
-      }
-    },
-    {
-      "company": "Antofagasta plc",
-      "cusip": "FTSE100:ANTO",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.49,
-        "pe": 40.93,
-        "earningsPerShare": 1.348,
-        "peNotMeaningful": false,
-        "operatingMargin": 39.47,
-        "dividendGrowth": null,
-        "movingAverage1000": 2132.1074,
-        "priceVsMovingAverage1000Percent": 83.62,
-        "totalDebt": 7073300000.0,
-        "cash": 4909800000.0,
-        "netDebt": 2163500000.0,
-        "netIncome": 1328900000.0,
-        "debtToEarnings": 1.63,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "Arch Capital Group",
       "cusip": "SP500:0000947484:ACGL",
       "scoreCoverage": 95,
@@ -13683,162 +13167,6 @@
         "debtToEarnings": null,
         "debtRatioBasis": null,
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Associated British Foods",
-      "cusip": "FTSE100:ABF",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.2199999999999998,
-        "pe": 15.49,
-        "earningsPerShare": 1.416,
-        "peNotMeaningful": false,
-        "operatingMargin": 8.1,
-        "dividendGrowth": null,
-        "movingAverage1000": 2067.1965,
-        "priceVsMovingAverage1000Percent": 0.23,
-        "totalDebt": 3686000000.0,
-        "cash": 1057000000.0,
-        "netDebt": 2629000000.0,
-        "netIncome": 1025000000.0,
-        "debtToEarnings": 2.56,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "AstraZeneca",
-      "cusip": "FTSE100:AZN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.97,
-        "pe": 24.54,
-        "earningsPerShare": 6.54,
-        "peNotMeaningful": false,
-        "operatingMargin": 22.69,
-        "dividendGrowth": null,
-        "movingAverage1000": 11675.8261,
-        "priceVsMovingAverage1000Percent": 2.83,
-        "totalDebt": 29149000000.0,
-        "cash": 5719000000.0,
-        "netDebt": 23430000000.0,
-        "netIncome": 10225000000.0,
-        "debtToEarnings": 2.29,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Autotrader Group",
-      "cusip": "FTSE100:AUTO",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.29,
-        "pe": 14.89,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 62.25,
-        "dividendGrowth": null,
-        "movingAverage1000": 676.7995,
-        "priceVsMovingAverage1000Percent": -25.38,
-        "totalDebt": 211000000.0,
-        "cash": 18200000.0,
-        "netDebt": 192800000.0,
-        "netIncome": 293900000.0,
-        "debtToEarnings": 0.66,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Aviva",
-      "cusip": "FTSE100:AV",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 5.52,
-        "pe": 39.88,
-        "earningsPerShare": 0.265,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 517.313,
-        "priceVsMovingAverage1000Percent": 41.08,
-        "totalDebt": 7306000000.0,
-        "cash": 18547000000.0,
-        "netDebt": 0,
-        "netIncome": 1033000000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "BAE Systems",
-      "cusip": "FTSE100:BA",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.91,
-        "pe": 28.31,
-        "earningsPerShare": 0.68,
-        "peNotMeaningful": false,
-        "operatingMargin": 9.46,
-        "dividendGrowth": null,
-        "movingAverage1000": 1407.6665,
-        "priceVsMovingAverage1000Percent": 38.99,
-        "totalDebt": 9051000000.0,
-        "cash": 3621000000.0,
-        "netDebt": 5430000000.0,
-        "netIncome": 2062000000.0,
-        "debtToEarnings": 2.63,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "BP",
-      "cusip": "FTSE100:BP",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.65,
-        "pe": 21.25,
-        "earningsPerShare": 0.0034,
-        "peNotMeaningful": false,
-        "operatingMargin": 8.35,
-        "dividendGrowth": null,
-        "movingAverage1000": 463.7213,
-        "priceVsMovingAverage1000Percent": 16.38,
-        "totalDebt": 72529000000.0,
-        "cash": 36714000000.0,
-        "netDebt": 35815000000.0,
-        "netIncome": 55000000.0,
-        "debtToEarnings": 651.18,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
       }
     },
     {
@@ -13868,162 +13196,6 @@
       }
     },
     {
-      "company": "BT Group",
-      "cusip": "FTSE100:BT.A",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.12,
-        "pe": 18.63,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 17.97,
-        "dividendGrowth": null,
-        "movingAverage1000": 154.0096,
-        "priceVsMovingAverage1000Percent": 31.1,
-        "totalDebt": 22720000000.0,
-        "cash": 1718000000.0,
-        "netDebt": 21002000000.0,
-        "netIncome": 1077000000.0,
-        "debtToEarnings": 19.5,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Babcock International",
-      "cusip": "FTSE100:BAB",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 0.75,
-        "pe": 24.12,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 5.89,
-        "dividendGrowth": null,
-        "movingAverage1000": 679.4134,
-        "priceVsMovingAverage1000Percent": 45.83,
-        "totalDebt": 1098200000.0,
-        "cash": 741200000.0,
-        "netDebt": 357000000.0,
-        "netIncome": 211200000.0,
-        "debtToEarnings": 1.69,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Barratt Redrow",
-      "cusip": "FTSE100:BTRW",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 5.619454485704897,
-        "pe": 20.979866,
-        "earningsPerShare": 0.133,
-        "peNotMeaningful": false,
-        "operatingMargin": 5.12,
-        "dividendGrowth": null,
-        "movingAverage1000": 421.3805,
-        "priceVsMovingAverage1000Percent": -27.78,
-        "totalDebt": 255200000.0,
-        "cash": 969600000.0,
-        "netDebt": 0,
-        "netIncome": 186400000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Beazley",
-      "cusip": "FTSE100:BEZ",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.92,
-        "pe": 16.0,
-        "earningsPerShare": 1.448,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 797.0901,
-        "priceVsMovingAverage1000Percent": 63.28,
-        "totalDebt": 626700000.0,
-        "cash": 1368500000.0,
-        "netDebt": 0,
-        "netIncome": 913400000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "British American Tobacco",
-      "cusip": "FTSE100:BATS",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 5.91,
-        "pe": 13.99,
-        "earningsPerShare": 3.491,
-        "peNotMeaningful": false,
-        "operatingMargin": 45.53,
-        "dividendGrowth": null,
-        "movingAverage1000": 3245.2654,
-        "priceVsMovingAverage1000Percent": 27.11,
-        "totalDebt": 35070000000.0,
-        "cash": 3508000000.0,
-        "netDebt": 31562000000.0,
-        "netIncome": 7764000000.0,
-        "debtToEarnings": 4.07,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Bunzl",
-      "cusip": "FTSE100:BNZL",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.81,
-        "pe": 17.59,
-        "earningsPerShare": 1.409,
-        "peNotMeaningful": false,
-        "operatingMargin": 6.4,
-        "dividendGrowth": null,
-        "movingAverage1000": 2840.3134,
-        "priceVsMovingAverage1000Percent": -6.42,
-        "totalDebt": 2895400000.0,
-        "cash": 540100000.0,
-        "netDebt": 2355300000.0,
-        "netIncome": 459200000.0,
-        "debtToEarnings": 5.13,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "CARNIVAL CORP LTD",
       "cusip": "G2004J103",
       "scoreCoverage": 95,
@@ -14045,136 +13217,6 @@
         "netDebt": 25455000000,
         "netIncome": 2760000000,
         "debtToEarnings": 9.22,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Centrica",
-      "cusip": "FTSE100:CNA",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.7699999999999996,
-        "pe": 9.8,
-        "earningsPerShare": -0.015,
-        "peNotMeaningful": false,
-        "operatingMargin": 3.96,
-        "dividendGrowth": null,
-        "movingAverage1000": 142.4616,
-        "priceVsMovingAverage1000Percent": 5.15,
-        "totalDebt": 2856000000.0,
-        "cash": 4198000000.0,
-        "netDebt": 0,
-        "netIncome": -72000000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Coca-Cola Europacific Partners",
-      "cusip": "FTSE100:CCEP",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.2587197712833547,
-        "pe": 20.854928,
-        "earningsPerShare": 4.26,
-        "peNotMeaningful": false,
-        "operatingMargin": 13.36,
-        "dividendGrowth": null,
-        "movingAverage1000": 6389.406,
-        "priceVsMovingAverage1000Percent": 23.17,
-        "totalDebt": 10694000000.0,
-        "cash": 957000000.0,
-        "netDebt": 9737000000.0,
-        "netIncome": 1942000000.0,
-        "debtToEarnings": 5.01,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Coca-Cola HBC",
-      "cusip": "FTSE100:CCH",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.3,
-        "pe": 19.35,
-        "earningsPerShare": 2.59,
-        "peNotMeaningful": false,
-        "operatingMargin": 11.57,
-        "dividendGrowth": null,
-        "movingAverage1000": 3036.8319,
-        "priceVsMovingAverage1000Percent": 49.3,
-        "totalDebt": 3913000000.0,
-        "cash": 2730100000.0,
-        "netDebt": 1182900000.0,
-        "netIncome": 940400000.0,
-        "debtToEarnings": 1.26,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Compass Group",
-      "cusip": "FTSE100:CPG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.2242010078023404,
-        "pe": 25.998315,
-        "earningsPerShare": 1.099,
-        "peNotMeaningful": false,
-        "operatingMargin": 7.15,
-        "dividendGrowth": null,
-        "movingAverage1000": 28.3994,
-        "priceVsMovingAverage1000Percent": 8.31,
-        "totalDebt": 6992000000.0,
-        "cash": 575000000.0,
-        "netDebt": 6417000000.0,
-        "netIncome": 1868000000.0,
-        "debtToEarnings": 3.44,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Computacenter",
-      "cusip": "FTSE100:CCC",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.35,
-        "pe": 38.1,
-        "earningsPerShare": 1.455,
-        "peNotMeaningful": false,
-        "operatingMargin": 2.88,
-        "dividendGrowth": null,
-        "movingAverage1000": 2675.7306,
-        "priceVsMovingAverage1000Percent": 108.91,
-        "totalDebt": 202300000.0,
-        "cash": 628500000.0,
-        "netDebt": 0,
-        "netIncome": 153700000.0,
-        "debtToEarnings": 0,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -14206,58 +13248,6 @@
       }
     },
     {
-      "company": "Convatec",
-      "cusip": "FTSE100:CTEC",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.48,
-        "pe": 48.73,
-        "earningsPerShare": 0.086,
-        "peNotMeaningful": false,
-        "operatingMargin": 15.83,
-        "dividendGrowth": null,
-        "movingAverage1000": 234.2005,
-        "priceVsMovingAverage1000Percent": -2.56,
-        "totalDebt": 1518000000.0,
-        "cash": 68000000.0,
-        "netDebt": 1450000000.0,
-        "netIncome": 175000000.0,
-        "debtToEarnings": 8.29,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Croda International",
-      "cusip": "FTSE100:CRDA",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.37,
-        "pe": 57.95,
-        "earningsPerShare": 0.444,
-        "peNotMeaningful": false,
-        "operatingMargin": 15.28,
-        "dividendGrowth": null,
-        "movingAverage1000": 4234.5896,
-        "priceVsMovingAverage1000Percent": -22.16,
-        "totalDebt": 696600000.0,
-        "cash": 172800000.0,
-        "netDebt": 523800000.0,
-        "netIncome": 62000000.0,
-        "debtToEarnings": 8.45,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "DANAHER CORP DEL",
       "cusip": "235851102",
       "scoreCoverage": 95,
@@ -14279,32 +13269,6 @@
         "netDebt": 13803000000,
         "netIncome": 3614000000,
         "debtToEarnings": 3.82,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "DCC Energy",
-      "cusip": "FTSE100:DCC",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.42,
-        "pe": 22.01,
-        "earningsPerShare": 0.1412,
-        "peNotMeaningful": false,
-        "operatingMargin": 3.45,
-        "dividendGrowth": null,
-        "movingAverage1000": 5076.4784,
-        "priceVsMovingAverage1000Percent": 24.79,
-        "totalDebt": 2275233000.0,
-        "cash": 1085607000.0,
-        "netDebt": 1189626000.0,
-        "netIncome": 13358000.0,
-        "debtToEarnings": 89.06,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -14333,58 +13297,6 @@
         "debtToEarnings": null,
         "debtRatioBasis": null,
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Diageo",
-      "cusip": "FTSE100:DGE",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.23,
-        "pe": 29.0,
-        "earningsPerShare": 0.779,
-        "peNotMeaningful": false,
-        "operatingMargin": 16.07,
-        "dividendGrowth": null,
-        "movingAverage1000": 2540.4164,
-        "priceVsMovingAverage1000Percent": -34.77,
-        "totalDebt": 22196000000.0,
-        "cash": 1781000000.0,
-        "netDebt": 20415000000.0,
-        "netIncome": 1737000000.0,
-        "debtToEarnings": 11.75,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Diploma",
-      "cusip": "FTSE100:DPLM",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 0.88,
-        "pe": 50.87,
-        "earningsPerShare": 1.373,
-        "peNotMeaningful": false,
-        "operatingMargin": 18.69,
-        "dividendGrowth": null,
-        "movingAverage1000": 4285.2594,
-        "priceVsMovingAverage1000Percent": 66.15,
-        "totalDebt": 464900000.0,
-        "cash": 81700000.0,
-        "netDebt": 383200000.0,
-        "netIncome": 184900000.0,
-        "debtToEarnings": 2.07,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
       }
     },
     {
@@ -14442,58 +13354,6 @@
       }
     },
     {
-      "company": "Endeavour Mining",
-      "cusip": "FTSE100:EDV",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.2712777895405463,
-        "pe": 18.16098,
-        "earningsPerShare": 2.74,
-        "peNotMeaningful": false,
-        "operatingMargin": 44.16,
-        "dividendGrowth": null,
-        "movingAverage1000": 2328.8974,
-        "priceVsMovingAverage1000Percent": 102.8,
-        "totalDebt": 685700000.0,
-        "cash": 500200000.0,
-        "netDebt": 185500000.0,
-        "netIncome": 679200000.0,
-        "debtToEarnings": 0.27,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Entain",
-      "cusip": "FTSE100:ENT",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.81,
-        "pe": null,
-        "earningsPerShare": -1.043,
-        "peNotMeaningful": true,
-        "operatingMargin": 9.43,
-        "dividendGrowth": null,
-        "movingAverage1000": 881.1774,
-        "priceVsMovingAverage1000Percent": -40.1,
-        "totalDebt": 3992200000.0,
-        "cash": 350300000.0,
-        "netDebt": 3641900000.0,
-        "netIncome": -666700000.0,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "LOSS_MAKING_WITH_DEBT"
-      }
-    },
-    {
       "company": "Erie Indemnity",
       "cusip": "SP500:0000922621:ERIE",
       "scoreCoverage": 95,
@@ -14546,32 +13406,6 @@
       }
     },
     {
-      "company": "Experian",
-      "cusip": "FTSE100:EXPN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.8399999999999999,
-        "pe": 23.33,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 24.22,
-        "dividendGrowth": null,
-        "movingAverage1000": 3213.7441,
-        "priceVsMovingAverage1000Percent": -12.44,
-        "totalDebt": 5565000000.0,
-        "cash": 336000000.0,
-        "netDebt": 5229000000.0,
-        "netIncome": 1502000000.0,
-        "debtToEarnings": 3.48,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "FORTIVE CORP",
       "cusip": "34959J108",
       "scoreCoverage": 95,
@@ -14593,84 +13427,6 @@
         "netDebt": 2830500000,
         "netIncome": 579200000,
         "debtToEarnings": 4.89,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Fresnillo plc",
-      "cusip": "FTSE100:FRES",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.55,
-        "pe": 13.74,
-        "earningsPerShare": 1.878,
-        "peNotMeaningful": false,
-        "operatingMargin": 50.23,
-        "dividendGrowth": null,
-        "movingAverage1000": 1331.4037,
-        "priceVsMovingAverage1000Percent": 136.29,
-        "totalDebt": 850973000.0,
-        "cash": 2756476000.0,
-        "netDebt": 0,
-        "netIncome": 1383988000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "GSK plc",
-      "cusip": "FTSE100:GSK",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.6799999999999997,
-        "pe": 15.65,
-        "earningsPerShare": 1.388,
-        "peNotMeaningful": false,
-        "operatingMargin": 25.52,
-        "dividendGrowth": null,
-        "movingAverage1000": 1572.293,
-        "priceVsMovingAverage1000Percent": 17.44,
-        "totalDebt": 17720000000.0,
-        "cash": 3159000000.0,
-        "netDebt": 14561000000.0,
-        "netIncome": 5716000000.0,
-        "debtToEarnings": 2.55,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Games Workshop",
-      "cusip": "FTSE100:GAW",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.14,
-        "pe": 29.32,
-        "earningsPerShare": 6.225,
-        "peNotMeaningful": false,
-        "operatingMargin": 41.69,
-        "dividendGrowth": null,
-        "movingAverage1000": 12853.6705,
-        "priceVsMovingAverage1000Percent": 43.54,
-        "totalDebt": 56000000.0,
-        "cash": 182900000.0,
-        "netDebt": 0,
-        "netIncome": 206000000.0,
-        "debtToEarnings": 0,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -14702,32 +13458,6 @@
       }
     },
     {
-      "company": "Glencore",
-      "cusip": "FTSE100:GLEN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.09,
-        "pe": 17.9,
-        "earningsPerShare": 0.03,
-        "peNotMeaningful": false,
-        "operatingMargin": 1.35,
-        "dividendGrowth": null,
-        "movingAverage1000": 433.2671,
-        "priceVsMovingAverage1000Percent": 38.88,
-        "totalDebt": 41486000000.0,
-        "cash": 2918000000.0,
-        "netDebt": 38568000000.0,
-        "netIncome": 363000000.0,
-        "debtToEarnings": 106.25,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "HUB GROUP INC",
       "cusip": "443320106",
       "scoreCoverage": 95,
@@ -14754,240 +13484,6 @@
       }
     },
     {
-      "company": "Haleon",
-      "cusip": "FTSE100:HLN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.06,
-        "pe": 19.57,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": 21.87,
-        "dividendGrowth": null,
-        "movingAverage1000": 347.6307,
-        "priceVsMovingAverage1000Percent": 1.49,
-        "totalDebt": 8584000000.0,
-        "cash": 1260000000.0,
-        "netDebt": 7324000000.0,
-        "netIncome": 1667000000.0,
-        "debtToEarnings": 4.39,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Halma plc",
-      "cusip": "FTSE100:HLMA",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 0.69,
-        "pe": 36.77,
-        "earningsPerShare": 0.9817,
-        "peNotMeaningful": false,
-        "operatingMargin": 20.36,
-        "dividendGrowth": null,
-        "movingAverage1000": 2777.9991,
-        "priceVsMovingAverage1000Percent": 29.73,
-        "totalDebt": 913400000.0,
-        "cash": 143400000.0,
-        "netDebt": 770000000.0,
-        "netIncome": 372300000.0,
-        "debtToEarnings": 2.07,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Hiscox",
-      "cusip": "FTSE100:HSX",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.09,
-        "pe": 13.4,
-        "earningsPerShare": 1.75,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 1223.6076,
-        "priceVsMovingAverage1000Percent": 53.48,
-        "totalDebt": 902000000.0,
-        "cash": 878000000.0,
-        "netDebt": 24000000.0,
-        "netIncome": 604100000.0,
-        "debtToEarnings": 0.04,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Howdens Joinery",
-      "cusip": "FTSE100:HWDN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.84,
-        "pe": 15.88,
-        "earningsPerShare": 0.49,
-        "peNotMeaningful": false,
-        "operatingMargin": 14.69,
-        "dividendGrowth": null,
-        "movingAverage1000": 780.2292,
-        "priceVsMovingAverage1000Percent": -0.67,
-        "totalDebt": 704900000.0,
-        "cash": 344500000.0,
-        "netDebt": 360400000.0,
-        "netIncome": 267700000.0,
-        "debtToEarnings": 1.35,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "IG Group",
-      "cusip": "FTSE100:IGG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.84,
-        "pe": 9.89,
-        "earningsPerShare": 1.051,
-        "peNotMeaningful": false,
-        "operatingMargin": 35.9,
-        "dividendGrowth": null,
-        "movingAverage1000": 977.8526,
-        "priceVsMovingAverage1000Percent": 36.52,
-        "totalDebt": 567700000.0,
-        "cash": 1071700000.0,
-        "netDebt": 0,
-        "netIncome": 380400000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "IHG Hotels & Resorts",
-      "cusip": "FTSE100:IHG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.1919792866082604,
-        "pe": 34.169146,
-        "earningsPerShare": 4.865,
-        "peNotMeaningful": false,
-        "operatingMargin": 23.41,
-        "dividendGrowth": null,
-        "movingAverage1000": 106.2801,
-        "priceVsMovingAverage1000Percent": 50.36,
-        "totalDebt": 4607000000.0,
-        "cash": 1105000000.0,
-        "netDebt": 3502000000.0,
-        "netIncome": 758000000.0,
-        "debtToEarnings": 4.62,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "IMI",
-      "cusip": "FTSE100:IMI",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.16,
-        "pe": 22.42,
-        "earningsPerShare": 1.238,
-        "peNotMeaningful": false,
-        "operatingMargin": 18.33,
-        "dividendGrowth": null,
-        "movingAverage1000": 1951.5086,
-        "priceVsMovingAverage1000Percent": 55.98,
-        "totalDebt": 643700000.0,
-        "cash": 114900000.0,
-        "netDebt": 528800000.0,
-        "netIncome": 309900000.0,
-        "debtToEarnings": 1.71,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Imperial Brands",
-      "cusip": "FTSE100:IMB",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 6.550000000000001,
-        "pe": 11.7,
-        "earningsPerShare": 2.493,
-        "peNotMeaningful": false,
-        "operatingMargin": 10.85,
-        "dividendGrowth": null,
-        "movingAverage1000": 2373.8576,
-        "priceVsMovingAverage1000Percent": 4.85,
-        "totalDebt": 9996000000.0,
-        "cash": 1439000000.0,
-        "netDebt": 8557000000.0,
-        "netIncome": 2071000000.0,
-        "debtToEarnings": 4.13,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Informa",
-      "cusip": "FTSE100:INF",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.44,
-        "pe": 53.53,
-        "earningsPerShare": 0.008,
-        "peNotMeaningful": false,
-        "operatingMargin": 19.64,
-        "dividendGrowth": null,
-        "movingAverage1000": 787.646,
-        "priceVsMovingAverage1000Percent": 15.69,
-        "totalDebt": 3479100000.0,
-        "cash": null,
-        "netDebt": null,
-        "netIncome": 11000000.0,
-        "debtToEarnings": 316.28,
-        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "Ingersoll Rand",
       "cusip": "SP500:0001699150:IR",
       "scoreCoverage": 95,
@@ -15009,84 +13505,6 @@
         "netDebt": 3535900000,
         "netIncome": 581400000,
         "debtToEarnings": 6.08,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "International Airlines Group",
-      "cusip": "FTSE100:IAG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.97,
-        "pe": 7.94,
-        "earningsPerShare": 0.695,
-        "peNotMeaningful": false,
-        "operatingMargin": 15.1,
-        "dividendGrowth": null,
-        "movingAverage1000": 253.6987,
-        "priceVsMovingAverage1000Percent": 69.97,
-        "totalDebt": 14267000000.0,
-        "cash": 8290000000.0,
-        "netDebt": 5977000000.0,
-        "netIncome": 3342000000.0,
-        "debtToEarnings": 1.79,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Intertek",
-      "cusip": "FTSE100:ITRK",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.82,
-        "pe": 28.52,
-        "earningsPerShare": 2.16,
-        "peNotMeaningful": false,
-        "operatingMargin": 15.8,
-        "dividendGrowth": null,
-        "movingAverage1000": 4603.488,
-        "priceVsMovingAverage1000Percent": 27.29,
-        "totalDebt": 1648200000.0,
-        "cash": 329200000.0,
-        "netDebt": 1319000000.0,
-        "netIncome": 343500000.0,
-        "debtToEarnings": 3.84,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "JD Sports",
-      "cusip": "FTSE100:JD",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.45,
-        "pe": 9.68,
-        "earningsPerShare": 0.0854,
-        "peNotMeaningful": false,
-        "operatingMargin": 7.63,
-        "dividendGrowth": null,
-        "movingAverage1000": 112.9459,
-        "priceVsMovingAverage1000Percent": -27.06,
-        "totalDebt": 3680000000.0,
-        "cash": 854000000.0,
-        "netDebt": 2826000000.0,
-        "netIncome": 436000000.0,
-        "debtToEarnings": 6.48,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -15118,266 +13536,6 @@
       }
     },
     {
-      "company": "Kingfisher plc",
-      "cusip": "FTSE100:KGF",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.05,
-        "pe": 22.18,
-        "earningsPerShare": 0.138,
-        "peNotMeaningful": false,
-        "operatingMargin": 3.84,
-        "dividendGrowth": null,
-        "movingAverage1000": 265.9951,
-        "priceVsMovingAverage1000Percent": 15.57,
-        "totalDebt": 2341000000.0,
-        "cash": 425000000.0,
-        "netDebt": 1916000000.0,
-        "netIncome": 245000000.0,
-        "debtToEarnings": 7.82,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Land Securities",
-      "cusip": "FTSE100:LAND",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 6.21,
-        "pe": 14.44,
-        "earningsPerShare": 0.459,
-        "peNotMeaningful": false,
-        "operatingMargin": 48.39,
-        "dividendGrowth": null,
-        "movingAverage1000": 617.5349,
-        "priceVsMovingAverage1000Percent": 7.36,
-        "totalDebt": 4495000000.0,
-        "cash": 106000000.0,
-        "netDebt": 4389000000.0,
-        "netIncome": 343000000.0,
-        "debtToEarnings": 12.8,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Legal & General",
-      "cusip": "FTSE100:LGEN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 7.449999999999999,
-        "pe": 3035.93,
-        "earningsPerShare": 0.0974,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 243.6324,
-        "priceVsMovingAverage1000Percent": 21.37,
-        "totalDebt": 4898000000.0,
-        "cash": 18955000000.0,
-        "netDebt": 0,
-        "netIncome": 592000000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "London Stock Exchange Group",
-      "cusip": "FTSE100:LSEG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.7893544733861833,
-        "pe": 30.809061,
-        "earningsPerShare": 2.37,
-        "peNotMeaningful": false,
-        "operatingMargin": 23.22,
-        "dividendGrowth": null,
-        "movingAverage1000": 9174.8157,
-        "priceVsMovingAverage1000Percent": -3.76,
-        "totalDebt": 11718000000.0,
-        "cash": 2891000000.0,
-        "netDebt": 8827000000.0,
-        "netIncome": 1249000000.0,
-        "debtToEarnings": 7.07,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "LondonMetric Property",
-      "cusip": "FTSE100:LMP",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 6.800000000000001,
-        "pe": 14.21,
-        "earningsPerShare": 0.13,
-        "peNotMeaningful": false,
-        "operatingMargin": 92.12,
-        "dividendGrowth": null,
-        "movingAverage1000": 188.0103,
-        "priceVsMovingAverage1000Percent": -1.87,
-        "totalDebt": 2993200000.0,
-        "cash": 87600000.0,
-        "netDebt": 2905600000.0,
-        "netIncome": 295700000.0,
-        "debtToEarnings": 9.83,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "M&G",
-      "cusip": "FTSE100:MNG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 5.86,
-        "pe": 28.51,
-        "earningsPerShare": 0.123,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 230.8578,
-        "priceVsMovingAverage1000Percent": 54.81,
-        "totalDebt": 6912000000.0,
-        "cash": 4904000000.0,
-        "netDebt": 2008000000.0,
-        "netIncome": 302000000.0,
-        "debtToEarnings": 6.65,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "Marks & Spencer",
-      "cusip": "FTSE100:MKS",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.08,
-        "pe": 31.58,
-        "earningsPerShare": 0.123,
-        "peNotMeaningful": false,
-        "operatingMargin": 5.76,
-        "dividendGrowth": null,
-        "movingAverage1000": 288.9524,
-        "priceVsMovingAverage1000Percent": 34.24,
-        "totalDebt": 3419400000.0,
-        "cash": 1004200000.0,
-        "netDebt": 2415200000.0,
-        "netIncome": 259400000.0,
-        "debtToEarnings": 9.31,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Melrose Industries",
-      "cusip": "FTSE100:MRO",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.49,
-        "pe": 39.8,
-        "earningsPerShare": 0.29,
-        "peNotMeaningful": false,
-        "operatingMargin": 16.72,
-        "dividendGrowth": null,
-        "movingAverage1000": 501.1021,
-        "priceVsMovingAverage1000Percent": 0.54,
-        "totalDebt": 1903000000.0,
-        "cash": 166000000.0,
-        "netDebt": 1737000000.0,
-        "netIncome": 370000000.0,
-        "debtToEarnings": 4.69,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "National Grid plc",
-      "cusip": "FTSE100:NG",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.21,
-        "pe": 17.65,
-        "earningsPerShare": 0.655,
-        "peNotMeaningful": false,
-        "operatingMargin": 32.17,
-        "dividendGrowth": null,
-        "movingAverage1000": 1061.5117,
-        "priceVsMovingAverage1000Percent": 8.43,
-        "totalDebt": 46755000000.0,
-        "cash": 2828000000.0,
-        "netDebt": 43927000000.0,
-        "netIncome": 3241000000.0,
-        "debtToEarnings": 13.55,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Next plc",
-      "cusip": "FTSE100:NXT",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.76,
-        "pe": 20.46,
-        "earningsPerShare": 7.454,
-        "peNotMeaningful": false,
-        "operatingMargin": 18.51,
-        "dividendGrowth": null,
-        "movingAverage1000": 9857.8476,
-        "priceVsMovingAverage1000Percent": 55.56,
-        "totalDebt": 1808700000.0,
-        "cash": 96200000.0,
-        "netDebt": 1712500000.0,
-        "netIncome": 888500000.0,
-        "debtToEarnings": 1.93,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "PG&E Corporation",
       "cusip": "SP500:0001004980:PCG",
       "scoreCoverage": 95,
@@ -15399,84 +13557,6 @@
         "netDebt": 57495000000,
         "netIncome": 2703000000,
         "debtToEarnings": 21.27,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Pearson plc",
-      "cusip": "FTSE100:PSON",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.17,
-        "pe": 23.53,
-        "earningsPerShare": 0.507,
-        "peNotMeaningful": false,
-        "operatingMargin": 16.66,
-        "dividendGrowth": null,
-        "movingAverage1000": 1023.4852,
-        "priceVsMovingAverage1000Percent": 15.15,
-        "totalDebt": 1481000000.0,
-        "cash": 333000000.0,
-        "netDebt": 1148000000.0,
-        "netIncome": 335000000.0,
-        "debtToEarnings": 3.43,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Prudential plc",
-      "cusip": "FTSE100:PRU",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.9299999999999997,
-        "pe": 9.87,
-        "earningsPerShare": 1.535,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 928.8458,
-        "priceVsMovingAverage1000Percent": 10.08,
-        "totalDebt": 5290000000.0,
-        "cash": 3851000000.0,
-        "netDebt": 1439000000.0,
-        "netIncome": 3978000000.0,
-        "debtToEarnings": 0.36,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "RELX",
-      "cusip": "FTSE100:REL",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.63,
-        "pe": 20.99,
-        "earningsPerShare": 1.12,
-        "peNotMeaningful": false,
-        "operatingMargin": 31.11,
-        "dividendGrowth": null,
-        "movingAverage1000": 3080.6297,
-        "priceVsMovingAverage1000Percent": -14.95,
-        "totalDebt": 7267000000.0,
-        "cash": 131000000.0,
-        "netDebt": 7136000000.0,
-        "netIncome": 2065000000.0,
-        "debtToEarnings": 3.46,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -15508,110 +13588,6 @@
       }
     },
     {
-      "company": "Reckitt",
-      "cusip": "FTSE100:RKT",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.23,
-        "pe": 11.56,
-        "earningsPerShare": 4.866667,
-        "peNotMeaningful": false,
-        "operatingMargin": 24.12,
-        "dividendGrowth": null,
-        "movingAverage1000": 5531.2618,
-        "priceVsMovingAverage1000Percent": -7.54,
-        "totalDebt": 8430000000.0,
-        "cash": 1770000000.0,
-        "netDebt": 6660000000.0,
-        "netIncome": 3182000000.0,
-        "debtToEarnings": 2.09,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Rentokil Initial",
-      "cusip": "FTSE100:RTO",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.7,
-        "pe": 24.99,
-        "earningsPerShare": 0.1854,
-        "peNotMeaningful": false,
-        "operatingMargin": 9.53,
-        "dividendGrowth": null,
-        "movingAverage1000": 455.4441,
-        "priceVsMovingAverage1000Percent": -23.5,
-        "totalDebt": 6130000000.0,
-        "cash": 2321000000.0,
-        "netDebt": 3809000000.0,
-        "netIncome": 470000000.0,
-        "debtToEarnings": 8.1,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Rio Tinto",
-      "cusip": "FTSE100:RIO",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.54,
-        "pe": 13.99,
-        "earningsPerShare": 6.084,
-        "peNotMeaningful": false,
-        "operatingMargin": 26.8,
-        "dividendGrowth": null,
-        "movingAverage1000": 5449.8716,
-        "priceVsMovingAverage1000Percent": 40.21,
-        "totalDebt": 23517000000.0,
-        "cash": 7452000000.0,
-        "netDebt": 16065000000.0,
-        "netIncome": 9966000000.0,
-        "debtToEarnings": 1.61,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Rolls-Royce Holdings",
-      "cusip": "FTSE100:RR",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 0.74,
-        "pe": 41.16,
-        "earningsPerShare": 0.6914,
-        "peNotMeaningful": false,
-        "operatingMargin": 20.8,
-        "dividendGrowth": null,
-        "movingAverage1000": 621.9982,
-        "priceVsMovingAverage1000Percent": 139.45,
-        "totalDebt": 4272000000.0,
-        "cash": 6048000000.0,
-        "netDebt": 0,
-        "netIncome": 5841000000.0,
-        "debtToEarnings": 0,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "SBA Communications",
       "cusip": "SP500:0001034054:SBAC",
       "scoreCoverage": 95,
@@ -15633,110 +13609,6 @@
         "netDebt": 12635700000,
         "netIncome": 370290000,
         "debtToEarnings": 34.12,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
-      "company": "SSE plc",
-      "cusip": "FTSE100:SSE",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.9,
-        "pe": 22.51,
-        "earningsPerShare": 1.054,
-        "peNotMeaningful": false,
-        "operatingMargin": 19.56,
-        "dividendGrowth": null,
-        "movingAverage1000": 1868.3216,
-        "priceVsMovingAverage1000Percent": 28.51,
-        "totalDebt": 10121200000.0,
-        "cash": 1542900000.0,
-        "netDebt": 8578300000.0,
-        "netIncome": 1208700000.0,
-        "debtToEarnings": 7.1,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Sage Group",
-      "cusip": "FTSE100:SGE",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.1,
-        "pe": 26.88,
-        "earningsPerShare": 0.3716,
-        "peNotMeaningful": false,
-        "operatingMargin": 21.09,
-        "dividendGrowth": null,
-        "movingAverage1000": 1020.3582,
-        "priceVsMovingAverage1000Percent": 3.05,
-        "totalDebt": 1579000000.0,
-        "cash": 390000000.0,
-        "netDebt": 1189000000.0,
-        "netIncome": 369000000.0,
-        "debtToEarnings": 3.22,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Sainsbury's",
-      "cusip": "FTSE100:SBRY",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.02,
-        "pe": 19.11,
-        "earningsPerShare": 0.169,
-        "peNotMeaningful": false,
-        "operatingMargin": 2.83,
-        "dividendGrowth": null,
-        "movingAverage1000": 280.4493,
-        "priceVsMovingAverage1000Percent": 21.55,
-        "totalDebt": 6601000000.0,
-        "cash": 1067000000.0,
-        "netDebt": 5534000000.0,
-        "netIncome": 393000000.0,
-        "debtToEarnings": 14.08,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Schroders",
-      "cusip": "FTSE100:SDR",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.7599999999999993,
-        "pe": 13.43,
-        "earningsPerShare": 0.336,
-        "peNotMeaningful": false,
-        "operatingMargin": 14.7,
-        "dividendGrowth": null,
-        "movingAverage1000": 421.9099,
-        "priceVsMovingAverage1000Percent": 38.66,
-        "totalDebt": 573600000.0,
-        "cash": 7297900000.0,
-        "netDebt": 0,
-        "netIncome": 539800000.0,
-        "debtToEarnings": 0,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
@@ -15768,58 +13640,6 @@
       }
     },
     {
-      "company": "Shell plc",
-      "cusip": "FTSE100:SHEL",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.2199999999999998,
-        "pe": 10.23,
-        "earningsPerShare": 3.0,
-        "peNotMeaningful": false,
-        "operatingMargin": 10.33,
-        "dividendGrowth": null,
-        "movingAverage1000": 2657.3183,
-        "priceVsMovingAverage1000Percent": 29.34,
-        "totalDebt": 75643000000.0,
-        "cash": 29630000000.0,
-        "netDebt": 46013000000.0,
-        "netIncome": 17837000000.0,
-        "debtToEarnings": 2.58,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Smith & Nephew",
-      "cusip": "FTSE100:SN",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.76,
-        "pe": 19.56,
-        "earningsPerShare": 0.716,
-        "peNotMeaningful": false,
-        "operatingMargin": 13.9,
-        "dividendGrowth": null,
-        "movingAverage1000": 1124.9477,
-        "priceVsMovingAverage1000Percent": -5.42,
-        "totalDebt": 3327000000.0,
-        "cash": 557000000.0,
-        "netDebt": 2770000000.0,
-        "netIncome": 625000000.0,
-        "debtToEarnings": 4.43,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
       "company": "Smiths Group",
       "cusip": "FTSE100:SMIN",
       "scoreCoverage": 95,
@@ -15846,58 +13666,6 @@
       }
     },
     {
-      "company": "Spirax Group",
-      "cusip": "FTSE100:SPX",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 2.47,
-        "pe": 25.9,
-        "earningsPerShare": 2.212,
-        "peNotMeaningful": false,
-        "operatingMargin": 15.59,
-        "dividendGrowth": null,
-        "movingAverage1000": 8469.8724,
-        "priceVsMovingAverage1000Percent": -17.83,
-        "totalDebt": 1023900000.0,
-        "cash": 369000000.0,
-        "netDebt": 654900000.0,
-        "netIncome": 163400000.0,
-        "debtToEarnings": 4.01,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "St. James's Place",
-      "cusip": "FTSE100:STJ",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.55,
-        "pe": 10.92,
-        "earningsPerShare": 0.988,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": null,
-        "movingAverage1000": 996.0235,
-        "priceVsMovingAverage1000Percent": 16.46,
-        "totalDebt": 442300000.0,
-        "cash": 329600000.0,
-        "netDebt": 112700000.0,
-        "netIncome": 531100000.0,
-        "debtToEarnings": 0.21,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
-      }
-    },
-    {
       "company": "TKO GROUP HOLDINGS INC",
       "cusip": "87256C101",
       "scoreCoverage": 95,
@@ -15921,84 +13689,6 @@
         "debtToEarnings": null,
         "debtRatioBasis": null,
         "leverageStatus": "LOSS_MAKING_WITH_DEBT"
-      }
-    },
-    {
-      "company": "Tesco",
-      "cusip": "FTSE100:TSCO",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.06,
-        "pe": 17.53,
-        "earningsPerShare": 0.271,
-        "peNotMeaningful": false,
-        "operatingMargin": 4.21,
-        "dividendGrowth": null,
-        "movingAverage1000": 344.7992,
-        "priceVsMovingAverage1000Percent": 37.88,
-        "totalDebt": 15080000000.0,
-        "cash": 4136000000.0,
-        "netDebt": 10944000000.0,
-        "netIncome": 1787000000.0,
-        "debtToEarnings": 6.12,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Unilever",
-      "cusip": "FTSE100:ULVR",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.46,
-        "pe": 1102.55,
-        "earningsPerShare": 4.32,
-        "peNotMeaningful": false,
-        "operatingMargin": 20.05,
-        "dividendGrowth": null,
-        "movingAverage1000": 4613.3032,
-        "priceVsMovingAverage1000Percent": 3.24,
-        "totalDebt": 27597000000.0,
-        "cash": 5012000000.0,
-        "netDebt": 22585000000.0,
-        "netIncome": 9469000000.0,
-        "debtToEarnings": 2.39,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "United Utilities",
-      "cusip": "FTSE100:UU",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.94,
-        "pe": 15.83,
-        "earningsPerShare": 0.858,
-        "peNotMeaningful": false,
-        "operatingMargin": 42.06,
-        "dividendGrowth": null,
-        "movingAverage1000": 1098.7111,
-        "priceVsMovingAverage1000Percent": 23.96,
-        "totalDebt": 11481000000.0,
-        "cash": 1794300000.0,
-        "netDebt": 9686700000.0,
-        "netIncome": 586800000.0,
-        "debtToEarnings": 16.51,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
       }
     },
     {
@@ -16049,84 +13739,6 @@
         "netDebt": 1184600000,
         "netIncome": 1332800000,
         "debtToEarnings": 0.89,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Vodafone Group",
-      "cusip": "FTSE100:VOD",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 3.17,
-        "pe": null,
-        "earningsPerShare": -0.0165,
-        "peNotMeaningful": true,
-        "operatingMargin": 9.25,
-        "dividendGrowth": null,
-        "movingAverage1000": 84.4723,
-        "priceVsMovingAverage1000Percent": 48.69,
-        "totalDebt": 52636000000.0,
-        "cash": 12329000000.0,
-        "netDebt": 40307000000.0,
-        "netIncome": -397000000.0,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "LOSS_MAKING_WITH_DEBT"
-      }
-    },
-    {
-      "company": "Weir",
-      "cusip": "FTSE100:WEIR",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 1.55,
-        "pe": 26.83,
-        "earningsPerShare": 0.951,
-        "peNotMeaningful": false,
-        "operatingMargin": 16.16,
-        "dividendGrowth": null,
-        "movingAverage1000": 2204.433,
-        "priceVsMovingAverage1000Percent": 23.57,
-        "totalDebt": 1782600000.0,
-        "cash": 509000000.0,
-        "netDebt": 1273600000.0,
-        "netIncome": 246900000.0,
-        "debtToEarnings": 5.16,
-        "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
-        "leverageStatus": "CALCULATED"
-      }
-    },
-    {
-      "company": "Whitbread",
-      "cusip": "FTSE100:WTB",
-      "scoreCoverage": 95,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "dividendGrowth"
-      ],
-      "availableMetrics": {
-        "yield": 4.08,
-        "pe": 19.41,
-        "earningsPerShare": 1.224,
-        "peNotMeaningful": false,
-        "operatingMargin": 21.82,
-        "dividendGrowth": null,
-        "movingAverage1000": 2930.4727,
-        "priceVsMovingAverage1000Percent": -18.78,
-        "totalDebt": 5466100000.0,
-        "cash": 233700000.0,
-        "netDebt": 5232400000.0,
-        "netIncome": 212900000.0,
-        "debtToEarnings": 24.58,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
       }
@@ -16964,6 +14576,32 @@
       }
     },
     {
+      "company": "Tritax Big Box REIT",
+      "cusip": "FTSE100:BBOX",
+      "scoreCoverage": 97,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityOperatingMargin"
+      ],
+      "availableMetrics": {
+        "yield": 5.3,
+        "pe": 14.77,
+        "earningsPerShare": 0.1439,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 26.01,
+        "movingAverage1000": 148.4474,
+        "priceVsMovingAverage1000Percent": 3.74,
+        "totalDebt": 2733900000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 363300000.0,
+        "debtToEarnings": 7.53,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
       "company": "UPSTART HLDGS INC",
       "cusip": "91680M107",
       "scoreCoverage": 97,
@@ -17012,6 +14650,32 @@
         "netIncome": 2775493000,
         "debtToEarnings": 5.84,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "3i",
+      "cusip": "FTSE100:III",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 3.05,
+        "pe": 5.34,
+        "earningsPerShare": 5.386,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 18.31,
+        "movingAverage1000": 2785.4696,
+        "priceVsMovingAverage1000Percent": -0.52,
+        "totalDebt": 1261000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 5294000000.0,
+        "debtToEarnings": 0.24,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
@@ -17116,6 +14780,58 @@
         "netIncome": 3096000000,
         "debtToEarnings": 2.53,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "Aberdeen Group",
+      "cusip": "FTSE100:ABDN",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 5.85,
+        "pe": 11.65,
+        "earningsPerShare": 0.212,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0.0,
+        "movingAverage1000": 183.1329,
+        "priceVsMovingAverage1000Percent": 36.51,
+        "totalDebt": 557000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 399000000.0,
+        "debtToEarnings": 1.4,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "Alliance Witan",
+      "cusip": "FTSE100:ALW",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 2.11,
+        "pe": 8.57,
+        "earningsPerShare": 0.5697,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 34.98,
+        "movingAverage1000": 1164.7836,
+        "priceVsMovingAverage1000Percent": 17.45,
+        "totalDebt": 369998000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 224464000.0,
+        "debtToEarnings": 1.65,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
@@ -17247,6 +14963,32 @@
         "debtToEarnings": 5.71,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
+      }
+    },
+    {
+      "company": "Barclays",
+      "cusip": "FTSE100:BARC",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 2.32,
+        "pe": 10.28,
+        "earningsPerShare": 0.423,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 30.83,
+        "movingAverage1000": 270.0334,
+        "priceVsMovingAverage1000Percent": 83.92,
+        "totalDebt": 219941000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 7172000000.0,
+        "debtToEarnings": 30.67,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -17510,6 +15252,32 @@
       }
     },
     {
+      "company": "F & C Investment Trust",
+      "cusip": "FTSE100:FCIT",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 1.22,
+        "pe": 4.54,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 28.34,
+        "movingAverage1000": 265.9978,
+        "priceVsMovingAverage1000Percent": 29.63,
+        "totalDebt": 581248000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 664860000.0,
+        "debtToEarnings": 0.87,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
       "company": "FIRST CTZNS BANCSHARES INC D",
       "cusip": "31946M103",
       "scoreCoverage": 98,
@@ -17558,6 +15326,32 @@
         "netIncome": 1161238000,
         "debtToEarnings": 2.14,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "HSBC",
+      "cusip": "FTSE100:HSBA",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 3.58,
+        "pe": 15.09,
+        "earningsPerShare": 1.2,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 24.79,
+        "movingAverage1000": 823.713,
+        "priceVsMovingAverage1000Percent": 91.84,
+        "totalDebt": 256139000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 22285000000.0,
+        "debtToEarnings": 11.49,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
@@ -17614,6 +15408,32 @@
       }
     },
     {
+      "company": "ICG",
+      "cusip": "FTSE100:ICG",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 4.47,
+        "pe": 11.88,
+        "earningsPerShare": 1.639,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 23.15,
+        "movingAverage1000": 1783.5319,
+        "priceVsMovingAverage1000Percent": 9.11,
+        "totalDebt": 6429300000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 478400000.0,
+        "debtToEarnings": 13.44,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
       "company": "INTERACTIVE BROKERS GROUP IN",
       "cusip": "45841N107",
       "scoreCoverage": 98,
@@ -17663,6 +15483,32 @@
         "debtToEarnings": 0,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
         "leverageStatus": "CALCULATED"
+      }
+    },
+    {
+      "company": "Investec",
+      "cusip": "FTSE100:INVP",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 5.77,
+        "pe": 8.66,
+        "earningsPerShare": 0.75,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 25.02,
+        "movingAverage1000": 532.7021,
+        "priceVsMovingAverage1000Percent": 25.77,
+        "totalDebt": 2550051000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 724507000.0,
+        "debtToEarnings": 3.52,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
     {
@@ -17796,6 +15642,58 @@
       }
     },
     {
+      "company": "Lion Finance Group",
+      "cusip": "FTSE100:BGEO",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 2.37,
+        "pe": 8.94,
+        "earningsPerShare": 49.5161,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 35.66,
+        "movingAverage1000": 5632.3514,
+        "priceVsMovingAverage1000Percent": 141.82,
+        "totalDebt": 8609208000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 2161329000.0,
+        "debtToEarnings": 3.98,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "Lloyds Banking Group",
+      "cusip": "FTSE100:LLOY",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 3.56,
+        "pe": 14.09,
+        "earningsPerShare": 0.069,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 26.46,
+        "movingAverage1000": 65.5396,
+        "priceVsMovingAverage1000Percent": 71.8,
+        "totalDebt": 95145000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 4659000000.0,
+        "debtToEarnings": 20.42,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
       "company": "Loews Corporation",
       "cusip": "SP500:0000060086:L",
       "scoreCoverage": 98,
@@ -17844,6 +15742,32 @@
         "netIncome": 2851000000,
         "debtToEarnings": 0,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "NatWest Group",
+      "cusip": "FTSE100:NWG",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 5.0,
+        "pe": 9.37,
+        "earningsPerShare": 0.674,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 40.2,
+        "movingAverage1000": 395.6666,
+        "priceVsMovingAverage1000Percent": 76.87,
+        "totalDebt": 71826000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 5831000000.0,
+        "debtToEarnings": 12.32,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
@@ -17922,6 +15846,32 @@
         "netIncome": 11308000000,
         "debtToEarnings": 0.6,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "Pershing Square Holdings",
+      "cusip": "FTSE100:PSH",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 1.36,
+        "pe": 3.735998,
+        "earningsPerShare": 14.08,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 32.9,
+        "movingAverage1000": 3688.0571,
+        "priceVsMovingAverage1000Percent": 5.42,
+        "totalDebt": 3669110397.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 2525375901.0,
+        "debtToEarnings": 1.45,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
@@ -18052,6 +16002,58 @@
         "netIncome": 8852000000,
         "debtToEarnings": 0,
         "debtRatioBasis": "NET_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "Scottish Mortgage Investment Trust",
+      "cusip": "FTSE100:SMT",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 0.3,
+        "pe": 5.45,
+        "earningsPerShare": 2.7531,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 12.69,
+        "movingAverage1000": 940.2134,
+        "priceVsMovingAverage1000Percent": 59.54,
+        "totalDebt": 1606198000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 3101619000.0,
+        "debtToEarnings": 0.52,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
+        "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
+      }
+    },
+    {
+      "company": "Standard Chartered",
+      "cusip": "FTSE100:STAN",
+      "scoreCoverage": 98,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "qualityEfficiency"
+      ],
+      "availableMetrics": {
+        "yield": 2.3,
+        "pe": 14.41,
+        "earningsPerShare": 1.896,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 42.05,
+        "movingAverage1000": 1060.2119,
+        "priceVsMovingAverage1000Percent": 111.66,
+        "totalDebt": 105367000000.0,
+        "cash": null,
+        "netDebt": null,
+        "netIncome": 5085000000.0,
+        "debtToEarnings": 20.72,
+        "debtRatioBasis": "TOTAL_DEBT_TO_NET_INCOME",
         "leverageStatus": "NOT_COMPARABLE_FINANCIAL"
       }
     },
