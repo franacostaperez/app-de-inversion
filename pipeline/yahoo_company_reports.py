@@ -197,7 +197,7 @@ class YahooClient:
         path = f"/v8/finance/chart/{encoded}?range=6y&interval=1mo&events=div&includeAdjustedClose=true"
         last_error = None
         for attempt in range(self.retries):
-            host = ("query1.finance.yahoo.com", "query2.finance.yahoo.com")[attempt % 2]
+            host = ("query2.finance.yahoo.com", "query1.finance.yahoo.com")[attempt % 2]
             request = urllib.request.Request("https://" + host + path, headers={"User-Agent": USER_AGENT})
             try:
                 with urllib.request.urlopen(request, timeout=45) as response:
@@ -258,13 +258,15 @@ def run(
         try:
             ticker = profile["ticker"]
             fundamentals = client.fetch(ticker, period1, period2)
+            dividend_failure = None
             try:
                 dividends = client.fetch_dividends(ticker)
-            except RuntimeError:
+            except RuntimeError as error:
                 dividends = {}
+                dividend_failure = {"ticker": ticker, "reason": str(error), "scope": "dividend history"}
             company_reports = reports_for_profile(profile, fundamentals, dividends)
             if company_reports:
-                return company_reports, None
+                return company_reports, dividend_failure
             return [], {"ticker": profile["ticker"], "reason": "no annual fundamentals"}
         except RuntimeError as error:
             return [], {"ticker": profile["ticker"], "reason": str(error)}
@@ -282,6 +284,43 @@ def run(
     return reports, failures
 
 
+def enrich_existing_dividends(
+    profiles: list[dict], reports: list[dict], client: YahooClient, *, workers: int = 4
+) -> tuple[list[dict], list[dict]]:
+    by_ticker = defaultdict(list)
+    for report in reports:
+        by_ticker[report.get("ticker")].append(report)
+    candidates = [profile for profile in profiles if profile.get("ftse100") is True and profile.get("ticker")]
+    failures = []
+
+    def fetch_profile(profile):
+        ticker = profile["ticker"]
+        try:
+            return ticker, extract_dividend_series(client.fetch_dividends(ticker)), None
+        except RuntimeError as error:
+            return ticker, None, {"ticker": ticker, "reason": str(error), "scope": "dividend history"}
+
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
+        futures = [executor.submit(fetch_profile, profile) for profile in candidates]
+        for completed, future in enumerate(as_completed(futures), 1):
+            ticker, metric, failure = future.result()
+            if failure or not metric:
+                failures.append(failure or {"ticker": ticker, "reason": "no dividend history", "scope": "dividend history"})
+            else:
+                company_reports = sorted(by_ticker.get(ticker, []), key=lambda item: item.get("reportDate", ""))
+                if company_reports:
+                    company_reports[-1].setdefault("metrics", {})["dividendPerShare"] = metric
+                    dividends_by_year = {int(period["endDate"][:4]): period["value"] for period in metric["periods"]}
+                    for report in company_reports:
+                        year = int(report["reportDate"][:4])
+                        if year in dividends_by_year:
+                            report.setdefault("summary", {})["dividendPerShare"] = dividends_by_year[year]
+            if completed % 10 == 0 or completed == len(candidates):
+                print(f"Processed dividend history {completed}/{len(candidates)}", flush=True)
+    failures.sort(key=lambda item: item["ticker"])
+    return reports, failures
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--company-database", type=Path, required=True)
@@ -289,9 +328,15 @@ def main() -> None:
     parser.add_argument("--failures-output", type=Path)
     parser.add_argument("--delay", type=float, default=0.35)
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--dividends-only", action="store_true")
     args = parser.parse_args()
     profiles = json.loads(args.company_database.read_text())
-    reports, failures = run(profiles, YahooClient(delay=args.delay), workers=args.workers)
+    client = YahooClient(delay=args.delay)
+    if args.dividends_only:
+        reports = json.loads(args.output.read_text())
+        reports, failures = enrich_existing_dividends(profiles, reports, client, workers=args.workers)
+    else:
+        reports, failures = run(profiles, client, workers=args.workers)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(reports, ensure_ascii=False, indent=2) + "\n")
     if args.failures_output:
