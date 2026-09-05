@@ -34,6 +34,14 @@ MARKET_PROFILE_FIELDS = {
 ZERO_CONSENSUS = {"holders": 0, "buying": 0, "selling": 0, "newPositions": 0}
 
 
+def is_annual_report(report: dict) -> bool:
+    return str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F", "ANNUAL"))
+
+
+def report_identity(report: dict) -> str:
+    return str(report.get("accessionNumber") or report.get("reportDate") or report.get("filingDate") or "")
+
+
 def issuer_key(name: str | None) -> str:
     """Return a stable issuer key shared by security classes and ADR variants."""
     text = unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().lower()
@@ -421,11 +429,11 @@ def compact_company_reports(reports: list[dict]) -> list[dict]:
     """Store repeated XBRL history once while keeping every report summary."""
     allowed = [
         report for report in reports
-        if str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F", "10-Q"))
+        if str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F", "10-Q", "ANNUAL"))
     ]
     annual_by_cusip: dict[str, list[dict]] = defaultdict(list)
     for report in allowed:
-        if str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
+        if is_annual_report(report):
             annual_by_cusip[report.get("cusip", "")].append(report)
 
     consolidated: dict[str, dict] = {}
@@ -446,7 +454,7 @@ def compact_company_reports(reports: list[dict]) -> list[dict]:
         }
 
     latest_annual = {
-        cusip: max(items, key=lambda item: item.get("filingDate", "")).get("accessionNumber")
+        cusip: report_identity(max(items, key=lambda item: item.get("filingDate", "")))
         for cusip, items in annual_by_cusip.items()
     }
     result = []
@@ -456,7 +464,7 @@ def compact_company_reports(reports: list[dict]) -> list[dict]:
         form = str(item.get("form", "")).upper()
         if form.startswith("10-Q"):
             item["metrics"] = {}
-        elif item.get("accessionNumber") == latest_annual.get(item.get("cusip", "")):
+        elif report_identity(item) == latest_annual.get(item.get("cusip", "")):
             item["metrics"] = consolidated.get(item.get("cusip", ""), {})
         else:
             item["metrics"] = {}
@@ -658,7 +666,7 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
     latest_reports_by_issuer = {}
     for report in company_reports or []:
         cusip = report.get("cusip")
-        if cusip and str(report.get("form", "")).upper().startswith(("10-K", "20-F", "40-F")):
+        if cusip and is_annual_report(report):
             if cusip not in latest_reports or annual_report_rank(report) > annual_report_rank(latest_reports[cusip]):
                 latest_reports[cusip] = report
             key = issuer_key(report.get("companyName"))
@@ -1134,7 +1142,9 @@ def main() -> None:
         archived_filings = [json.loads(path.read_text()) for path in args.filings_directory.glob("*/*.json")]
     company_reports = []
     if args.company_reports_directory and args.company_reports_directory.exists():
-        company_reports = [json.loads(path.read_text()) for path in args.company_reports_directory.glob("*/*.json")]
+        for path in args.company_reports_directory.glob("*/*.json"):
+            payload = json.loads(path.read_text())
+            company_reports.extend(payload if isinstance(payload, list) else [payload])
     average_prices = estimate_average_purchase_prices(archived_filings)
     snapshot = build(
         current, previous, companies, profiles, existing.get("filingUpdates", []),
