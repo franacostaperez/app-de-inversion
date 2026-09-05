@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 USER_AGENT = "Mozilla/5.0 DividendIntelligence/1.0"
-EXCHANGES = ("NASDAQ", "NYSE", "NYSEARCA")
+EXCHANGES = ("NASDAQ", "NYSE", "NYSEARCA", "LON")
 LIVE_YAHOO_FIELDS = {
     "marketPrice", "marketCapitalization", "movingAverage1000", "priceVsMovingAverage1000Percent",
     "movingAverage1000Sessions", "movingAverage1000AsOf", "priceHistorySource",
@@ -306,9 +306,12 @@ class MarketDataClient:
     def google_quote(self, ticker: str, preferred_exchange: str | None = None):
         exchanges = ([preferred_exchange] if preferred_exchange else []) + [item for item in EXCHANGES if item != preferred_exchange]
         for exchange in exchanges:
+            quote_ticker = ticker
+            if exchange == "LON" and ticker.endswith(".L"):
+                quote_ticker = ticker[:-2].replace("-", ".")
             # Spanish localization provides a readable About description for
             # the app; metric extraction supports both English and Spanish.
-            url = "https://www.google.com/finance/quote/" + urllib.parse.quote(f"{ticker}:{exchange}") + "?hl=es"
+            url = "https://www.google.com/finance/quote/" + urllib.parse.quote(f"{quote_ticker}:{exchange}") + "?hl=es"
             try:
                 page = self.request(url)
             except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):

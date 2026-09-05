@@ -76,6 +76,10 @@ jobs:
         run: >-
           python pipeline/sync_sp500.py
           --database data/companies/index.json
+      - name: Synchronize FTSE 100 universe
+        run: >-
+          python pipeline/sync_ftse100.py
+          --database data/companies/index.json
       - name: Enrich newly reported companies
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
