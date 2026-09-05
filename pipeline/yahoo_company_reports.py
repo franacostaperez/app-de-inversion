@@ -291,6 +291,7 @@ def enrich_existing_dividends(
     for report in reports:
         by_ticker[report.get("ticker")].append(report)
     candidates = [profile for profile in profiles if profile.get("ftse100") is True and profile.get("ticker")]
+    profiles_by_ticker = {profile["ticker"]: profile for profile in candidates}
     failures = []
 
     def fetch_profile(profile):
@@ -304,8 +305,10 @@ def enrich_existing_dividends(
         futures = [executor.submit(fetch_profile, profile) for profile in candidates]
         for completed, future in enumerate(as_completed(futures), 1):
             ticker, metric, failure = future.result()
-            if failure or not metric:
-                failures.append(failure or {"ticker": ticker, "reason": "no dividend history", "scope": "dividend history"})
+            if failure:
+                failures.append(failure)
+            elif not metric and profiles_by_ticker[ticker].get("paysDividend") is not False:
+                failures.append({"ticker": ticker, "reason": "no dividend history", "scope": "dividend history"})
             else:
                 company_reports = sorted(by_ticker.get(ticker, []), key=lambda item: item.get("reportDate", ""))
                 if company_reports:

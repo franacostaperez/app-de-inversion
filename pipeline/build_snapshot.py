@@ -250,26 +250,18 @@ def quality_investor_score(summary: dict, sector: str = "", industry: str = "") 
 
     sector_text = str(sector or "").lower()
     industry_text = str(industry or "").lower()
-    financial_business = "financial" in sector_text or any(keyword in industry_text for keyword in (
+    financial_keywords = (
         "bank", "insurance", "financial", "capital markets", "asset management",
-        "credit services", "mortgage", "brokerage",
-    ))
+        "credit services", "mortgage", "brokerage", "investment trust",
+        "collective investment", "wealth management",
+    )
+    financial_business = any(
+        keyword in sector_text or keyword in industry_text for keyword in financial_keywords
+    )
     real_estate_business = "real estate" in sector_text or any(keyword in industry_text for keyword in (
         "reit", "real estate",
     ))
-    if financial_business:
-        model = "FINANCIAL"
-        definitions = (
-            ("netMargin", summary.get("netMargin"), 5,
-             [(-10, 0), (5, 1), (10, 2), (15, 3), (20, 4), (30, 5)]),
-            ("positiveEarnings", None if net_income is None else (1 if net_income > 0 else 0), 2,
-             [(0, 0), (1, 2)]),
-            ("payoutSafety", payout_ratio, 3,
-             [(0, 3), (0.5, 3), (0.75, 2), (1, 1), (1.25, 0)]),
-            ("efficiency", efficiency_ratio, 2,
-             [(0.3, 2), (0.5, 2), (0.7, 1), (0.9, 0), (1.5, 0)]),
-        )
-    elif real_estate_business:
+    if real_estate_business:
         model = "REAL_ESTATE"
         definitions = (
             ("operatingMargin", summary.get("operatingMargin"), 3,
@@ -280,6 +272,18 @@ def quality_investor_score(summary: dict, sector: str = "", industry: str = "") 
              [(0, 0), (0.8, 1), (1.2, 2), (1.8, 3), (2.5, 4)]),
             ("dividendCashCoverage", dividend_cash_coverage, 3,
              [(0, 0), (0.8, 1), (1, 2), (1.25, 3)]),
+        )
+    elif financial_business:
+        model = "FINANCIAL"
+        definitions = (
+            ("netMargin", summary.get("netMargin"), 5,
+             [(-10, 0), (5, 1), (10, 2), (15, 3), (20, 4), (30, 5)]),
+            ("positiveEarnings", None if net_income is None else (1 if net_income > 0 else 0), 2,
+             [(0, 0), (1, 2)]),
+            ("payoutSafety", payout_ratio, 3,
+             [(0, 3), (0.5, 3), (0.75, 2), (1, 1), (1.25, 0)]),
+            ("efficiency", efficiency_ratio, 2,
+             [(0.3, 2), (0.5, 2), (0.7, 1), (0.9, 0), (1.5, 0)]),
         )
     else:
         model = "GENERAL"
@@ -685,10 +689,15 @@ def build(current: dict, previous: dict, companies: list[dict], company_profiles
         display_name = profile.get("name", display_name)
         sector = profile.get("sector", company.get("sector", "Unknown"))
         industry = str(profile.get("industry") or "")
-        financial_business = "financial" in str(sector).lower() or any(keyword in industry.lower() for keyword in (
+        financial_keywords = (
             "bank", "insurance", "financial", "capital markets", "asset management",
-            "credit services", "mortgage", "brokerage",
-        ))
+            "credit services", "mortgage", "brokerage", "investment trust",
+            "collective investment", "wealth management",
+        )
+        financial_business = any(
+            keyword in str(sector).lower() or keyword in industry.lower()
+            for keyword in financial_keywords
+        )
         report = latest_reports.get(ticker) or latest_reports_by_issuer.get(issuer_key(display_name)) or {}
         dividend_yield = profile.get("dividendYield")
         yield_percent = dividend_yield * 100 if dividend_yield is not None else company.get("yield")
