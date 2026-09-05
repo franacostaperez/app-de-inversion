@@ -66,6 +66,22 @@ class CompanyEnrichmentTests(unittest.TestCase):
         self.assertEqual(result[0]["businessModel"], "Modelo")
         self.assertEqual(result[0]["economicMoat"], "Foso")
 
+    def test_london_refresh_preserves_local_market_identity(self):
+        class Client:
+            def google_quote(self, ticker, preferred_exchange=None):
+                return "LON", '<div class="SwQK7">Dividend</div><div class="dO6ijd">4.20%</div>'
+            def yahoo_profile(self, ticker):
+                return {}
+            def sec_reports(self, ticker):
+                return {}
+
+        catalog = [{"cusip": "FTSE100:VOD", "ticker": "VOD.L", "name": "Vodafone",
+                    "exchange": "LON", "currency": "GBX", "country": "United Kingdom"}]
+        result = enrich([], catalog, Client(), 0)
+        self.assertEqual(result[0]["exchange"], "LON")
+        self.assertEqual(result[0]["currency"], "GBX")
+        self.assertEqual(result[0]["country"], "United Kingdom")
+
     def test_refreshes_known_catalog_companies_even_without_current_holding(self):
         class Client:
             def google_quote(self, ticker, preferred_exchange=None):

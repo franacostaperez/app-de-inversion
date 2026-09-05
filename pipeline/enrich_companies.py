@@ -478,6 +478,14 @@ def enrich(holdings: list[dict], catalog: list[dict], client: MarketDataClient, 
         exchange, page = client.google_quote(ticker, preferred_exchange)
         if page:
             refreshed = profile_from_google(cusip, holding.get("company", ticker), ticker, exchange, page)
+            # Exchange-qualified non-US listings keep their catalogue identity;
+            # Google parsing otherwise defaults every result to USD/United States.
+            if existing.get("exchange"):
+                refreshed["exchange"] = existing["exchange"]
+            if existing.get("currency"):
+                refreshed["currency"] = existing["currency"]
+            if existing.get("country"):
+                refreshed["country"] = existing["country"]
             # A source omitting a field today must not erase a previously verified
             # value; any newly reported non-null metric still takes precedence.
             for key, value in existing.items():
