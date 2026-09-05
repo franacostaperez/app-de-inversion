@@ -212,15 +212,15 @@ class YahooClient:
 
 def reports_for_profile(profile: dict, payload: dict, dividend_payload: dict | None = None) -> list[dict]:
     metrics = extract_series(payload)
-    dividend_series = extract_dividend_series(dividend_payload or {})
-    if dividend_series:
-        metrics["dividendPerShare"] = dividend_series
     report_dates = sorted({
         period["endDate"]
         for series in metrics.values()
         for period in series.get("periods", [])
         if period.get("endDate")
     })
+    dividend_series = extract_dividend_series(dividend_payload or {})
+    if dividend_series:
+        metrics["dividendPerShare"] = dividend_series
     reports = []
     summaries = {end_date: summary_on(metrics, end_date) for end_date in report_dates}
     for index, end_date in enumerate(report_dates):

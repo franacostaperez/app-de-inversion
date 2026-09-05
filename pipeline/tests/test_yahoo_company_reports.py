@@ -30,13 +30,21 @@ class YahooCompanyReportsTests(unittest.TestCase):
         self.assertEqual(summary["roce"], 30)
 
     def test_builds_one_scored_report_per_year(self):
+        dividends = {"chart": {"result": [{
+            "meta": {"currency": "GBP"},
+            "events": {"dividends": {
+                "a": {"date": 1735603200, "amount": 0.4},
+                "b": {"date": 1767139200, "amount": 0.5},
+            }},
+        }]}}
         reports = reports_for_profile(
             {"cusip": "FTSE100:TST", "ticker": "TST.L", "name": "Test plc"},
-            self.payload(),
+            self.payload(), dividends,
         )
         self.assertEqual(len(reports), 2)
         self.assertEqual(reports[-1]["form"], "ANNUAL")
         self.assertTrue(reports[-1]["metrics"])
+        self.assertEqual(len(reports[-1]["metrics"]["dividendPerShare"]["periods"]), 2)
         self.assertFalse(reports[0]["metrics"])
         self.assertIn("+20.0%", reports[-1]["highlights"][0])
 
