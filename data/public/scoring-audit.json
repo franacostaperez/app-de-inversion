@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04T23:04:55.115433Z",
+  "generatedAt": "2026-09-05T09:02:39.926118Z",
   "totalCompanies": 926,
   "companiesWithScore": 926,
   "companiesWithoutScore": 0,
@@ -16,7 +16,7 @@
     "movingAverage1000": 151,
     "qualityCashConversion": 90,
     "dividendGrowth": 64,
-    "pe": 59,
+    "pe": 58,
     "qualityEfficiency": 54,
     "qualityPayoutSafety": 18,
     "qualityDividendCashCoverage": 8,
@@ -228,8 +228,8 @@
       "metrics": [
         "debtToEarnings",
         "movingAverage1000",
-        "qualityNetMargin",
-        "qualityOperatingMargin"
+        "qualityOperatingMargin",
+        "qualityRoce"
       ],
       "companies": 4
     },
@@ -237,10 +237,10 @@
       "metrics": [
         "debtToEarnings",
         "movingAverage1000",
-        "qualityOperatingMargin",
-        "qualityRoce"
+        "qualityNetMargin",
+        "qualityOperatingMargin"
       ],
-      "companies": 3
+      "companies": 4
     },
     {
       "metrics": [
@@ -571,16 +571,6 @@
         "pe",
         "qualityNetMargin",
         "qualityOperatingMargin"
-      ],
-      "companies": 1
-    },
-    {
-      "metrics": [
-        "debtToEarnings",
-        "movingAverage1000",
-        "pe",
-        "qualityOperatingMargin",
-        "qualityRoce"
       ],
       "companies": 1
     }
@@ -2153,36 +2143,6 @@
       }
     },
     {
-      "company": "GALAXY DIGITAL INC.",
-      "cusip": "36317J209",
-      "scoreCoverage": 40,
-      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
-      "missingMetrics": [
-        "debtToEarnings",
-        "movingAverage1000",
-        "pe",
-        "qualityOperatingMargin",
-        "qualityRoce"
-      ],
-      "availableMetrics": {
-        "yield": 0,
-        "pe": null,
-        "earningsPerShare": null,
-        "peNotMeaningful": false,
-        "operatingMargin": null,
-        "dividendGrowth": 0,
-        "movingAverage1000": null,
-        "priceVsMovingAverage1000Percent": null,
-        "totalDebt": null,
-        "cash": 1246240000,
-        "netDebt": null,
-        "netIncome": -241349000,
-        "debtToEarnings": null,
-        "debtRatioBasis": null,
-        "leverageStatus": "MISSING"
-      }
-    },
-    {
       "company": "INFLEQTION INC",
       "cusip": "45676K103",
       "scoreCoverage": 40,
@@ -3332,6 +3292,35 @@
       }
     },
     {
+      "company": "GALAXY DIGITAL INC.",
+      "cusip": "36317J209",
+      "scoreCoverage": 76,
+      "dataLinkStatus": "VERIFIED_TICKER_MISSING_METRICS",
+      "missingMetrics": [
+        "debtToEarnings",
+        "movingAverage1000",
+        "qualityOperatingMargin",
+        "qualityRoce"
+      ],
+      "availableMetrics": {
+        "yield": 0,
+        "pe": 47.25,
+        "earningsPerShare": null,
+        "peNotMeaningful": false,
+        "operatingMargin": null,
+        "dividendGrowth": 0,
+        "movingAverage1000": null,
+        "priceVsMovingAverage1000Percent": null,
+        "totalDebt": null,
+        "cash": 1246240000,
+        "netDebt": null,
+        "netIncome": -241349000,
+        "debtToEarnings": null,
+        "debtRatioBasis": null,
+        "leverageStatus": "MISSING"
+      }
+    },
+    {
       "company": "SIONNA THERAPEUTICS INC",
       "cusip": "829401108",
       "scoreCoverage": 76,
@@ -3863,9 +3852,9 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": null,
+        "pe": 0.198028,
         "earningsPerShare": -9.04,
-        "peNotMeaningful": true,
+        "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 0,
         "movingAverage1000": null,
@@ -3975,9 +3964,9 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": null,
+        "pe": 20.267228,
         "earningsPerShare": -3.31,
-        "peNotMeaningful": true,
+        "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 0,
         "movingAverage1000": null,
@@ -5298,9 +5287,9 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": null,
+        "pe": 123.326537,
         "earningsPerShare": -24.69,
-        "peNotMeaningful": true,
+        "peNotMeaningful": false,
         "operatingMargin": -0.86,
         "dividendGrowth": 0,
         "movingAverage1000": null,
@@ -5325,7 +5314,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 5.896648,
+        "pe": 6.266294,
         "earningsPerShare": -4.27,
         "peNotMeaningful": false,
         "operatingMargin": -47.56,
@@ -6650,7 +6639,7 @@
       ],
       "availableMetrics": {
         "yield": 1.0376875228686424,
-        "pe": 38.22604,
+        "pe": 38.339122,
         "earningsPerShare": 8.96,
         "peNotMeaningful": false,
         "operatingMargin": 29.52,
@@ -6931,8 +6920,8 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": -86.0,
-        "movingAverage1000": 17.6016,
-        "priceVsMovingAverage1000Percent": -23.19,
+        "movingAverage1000": 17.5885,
+        "priceVsMovingAverage1000Percent": -23.13,
         "totalDebt": 12184000000,
         "cash": 5977000000,
         "netDebt": 6207000000,
@@ -7150,9 +7139,9 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": null,
+        "pe": 93.52,
         "earningsPerShare": -0.05,
-        "peNotMeaningful": true,
+        "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 0,
         "movingAverage1000": 12.6816,
@@ -7316,7 +7305,7 @@
       ],
       "availableMetrics": {
         "yield": 0.32,
-        "pe": 21.343017,
+        "pe": 34.785661,
         "earningsPerShare": -10.84,
         "peNotMeaningful": false,
         "operatingMargin": -57.18,
@@ -7400,8 +7389,8 @@
         "peNotMeaningful": false,
         "operatingMargin": 10.14,
         "dividendGrowth": 1.61,
-        "movingAverage1000": 81.7555,
-        "priceVsMovingAverage1000Percent": -2.88,
+        "movingAverage1000": 81.6507,
+        "priceVsMovingAverage1000Percent": -2.76,
         "totalDebt": null,
         "cash": 13000,
         "netDebt": null,
@@ -7660,7 +7649,7 @@
         "peNotMeaningful": false,
         "operatingMargin": 13.53,
         "dividendGrowth": 0,
-        "movingAverage1000": 227.0751,
+        "movingAverage1000": 227.0752,
         "priceVsMovingAverage1000Percent": -30.14,
         "totalDebt": null,
         "cash": 1094908000,
@@ -8721,7 +8710,7 @@
       ],
       "availableMetrics": {
         "yield": 4.1,
-        "pe": 15.666667,
+        "pe": 11.837607,
         "earningsPerShare": -2.06,
         "peNotMeaningful": false,
         "operatingMargin": -4.9,
@@ -10392,8 +10381,8 @@
         "peNotMeaningful": false,
         "operatingMargin": 20.38,
         "dividendGrowth": 4.45,
-        "movingAverage1000": 148.8969,
-        "priceVsMovingAverage1000Percent": 139.78,
+        "movingAverage1000": 148.8399,
+        "priceVsMovingAverage1000Percent": 139.88,
         "totalDebt": null,
         "cash": 293751000,
         "netDebt": null,
@@ -10751,7 +10740,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 26.708995,
+        "pe": 28.52381,
         "earningsPerShare": -2.11,
         "peNotMeaningful": false,
         "operatingMargin": 9.43,
@@ -12702,7 +12691,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 91.875868,
+        "pe": 122.991652,
         "earningsPerShare": -0.57,
         "peNotMeaningful": false,
         "operatingMargin": 2.41,
@@ -12988,7 +12977,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 70.559748,
+        "pe": 111.873711,
         "earningsPerShare": -4.79,
         "peNotMeaningful": false,
         "operatingMargin": -3.49,
@@ -13330,7 +13319,7 @@
       ],
       "availableMetrics": {
         "yield": 2.27,
-        "pe": 39.03876,
+        "pe": 37.875969,
         "earningsPerShare": -4.83,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -13357,7 +13346,7 @@
       ],
       "availableMetrics": {
         "yield": 4.2723794950267795,
-        "pe": 25.044926,
+        "pe": 24.902974,
         "earningsPerShare": 2.94,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -13440,8 +13429,8 @@
         "peNotMeaningful": false,
         "operatingMargin": 20.09,
         "dividendGrowth": null,
-        "movingAverage1000": 54.3109,
-        "priceVsMovingAverage1000Percent": 4.84,
+        "movingAverage1000": 54.2449,
+        "priceVsMovingAverage1000Percent": 4.97,
         "totalDebt": 3206000000,
         "cash": 375500000,
         "netDebt": 2830500000,
@@ -13460,8 +13449,8 @@
         "dividendGrowth"
       ],
       "availableMetrics": {
-        "yield": 1.7195804001224297,
-        "pe": 22.19939,
+        "yield": 1.77,
+        "pe": 21.92,
         "earningsPerShare": 15.45,
         "peNotMeaningful": false,
         "operatingMargin": 10.19,
@@ -13778,8 +13767,8 @@
         "peNotMeaningful": true,
         "operatingMargin": null,
         "dividendGrowth": 0,
-        "movingAverage1000": 7.0447,
-        "priceVsMovingAverage1000Percent": 67.36,
+        "movingAverage1000": 201.5966,
+        "priceVsMovingAverage1000Percent": -94.15,
         "totalDebt": 415740000,
         "cash": 203890000,
         "netDebt": 211850000,
@@ -14033,7 +14022,7 @@
       ],
       "availableMetrics": {
         "yield": 0,
-        "pe": 151.517857,
+        "pe": 147.25,
         "earningsPerShare": 2.1,
         "peNotMeaningful": false,
         "operatingMargin": 7.06,
@@ -14371,7 +14360,7 @@
       ],
       "availableMetrics": {
         "yield": 2.6,
-        "pe": 25.387097,
+        "pe": 19.47619,
         "earningsPerShare": -1.6,
         "peNotMeaningful": false,
         "operatingMargin": -10.91,
@@ -14740,8 +14729,8 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 2.5,
-        "movingAverage1000": 39.6653,
-        "priceVsMovingAverage1000Percent": 58.02,
+        "movingAverage1000": 39.4643,
+        "priceVsMovingAverage1000Percent": 58.83,
         "totalDebt": 317816000000,
         "cash": 231845000000,
         "netDebt": 85971000000,
@@ -14761,7 +14750,7 @@
       ],
       "availableMetrics": {
         "yield": 1.3467604950254792,
-        "pe": 18.729288,
+        "pe": 18.907818,
         "earningsPerShare": 7.4,
         "peNotMeaningful": false,
         "operatingMargin": null,
@@ -15416,8 +15405,8 @@
         "peNotMeaningful": false,
         "operatingMargin": null,
         "dividendGrowth": 1.65,
-        "movingAverage1000": 101.7462,
-        "priceVsMovingAverage1000Percent": 83.43,
+        "movingAverage1000": 101.2694,
+        "priceVsMovingAverage1000Percent": 84.29,
         "totalDebt": null,
         "cash": 5873100000,
         "netDebt": null,
