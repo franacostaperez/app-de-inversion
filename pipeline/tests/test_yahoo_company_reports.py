@@ -52,6 +52,10 @@ class YahooCompanyReportsTests(unittest.TestCase):
         self.assertEqual(metric["periods"][0]["value"], 1.0)
         self.assertEqual(metric["periods"][0]["unit"], "GBP")
 
+    def test_no_dividend_events_is_not_a_synthetic_history(self):
+        payload = {"chart": {"result": [{"meta": {"currency": "GBP"}, "events": {}}]}}
+        self.assertIsNone(extract_dividend_series(payload))
+
 
 if __name__ == "__main__":
     unittest.main()
