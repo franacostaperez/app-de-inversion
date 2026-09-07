@@ -25,11 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate GitHub Actions syntax and expressions
-        uses: docker://rhysd/actionlint:1.7.12
-        with:
-          # GitHub supports queue:max since May 2026; actionlint 1.7.12 lags this key.
-          args: >-
-            -ignore 'unexpected key "queue" for "concurrency" section'
+        # GitHub supports queue:max since May 2026; actionlint 1.7.12 lags this key.
+        run: >-
+          docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12
+          -ignore 'unexpected key "queue" for "concurrency" section'
 
   validate:
     runs-on: macos-latest
