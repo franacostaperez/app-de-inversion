@@ -1,7 +1,9 @@
-name: Refresh FTSE 100 analysis
+name: Refresh prices and trailing PE
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "17 7,19 * * *"
 
 permissions:
   contents: write
@@ -10,5 +12,5 @@ jobs:
   update:
     uses: ./.github/workflows/data-pipeline.yml
     with:
-      mode: "ftse"
+      mode: "prices"
     secrets: inherit

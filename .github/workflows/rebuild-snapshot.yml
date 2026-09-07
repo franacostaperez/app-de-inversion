@@ -3,54 +3,26 @@ name: Rebuild app snapshot
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - "pipeline/build_snapshot.py"
       - "pipeline/refresh_snapshot.py"
+      - "pipeline/run_automation.py"
+      - "data/source/**"
+      - "data/companies/**"
+      - "data/filings/**"
+      - "data/company-reports/**"
+      - "data/instruments/**"
       - "data/fund-portfolios/**"
+      - "data/config/company_valuation.json"
       - ".github/workflows/rebuild-snapshot.yml"
 
 permissions:
   contents: write
 
-# Share the daily updater's main-branch lock to avoid concurrent data commits.
-concurrency:
-  group: dividend-data-${{ github.ref_name }}
-  cancel-in-progress: false
-
 jobs:
-  rebuild:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Test pipeline
-        run: python -m unittest discover -s pipeline/tests
-      - name: Rebuild snapshot from the verified local data
-        run: >-
-          python pipeline/build_snapshot.py
-          --current data/source/latest.json
-          --previous data/source/previous.json
-          --companies data/source/companies.json
-          --company-database data/companies/index.json
-          --qualitative-database data/companies/qualitative.json
-          --valuation-database data/config/company_valuation.json
-          --filings-directory data/filings
-          --company-reports-directory data/company-reports
-          --output data/public/snapshot.json
-      - name: Audit rebuilt snapshot
-        run: |
-          python pipeline/audit_scoring.py --snapshot data/public/snapshot.json --output data/public/scoring-audit.json
-          python pipeline/audit_metric_values.py --snapshot data/public/snapshot.json --output data/public/metric-audit.json
-      - name: Commit generated outputs
-        run: |
-          if git diff --quiet -- data/public/snapshot.json data/public/snapshot-core.json data/public/company-reports data/public/scoring-audit.json data/public/metric-audit.json; then exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/public/snapshot.json data/public/snapshot-core.json data/public/company-reports data/public/scoring-audit.json data/public/metric-audit.json
-          git commit -m "data: rebuild app snapshot from verified inputs"
-          git push
+  update:
+    uses: ./.github/workflows/data-pipeline.yml
+    with:
+      mode: "rebuild"
+    secrets: inherit

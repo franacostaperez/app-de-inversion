@@ -1,13 +1,13 @@
-name: Refresh weekly fundamentals and audits
+name: Refresh dividend calendar
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 2 * * 6"
+    - cron: "17 8 * * 6"
   push:
     branches: [main]
     paths:
-      - "data/config/portfolio.json"
+      - "data/config/dividend_ir_sources.json"
 
 permissions:
   contents: write
@@ -16,5 +16,5 @@ jobs:
   update:
     uses: ./.github/workflows/data-pipeline.yml
     with:
-      mode: "weekly"
+      mode: "dividends"
     secrets: inherit

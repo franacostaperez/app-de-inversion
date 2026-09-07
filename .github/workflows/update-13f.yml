@@ -1,13 +1,13 @@
-name: Refresh weekly fundamentals and audits
+name: Refresh 13F portfolios
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 2 * * 6"
+    - cron: "17 3 * * 2,5"
   push:
     branches: [main]
     paths:
-      - "data/config/portfolio.json"
+      - "data/config/investors.json"
 
 permissions:
   contents: write
@@ -16,5 +16,5 @@ jobs:
   update:
     uses: ./.github/workflows/data-pipeline.yml
     with:
-      mode: "weekly"
+      mode: "13f"
     secrets: inherit

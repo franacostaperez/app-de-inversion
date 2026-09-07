@@ -9,13 +9,28 @@ on:
       - "Tests/**"
       - "data/fund-portfolios/**"
       - "pipeline/**"
-      - ".github/workflows/validate-app.yml"
+      - ".github/workflows/**"
   pull_request:
 
 permissions:
   contents: read
 
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate GitHub Actions syntax and expressions
+        uses: docker://rhysd/actionlint:1.7.12
+        with:
+          # GitHub supports queue:max since May 2026; actionlint 1.7.12 lags this key.
+          args: >-
+            -ignore 'unexpected key "queue" for "concurrency" section'
+
   validate:
     runs-on: macos-latest
     timeout-minutes: 15

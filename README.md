@@ -8,7 +8,7 @@ MVP de una app iPhone centrada en dividendos y movimientos 13F.
 - Datos JSON versionables en GitHub.
 - Carga local inmediata y actualización desde GitHub mediante una URL configurable.
 - Pipeline Python para comparar dos trimestres y generar movimientos y consenso.
-- GitHub Action semanal para validar y regenerar los datos.
+- Automatizaciones separadas por tipo de dato, con snapshot condicionado a cambios.
 
 > Los datos incluidos son de demostración y aparecen identificados como tales en la app. No son asesoramiento financiero.
 
@@ -42,6 +42,8 @@ https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/data/public/snapshot.
 El repositorio debe ser público para usar `raw.githubusercontent.com` sin autenticación. Si debe ser privado, conviene publicar únicamente `data/public` en GitHub Pages o usar un backend con autenticación; no incluyas un token de GitHub en la app.
 
 ## Pipeline
+
+Frecuencias, dependencias, recuperación y límites: [automatizaciones](docs/automations.md).
 
 ### Numantia y carteras CNMV
 

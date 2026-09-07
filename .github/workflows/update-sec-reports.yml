@@ -1,7 +1,9 @@
-name: Refresh FTSE 100 analysis
+name: Monitor SEC company reports
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
 
 permissions:
   contents: write
@@ -10,5 +12,5 @@ jobs:
   update:
     uses: ./.github/workflows/data-pipeline.yml
     with:
-      mode: "ftse"
+      mode: "sec"
     secrets: inherit

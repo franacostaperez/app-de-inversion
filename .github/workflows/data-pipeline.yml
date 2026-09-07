@@ -1,0 +1,51 @@
+name: Run data cadence
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    concurrency:
+      group: dividend-data-${{ github.ref_name }}
+      cancel-in-progress: false
+      queue: max
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Resolve the latest branch tip after obtaining the shared writer lock.
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run selected cadence
+        env:
+          DATA_MODE: ${{ inputs.mode }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+          OPENFIGI_API_KEY: ${{ secrets.OPENFIGI_API_KEY }}
+        run: python pipeline/run_automation.py "$DATA_MODE"
+      - name: Commit data and freshness records together
+        env:
+          DATA_MODE: ${{ inputs.mode }}
+        run: |
+          git add data/
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "data: refresh $DATA_MODE"
+          # A concurrent human push fails safely; never rebase stale generated data.
+          git push
+      - name: Record cadence result
+        if: success()
+        run: |
+          echo '### Data cadence completed' >> "$GITHUB_STEP_SUMMARY"
+          cat data/automation/state.json >> "$GITHUB_STEP_SUMMARY"
