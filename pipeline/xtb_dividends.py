@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -20,6 +21,27 @@ def parse_date(value: Any) -> date:
         except ValueError:
             pass
     return (datetime(1899, 12, 30) + timedelta(days=float(value))).date()
+
+
+def parse_amount(value: Any) -> float:
+    """Parse numeric or locale-formatted EUR amounts returned by Google Sheets."""
+    if isinstance(value, (int, float)):
+        return float(value)
+
+    text = str(value).strip().replace("\u00a0", "").replace(" ", "")
+    text = re.sub(r"[^0-9,.-]", "", text)
+    if not text:
+        raise ValueError(f"Invalid dividend amount: {value!r}")
+
+    if "," in text and "." in text:
+        if text.rfind(",") > text.rfind("."):
+            text = text.replace(".", "").replace(",", ".")
+        else:
+            text = text.replace(",", "")
+    elif "," in text:
+        text = text.replace(".", "").replace(",", ".")
+
+    return float(text)
 
 
 def normalize_rows(values: list[list[Any]]) -> list[dict[str, Any]]:
@@ -51,7 +73,7 @@ def normalize_rows(values: list[list[Any]]) -> list[dict[str, Any]]:
             "ticker": str(cell(row, "Ticker")).strip().upper(),
             "market": str(cell(row, "Mercado")).strip(),
             "type": str(cell(row, "Tipo")).strip() or "Desconocido",
-            "amountEUR": round(float(cell(row, "Importe")), 2),
+            "amountEUR": round(parse_amount(cell(row, "Importe")), 2),
             "noticeURL": str(cell(row, "Enlace al aviso")).strip() or None,
             "noticeID": notice_id,
         }
