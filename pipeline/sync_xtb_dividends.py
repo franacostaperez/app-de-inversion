@@ -10,8 +10,9 @@ from urllib.parse import quote
 
 from xtb_dividends import build_payload, normalize_rows, write_payload
 
-SHEET_ID = os.getenv("XTB_DIVIDENDS_SHEET_ID", "1mdd3ZsegDHW1r30o-TKr-QznivG0uBNA3EUCk_ikHa0")
-TAB = os.getenv("XTB_DIVIDENDS_TAB", "Dividendos")
+DEFAULT_SHEET_ID = "1mdd3ZsegDHW1r30o-TKr-QznivG0uBNA3EUCk_ikHa0"
+SHEET_ID = os.getenv("XTB_DIVIDENDS_SHEET_ID") or DEFAULT_SHEET_ID
+TAB = os.getenv("XTB_DIVIDENDS_TAB") or "Dividendos"
 
 
 def read_values() -> list[list[object]]:
