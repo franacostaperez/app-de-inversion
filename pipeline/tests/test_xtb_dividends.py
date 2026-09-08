@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from pipeline.xtb_dividends import build_payload, normalize_rows
+from pipeline.xtb_dividends import build_payload, normalize_rows, parse_amount
 
 
 class XTBDividendsTests(unittest.TestCase):
@@ -22,6 +22,12 @@ class XTBDividendsTests(unittest.TestCase):
         self.assertEqual(payload["summary"]["last12MonthsEUR"], 17.0)
         self.assertEqual(payload["ranking"][0]["ticker"], "AAA.US")
         self.assertEqual(payload["futureIncome"]["status"], "needs_current_portfolio")
+
+    def test_parses_localized_eur_amounts(self):
+        self.assertEqual(parse_amount("€0,29"), 0.29)
+        self.assertEqual(parse_amount("1.234,56 €"), 1234.56)
+        self.assertEqual(parse_amount("€1,234.56"), 1234.56)
+        self.assertEqual(parse_amount(3.9), 3.9)
 
     def test_rejects_non_eur_cash_rows(self):
         rows = [
