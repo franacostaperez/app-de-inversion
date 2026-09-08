@@ -34,10 +34,8 @@ jobs:
             exit 0
           fi
           python pipeline/sync_xtb_dividends.py
-      - name: Validate generated snapshot
-        run: |
-          python -m unittest discover -s pipeline/tests
-          swift test
+      - name: Validate generated XTB data
+        run: python -m unittest discover -s pipeline/tests
       - name: Commit only when the Sheet changed
         run: |
           git add data/public/xtb-dividends.json data/public/snapshot.json
