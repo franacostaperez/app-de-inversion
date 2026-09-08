@@ -33,6 +33,8 @@ jobs:
           ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
           OPENFIGI_API_KEY: ${{ secrets.OPENFIGI_API_KEY }}
         run: python pipeline/run_automation.py "$DATA_MODE"
+      - name: Preserve independently synced XTB dividend history
+        run: python pipeline/preserve_personal_dividends.py
       - name: Commit data and freshness records together
         env:
           DATA_MODE: ${{ inputs.mode }}
