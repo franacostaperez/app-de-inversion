@@ -28,7 +28,12 @@ jobs:
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           XTB_DIVIDENDS_SHEET_ID: ${{ vars.XTB_DIVIDENDS_SHEET_ID }}
-        run: python pipeline/sync_xtb_dividends.py
+        run: |
+          if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::warning::GOOGLE_SERVICE_ACCOUNT_JSON is not configured; keeping the last published XTB snapshot."
+            exit 0
+          fi
+          python pipeline/sync_xtb_dividends.py
       - name: Validate generated snapshot
         run: |
           python -m unittest discover -s pipeline/tests
