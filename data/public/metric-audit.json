@@ -1,21 +1,34 @@
 {
-  "generatedAt": "2026-09-07T22:01:17.114273Z",
+  "generatedAt": "2026-09-10T22:43:33.649533Z",
   "profilesAudited": 1095,
   "scoresAudited": 1026,
-  "issuesRemaining": 1,
+  "issuesRemaining": 2,
   "issuesBySeverity": {
-    "warning": 1
+    "warning": 2
   },
   "issuesByCode": {
-    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
+    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 2
   },
   "adjustmentsAppliedByPipeline": {
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 37,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 42,
     "MARKET_PE_PROVIDER_CONFLICT": 33,
-    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 1
+    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 2
   },
   "issues": [
+    {
+      "company": "Endeavour Mining",
+      "cusip": "FTSE100:EDV",
+      "ticker": "EDV.L",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 3.942,
+        "calculatedPercent": 2.381,
+        "price": 4506.0,
+        "dividendPerShare": 107.27245
+      }
+    },
     {
       "company": "Uwm Holdings Corporation",
       "cusip": "91823B109",
@@ -23,9 +36,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.272,
-        "calculatedPercent": 27.211,
-        "price": 1.47,
+        "reportedPercent": 0.299,
+        "calculatedPercent": 29.851,
+        "price": 1.34,
         "dividendPerShare": 0.4
       }
     }
