@@ -39,7 +39,7 @@ COMMANDS = {
     'weekly': [
         'sync_sp500.py --database data/companies/index.json',
         'sync_ftse100.py --database data/companies/index.json',
-        'enrich_companies.py --holdings data/source/latest.json data/source/previous.json '
+        'enrich_companies_safe.py --holdings data/source/latest.json data/source/previous.json '
         '--database data/companies/index.json --manual-companies data/config/portfolio.json --max-new 1000',
         'enrich_qualitative.py --holdings data/source/latest.json '
         '--company-database data/companies/index.json --qualitative-database data/companies/qualitative.json',
