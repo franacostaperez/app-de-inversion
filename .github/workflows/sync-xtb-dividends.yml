@@ -6,8 +6,9 @@ on:
     paths:
       - "data/.xtb-sync-trigger"
   schedule:
-    # After the daily Gmail -> Google Sheet import. UTC avoids DST-specific cron maintenance.
+    # Run after the two daily Gmail -> Google Sheet import passes.
     - cron: "15 13 * * *"
+    - cron: "15 19 * * *"
 
 permissions:
   contents: write
