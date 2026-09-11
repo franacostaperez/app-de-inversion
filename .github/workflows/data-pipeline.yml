@@ -35,6 +35,8 @@ jobs:
         run: python pipeline/run_automation.py "$DATA_MODE"
       - name: Preserve independently synced XTB dividend history
         run: python pipeline/preserve_personal_dividends.py
+      - name: Publish personal portfolio for site consumption
+        run: python pipeline/publish_personal_portfolio.py
       - name: Commit data and freshness records together
         env:
           DATA_MODE: ${{ inputs.mode }}
