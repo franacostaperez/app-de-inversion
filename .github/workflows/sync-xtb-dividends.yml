@@ -2,6 +2,9 @@ name: Sync XTB dividend history
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "data/.xtb-sync-trigger"
   schedule:
     # After the daily Gmail -> Google Sheet import. UTC avoids DST-specific cron maintenance.
     - cron: "15 13 * * *"
