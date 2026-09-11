@@ -8,6 +8,10 @@ on:
     branches: [main]
     paths:
       - "data/config/portfolio.json"
+      - "pipeline/enrich_companies.py"
+      - "pipeline/enrich_companies_safe.py"
+      - "pipeline/run_automation.py"
+      - ".github/workflows/update-data.yml"
 
 permissions:
   contents: write
