@@ -1,22 +1,35 @@
 {
-  "generatedAt": "2026-09-13T22:28:01.807707Z",
-  "profilesAudited": 1135,
-  "scoresAudited": 1066,
-  "issuesRemaining": 2,
+  "generatedAt": "2026-09-19T07:44:32.339335Z",
+  "profilesAudited": 1137,
+  "scoresAudited": 1068,
+  "issuesRemaining": 3,
   "issuesBySeverity": {
-    "warning": 2
+    "warning": 3
   },
   "issuesByCode": {
-    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 2
+    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 3
   },
   "adjustmentsAppliedByPipeline": {
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 41,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 40,
     "MARKET_PE_PROVIDER_CONFLICT": 29,
-    "MARKET_YIELD_PROVIDER_CONFLICT": 3,
-    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 2
+    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 3,
+    "MARKET_YIELD_PROVIDER_CONFLICT": 2
   },
   "issues": [
+    {
+      "company": "ARBOR REALTY TRUST INC",
+      "cusip": "038923108",
+      "ticker": "ABR",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 0.22,
+        "calculatedPercent": 21.495,
+        "price": 4.28,
+        "dividendPerShare": 0.92
+      }
+    },
     {
       "company": "Endeavour Mining",
       "cusip": "FTSE100:EDV",
@@ -24,9 +37,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 3.865,
-        "calculatedPercent": 2.336,
-        "price": 4593.0,
+        "reportedPercent": 3.856,
+        "calculatedPercent": 2.308,
+        "price": 4647.0,
         "dividendPerShare": 107.27245
       }
     },
@@ -37,9 +50,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.296,
-        "calculatedPercent": 29.63,
-        "price": 1.35,
+        "reportedPercent": 0.24,
+        "calculatedPercent": 32.0,
+        "price": 1.25,
         "dividendPerShare": 0.4
       }
     }
