@@ -1,7 +1,7 @@
 {
-  "asOf": "2026-09-29",
-  "dividendSourceAsOf": "2026-09-28",
-  "windowStart": "2025-09-29",
+  "asOf": "2026-09-30",
+  "dividendSourceAsOf": "2026-09-29",
+  "windowStart": "2025-09-30",
   "method": "Trimestres individuales; comparación interanual con el mismo trimestre 335–395 días antes. La racha se interrumpe ante ausencia de un trimestre, dato faltante o BPA no creciente.",
   "companies": [
     {
@@ -575,8 +575,8 @@
     {
       "ticker": "BAM1.US",
       "company": "Brookfield Asset Management",
-      "lastDividendDate": "2026-06-30",
-      "cashLast12MonthsEUR": 8.85,
+      "lastDividendDate": "2026-09-29",
+      "cashLast12MonthsEUR": 11.24,
       "source": "Alpha Vantage",
       "metric": "BPA comunicado",
       "periods": [
@@ -4707,8 +4707,8 @@
     {
       "ticker": "TROW.US",
       "company": "T. Rowe Price Group",
-      "lastDividendDate": "2026-06-29",
-      "cashLast12MonthsEUR": 40.37,
+      "lastDividendDate": "2026-09-29",
+      "cashLast12MonthsEUR": 41.87,
       "source": "SEC EDGAR",
       "metric": "BPA diluido GAAP",
       "periods": [
@@ -5876,6 +5876,127 @@
     }
   ],
   "alphaCache": {
+    "BAM1.US": {
+      "checkedAt": "2026-09-27",
+      "periods": [
+        {
+          "periodStart": null,
+          "periodEnd": "2026-06-30",
+          "eps": 0.43,
+          "unit": null,
+          "reportedAt": "2026-08-05",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2026-03-31",
+          "eps": 0.43,
+          "unit": null,
+          "reportedAt": "2026-05-08",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-12-31",
+          "eps": 0.47,
+          "unit": null,
+          "reportedAt": "2026-02-04",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-09-30",
+          "eps": 0.41,
+          "unit": null,
+          "reportedAt": "2025-11-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-06-30",
+          "eps": 0.38,
+          "unit": null,
+          "reportedAt": "2025-08-06",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-03-31",
+          "eps": 0.4,
+          "unit": null,
+          "reportedAt": "2025-05-06",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-12-31",
+          "eps": 0.4,
+          "unit": null,
+          "reportedAt": "2025-02-12",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-09-30",
+          "eps": 0.38,
+          "unit": null,
+          "reportedAt": "2024-11-04",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-06-30",
+          "eps": 0.34,
+          "unit": null,
+          "reportedAt": "2024-08-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-03-31",
+          "eps": 0.34,
+          "unit": null,
+          "reportedAt": "2024-05-08",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2023-12-31",
+          "eps": 0.36,
+          "unit": null,
+          "reportedAt": "2024-02-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2023-09-30",
+          "eps": 0.35,
+          "unit": null,
+          "reportedAt": "2023-11-06",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        }
+      ],
+      "error": null,
+      "symbol": "BAM"
+    },
+    "TROW.US": {
+      "checkedAt": "2026-09-26",
+      "periods": [],
+      "error": "Símbolo sin datos de BPA en Alpha Vantage",
+      "symbol": "TROW"
+    },
     "MAIN.US": {
       "checkedAt": "2026-09-27",
       "periods": [
@@ -9833,127 +9954,6 @@
       ],
       "error": null,
       "symbol": "ARCC"
-    },
-    "BAM1.US": {
-      "checkedAt": "2026-09-27",
-      "periods": [
-        {
-          "periodStart": null,
-          "periodEnd": "2026-06-30",
-          "eps": 0.43,
-          "unit": null,
-          "reportedAt": "2026-08-05",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2026-03-31",
-          "eps": 0.43,
-          "unit": null,
-          "reportedAt": "2026-05-08",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-12-31",
-          "eps": 0.47,
-          "unit": null,
-          "reportedAt": "2026-02-04",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-09-30",
-          "eps": 0.41,
-          "unit": null,
-          "reportedAt": "2025-11-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-06-30",
-          "eps": 0.38,
-          "unit": null,
-          "reportedAt": "2025-08-06",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-03-31",
-          "eps": 0.4,
-          "unit": null,
-          "reportedAt": "2025-05-06",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-12-31",
-          "eps": 0.4,
-          "unit": null,
-          "reportedAt": "2025-02-12",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-09-30",
-          "eps": 0.38,
-          "unit": null,
-          "reportedAt": "2024-11-04",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-06-30",
-          "eps": 0.34,
-          "unit": null,
-          "reportedAt": "2024-08-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-03-31",
-          "eps": 0.34,
-          "unit": null,
-          "reportedAt": "2024-05-08",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-12-31",
-          "eps": 0.36,
-          "unit": null,
-          "reportedAt": "2024-02-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-09-30",
-          "eps": 0.35,
-          "unit": null,
-          "reportedAt": "2023-11-06",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        }
-      ],
-      "error": null,
-      "symbol": "BAM"
-    },
-    "TROW.US": {
-      "checkedAt": "2026-09-26",
-      "periods": [],
-      "error": "Símbolo sin datos de BPA en Alpha Vantage",
-      "symbol": "TROW"
     },
     "VFC.US": {
       "checkedAt": "2026-09-29",
