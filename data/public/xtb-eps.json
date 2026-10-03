@@ -1,7 +1,7 @@
 {
-  "asOf": "2026-10-02",
-  "dividendSourceAsOf": "2026-10-01",
-  "windowStart": "2025-10-02",
+  "asOf": "2026-10-03",
+  "dividendSourceAsOf": "2026-10-02",
+  "windowStart": "2025-10-03",
   "method": "Trimestres individuales; comparación interanual con el mismo trimestre 335–395 días antes. La racha se interrumpe ante ausencia de un trimestre, dato faltante o BPA no creciente.",
   "companies": [
     {
@@ -881,8 +881,8 @@
     {
       "ticker": "CNQ.US",
       "company": "Canadian Natural Resources",
-      "lastDividendDate": "2026-07-08",
-      "cashLast12MonthsEUR": 21.35,
+      "lastDividendDate": "2026-10-02",
+      "cashLast12MonthsEUR": 26.04,
       "source": null,
       "metric": null,
       "periods": [],
@@ -1472,7 +1472,7 @@
       "ticker": "GPC.US",
       "company": "Genuine Parts",
       "lastDividendDate": "2026-01-05",
-      "cashLast12MonthsEUR": 0.84,
+      "cashLast12MonthsEUR": 0.42,
       "source": "Alpha Vantage",
       "metric": "BPA comunicado",
       "periods": [
@@ -2301,8 +2301,8 @@
     {
       "ticker": "KVUE.US",
       "company": "Kenvue",
-      "lastDividendDate": "2026-08-26",
-      "cashLast12MonthsEUR": 1.8,
+      "lastDividendDate": "2026-10-02",
+      "cashLast12MonthsEUR": 2.43,
       "source": "Alpha Vantage",
       "metric": "BPA comunicado",
       "periods": [
@@ -5876,6 +5876,127 @@
     }
   ],
   "alphaCache": {
+    "KVUE.US": {
+      "checkedAt": "2026-09-29",
+      "periods": [
+        {
+          "periodStart": null,
+          "periodEnd": "2026-06-30",
+          "eps": 0.31,
+          "unit": null,
+          "reportedAt": "2026-08-06",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2026-03-31",
+          "eps": 0.32,
+          "unit": null,
+          "reportedAt": "2026-05-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-12-31",
+          "eps": 0.27,
+          "unit": null,
+          "reportedAt": "2026-02-17",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-09-30",
+          "eps": 0.28,
+          "unit": null,
+          "reportedAt": "2025-11-03",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-06-30",
+          "eps": 0.29,
+          "unit": null,
+          "reportedAt": "2025-08-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2025-03-31",
+          "eps": 0.24,
+          "unit": null,
+          "reportedAt": "2025-05-08",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-12-31",
+          "eps": 0.26,
+          "unit": null,
+          "reportedAt": "2025-02-06",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-09-30",
+          "eps": 0.28,
+          "unit": null,
+          "reportedAt": "2024-11-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-06-30",
+          "eps": 0.32,
+          "unit": null,
+          "reportedAt": "2024-08-06",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2024-03-31",
+          "eps": 0.28,
+          "unit": null,
+          "reportedAt": "2024-05-07",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2023-12-31",
+          "eps": 0.31,
+          "unit": null,
+          "reportedAt": "2024-02-08",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
+          "periodEnd": "2023-09-30",
+          "eps": 0.31,
+          "unit": null,
+          "reportedAt": "2023-10-26",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        }
+      ],
+      "error": null,
+      "symbol": "KVUE"
+    },
+    "CNQ.US": {
+      "checkedAt": "2026-09-26",
+      "periods": [],
+      "error": "Símbolo sin datos de BPA en Alpha Vantage",
+      "symbol": "CNQ"
+    },
     "NKE.US": {
       "checkedAt": "2026-09-27",
       "periods": [
@@ -8333,121 +8454,6 @@
       "error": null,
       "symbol": "MSCI"
     },
-    "KVUE.US": {
-      "checkedAt": "2026-09-29",
-      "periods": [
-        {
-          "periodStart": null,
-          "periodEnd": "2026-06-30",
-          "eps": 0.31,
-          "unit": null,
-          "reportedAt": "2026-08-06",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2026-03-31",
-          "eps": 0.32,
-          "unit": null,
-          "reportedAt": "2026-05-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-12-31",
-          "eps": 0.27,
-          "unit": null,
-          "reportedAt": "2026-02-17",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-09-30",
-          "eps": 0.28,
-          "unit": null,
-          "reportedAt": "2025-11-03",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-06-30",
-          "eps": 0.29,
-          "unit": null,
-          "reportedAt": "2025-08-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2025-03-31",
-          "eps": 0.24,
-          "unit": null,
-          "reportedAt": "2025-05-08",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-12-31",
-          "eps": 0.26,
-          "unit": null,
-          "reportedAt": "2025-02-06",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-09-30",
-          "eps": 0.28,
-          "unit": null,
-          "reportedAt": "2024-11-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-06-30",
-          "eps": 0.32,
-          "unit": null,
-          "reportedAt": "2024-08-06",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2024-03-31",
-          "eps": 0.28,
-          "unit": null,
-          "reportedAt": "2024-05-07",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-12-31",
-          "eps": 0.31,
-          "unit": null,
-          "reportedAt": "2024-02-08",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-09-30",
-          "eps": 0.31,
-          "unit": null,
-          "reportedAt": "2023-10-26",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        }
-      ],
-      "error": null,
-      "symbol": "KVUE"
-    },
     "HTGC.US": {
       "checkedAt": "2026-09-27",
       "periods": [
@@ -9718,12 +9724,6 @@
       ],
       "error": null,
       "symbol": "VICI"
-    },
-    "CNQ.US": {
-      "checkedAt": "2026-09-26",
-      "periods": [],
-      "error": "Símbolo sin datos de BPA en Alpha Vantage",
-      "symbol": "CNQ"
     },
     "MRK.US": {
       "checkedAt": "2026-09-28",
