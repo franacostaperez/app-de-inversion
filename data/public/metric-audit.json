@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-03T08:29:46.630321Z",
-  "profilesAudited": 1141,
-  "scoresAudited": 1072,
+  "generatedAt": "2026-10-10T08:55:36.717210Z",
+  "profilesAudited": 1143,
+  "scoresAudited": 1074,
   "issuesRemaining": 3,
   "issuesBySeverity": {
     "warning": 3
@@ -11,8 +11,8 @@
   },
   "adjustmentsAppliedByPipeline": {
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 34,
-    "MARKET_PE_PROVIDER_CONFLICT": 28,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 35,
+    "MARKET_PE_PROVIDER_CONFLICT": 30,
     "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 3,
     "MARKET_YIELD_PROVIDER_CONFLICT": 3
   },
@@ -24,23 +24,23 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.264,
-        "calculatedPercent": 26.966,
-        "price": 3.56,
-        "dividendPerShare": 0.96
+        "reportedPercent": 0.328,
+        "calculatedPercent": 32.056,
+        "price": 2.87,
+        "dividendPerShare": 0.92
       }
     },
     {
-      "company": "EQUITY RESIDENTIAL",
-      "cusip": "29476L107",
-      "ticker": "VMRK",
+      "company": "Barratt Redrow",
+      "cusip": "FTSE100:BTRW",
+      "ticker": "BTRW.L",
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 3.511,
-        "calculatedPercent": 4.67,
-        "price": 59.79,
-        "dividendPerShare": 2.792
+        "reportedPercent": 2.066,
+        "calculatedPercent": 5.888,
+        "price": 290.4,
+        "dividendPerShare": 17.1
       }
     },
     {
@@ -50,9 +50,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.238,
-        "calculatedPercent": 31.746,
-        "price": 1.26,
+        "reportedPercent": 0.278,
+        "calculatedPercent": 37.037,
+        "price": 1.08,
         "dividendPerShare": 0.4
       }
     }
