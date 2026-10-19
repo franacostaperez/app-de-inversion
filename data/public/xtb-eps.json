@@ -1,7 +1,7 @@
 {
-  "asOf": "2026-10-18",
+  "asOf": "2026-10-19",
   "dividendSourceAsOf": "2026-10-15",
-  "windowStart": "2025-10-18",
+  "windowStart": "2025-10-19",
   "method": "Trimestres individuales; comparación interanual con el mismo trimestre 335–395 días antes. La racha se interrumpe ante ausencia de un trimestre, dato faltante o BPA no creciente.",
   "companies": [
     {
@@ -56,6 +56,15 @@
       "source": "Alpha Vantage",
       "metric": "BPA comunicado",
       "periods": [
+        {
+          "periodStart": null,
+          "periodEnd": "2026-08-31",
+          "eps": 3.29,
+          "unit": null,
+          "reportedAt": "2026-10-01",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
         {
           "periodStart": null,
           "periodEnd": "2026-05-31",
@@ -154,15 +163,6 @@
           "reportedAt": "2023-12-19",
           "form": "Earnings",
           "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-08-31",
-          "eps": 2.71,
-          "unit": null,
-          "reportedAt": "2023-09-28",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
         }
       ],
       "availableReports": 12,
@@ -170,12 +170,12 @@
       "streakYoY": {
         "count": 8,
         "comparisons": 8,
-        "latest": "2026-05-31"
+        "latest": "2026-08-31"
       },
       "streakQoQ": {
-        "count": 1,
-        "comparisons": 2,
-        "latest": "2026-05-31"
+        "count": 0,
+        "comparisons": 1,
+        "latest": "2026-08-31"
       },
       "status": "available"
     },
@@ -2002,6 +2002,15 @@
       "periods": [
         {
           "periodStart": null,
+          "periodEnd": "2026-09-30",
+          "eps": 2.59,
+          "unit": null,
+          "reportedAt": "2026-10-13",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
+        {
+          "periodStart": null,
           "periodEnd": "2026-06-30",
           "eps": 2.9,
           "unit": null,
@@ -2098,28 +2107,19 @@
           "reportedAt": "2024-01-23",
           "form": "Earnings",
           "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-09-30",
-          "eps": 2.66,
-          "unit": null,
-          "reportedAt": "2023-10-17",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
         }
       ],
       "availableReports": 12,
       "complete12": true,
       "streakYoY": {
-        "count": 1,
-        "comparisons": 2,
-        "latest": "2026-06-30"
+        "count": 0,
+        "comparisons": 1,
+        "latest": "2026-09-30"
       },
       "streakQoQ": {
-        "count": 2,
-        "comparisons": 3,
-        "latest": "2026-06-30"
+        "count": 0,
+        "comparisons": 1,
+        "latest": "2026-09-30"
       },
       "status": "available"
     },
@@ -6884,7 +6884,7 @@
       "symbol": "O"
     },
     "ARE.US": {
-      "checkedAt": "2026-09-29",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -7344,7 +7344,7 @@
       "symbol": "MAIN"
     },
     "MDLZ.US": {
-      "checkedAt": "2026-09-29",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -7804,7 +7804,7 @@
       "symbol": "VICI"
     },
     "MRK.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -8149,7 +8149,7 @@
       "symbol": "HRB"
     },
     "KVUE.US": {
-      "checkedAt": "2026-09-29",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -8839,7 +8839,7 @@
       "symbol": "ARCC"
     },
     "SCI.US": {
-      "checkedAt": "2026-09-29",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -9874,7 +9874,7 @@
       "symbol": "WEN"
     },
     "MMM.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -10104,7 +10104,7 @@
       "symbol": "VALE"
     },
     "MSFT.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -10219,7 +10219,7 @@
       "symbol": "MSFT"
     },
     "CVX.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -10334,8 +10334,17 @@
       "symbol": "CVX"
     },
     "JNJ.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
+        {
+          "periodStart": null,
+          "periodEnd": "2026-09-30",
+          "eps": 2.59,
+          "unit": null,
+          "reportedAt": "2026-10-13",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
         {
           "periodStart": null,
           "periodEnd": "2026-06-30",
@@ -10432,15 +10441,6 @@
           "eps": 2.29,
           "unit": null,
           "reportedAt": "2024-01-23",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-09-30",
-          "eps": 2.66,
-          "unit": null,
-          "reportedAt": "2023-10-17",
           "form": "Earnings",
           "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
         }
@@ -11254,8 +11254,17 @@
       "symbol": "HTGC"
     },
     "ACN.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
+        {
+          "periodStart": null,
+          "periodEnd": "2026-08-31",
+          "eps": 3.29,
+          "unit": null,
+          "reportedAt": "2026-10-01",
+          "form": "Earnings",
+          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
+        },
         {
           "periodStart": null,
           "periodEnd": "2026-05-31",
@@ -11352,15 +11361,6 @@
           "eps": 3.27,
           "unit": null,
           "reportedAt": "2023-12-19",
-          "form": "Earnings",
-          "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
-        },
-        {
-          "periodStart": null,
-          "periodEnd": "2023-08-31",
-          "eps": 2.71,
-          "unit": null,
-          "reportedAt": "2023-09-28",
           "form": "Earnings",
           "sourceURL": "https://www.alphavantage.co/documentation/#earnings"
         }
@@ -11484,7 +11484,7 @@
       "symbol": "GIS"
     },
     "CVS.US": {
-      "checkedAt": "2026-09-29",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
@@ -11829,7 +11829,7 @@
       "symbol": "CP"
     },
     "CMCSA.US": {
-      "checkedAt": "2026-09-28",
+      "checkedAt": "2026-10-19",
       "periods": [
         {
           "periodStart": null,
