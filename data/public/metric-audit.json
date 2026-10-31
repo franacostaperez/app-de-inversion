@@ -1,22 +1,48 @@
 {
-  "generatedAt": "2026-10-24T07:43:33.605228Z",
+  "generatedAt": "2026-10-31T08:48:23.208447Z",
   "profilesAudited": 1143,
   "scoresAudited": 1074,
-  "issuesRemaining": 3,
+  "issuesRemaining": 5,
   "issuesBySeverity": {
-    "warning": 3
+    "warning": 5
   },
   "issuesByCode": {
-    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 3
+    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 5
   },
   "adjustmentsAppliedByPipeline": {
-    "MARKET_PE_PROVIDER_CONFLICT": 77,
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 34,
-    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 3,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 33,
+    "MARKET_PE_PROVIDER_CONFLICT": 32,
+    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 5,
     "MARKET_YIELD_PROVIDER_CONFLICT": 3
   },
   "issues": [
+    {
+      "company": "ALPHABET INC",
+      "cusip": "02079K404",
+      "ticker": "GOOGN",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 3.337,
+        "calculatedPercent": 1.45,
+        "price": 41.39,
+        "dividendPerShare": 0.6
+      }
+    },
+    {
+      "company": "ALPHABET INC",
+      "cusip": "02079K602",
+      "ticker": "GOOGN",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 3.337,
+        "calculatedPercent": 1.45,
+        "price": 41.39,
+        "dividendPerShare": 0.6
+      }
+    },
     {
       "company": "ARBOR REALTY TRUST INC",
       "cusip": "038923108",
@@ -24,9 +50,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.322,
-        "calculatedPercent": 31.507,
-        "price": 2.92,
+        "reportedPercent": 0.439,
+        "calculatedPercent": 42.991,
+        "price": 2.14,
         "dividendPerShare": 0.92
       }
     },
@@ -37,9 +63,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 1.838,
-        "calculatedPercent": 5.239,
-        "price": 326.4,
+        "reportedPercent": 1.855,
+        "calculatedPercent": 5.288,
+        "price": 323.4,
         "dividendPerShare": 17.1
       }
     },
@@ -50,9 +76,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.207,
-        "calculatedPercent": 27.586,
-        "price": 1.45,
+        "reportedPercent": 19.108,
+        "calculatedPercent": 25.478,
+        "price": 1.57,
         "dividendPerShare": 0.4
       }
     }
