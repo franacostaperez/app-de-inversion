@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-07T09:15:16.532200Z",
-  "profilesAudited": 1144,
-  "scoresAudited": 1075,
-  "issuesRemaining": 5,
+  "generatedAt": "2026-11-14T09:18:55.971472Z",
+  "profilesAudited": 1147,
+  "scoresAudited": 1078,
+  "issuesRemaining": 8,
   "issuesBySeverity": {
-    "warning": 5
+    "warning": 8
   },
   "issuesByCode": {
-    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 5
+    "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 8
   },
   "adjustmentsAppliedByPipeline": {
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 41,
-    "MARKET_PE_PROVIDER_CONFLICT": 35,
-    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 5,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 34,
+    "MARKET_PE_PROVIDER_CONFLICT": 32,
+    "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 8,
     "MARKET_YIELD_PROVIDER_CONFLICT": 3
   },
   "issues": [
@@ -24,9 +24,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 3.299,
-        "calculatedPercent": 1.433,
-        "price": 41.86,
+        "reportedPercent": 3.221,
+        "calculatedPercent": 1.4,
+        "price": 42.87,
         "dividendPerShare": 0.6
       }
     },
@@ -37,9 +37,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 3.299,
-        "calculatedPercent": 1.433,
-        "price": 41.86,
+        "reportedPercent": 3.221,
+        "calculatedPercent": 1.4,
+        "price": 42.87,
         "dividendPerShare": 0.6
       }
     },
@@ -50,9 +50,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.584,
-        "calculatedPercent": 59.627,
-        "price": 1.61,
+        "reportedPercent": 0.734,
+        "calculatedPercent": 75.0,
+        "price": 1.28,
         "dividendPerShare": 0.96
       }
     },
@@ -63,10 +63,49 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 1.803,
-        "calculatedPercent": 5.14,
-        "price": 332.7,
+        "reportedPercent": 1.83,
+        "calculatedPercent": 5.217,
+        "price": 327.8,
         "dividendPerShare": 17.1
+      }
+    },
+    {
+      "company": "Coca-Cola Europacific Partners",
+      "cusip": "FTSE100:CCEP",
+      "ticker": "CCEP.L",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 0.765,
+        "calculatedPercent": 1.987,
+        "price": 8945.0,
+        "dividendPerShare": 177.761246
+      }
+    },
+    {
+      "company": "LVMH",
+      "cusip": "PORTFOLIO:MC",
+      "ticker": "MC",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 3.482,
+        "calculatedPercent": 4.643,
+        "price": 56.0,
+        "dividendPerShare": 2.6
+      }
+    },
+    {
+      "company": "MEDICAL PROPERTIES TRUST INC",
+      "cusip": "58463J304",
+      "ticker": "MPT",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 0.216,
+        "calculatedPercent": 21.557,
+        "price": 1.67,
+        "dividendPerShare": 0.36
       }
     },
     {
@@ -76,9 +115,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 19.737,
-        "calculatedPercent": 26.316,
-        "price": 1.52,
+        "reportedPercent": 0.238,
+        "calculatedPercent": 31.746,
+        "price": 1.26,
         "dividendPerShare": 0.4
       }
     }
