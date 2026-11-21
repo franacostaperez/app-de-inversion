@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-14T09:18:55.971472Z",
-  "profilesAudited": 1147,
-  "scoresAudited": 1078,
+  "generatedAt": "2026-11-21T10:13:57.581714Z",
+  "profilesAudited": 1245,
+  "scoresAudited": 1157,
   "issuesRemaining": 8,
   "issuesBySeverity": {
     "warning": 8
@@ -11,8 +11,8 @@
   },
   "adjustmentsAppliedByPipeline": {
     "NON_EQUITY_OR_UNQUOTED_INSTRUMENT": 52,
-    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 34,
-    "MARKET_PE_PROVIDER_CONFLICT": 32,
+    "MARKET_PE_PROVIDER_CONFLICT": 39,
+    "MARKET_YIELD_CONFLICT_RESOLVED_BY_DIVIDEND_RATE": 38,
     "MARKET_YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE": 8,
     "MARKET_YIELD_PROVIDER_CONFLICT": 3
   },
@@ -24,9 +24,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 3.221,
-        "calculatedPercent": 1.4,
-        "price": 42.87,
+        "reportedPercent": 3.476,
+        "calculatedPercent": 1.51,
+        "price": 39.73,
         "dividendPerShare": 0.6
       }
     },
@@ -37,9 +37,9 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 3.221,
-        "calculatedPercent": 1.4,
-        "price": 42.87,
+        "reportedPercent": 3.476,
+        "calculatedPercent": 1.51,
+        "price": 39.73,
         "dividendPerShare": 0.6
       }
     },
@@ -51,8 +51,8 @@
       "severity": "warning",
       "details": {
         "reportedPercent": 0.734,
-        "calculatedPercent": 75.0,
-        "price": 1.28,
+        "calculatedPercent": 93.204,
+        "price": 1.03,
         "dividendPerShare": 0.96
       }
     },
@@ -63,36 +63,10 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 1.83,
-        "calculatedPercent": 5.217,
-        "price": 327.8,
+        "reportedPercent": 1.921,
+        "calculatedPercent": 5.474,
+        "price": 312.4,
         "dividendPerShare": 17.1
-      }
-    },
-    {
-      "company": "Coca-Cola Europacific Partners",
-      "cusip": "FTSE100:CCEP",
-      "ticker": "CCEP.L",
-      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
-      "severity": "warning",
-      "details": {
-        "reportedPercent": 0.765,
-        "calculatedPercent": 1.987,
-        "price": 8945.0,
-        "dividendPerShare": 177.761246
-      }
-    },
-    {
-      "company": "LVMH",
-      "cusip": "PORTFOLIO:MC",
-      "ticker": "MC",
-      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
-      "severity": "warning",
-      "details": {
-        "reportedPercent": 3.482,
-        "calculatedPercent": 4.643,
-        "price": 56.0,
-        "dividendPerShare": 2.6
       }
     },
     {
@@ -102,10 +76,23 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.216,
-        "calculatedPercent": 21.557,
-        "price": 1.67,
+        "reportedPercent": 0.206,
+        "calculatedPercent": 20.571,
+        "price": 1.75,
         "dividendPerShare": 0.36
+      }
+    },
+    {
+      "company": "PAPA JOHNS INTL INC",
+      "cusip": "698813102",
+      "ticker": "PZZA",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 5.072,
+        "calculatedPercent": 7.607,
+        "price": 18.14,
+        "dividendPerShare": 1.38
       }
     },
     {
@@ -115,10 +102,23 @@
       "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
       "severity": "warning",
       "details": {
-        "reportedPercent": 0.238,
-        "calculatedPercent": 31.746,
-        "price": 1.26,
+        "reportedPercent": 0.27,
+        "calculatedPercent": 36.036,
+        "price": 1.11,
         "dividendPerShare": 0.4
+      }
+    },
+    {
+      "company": "YARROW BIOSCIENCE INC",
+      "cusip": "92941V407",
+      "ticker": "YARW",
+      "code": "YIELD_DIFFERS_FROM_DIVIDEND_OVER_PRICE",
+      "severity": "warning",
+      "details": {
+        "reportedPercent": 1.558,
+        "calculatedPercent": 155.814,
+        "price": 12.9,
+        "dividendPerShare": 20.1
       }
     }
   ]
